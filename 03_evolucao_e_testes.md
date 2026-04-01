@@ -173,10 +173,3 @@ Este é o único caminho para evolução orgânica de perícias. Não há atalho
 - A evolução ocorre independentemente de passar ou não na DT — o feito importa, não o resultado narrativo.
 
 > *Exemplo: Mira rola 3D12 com seu Talento em Furtividade e tira [12, 12, 4]. Ela descarta o 4 e usa os dois 12s. O teste resulta em Milagre — e ela ganha +1 permanente em Furtividade.*
-
----
-
-## Notas do Game Designer
-
-### PE por Treinamento
-A quantidade de PE ganhos por sessão de treino e o limite de sessões por período de descanso serão definidos no capítulo de Interlúdio.

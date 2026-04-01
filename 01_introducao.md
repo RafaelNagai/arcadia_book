@@ -114,4 +114,4 @@ Este livro está organizado em quatro partes, pensadas para serem lidas em ordem
 ### Sobre o Acesso aos Planos Alternativos
 O acesso a qualquer plano fora do Plano Finito (Rede dos Sonhos, Mundo das Tintas, Reino das Almas) é **intencional e deliberadamente raro**. Não existe uma técnica específica ensinável — a travessia acontece através de portais, fendas naturais, anomalias arcanas ou rituais construídos pelo Mestre para aquela campanha específica.
 
-Mecanicamente, magias do **Elemento Paradoxo** são o caminho mais provável para conjuradores que buscam abrir passagens. A dificuldade, os custos e as consequências ficam a critério do Mestre — e devem ser tratados como eventos narrativos de alto peso, não como deslocamento de rotina.
+Mecanicamente, magias do **Elemento Paradoxo ou Astral** são o caminho mais provável para conjuradores que buscam abrir passagens. A dificuldade, os custos e as consequências ficam a critério do Mestre — e devem ser tratados como eventos narrativos de alto peso, não como deslocamento de rotina.

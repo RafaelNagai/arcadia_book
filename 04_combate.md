@@ -322,6 +322,3 @@ Outro pirata ataca Kael com uma adaga Tier C (2D6). Com a Durabilidade do peitor
 
 ### D20 Reservado para Dano em Massa
 O dado D20 não aparece em armas individuais — está reservado para armamentos de grande escala, como canhões de navio. Isso deve ser referenciado no capítulo de Navios quando esse dano for detalhado.
-
-### D20 Reservado para Dano em Massa
-O dado D20 não aparece em armas individuais — está reservado para armamentos de grande escala, como canhões de navio. Isso deve ser referenciado no capítulo de Navios quando esse dano for detalhado.

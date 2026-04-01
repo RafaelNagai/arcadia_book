@@ -286,10 +286,3 @@ A **Performance** mede a expressão artística e a presença cênica. Músicos, 
 | | Dominação | Impor presença e vontade |
 | | Persuasão | Convencer com argumento ou charme |
 | | Performance | Expressão artística e presença cênica |
-
----
-
-## Notas do Game Designer
-
-### Como Atributos Influenciam os Testes de Perícia
-Os valores numéricos de Atributos e como eles se integram à mecânica de 2D12 precisam ser consolidados no capítulo de Evolução e Testes. Uma referência cruzada deverá ser adicionada aqui após esse capítulo estar completo.
