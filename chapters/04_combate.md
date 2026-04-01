@@ -221,9 +221,18 @@ Cada Tier exige um nível mínimo para ser usado sem penalidade. Usar um item ac
 
 ---
 
-### Tabelas de Durabilidade por Tier
+### Tabelas de DA e Durabilidade por Tier
 
-**Equipamentos Defensivos:**
+**Equipamentos Defensivos — DA:**
+
+| Item | SS | S | A | B | C | D | E |
+|---|---|---|---|---|---|---|---|
+| Armadura | 7 | 6 | 5 | 4 | 3 | 2 | 2 |
+| Escudo | 6 | 5 | 4 | 3 | 3 | 2 | 1 |
+| Capacete | 5 | 4 | 3 | 2 | 2 | 1 | 1 |
+| Manto | 4 | 3 | 2 | 2 | 1 | 1 | 1 |
+
+**Equipamentos Defensivos — Durabilidade:**
 
 | Item | SS | S | A | B | C | D | E |
 |---|---|---|---|---|---|---|---|

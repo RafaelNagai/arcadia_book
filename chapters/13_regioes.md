@@ -10,7 +10,7 @@ O mundo de Arcádia é composto por continentes flutuantes — massas de terra t
 
 Essas nações não estão fixas num mapa permanente, mas suas posições relativas são estáveis o suficiente para que o comércio, a guerra e a diplomacia aconteçam entre elas. Navegadores experientes conhecem as Constelações de cada continente de cor.
 
-O minério **Eltys** — a mesma substância que pulsa como Essência nas ilhas menores — ocorre em grandes depósitos dentro desses continentes. Nações que o controlam detêm tanto riqueza econômica quanto poder arcano.
+O minério **Eltys** — combustível arcano que alimenta feitiços, move navios e sustenta as tecnologias das grandes cidades — ocorre em grandes depósitos dentro desses continentes. Nações que o controlam detêm tanto riqueza econômica quanto poder arcano.
 
 ---
 
@@ -130,9 +130,6 @@ Ao contrário da maioria das nações de Arcádia, Rubra valoriza mais a **engen
 ---
 
 ## Notas do Game Designer
-
-### Eltys: Minério e Essência
-Tanto Britannia quanto Galahad possuem grandes depósitos do minério Eltys em seu subsolo. O Eltys é o mesmo material que, nas ilhas menores, se manifesta como **Essência de Eltys** — a energia vital extraída por Navegadores para criar Constelações (ver capítulo de Constelação). A relação exata entre o minério bruto e a energia de Eltys pode ser explorada narrativamente: o minério pode ser refinado para uso arcano? Tem valor direto no mercado de Constelações? A definir.
 
 ### Religião Alfaista: Referência Pendente
 Os Imperiais de Camelot são associados à **religião Alfaista**. O detalhamento dessa religião e seu impacto no mundo será coberto no capítulo de Religiões.

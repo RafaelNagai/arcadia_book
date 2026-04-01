@@ -79,14 +79,14 @@ Isso significa que manter altos níveis de Entropia exige um custo contínuo de 
 
 A **Sanidade** representa a saúde mental do personagem — sua capacidade de processar o peso do Arcano, do trauma e das experiências que ultrapassam o limite humano.
 
-> **Valor inicial:** Definido no capítulo de Condições e Trauma, em função dos Atributos do personagem.
+> **Valor inicial:** 15 + bônus cumulativo baseado no maior entre Intelecto e Influência (ver tabela no capítulo de Condições e Trauma).
 
 ### Traumas
 
 Quando a Sanidade de um personagem **chega a zero**, ele adquire **1 Trauma**.
 
 - O Trauma pode ser **aleatório** ou **narrativamente coerente** com a situação — a critério do Mestre.
-- Após adquirir o Trauma, a Sanidade é restaurada a um valor mínimo e o personagem continua.
+- Após adquirir o Trauma, a Sanidade é restaurada a **1** e o personagem continua.
 - Ao acumular **3 Traumas**, o personagem entra no **Estado de Loucura**.
 
 ### Estado de Loucura
@@ -279,9 +279,6 @@ A DT final é uma combinação dos dois pilares. O Mestre escolhe um número den
 ---
 
 ## Notas do Game Designer
-
-### Sanidade: Valor Inicial Não Definido
-O valor inicial de Sanidade e sua relação com os Atributos do personagem serão estabelecidos no capítulo de Condições e Trauma. O comportamento documentado aqui — custo em ND12 por nível de Entropia, Traumas ao chegar a zero, e Estado de Loucura ao terceiro Trauma — é canônico.
 
 ### Referência de Calibração para o Mestre
 As DTs arcanas foram calibradas para que um personagem com Afinidade e 2 Runas (+10 de bônus total) tenha aproximadamente 50% de sucesso em conjurações Média×Moderada (DT 20–24). O bônus de +10 antes dos dados é alto por design — a tabela de DTs foi construída para isso. Personagens sem Afinidade ou Runas enfrentarão as mesmas conjurações como se fossem testes Difíceis ou Severos.

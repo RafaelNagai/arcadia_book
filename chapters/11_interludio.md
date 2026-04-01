@@ -121,6 +121,8 @@ O total de pontos de progresso acumulados determina o **Tier** do item. A tabela
 
 O artesão pode parar quando quiser e registrar o Tier alcançado.
 
+> O Tier define os valores de dano, DA e Durabilidade do item forjado. Consulte as tabelas de Tiers no capítulo de Combate.
+
 #### Fase C — Finalização e Qualidade (opcional)
 
 Após completar a Fase B, o artesão pode tentar enriquecer o item com efeitos especiais.
@@ -239,9 +241,3 @@ Ao final de um Intervalo, o Mestre pode rolar **1D20** para introduzir um elemen
 
 **Ajuste ao tom da campanha.** Em campanhas mais duras, forjar custa mais materiais e erros têm peso real. Em campanhas de estilo pulp, Intervalos são mais generosos — a tripulação come bem, dorme melhor e sai mais forte do que entrou.
 
----
-
-## Notas do Game Designer
-
-### Sistema de Tiers (E → SS): Não Integrado ao Capítulo de Equipamentos
-A tabela de Forja introduz um sistema de qualidade em 7 tiers que serve como referência de capacidade para o artesão e o Mestre. Os efeitos mecânicos concretos de cada tier — bônus de dano exatos, incrementos de DA, limites de Durabilidade — precisam ser definidos formalmente no capítulo de Equipamentos para que o Tier alcançado na Fase B tenha peso real na ficha do item.

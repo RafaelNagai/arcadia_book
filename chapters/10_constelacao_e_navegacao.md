@@ -14,7 +14,15 @@ Uma Constelação não é um desenho estelar. É a **Assinatura Mágica** única
 
 ### A Essência de Eltys
 
-Para criar uma Constelação, um explorador deve estar presente na ilha e extrair a **Essência de Eltys** — a energia vital que pulsa na terra flutuante. Cada ilha possui uma Essência única: duas ilhas nunca têm a mesma assinatura.
+A **Essência de Eltys** é uma pedra negra opaca — inerte enquanto mantida longe de qualquer ilha.
+
+Para criar uma Constelação, o explorador deve levar a pedra até a ilha de destino e expô-la ao Eltys que pulsa naquela terra. Cada ilha possui uma frequência arcana única — e ao entrar em contato com ela, a pedra reage: o negro se dissolve de dentro para fora, substituído por um azul profundo que pulsa como um universo em miniatura. Uma constelação singular forma-se no interior da pedra — o registro permanente da assinatura daquela ilha.
+
+Nenhuma outra ilha produzirá a mesma constelação. A Essência não mente.
+
+Com a Essência ativada, o Navegador pode rastrear aquela ilha pelo Mar de Nuvens, não importa para onde os ventos a tenham levado.
+
+Cada ilha possui uma Essência única: duas ilhas nunca têm a mesma assinatura.
 
 ### A Economia das Constelações
 

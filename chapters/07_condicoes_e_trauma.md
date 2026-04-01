@@ -36,11 +36,29 @@ O personagem está à beira da morte — consciente apenas o suficiente para sen
 
 A Sanidade mede o equilíbrio interno. Quando chega a **zero**, o corpo ainda vive — mas a mente começa a se despedaçar.
 
+### Valor Inicial de Sanidade
+
+Todo personagem começa com **15 de Sanidade**, acrescidos de um bônus baseado no maior entre **Intelecto** e **Influência**. Compare os dois Atributos e use o de maior valor como referência na tabela abaixo. O bônus é cumulativo: cada ponto no atributo soma o valor daquela faixa ao total.
+
+| Valor do Atributo | Bônus por ponto | Sanidade Total |
+|---|---|---|
+| 0 | — | 15 |
+| 1 | +4 | 19 |
+| 2 | +4 | 23 |
+| 3 | +3 | 26 |
+| 4 | +3 | 29 |
+| 5 | +2 | 31 |
+| 6 | +2 | 33 |
+| 7 | +1 | 34 |
+| 8 | +1 | 35 |
+
+> *Exemplo: Mira tem Intelecto 2 e Influência 4. Influência é maior — ela usa esse valor como referência. Sanidade inicial: **29**.*
+
 ### Traumas
 
 Ao atingir **0 de Sanidade**, o personagem não morre — ele ganha **1 Trauma** relacionado com o que causou a queda.
 
-Um Trauma representa uma cicatriz psicológica permanente: uma fobia, uma obsessão, um colapso emocional que nunca se dissolve completamente. Após adquirir o Trauma, a Sanidade é restaurada a um valor mínimo e o personagem continua.
+Um Trauma representa uma cicatriz psicológica permanente: uma fobia, uma obsessão, um colapso emocional que nunca se dissolve completamente. Após adquirir o Trauma, a Sanidade é restaurada a **1** e o personagem continua.
 
 > O Trauma deve ser **narrativamente coerente** com a situação, ou determinado aleatoriamente — a critério do Mestre.
 
