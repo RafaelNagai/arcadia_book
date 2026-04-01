@@ -105,8 +105,6 @@ Este livro está organizado em quatro partes, pensadas para serem lidas em ordem
 
 **Parte IV — O Mundo:** O lore expandido de Arcádia. Raças, regiões, dimensões e religiões. Use como referência contínua durante a campanha.
 
-> **Para o Mestre:** Ao longo do livro, você encontrará seções chamadas **"Notas do Game Designer"** ao final de cada capítulo. Elas trazem discussões sobre decisões de design, pontos de atenção e sugestões para adaptar as regras à sua mesa.
-
 ---
 
 ## Notas do Game Designer
