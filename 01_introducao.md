@@ -111,16 +111,7 @@ Este livro está organizado em quatro partes, pensadas para serem lidas em ordem
 
 ## Notas do Game Designer
 
-### Sobre a Introdução como Documento Vivo
-O texto de introdução nos PDFs originais era funcional, mas apresentava algumas inconsistências que foram corrigidas nesta versão:
+### Sobre o Acesso aos Planos Alternativos
+O acesso a qualquer plano fora do Plano Finito (Rede dos Sonhos, Mundo das Tintas, Reino das Almas) é **intencional e deliberadamente raro**. Não existe uma técnica específica ensinável — a travessia acontece através de portais, fendas naturais, anomalias arcanas ou rituais construídos pelo Mestre para aquela campanha específica.
 
-- **"Plano Infinito" removido:** O PDF original de Constelações mencionava "Plano Infinito" como nome do mundo. O nome canônico é **Plano Finito**, conforme estabelecido neste capítulo. Qualquer ocorrência de "Plano Infinito" em outros capítulos é um erro a ser corrigido.
-
-### Sobre as Camadas da Realidade
-Os quatro planos (Finito, Rede dos Sonhos, Mundo das Tintas, Reino das Almas) são mencionados na introdução mas **não têm regras definidas** nos PDFs de referência disponíveis. Eles aparecem apenas como flavor. Pontos a considerar:
-
-- **Gap:** Não há mecânicas de transição entre planos. Como um personagem entra na Rede dos Sonhos? Que testes são necessários? Qual o custo? Isso precisa ser definido — seja em um capítulo dedicado, seja nas regras de Arcanismo.
-- **Gap:** O Reino das Almas levanta uma questão mecânica interessante: se almas persistem enquanto forem lembradas, isso pode ser explorado como sistema de *legado* ou de *comunhão com mortos* em rituais arcanos. Vale desenvolver.
-
-### Sobre "Como Usar Este Livro"
-Esta seção não existia nos PDFs originais. Foi criada porque um livro de RPG sem orientação de leitura tende a confundir jogadores iniciantes. Recomendo manter — e expandi-la à medida que o livro crescer.
+Mecanicamente, magias do **Elemento Paradoxo** são o caminho mais provável para conjuradores que buscam abrir passagens. A dificuldade, os custos e as consequências ficam a critério do Mestre — e devem ser tratados como eventos narrativos de alto peso, não como deslocamento de rotina.
