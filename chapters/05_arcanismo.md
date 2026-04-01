@@ -275,10 +275,3 @@ A DT final é uma combinação dos dois pilares. O Mestre escolhe um número den
 | Qualquer × Complexa | 28 – 36+ |
 
 > *Exemplo: "Criar uma barreira de chamas entre nós e os inimigos" — Grandeza Média (cobre uma linha de 3 metros), Complexidade Moderada (forma específica, duração sustentada). DT sugerida: 20–22.*
-
----
-
-## Notas do Game Designer
-
-### Referência de Calibração para o Mestre
-As DTs arcanas foram calibradas para que um personagem com Afinidade e 2 Runas (+10 de bônus total) tenha aproximadamente 50% de sucesso em conjurações Média×Moderada (DT 20–24). O bônus de +10 antes dos dados é alto por design — a tabela de DTs foi construída para isso. Personagens sem Afinidade ou Runas enfrentarão as mesmas conjurações como se fossem testes Difíceis ou Severos.

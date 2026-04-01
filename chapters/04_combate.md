@@ -193,6 +193,8 @@ Cada Tier exige um nível mínimo para ser usado sem penalidade. Usar um item ac
 
 ### Tabelas de Dano por Tier
 
+> **Nota:** O dado D20 não aparece em armas individuais — está reservado para armamentos de grande escala instalados em navios (ver capítulo de Navios).
+
 **Armamentos Corpo-a-Corpo:**
 
 | Arma | SS | S | A | B | C | D | E |
@@ -324,10 +326,3 @@ Outro pirata ataca Kael com uma adaga Tier C (2D6). Com a Durabilidade do peitor
 - A Durabilidade do peitoral vai de 2 para 0 — **o item quebra**.
 - Kael recebe os 2 pontos diretamente na Vida. **Vida de Kael: 8/10.**
 - O peitoral perde todas as propriedades: DA volta para a base 1.
-
----
-
-## Notas do Game Designer
-
-### D20 Reservado para Dano em Massa
-O dado D20 não aparece em armas individuais — está reservado para armamentos de grande escala, como canhões de navio. Isso deve ser referenciado no capítulo de Navios quando esse dano for detalhado.

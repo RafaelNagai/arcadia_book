@@ -126,10 +126,3 @@ Entre dunas escaldantes e rochedos cravejados de gemas, **Rubra é um deserto de
 O povo de Rubra é **orgulhoso, acolhedor e resiliente**. Mesmo diante da aridez, cultivam alegria e hospitalidade, acreditando que a felicidade é um bem coletivo — durante suas festas, todos são convidados, inclusive estrangeiros.
 
 Ao contrário da maioria das nações de Arcádia, Rubra valoriza mais a **engenharia do que a magia**. Suas construções e invenções são fruto de engenhosidade prática — não de runas ou feitiços. É uma nação que resolve problemas com as mãos antes de recorrer ao arcano.
-
----
-
-## Notas do Game Designer
-
-### Religião Alfaista: Referência Pendente
-Os Imperiais de Camelot são associados à **religião Alfaista**. O detalhamento dessa religião e seu impacto no mundo será coberto no capítulo de Religiões.

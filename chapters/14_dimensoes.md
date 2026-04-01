@@ -73,10 +73,26 @@ Aqueles que conseguem compreender e controlar suas emoções podem **moldar o pr
 
 ---
 
-## Notas do Game Designer
+## Astral e os Planos
 
-### Astral e os Planos: Poder por Plano Ainda Indefinido
-O elemento Astral (capítulo de Elementos) menciona que "a força e os poderes do conjurador astral vêm ligados aos planos que ele acessa". Agora que os quatro planos estão documentados, falta definir o que cada um concede a um conjurador astral: acessar a Rede dos Sonhos vs. o Reino das Almas vs. o Mundo das Tintas deve gerar tipos ou magnitudes diferentes de poder. Esse sistema pode ser desenvolvido num apêndice de Arcanismo Avançado.
+Para um conjurador com Afinidade ou Antítese no Astral, os três planos além do Finito não são apenas conceitos — são fontes de poder que podem ser tocadas intencionalmente.
 
-### Rede dos Sonhos e o Sono: Conexão Implícita
-A descrição da Rede dos Sonhos menciona acesso durante o sono — o que cria uma conexão narrativa com a ação de Dormir no Intervalo de Capítulo. Mestres podem usar isso como gancho: sonhos durante um descanso em local de alta concentração arcana podem refletir memórias da Rede, criando visões, pistas ou alertas vindos de mortos cujas memórias ainda pulsam no plano.
+Cada plano habilita categorias específicas de magia. O Mestre usa essas categorias para classificar intenções astrais da mesma forma que usa os elementos para classificar outras magias. O preço de acessar um plano vai além do custo de Entropia: ele sempre deixa uma marca narrativa.
+
+### Rede dos Sonhos
+
+**O que habilita:** Acesso a memórias — próprias, alheias ou de desconhecidos. Envio de mensagens, visões e pensamentos a longas distâncias. Consulta a conhecimentos esquecidos ou enterrados no passado de alguém.
+
+**A marca:** Cada acesso à Rede deixa um fragmento de outro lugar na mente do conjurador. O Mestre pode introduzir uma memória que não é dele — um rosto desconhecido, uma emoção sem contexto, uma frase em língua estranha que persiste por dias.
+
+### Reino das Almas
+
+**O que habilita:** Comunicação com os mortos. Ataques espirituais que ignoram a DA física, acertando diretamente a vitalidade ou a Sanidade do alvo. Transferência e dreno de energia vital. Percepção de espíritos próximos.
+
+**A marca:** Cada vez que o conjurador alcança o Reino, algo de si permanece lá. O Mestre pode manifestar isso como visões crescentes da própria morte do personagem, presença de espíritos que o reconhecem, ou uma frieza que as pessoas ao redor começam a notar.
+
+### Mundo das Tintas
+
+**O que habilita:** Amplificação ou supressão de emoções em alvos. Manifestação de construtos emocionais — raiva como calor físico, luto como peso opressor, euforia como velocidade. Leitura da memória emocional de um lugar ou objeto.
+
+**A marca:** O conjurador absorve o que manipula. Quem apaga o medo de um aliado carrega esse medo por um tempo. Quem amplifica a raiva de um inimigo sente o eco dessa raiva em si mesmo. O Mestre decide quando e como essa absorção se manifesta.

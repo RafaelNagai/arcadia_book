@@ -180,7 +180,7 @@ A menos que haja emboscada, os dois Capitães disputam quem age primeiro em um *
 
 No início do turno, o Capitão rola um número de **D6** igual ao seu **Atributo base** (Destreza para Materiais, Influência para Orgânicos). Em seguida, distribui os **resultados obtidos** entre os setores do navio.
 
-Cada dado distribuído pode ser somado a **um único teste ou resultado** realizado pelo tripulante naquele setor durante o turno.
+Cada dado distribuído pode ser somado a **um teste ou resultado** realizado pelo tripulante naquele setor durante o turno. Quando dois ou mais dados são distribuídos para o **mesmo setor**, cada um pode ser somado a um resultado diferente — ou todos somados a um único resultado, a critério da mesa.
 
 > *Exemplo: O Capitão tem Destreza 4. Rola 4D6 e obtém [6, 5, 3, 2]. Distribui 6 e 5 no Armamento, 3 nas Velas, 2 no Radar. Os atiradores têm valores altos para somar ao dano, mas o piloto das Velas tem apenas 3 para sua manobra — tornando o navio um alvo mais fácil nesse turno.*
 
@@ -225,10 +225,3 @@ O campo de batalha se divide em dois cenários:
 | Combate corpo a corpo | Só pode atacar alvos no mesmo cenário |
 | Ataque à distância entre cenários | **Desvantagem** (balanço dos navios e cabos) |
 | Travessia entre navios | Custa **1 Ação** |
-
----
-
-## Notas do Game Designer
-
-### Pool de Dados de Comando: Múltiplos Dados no Mesmo Setor
-Quando o Capitão distribui dois ou mais dados para o mesmo setor, cada dado pode ser somado a **um teste ou resultado diferente** naquele setor naquele turno — ou todos somados a um único resultado, a critério da mesa. Recomendar clareza na mesa antes da primeira batalha naval.

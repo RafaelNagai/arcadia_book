@@ -92,10 +92,7 @@ O Gamaismo é, portanto, uma religião racional e ativa: cada ser deve desafiar 
 
 ---
 
-## Notas do Game Designer
+## Para o Mestre
 
 ### As Histórias São Perspectivas, Não Verdades
 O que cada religião descreve — a criação do mundo, os motivos de cada deus, a relação entre Alfa, Beta e Gama — é o que seus **fiéis acreditam**, não um registro factual do cosmos de Arcádia. As três narrativas se contradizem em pontos fundamentais. Isso é intencional: o Mestre tem liberdade total para decidir o que é "verdade" no cenário — ou manter a questão em aberto como mistério permanente.
-
-### Religião Sem Impacto Mecânico: Por Design
-Assim como as raças, as religiões não concedem bônus mecânicos. A escolha de fé de um personagem é um elemento de roleplay e profundidade narrativa — não uma otimização de ficha. Mestres podem usar a afiliação religiosa como gancho de relacionamentos, conflitos de valores e tensões entre personagens, sem que nenhuma escolha seja "melhor" que outra mecanicamente.

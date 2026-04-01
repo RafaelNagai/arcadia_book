@@ -75,10 +75,3 @@ Os orcs são a personificação da **força, do instinto e do título**. Vivem i
 Em sua cultura, o **título** é mais importante do que o próprio nome. Um orc não se apresenta apenas como quem é — apresenta o que fez, o que conquistou, o que derrotou. O título deve ser sempre pronunciado, porque é ele que define os feitos de alguém no mundo.
 
 **Traço racial:** Físico naturalmente avantajado, grande diversidade de tons de pele, caninos proeminentes.
-
----
-
-## Notas do Game Designer
-
-### Avaro: Abrangência Intencional
-A raça Avaro é definida de forma ampla por design — "características animalescas ou monstruosas" engloba desde um personagem com chifres sutis até outro com escamas cobrindo metade do corpo. Essa vagueza é intencional: o Avaro é uma categoria que acomoda qualquer visão de personagem humanoide não-humano que não se encaixe nas demais raças. O Mestre e o jogador têm liberdade total para definir a aparência específica.

@@ -230,14 +230,3 @@ Ao final de um Intervalo, o Mestre pode rolar **1D20** para introduzir um elemen
 | 13 – 16 | Descoberta menor — um rumor útil chega por conta própria |
 | 17 – 18 | Aliado aparece com uma oferta ou pedido |
 | 19 – 20 | Evento especial — visão, anomalia arcana ou oportunidade de missão |
-
----
-
-## Para o Mestre
-
-**Mantenha o ritmo.** Intervalos devem ser rápidos à mesa. Se um jogador quer treinar por 24 horas, não simule todos os testes individualmente — resolva por sumário e aplique os resultados. Reserve o detalhe para momentos que merecem destaque narrativo.
-
-**Consequências persistem.** Se um favor foi pedido, alguém vai cobrar. Se uma forja foi concluída com materiais de origem duvidosa, o ferreiro do porto vai perguntar. Ganhos num Intervalo devem criar novos ganchos, não apenas reabastecer recursos.
-
-**Ajuste ao tom da campanha.** Em campanhas mais duras, forjar custa mais materiais e erros têm peso real. Em campanhas de estilo pulp, Intervalos são mais generosos — a tripulação come bem, dorme melhor e sai mais forte do que entrou.
-
