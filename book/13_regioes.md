@@ -136,6 +136,3 @@ Tanto Britannia quanto Galahad possuem grandes depósitos do minério Eltys em s
 
 ### Religião Alfaista: Referência Pendente
 Os Imperiais de Camelot são associados à **religião Alfaista**. O detalhamento dessa religião e seu impacto no mundo será coberto no capítulo de Religiões.
-
-### Antecedentes Regionais: Não Definidos
-A origem de um personagem em uma dessas nações deveria influenciar algo além do roleplay — cultura, sotaque, conhecimento específico. O capítulo de Criação de Personagem pode definir **Antecedentes Regionais** como um elemento opcional que conecta a origem geográfica a narrativas e, possivelmente, ao terceiro round de Iniciativa Naval (que já exige "antecedente de navegação").

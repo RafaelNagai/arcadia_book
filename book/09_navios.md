@@ -232,9 +232,3 @@ O campo de batalha se divide em dois cenários:
 
 ### Pool de Dados de Comando: Múltiplos Dados no Mesmo Setor
 Quando o Capitão distribui dois ou mais dados para o mesmo setor, cada dado pode ser somado a **um teste ou resultado diferente** naquele setor naquele turno — ou todos somados a um único resultado, a critério da mesa. Recomendar clareza na mesa antes da primeira batalha naval.
-
-### Progressão de Porte: Custo de Expansão Não Definido
-A tabela de portes (Esquife a Leviatã) estabelece os valores base de cada tamanho, mas o custo em ouro ou recursos para adquirir um navio maior ou expandir o porte atual não foi definido. Desenvolver no capítulo de Interlúdio ou em apêndice de economia.
-
-### Escudo Cascudo: Sem DN Intencional
-O Escudo Cascudo não concede DN — apenas +8 de Vida. É intencional: representa absorção pura de dano, não evasão. Um navio lento e resistente em vez de ágil.

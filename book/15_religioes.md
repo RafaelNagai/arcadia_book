@@ -99,6 +99,3 @@ O que cada religião descreve — a criação do mundo, os motivos de cada deus,
 
 ### Religião Sem Impacto Mecânico: Por Design
 Assim como as raças, as religiões não concedem bônus mecânicos. A escolha de fé de um personagem é um elemento de roleplay e profundidade narrativa — não uma otimização de ficha. Mestres podem usar a afiliação religiosa como gancho de relacionamentos, conflitos de valores e tensões entre personagens, sem que nenhuma escolha seja "melhor" que outra mecanicamente.
-
-### Gamaismo e a Mecânica de Evolução
-O conceito central do Gamaismo — crescer além dos limites impostos — ressoa diretamente com a mecânica de **Evolução** do sistema, onde personagens aprimoram perícias permanentemente através de Milagres. A religião que prega evolução contínua existe num jogo onde a evolução é o principal eixo de progressão. Mestres podem explorar essa ressonância narrativamente: um personagem gamaísta que evolui uma perícia pode interpretar isso como prova de sua fé.

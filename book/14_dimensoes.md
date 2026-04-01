@@ -78,8 +78,5 @@ Aqueles que conseguem compreender e controlar suas emoções podem **moldar o pr
 ### Astral e os Planos: Poder por Plano Ainda Indefinido
 O elemento Astral (capítulo de Elementos) menciona que "a força e os poderes do conjurador astral vêm ligados aos planos que ele acessa". Agora que os quatro planos estão documentados, falta definir o que cada um concede a um conjurador astral: acessar a Rede dos Sonhos vs. o Reino das Almas vs. o Mundo das Tintas deve gerar tipos ou magnitudes diferentes de poder. Esse sistema pode ser desenvolvido num apêndice de Arcanismo Avançado.
 
-### Sobreposição de Planos: Não Detalhada
-O PDF menciona que os planos "podem se sobrepor em momentos específicos, criando fenômenos místicos e anomalias". Quais são esses momentos? Rituais? Locais específicos? Fases do tempo? Esse sistema de sobreposição planar — e o que acontece quando ele ocorre — não foi definido mecanicamente.
-
 ### Rede dos Sonhos e o Sono: Conexão Implícita
 A descrição da Rede dos Sonhos menciona acesso durante o sono — o que cria uma conexão narrativa com a ação de Dormir no Intervalo de Capítulo. Mestres podem usar isso como gancho: sonhos durante um descanso em local de alta concentração arcana podem refletir memórias da Rede, criando visões, pistas ou alertas vindos de mortos cujas memórias ainda pulsam no plano.

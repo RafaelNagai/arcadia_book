@@ -84,13 +84,3 @@ O Capitão gasta ouro ou suprimentos para organizar uma celebração a bordo. To
 Com um teste bem-sucedido de **Persuasão** ou **Performance**, o Capitão motiva a tripulação com palavras. Um dado do PM à escolha do Capitão recebe **+2** ao seu valor atual — até o máximo de **6**.
 
 > *Exemplo: Um dado no PM mostra 3. O Capitão faz um discurso e o valor sobe para 5. Se mostrasse 5, subiria para 6 — não além.*
-
----
-
-## Notas do Game Designer
-
-### Consequência da Moral Mínima (5–9) Não Definida
-A faixa de Moral entre 5 e 9 — o pior estado possível do Pote — não tem consequência mecânica definida ainda. Deve ser desenvolvida como um quarto nível de Moral (ex: "Motim à Vista" ou equivalente), com penalidade severa na sessão seguinte, quando o designer decidir o efeito adequado.
-
-### Moral Lendária é Genuinamente Rara
-A faixa 50–60 exige uma média de 10+ por dado em 5D12 — isso é estatisticamente improvável sem uso consistente da Troca Inversa para preservar dados altos. Esse caráter excepcional é intencional.

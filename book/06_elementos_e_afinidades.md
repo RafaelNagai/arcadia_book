@@ -155,10 +155,3 @@ Se ambos os dados saírem **6**, o jogador escolhe livremente os dois elementos 
 | **Paradoxo** | Distorção de conceitos | Moderada a Complexa |
 | **Astral** | Trânsito entre planos | Moderada a Complexa |
 | **Cognitivo** | Controle de mente e sentidos | Moderada a Complexa |
-
----
-
-## Notas do Game Designer
-
-### Astral: Poder por Plano Não Definido
-O PDF original menciona que "a força e seus poderes vêm ligados aos planos que eles acessam" — sugerindo que diferentes planos (Rede dos Sonhos, Mundo das Tintas, Reino das Almas) concedem tipos ou magnitudes diferentes de poder astral. Esse sistema de progressão por plano não foi definido. Pode ser desenvolvido no capítulo de Dimensões ou em um apêndice de Arcanismo Avançado.

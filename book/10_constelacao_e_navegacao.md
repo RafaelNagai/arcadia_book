@@ -128,13 +128,3 @@ A sequência é **segredo do Mestre**. Os jogadores nunca a veem diretamente —
 ### Sincronia e Ritmo da Campanha
 
 Turnos de Sincronia não são "tempo desperdiçado" — são o momento para os jogadores respirarem, interagirem entre si e realizarem ações de Intervalo de Capítulo. Use-os para construir personagem entre os momentos de tensão.
-
----
-
-## Notas do Game Designer
-
-### Mecânica de Extração da Essência de Eltys
-O processo de extrair a Essência de Eltys — e portanto criar uma Constelação — não tem mecânica definida. Pode envolver um ritual arcano, um item específico ou simplesmente presença física na ilha por tempo suficiente. A definir conforme o tom da campanha.
-
-### Sincronia: Sem Bônus Mecânico Positivo
-Turnos de Sincronia não concedem bônus ao Pote de Moral nem outros benefícios mecânicos além de permitir um Intervalo de Capítulo. Qualquer recompensa adicional (ex: pequeno ganho de Moral) seria uma decisão de design a confirmar.

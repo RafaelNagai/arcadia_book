@@ -20,8 +20,6 @@ Os dois recursos são independentes. Um guerreiro pode estar fisicamente intacto
 
 O HP mede a resistência do corpo. Quando chega a **zero ou menos**, o personagem entra no **Estado Morrendo**.
 
-> **Valor inicial:** Definido pelos Atributos do personagem — ver Notas do Game Designer.
-
 ### Estado Morrendo
 
 O personagem está à beira da morte — consciente apenas o suficiente para sentir o limite entre a vida e o vazio.
@@ -37,8 +35,6 @@ O personagem está à beira da morte — consciente apenas o suficiente para sen
 ## Sanidade — Morte Mental
 
 A Sanidade mede o equilíbrio interno. Quando chega a **zero**, o corpo ainda vive — mas a mente começa a se despedaçar.
-
-> **Valor inicial:** Definido pelos Atributos do personagem — ver Notas do Game Designer.
 
 ### Traumas
 
@@ -272,13 +268,3 @@ Quando o Tipo sorteado for **Alergia**, role novamente nesta tabela:
 | Arrogância + Raça | Preconceituoso a [Raça específica] |
 
 > Sinta-se à vontade para ser criativo com as combinações. O TIPO e o ALVO são pontos de partida — o Mestre e o jogador podem interpretar a combinação de formas inesperadas e profundas.
-
----
-
-## Notas do Game Designer
-
-### HP e Sanidade: Valores Iniciais Não Definidos
-Nenhum PDF define como calcular o HP inicial ou a Sanidade inicial. A expectativa é que esses valores derivem de Atributos — HP provavelmente de **Físico + Fortitude**, Sanidade possivelmente de **Físico + Vontade** — mas isso precisa ser estabelecido formalmente, idealmente no capítulo de Criação de Personagem.
-
-### Tipo de Trauma: Resultados 1 e 20
-A tabela original cobre apenas os valores 2–19. Por consistência com a tabela de Alvo (que é explícita sobre 1 e 20), este capítulo adotou a regra de que **1 = Mestre decide** e **20 = Jogador decide** o Tipo. Confirmar se é canônico.
