@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { getChapterBySlug, getAdjacentChapters } from '@/data/chapterManifest'
 import { getChapterContent } from '@/data/chapterLoader'
 import { MarkdownRenderer } from '@/components/reader/MarkdownRenderer'
+import { CHAPTER_WIDGETS } from '@/data/chapterWidgets'
 
 export function ChapterPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -63,6 +64,25 @@ export function ChapterPage() {
       {/* Content */}
       <div className="max-w-3xl mx-auto px-6 py-12">
         <MarkdownRenderer content={content} />
+
+        {/* Interactive widget for this chapter (if any) */}
+        {slug && CHAPTER_WIDGETS[slug] && (
+          <div className="mt-16">
+            <div
+              className="flex items-center gap-3 mb-6"
+              style={{ borderTop: '1px solid var(--color-border)', paddingTop: '2rem' }}
+            >
+              <span style={{ color: 'var(--color-arcano)', fontSize: '0.9rem' }}>◈</span>
+              <p
+                className="text-xs uppercase tracking-widest font-ui font-semibold"
+                style={{ color: 'var(--color-arcano-dim)' }}
+              >
+                Aprenda na Prática
+              </p>
+            </div>
+            {CHAPTER_WIDGETS[slug]}
+          </div>
+        )}
 
         {/* Prev / Next navigation */}
         <nav

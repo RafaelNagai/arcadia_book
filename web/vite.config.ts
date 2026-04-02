@@ -11,4 +11,11 @@ export default defineConfig({
     },
   },
   assetsInclude: ['**/*.md'],
+  server: {
+    fs: {
+      // Permite que o dev server sirva arquivos de fora do root (web/)
+      // necessário porque chapters/ está em ../chapters (dentro de book/)
+      allow: ['..'],
+    },
+  },
 })
