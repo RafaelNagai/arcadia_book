@@ -147,7 +147,7 @@ O **nível** de um personagem em Arcádia não é um número atribuído manualme
 
 > **Nível = soma total de todos os pontos em todas as 16 perícias.**
 
-Cada vez que uma perícia ganha +1 permanente pela Regra de Ouro, o nível do personagem sobe em 1. O nível não concede bônus diretos em testes — ele serve como referência para o acesso a equipamentos de Tiers mais altos (ver capítulo de Combate).
+Cada vez que uma perícia ganha +1 permanente pela Regra de Ouro, o nível do personagem sobe em 1. O nível não concede bônus diretos em testes — é uma referência de progressão que o Mestre pode usar para calibrar recompensas e desafios.
 
 ### Pontos de Atributo
 
