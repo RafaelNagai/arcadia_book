@@ -9,11 +9,26 @@ const PART_NUMBERS: Record<Part, string> = {
   'O Mundo':                 'IV',
 }
 
-interface SidebarProps {
-  onClose?: () => void
+function SearchIcon() {
+  return (
+    <svg
+      width="14" height="14" viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" strokeWidth="2"
+      strokeLinecap="round" strokeLinejoin="round"
+      style={{ flexShrink: 0 }}
+    >
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  )
 }
 
-export function Sidebar({ onClose }: SidebarProps) {
+interface SidebarProps {
+  onClose?: () => void
+  onSearchOpen: () => void
+}
+
+export function Sidebar({ onClose, onSearchOpen }: SidebarProps) {
   return (
     <nav className="flex flex-col h-full overflow-y-auto py-6 px-4">
       {/* Logo */}
@@ -31,6 +46,31 @@ export function Sidebar({ onClose }: SidebarProps) {
           Livro do Sistema
         </p>
       </NavLink>
+
+      {/* Search button */}
+      <button
+        onClick={onSearchOpen}
+        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm mb-6 transition-colors duration-150 hover:border-opacity-60"
+        style={{
+          color: 'var(--color-text-muted)',
+          background: 'var(--color-surface)',
+          border: '1px solid var(--color-border)',
+          fontFamily: 'var(--font-ui)',
+        }}
+      >
+        <SearchIcon />
+        <span className="flex-1 text-left text-xs">Buscar…</span>
+        <kbd
+          style={{
+            fontSize: '0.6rem',
+            color: 'var(--color-text-muted)',
+            fontFamily: 'var(--font-ui)',
+            opacity: 0.7,
+          }}
+        >
+          ⌘K
+        </kbd>
+      </button>
 
       {/* Chapter groups */}
       {PARTS.map(part => {

@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { getChapterBySlug, getAdjacentChapters } from '@/data/chapterManifest'
@@ -8,15 +8,27 @@ import { CHAPTER_WIDGETS } from '@/data/chapterWidgets'
 
 export function ChapterPage() {
   const { slug } = useParams<{ slug: string }>()
+  const location = useLocation()
 
   const chapter = slug ? getChapterBySlug(slug) : undefined
   const { prev, next } = slug ? getAdjacentChapters(slug) : { prev: null, next: null }
   const content = chapter ? getChapterContent(chapter.id) : '# Capítulo não encontrado'
 
-  // Scroll to top on chapter change
+  // Scroll to #anchor section after render, or to top when no hash
   useEffect(() => {
-    window.scrollTo({ top: 0 })
-  }, [slug])
+    if (location.hash) {
+      const id = location.hash.slice(1)
+      // Double rAF: first frame React commits the DOM, second frame browser paints
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const el = document.getElementById(id)
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        })
+      })
+    } else {
+      window.scrollTo({ top: 0 })
+    }
+  }, [location])
 
   // Update document title
   useEffect(() => {

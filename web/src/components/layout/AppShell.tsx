@@ -3,17 +3,36 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Sidebar } from './Sidebar'
 import { TopBar } from './TopBar'
+import { SearchModal } from '@/components/search/SearchModal'
 
 const SIDEBAR_WIDTH = 272
 
 export function AppShell() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [searchOpen, setSearchOpen]   = useState(false)
   const location = useLocation()
 
   // Close sidebar on route change (mobile)
   useEffect(() => {
     setSidebarOpen(false)
   }, [location.pathname])
+
+  // Close search on route change
+  useEffect(() => {
+    setSearchOpen(false)
+  }, [location.pathname])
+
+  // Global Cmd+K / Ctrl+K shortcut
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setSearchOpen(v => !v)
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [])
 
   return (
     <div className="flex min-h-screen" style={{ background: 'var(--color-abyss)' }}>
@@ -26,11 +45,15 @@ export function AppShell() {
           borderColor: 'var(--color-border)',
         }}
       >
-        <Sidebar />
+        <Sidebar onSearchOpen={() => setSearchOpen(true)} />
       </aside>
 
       {/* Mobile: top bar + drawer */}
-      <TopBar onMenuToggle={() => setSidebarOpen(v => !v)} isSidebarOpen={sidebarOpen} />
+      <TopBar
+        onMenuToggle={() => setSidebarOpen(v => !v)}
+        isSidebarOpen={sidebarOpen}
+        onSearchOpen={() => setSearchOpen(true)}
+      />
 
       {/* Mobile sidebar overlay */}
       <AnimatePresence>
@@ -57,11 +80,14 @@ export function AppShell() {
                 borderColor: 'var(--color-border)',
               }}
             >
-              <Sidebar onClose={() => setSidebarOpen(false)} />
+              <Sidebar onClose={() => setSidebarOpen(false)} onSearchOpen={() => setSearchOpen(true)} />
             </motion.aside>
           </>
         )}
       </AnimatePresence>
+
+      {/* Global search modal */}
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {/* Main content */}
       <main
