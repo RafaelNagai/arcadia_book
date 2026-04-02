@@ -20,6 +20,17 @@ for (const [path, content] of Object.entries(modules)) {
   }
 }
 
+const oneShotModules = import.meta.glob('@oneshots/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>
+
+for (const [path, content] of Object.entries(oneShotModules)) {
+  const filename = path.split('/').pop()?.replace('.md', '') ?? ''
+  if (filename) chapterContent[filename] = content as string
+}
+
 export function getChapterContent(id: string): string {
   return chapterContent[id] ?? `# Capítulo não encontrado\n\nO capítulo "${id}" não foi localizado.`
 }

@@ -7,6 +7,7 @@ const PART_NUMBERS: Record<Part, string> = {
   'O Arcano':                'II',
   'O Navio e a Tripulação':  'III',
   'O Mundo':                 'IV',
+  'One-Shots':               'V',
 }
 
 function SearchIcon() {

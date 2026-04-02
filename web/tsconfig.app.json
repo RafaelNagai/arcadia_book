@@ -26,7 +26,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@chapters/*": ["../chapters/*"]
+      "@chapters/*": ["../chapters/*"],
+      "@oneshots/*": ["../one-shots/*"]
     }
   },
   "include": ["src"]
