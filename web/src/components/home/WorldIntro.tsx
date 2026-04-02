@@ -93,67 +93,17 @@ export function WorldIntro() {
             className="relative"
           >
             <div
-              className="w-full aspect-square max-w-md mx-auto rounded-sm flex items-center justify-center relative overflow-hidden"
+              className="w-full aspect-square max-w-md mx-auto rounded-sm overflow-hidden"
               style={{
                 background: 'var(--color-deep)',
                 border: '1px solid var(--color-border)',
               }}
             >
-              {/* Real map image (optional) */}
               <img
-                src="/assets/images/map.jpg"
+                src="/assets/images/arcadia_summary.jpg"
                 alt="Mapa do Mar de Nuvens"
                 className="w-full h-full object-cover"
-                onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
               />
-              {/* SVG mock map */}
-              <svg
-                className="absolute inset-0 w-full h-full"
-                viewBox="0 0 400 400"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* Grid lines */}
-                {Array.from({ length: 10 }).map((_, i) => (
-                  <line
-                    key={`h${i}`}
-                    x1="0" y1={i * 40} x2="400" y2={i * 40}
-                    stroke="#2A3A60" strokeWidth="0.5" strokeDasharray="2,4"
-                  />
-                ))}
-                {Array.from({ length: 10 }).map((_, i) => (
-                  <line
-                    key={`v${i}`}
-                    x1={i * 40} y1="0" x2={i * 40} y2="400"
-                    stroke="#2A3A60" strokeWidth="0.5" strokeDasharray="2,4"
-                  />
-                ))}
-                {/* Islands */}
-                <ellipse cx="120" cy="100" rx="45" ry="30" fill="#1A2440" stroke="#2A3A60" strokeWidth="1" />
-                <text x="120" y="104" textAnchor="middle" fill="#7A5516" fontSize="9" fontFamily="serif">Union</text>
-                <ellipse cx="280" cy="80" rx="40" ry="25" fill="#1A2440" stroke="#2A3A60" strokeWidth="1" />
-                <text x="280" y="84" textAnchor="middle" fill="#7A5516" fontSize="9" fontFamily="serif">Britannia</text>
-                <ellipse cx="200" cy="200" rx="55" ry="35" fill="#1A2440" stroke="#2A3A60" strokeWidth="1" />
-                <text x="200" y="204" textAnchor="middle" fill="#7A5516" fontSize="9" fontFamily="serif">Camelot</text>
-                <ellipse cx="90" cy="290" rx="42" ry="28" fill="#1A2440" stroke="#2A3A60" strokeWidth="1" />
-                <text x="90" y="294" textAnchor="middle" fill="#7A5516" fontSize="9" fontFamily="serif">Galahad</text>
-                <ellipse cx="310" cy="270" rx="38" ry="24" fill="#1A2440" stroke="#2A3A60" strokeWidth="1" />
-                <text x="310" y="274" textAnchor="middle" fill="#7A5516" fontSize="9" fontFamily="serif">Rubra</text>
-                {/* Routes */}
-                <line x1="120" y1="100" x2="280" y2="80" stroke="#7A5516" strokeWidth="0.8" strokeDasharray="4,4" opacity="0.6" />
-                <line x1="120" y1="100" x2="200" y2="200" stroke="#7A5516" strokeWidth="0.8" strokeDasharray="4,4" opacity="0.6" />
-                <line x1="280" y1="80" x2="200" y2="200" stroke="#7A5516" strokeWidth="0.8" strokeDasharray="4,4" opacity="0.6" />
-                <line x1="200" y1="200" x2="90" y2="290" stroke="#7A5516" strokeWidth="0.8" strokeDasharray="4,4" opacity="0.6" />
-                <line x1="200" y1="200" x2="310" y2="270" stroke="#7A5516" strokeWidth="0.8" strokeDasharray="4,4" opacity="0.6" />
-              </svg>
-              {/* Label */}
-              <div className="absolute bottom-3 left-0 right-0 text-center">
-                <span
-                  className="text-xs uppercase tracking-wider"
-                  style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}
-                >
-                  [ Mapa: substituir por arte final ]
-                </span>
-              </div>
             </div>
           </motion.div>
         </div>
