@@ -62,7 +62,7 @@ function SkyLayer() {
   );
 }
 
-function CloudLayer() {
+function CloudLayerA() {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -77,54 +77,18 @@ function CloudLayer() {
           (e.target as HTMLImageElement).style.display = "none";
         }}
       />
-      <img
-        src="/assets/images/layers/clouds-far-b.png"
-        alt=""
-        className="absolute w-full"
-        style={{ bottom: 0, left: 0, opacity: 0.6 }}
-        onError={(e) => {
-          (e.target as HTMLImageElement).style.display = "none";
-        }}
-      />
-      {/* Mock clouds — hidden once real images load */}
       {!loaded && (
         <div className="absolute inset-0">
           {[
-            {
-              top: "55%",
-              left: "-5%",
-              width: "50vw",
-              height: 120,
-              delay: "0s",
-              duration: "80s",
-            },
-            {
-              top: "62%",
-              left: "20%",
-              width: "45vw",
-              height: 90,
-              delay: "-30s",
-              duration: "70s",
-            },
-            {
-              top: "70%",
-              left: "60%",
-              width: "40vw",
-              height: 80,
-              delay: "-50s",
-              duration: "90s",
-            },
+            { top: "55%", left: "-5%", width: "50vw", height: 120, delay: "0s", duration: "80s" },
+            { top: "70%", left: "60%", width: "40vw", height: 80, delay: "-50s", duration: "90s" },
           ].map((c, i) => (
             <div
               key={i}
               className="absolute rounded-full"
               style={{
-                top: c.top,
-                left: c.left,
-                width: c.width,
-                height: c.height,
-                background:
-                  "radial-gradient(ellipse, rgba(122,155,200,0.15) 0%, transparent 70%)",
+                top: c.top, left: c.left, width: c.width, height: c.height,
+                background: "radial-gradient(ellipse, rgba(122,155,200,0.15) 0%, transparent 70%)",
                 filter: "blur(30px)",
                 animation: `cloudDrift ${c.duration} linear ${c.delay} infinite`,
               }}
@@ -133,6 +97,20 @@ function CloudLayer() {
         </div>
       )}
     </>
+  );
+}
+
+function CloudLayerB() {
+  return (
+    <img
+      src="/assets/images/layers/clouds-far-b.png"
+      alt=""
+      className="absolute w-full"
+      style={{ bottom: 0, left: 0, opacity: 0.6 }}
+      onError={(e) => {
+        (e.target as HTMLImageElement).style.display = "none";
+      }}
+    />
   );
 }
 
@@ -180,7 +158,8 @@ function ForegroundLayer() {
       <img
         src="/assets/images/layers/foreground-left.png"
         alt=""
-        className="absolute bottom-0 left-0 h-full object-contain object-bottom-left"
+        className="absolute bottom-0 left-0"
+        style={{ maxHeight: "75vh", width: "auto" }}
         onError={(e) => {
           (e.target as HTMLImageElement).style.display = "none";
         }}
@@ -188,7 +167,8 @@ function ForegroundLayer() {
       <img
         src="/assets/images/layers/foreground-right.png"
         alt=""
-        className="absolute bottom-0 right-0 h-full object-contain object-bottom-right"
+        className="absolute bottom-0 right-0"
+        style={{ maxHeight: "75vh", width: "auto" }}
         onError={(e) => {
           (e.target as HTMLImageElement).style.display = "none";
         }}
@@ -329,9 +309,14 @@ export function HeroParallax() {
         <SkyLayer />
       </ParallaxLayer>
 
-      {/* Layer 2: Far clouds (speed 0.15) */}
-      <ParallaxLayer speed={0.15} zIndex={20}>
-        <CloudLayer />
+      {/* Layer 2a: Far clouds A (speed 0.12) */}
+      <ParallaxLayer speed={0.12} zIndex={20}>
+        <CloudLayerA />
+      </ParallaxLayer>
+
+      {/* Layer 2b: Far clouds B (speed 0.20) */}
+      <ParallaxLayer speed={0.20} zIndex={21}>
+        <CloudLayerB />
       </ParallaxLayer>
 
       {/* Layer 3: Far island silhouettes (speed 0.25) */}

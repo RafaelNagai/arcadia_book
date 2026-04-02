@@ -22,7 +22,7 @@ function makeHeading(level: 1 | 2 | 3) {
   return function HeadingComponent({ children, node: _node, ...props }: any) {
     const text = extractText(children)
     const id = text ? slugifyHeading(text) : undefined
-    const Tag = `h${level}` as keyof JSX.IntrinsicElements
+    const Tag = `h${level}` as 'h1' | 'h2' | 'h3'
     return <Tag id={id} {...props}>{children}</Tag>
   }
 }
