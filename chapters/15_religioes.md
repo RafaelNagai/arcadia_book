@@ -18,6 +18,8 @@ No universo de Arcádia, a fé molda culturas, conflitos e a própria forma como
 
 > *"A luz que nos ilumina, nós iremos iluminar!"*
 
+![Alfa, Deusa da Luz](/assets/images/chapters/religions/religion_alfa.jpg)
+
 O **Alfaismo** é a religião mais antiga e reverenciada de Arcádia. Seus seguidores acreditam que **Alfa**, a Deusa da Luz, é a criadora de toda a vida e beleza do mundo. Alfa representa pureza, bondade e o ciclo da criação.
 
 Na cosmologia alfaísta, Alfa não criou o mundo sozinha em paz: seu irmão **Beta**, tomado pela inveja da perfeição de Alfa, passou a criar tudo o que pudesse corromper, destruir ou testar suas obras. Assim nasceu, segundo essa doutrina, o equilíbrio entre criação e destruição — não como harmonia desejada, mas como conflito eterno.
@@ -42,6 +44,8 @@ Todos os atos de um alfaísta têm esse propósito: brilhar o suficiente para se
 
 > *"Somos filhos do passado, irmãos do presente e condenados pelo futuro."*
 
+![Beta, o Deus Juiz](/assets/images/chapters/religions/religion_beta.jpg)
+
 O **Betaismo** vê o mundo como um sistema coletivo, onde todos os seres estão ligados por ações e consequências. Seus devotos acreditam que **Beta**, o deus juiz, observa e pesa constantemente os atos da humanidade em uma balança cósmica.
 
 Na visão betaísta, a narrativa alfaísta está incompleta. Alfa criou os humanos com **falhas intencionais** — como forma de entretenimento e de gerar caos. Beta, vendo o desequilíbrio, tornou-se o guardião da ordem: o mantenedor da balança universal que impede que a criação se destrua a si mesma.
@@ -64,6 +68,8 @@ O número **456** é o símbolo mais sagrado do Betaismo, representando a ordem 
 ### Gamaismo — A Herança da Evolução
 
 > *"A sua falha é a falha do seu criador. O seu sucesso é o mérito da sua prole."*
+
+![Gama, a Evoluída](/assets/images/chapters/religions/religion_gama.jpg)
 
 O **Gamaismo** é a mais jovem e mais filosófica das três religiões. Seus seguidores acreditam no **aperfeiçoamento constante** como o mais alto propósito de qualquer ser. O fracasso não é vergonha — é evidência das limitações impostas pelos criadores. O sucesso é a superação dessas limitações.
 
