@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       '@chapters': resolve(__dirname, '../chapters'),
       '@oneshots': resolve(__dirname, '../one-shots'),
+      '@creatures': resolve(__dirname, '../creatures.json'),
       '@': resolve(__dirname, './src'),
     },
   },

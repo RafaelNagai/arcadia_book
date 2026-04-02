@@ -27,7 +27,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@chapters/*": ["../chapters/*"],
-      "@oneshots/*": ["../one-shots/*"]
+      "@oneshots/*": ["../one-shots/*"],
+      "@creatures": ["../creatures.json"]
     }
   },
   "include": ["src"]
