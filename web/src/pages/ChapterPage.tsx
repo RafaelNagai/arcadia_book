@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { getChapterBySlug, getAdjacentChapters } from '@/data/chapterManifest'
 import { getChapterContent } from '@/data/chapterLoader'
 import { MarkdownRenderer } from '@/components/reader/MarkdownRenderer'
+import { TableOfContents } from '@/components/reader/TableOfContents'
 import { CHAPTER_WIDGETS } from '@/data/chapterWidgets'
 
 export function ChapterPage() {
@@ -75,77 +76,84 @@ export function ChapterPage() {
 
       {/* Content */}
       <div className="max-w-3xl mx-auto px-6 py-12">
-        <MarkdownRenderer content={content} />
+        <div>
+          <div className="min-w-0">
+            <MarkdownRenderer content={content} />
 
-        {/* Interactive widget for this chapter (if any) */}
-        {slug && CHAPTER_WIDGETS[slug] && (
-          <div className="mt-16">
-            <div
-              className="flex items-center gap-3 mb-6"
-              style={{ borderTop: '1px solid var(--color-border)', paddingTop: '2rem' }}
+            {/* Interactive widget for this chapter (if any) */}
+            {slug && CHAPTER_WIDGETS[slug] && (
+              <div className="mt-16">
+                <div
+                  className="flex items-center gap-3 mb-6"
+                  style={{ borderTop: '1px solid var(--color-border)', paddingTop: '2rem' }}
+                >
+                  <span style={{ color: 'var(--color-arcano)', fontSize: '0.9rem' }}>◈</span>
+                  <p
+                    className="text-xs uppercase tracking-widest font-ui font-semibold"
+                    style={{ color: 'var(--color-arcano-dim)' }}
+                  >
+                    Aprenda na Prática
+                  </p>
+                </div>
+                {CHAPTER_WIDGETS[slug]}
+              </div>
+            )}
+
+            {/* Prev / Next navigation */}
+            <nav
+              className="mt-16 pt-8 border-t flex items-center justify-between gap-4"
+              style={{ borderColor: 'var(--color-border)' }}
             >
-              <span style={{ color: 'var(--color-arcano)', fontSize: '0.9rem' }}>◈</span>
-              <p
-                className="text-xs uppercase tracking-widest font-ui font-semibold"
-                style={{ color: 'var(--color-arcano-dim)' }}
-              >
-                Aprenda na Prática
-              </p>
-            </div>
-            {CHAPTER_WIDGETS[slug]}
+              {prev ? (
+                <Link
+                  to={`/capitulo/${prev.slug}`}
+                  className="group flex flex-col max-w-[45%] transition-opacity hover:opacity-80"
+                >
+                  <span
+                    className="text-xs mb-1 uppercase tracking-wider"
+                    style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}
+                  >
+                    ← Anterior
+                  </span>
+                  <span
+                    className="font-display text-sm font-medium"
+                    style={{ color: 'var(--color-arcano-glow)' }}
+                  >
+                    {prev.title}
+                  </span>
+                </Link>
+              ) : (
+                <div />
+              )}
+
+              {next ? (
+                <Link
+                  to={`/capitulo/${next.slug}`}
+                  className="group flex flex-col items-end max-w-[45%] text-right transition-opacity hover:opacity-80"
+                >
+                  <span
+                    className="text-xs mb-1 uppercase tracking-wider"
+                    style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}
+                  >
+                    Próximo →
+                  </span>
+                  <span
+                    className="font-display text-sm font-medium"
+                    style={{ color: 'var(--color-arcano-glow)' }}
+                  >
+                    {next.title}
+                  </span>
+                </Link>
+              ) : (
+                <div />
+              )}
+            </nav>
           </div>
-        )}
-
-        {/* Prev / Next navigation */}
-        <nav
-          className="mt-16 pt-8 border-t flex items-center justify-between gap-4"
-          style={{ borderColor: 'var(--color-border)' }}
-        >
-          {prev ? (
-            <Link
-              to={`/capitulo/${prev.slug}`}
-              className="group flex flex-col max-w-[45%] transition-opacity hover:opacity-80"
-            >
-              <span
-                className="text-xs mb-1 uppercase tracking-wider"
-                style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}
-              >
-                ← Anterior
-              </span>
-              <span
-                className="font-display text-sm font-medium"
-                style={{ color: 'var(--color-arcano-glow)' }}
-              >
-                {prev.title}
-              </span>
-            </Link>
-          ) : (
-            <div />
-          )}
-
-          {next ? (
-            <Link
-              to={`/capitulo/${next.slug}`}
-              className="group flex flex-col items-end max-w-[45%] text-right transition-opacity hover:opacity-80"
-            >
-              <span
-                className="text-xs mb-1 uppercase tracking-wider"
-                style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}
-              >
-                Próximo →
-              </span>
-              <span
-                className="font-display text-sm font-medium"
-                style={{ color: 'var(--color-arcano-glow)' }}
-              >
-                {next.title}
-              </span>
-            </Link>
-          ) : (
-            <div />
-          )}
-        </nav>
+        </div>
       </div>
+
+      {/* Floating TOC button */}
+      <TableOfContents content={content} />
     </motion.div>
   )
 }

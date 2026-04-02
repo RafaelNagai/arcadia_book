@@ -18,8 +18,6 @@ export function slugifyHeading(text: string): string {
     .toLowerCase()
     // Remove markdown formatting remnants: **bold**, *italic*, `code`
     .replace(/[*`_~]/g, '')
-    // Strip leading list-number prefixes like "1. " or "2. "
-    .replace(/^\d+\.\s+/, '')
     // Replace non-alphanumeric chars (spaces, punctuation, etc.) with hyphens
     .replace(/[^a-z0-9]+/g, '-')
     // Trim leading/trailing hyphens
