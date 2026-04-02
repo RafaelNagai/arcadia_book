@@ -1,0 +1,34 @@
+:root {
+  /* Base palette */
+  --color-void:        #04060C;
+  --color-abyss:       #0A0F1E;
+  --color-deep:        #0F1729;
+  --color-surface:     #1A2440;
+  --color-border:      #2A3A60;
+
+  /* Sky palette */
+  --color-sky-far:     #0D1B3E;
+  --color-sky-mid:     #1A3A6E;
+  --color-sky-horizon: #2D5A9E;
+  --color-cloud-light: #7A9BC8;
+
+  /* Accent — Arcano gold */
+  --color-arcano:      #C8922A;
+  --color-arcano-glow: #E8B84B;
+  --color-arcano-dim:  #7A5516;
+
+  /* Accent — Astral violet */
+  --color-astral:      #6B3FA0;
+  --color-astral-glow: #9B6FD0;
+
+  /* Text */
+  --color-text-primary:   #E8E0D0;
+  --color-text-secondary: #A09880;
+  --color-text-accent:    #C8922A;
+  --color-text-muted:     #5A5040;
+
+  /* Fonts */
+  --font-display: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-body:    'EB Garamond', 'Merriweather', Georgia, serif;
+  --font-ui:      'Inter', 'system-ui', sans-serif;
+}
