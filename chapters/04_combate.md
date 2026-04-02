@@ -12,9 +12,30 @@ Um músico pode usar **Performance** para distrair um inimigo com um floreio de 
 
 A regra é simples: **a narração deve suportar a mecânica**.
 
-### O Fluxo de um Turno
+---
 
-Em seu turno, você pode realizar **uma Ação**. Você também possui **Reações**, que podem ser gastas fora do seu turno para responder a ataques recebidos. A quantidade de Reações disponíveis é definida pelo Mestre conforme o contexto — tipicamente uma por rodada.
+## Fluxo de Combate
+
+O combate é organizado em **rodadas**. Em cada rodada, um lado age por completo antes do outro.
+
+### Iniciativa
+
+Compare a **maior Destreza do grupo** com a **maior Destreza entre os inimigos**.
+
+- O lado com maior valor age primeiro.
+- **Empate:** ambos os lados rolam **1D12**, repetidamente até um lado vencer.
+
+A iniciativa é mantida ao longo do combate — não é reavaliada a cada rodada, salvo se o Mestre julgar que algo mudou dramaticamente na cena.
+
+### Ações
+
+Cada personagem tem **2 Ações** por rodada, livres — qualquer perícia pode ser usada, desde que a narração justifique.
+
+O lado que venceu a Iniciativa age primeiro. Os membros do lado decidem a ordem entre si. Depois, o outro lado age.
+
+### Reações
+
+Cada personagem tem um número de **Reações** por rodada igual ao seu valor de **Destreza** (mínimo 1, mesmo se Destreza for 0). Reações podem ser usadas a qualquer momento — dentro ou fora do seu turno — em resposta a qualquer ação em cena.
 
 ---
 
@@ -39,15 +60,25 @@ Em seu turno, você pode realizar **uma Ação**. Você também possui **Reaçõ
 
 ---
 
-## Reações e Defesa
+## Reações
 
-Quando você é alvo de um ataque, pode gastar uma **Reação** para se defender. Se não tiver mais Reações disponíveis, você está **Indefeso** e o ataque é calculado contra sua **Defesa Passiva (DP)**.
-
-Existem três formas de usar uma Reação:
+Quando qualquer ação é realizada em cena, qualquer personagem pode gastar **1 Reação** para responder. Uma reação pode ser qualquer coisa — esquivar, defender, conjurar, contra-atacar, interromper, empurrar um aliado para fora do caminho — desde que a narração justifique e uma perícia faça sentido.
 
 ---
 
-### A. Esquiva
+### Corrente de Reações
+
+Uma reação pode ser respondida por outra reação, formando uma corrente. Cada reação além da primeira acumula **−1D12 de Desvantagem**, cumulativamente.
+
+Se o personagem não tiver mais D12 para rolar naquela perícia, não consegue realizar a ação — a corrente se encerra naturalmente.
+
+> *Exemplo: Um inimigo ataca Mirra. Kael reage, tentando empurrá-la para fora do alcance (1ª reação — sem penalidade). Mirra pode resistir ao empurrão de Kael (2ª reação — −1D12). O inimigo pode reagir ao movimento de Kael (3ª reação — −2D12). E assim por diante, até ninguém conseguir ou querer reagir.*
+
+---
+
+### Exemplos Comuns de Reação
+
+#### Esquiva
 
 Você tenta evitar o golpe completamente. Pode usar qualquer perícia para esquivar, desde que explique como.
 
@@ -60,7 +91,7 @@ Você tenta evitar o golpe completamente. Pode usar qualquer perícia para esqui
 
 ---
 
-### B. Defesa
+#### Defesa
 
 Você se prepara para o impacto. Não há disputa de dados — você confia na sua armadura.
 
@@ -69,7 +100,7 @@ Você se prepara para o impacto. Não há disputa de dados — você confia na s
 
 ---
 
-### C. Contra-Ataque
+#### Contra-Ataque
 
 Você aceita o golpe para devolver outro imediatamente.
 
@@ -81,7 +112,41 @@ Você aceita o golpe para devolver outro imediatamente.
 
 ### Indefeso
 
-Quando todas as Reações foram gastas, o personagem está **Indefeso**. Todo dano recebido é calculado contra a **Defesa Passiva (DP)**, sem direito a esquiva ou defesa ativa.
+Quando todas as Reações foram gastas, o personagem está **Indefeso**. Todo dano recebido é calculado contra a **Defesa Passiva (DP)**, sem direito a reação.
+
+---
+
+## Dados de Dano
+
+Quando um ataque é bem-sucedido, o atacante rola o **pool de dados** da sua arma para calcular o dano.
+
+### Corpo-a-Corpo e Arremesso
+
+A arma define o pool completo — quantidade e tipo de dado.
+
+> *Exemplo: Machado de guerra — 2D10. Um ataque bem-sucedido rola 2D10.*
+
+Armas de arremesso seguem a mesma lógica. Itens específicos podem descrever bônus adicionais ao arremessar.
+
+---
+
+### Longa Distância
+
+A **arma** define a quantidade de dados. O **projétil** define o tipo de dado.
+
+> *Exemplo: Arco (3 dados) + Flecha Tier B (D8) = rola 3D8.*
+
+**Projéteis são consumíveis:** após cada uso, role 1D6. Se o resultado for **1**, o projétil é consumido e descartado. Projéteis especiais seguem a mesma regra e descrevem seus efeitos adicionais em sua ficha (dano garantido, bônus em testes, condições, etc.).
+
+---
+
+### Dado Duplo
+
+Se o resultado de um dado de dano for **igual ou superior ao dobro da defesa usada (DA ou DP)**, aquele dado vale **2 pontos de dano** em vez de 1. A regra aplica-se individualmente a cada dado do ataque.
+
+> *Exemplo: Alvo com DA 3. Threshold do dado duplo = 6. Um dado que resultar em [6+] vale 2 dano. Resultados [3–5] valem 1 dano. Abaixo de 3 não causam dano algum.*
+
+DA alta protege duas vezes: eleva o limiar do dano básico e do dado duplo. Contra tanques com DA muito alta, o threshold pode ser inalcançável pelo dado da arma — tornando a armadura pesada duplamente valiosa.
 
 ---
 
@@ -195,24 +260,31 @@ Cada Tier exige um nível mínimo para ser usado sem penalidade. Usar um item ac
 
 > **Nota:** O dado D20 não aparece em armas individuais — está reservado para armamentos de grande escala instalados em navios (ver capítulo de Navios).
 
+> **Como usar estas tabelas:** O Tier serve como **referência de criação e forja**. Cada arma no mundo possui seu próprio pool de dados definido na ficha do item — as tabelas abaixo indicam o que é esperado para cada Tier.
+
 **Armamentos Corpo-a-Corpo:**
 
 | Arma | SS | S | A | B | C | D | E |
 |---|---|---|---|---|---|---|---|
-| Espada | D10 | D10 | D10 | D8 | D8 | D6 | D6 |
-| Adaga | D10 | D10 | D10 | D8 | D8 | D6 | D6 |
-| Machado | D12 | D12 | D12 | D10 | D10 | D8 | D8 |
-| Lança | D12 | D12 | D12 | D10 | D10 | D8 | D8 |
+| Espada | 3D10 | 3D10 | 2D10 | 2D8 | 2D6 | 1D6 | 1D6 |
+| Adaga | 3D10 | 3D10 | 2D10 | 2D8 | 2D6 | 1D6 | 1D6 |
+| Machado | 4D12 | 3D12 | 3D10 | 2D10 | 2D8 | 1D8 | 1D8 |
+| Lança | 4D12 | 3D12 | 3D10 | 2D10 | 2D8 | 1D8 | 1D8 |
 
 **Armamentos Longa-Distância:**
 
-| Arma | SS | S | A | B | C | D | E |
+A arma define a **quantidade de dados**. O projétil define o **tipo de dado**. Consulte ambas as tabelas para montar o pool completo.
+
+| Arma (quantidade) | SS | S | A | B | C | D | E |
 |---|---|---|---|---|---|---|---|
-| Revólver | 1D12 | 1D10 | 1D8 | 1D8 | 1D6 | 1D6 | 1D4 |
-| Rifle | 2D10 | 1D12 | 1D10 | 1D10 | 1D6 | 1D6 | 1D4 |
-| Arco | 1D12 | 1D12 | 1D10 | 1D10 | 1D6 | 1D6 | 1D4 |
-| Munição | 1D10 | 1D8 | 1D8 | 1D6 | 1D6 | 1D4 | 1D4 |
-| Flecha | 1D10 | 1D8 | 1D8 | 1D6 | 1D6 | 1D4 | 1D4 |
+| Revólver | 4 | 3 | 3 | 2 | 2 | 1 | 1 |
+| Rifle | 5 | 4 | 4 | 3 | 2 | 1 | 1 |
+| Arco | 4 | 4 | 3 | 2 | 2 | 1 | 1 |
+
+| Projétil (tipo de dado) | SS | S | A | B | C | D | E |
+|---|---|---|---|---|---|---|---|
+| Munição | D12 | D10 | D8 | D8 | D6 | D4 | D4 |
+| Flecha | D12 | D10 | D8 | D8 | D6 | D4 | D4 |
 
 **Armamentos Arcanos** *(bônus ao teste arcano ou buff):*
 
@@ -305,11 +377,12 @@ Para criar um item, siga estas etapas:
 **Kael** possui um peitoral de ferro arcano (Armadura Tier B, DA 4, Durabilidade 4). Sua DP é 2.
 
 **Turno 1 — O Ataque do Primeiro Pirata:**
-O pirata ataca Kael com um mosquete Tier C (Dano: 2D6). Kael já gastou sua Reação no turno anterior — está **Indefeso**.
+O pirata ataca Kael com um mosquete (pool: 2D6). Kael já gastou sua Reação no turno anterior — está **Indefeso**.
 
-O pirata rola os dados de dano: **[1, 4, 5]**. Como Kael está Indefeso, usamos a DP 2.
-- Dados ≥ 2: **[4, 5]** → 2 pontos de dano.
-- A Durabilidade do peitoral absorve: 4 → **2 restantes**.
+O pirata rola o pool de dano: **[3, 5]**. Como Kael está Indefeso, usamos a DP 2. Threshold do dado duplo = DP 2 × 2 = **4**.
+- [3]: ≥ 2 → 1 dano. Abaixo de 4 → sem dado duplo.
+- [5]: ≥ 2 → 1 dano. ≥ 4 → **dado duplo → 2 dano**.
+- **Total: 3 pontos de dano.** A Durabilidade do peitoral absorve: 4 → **1 restante**.
 - Vida de Kael: intacta.
 
 **Turno 2 — Mira tenta o Contra-Ataque:**
@@ -320,9 +393,11 @@ Um segundo pirata ataca Mira. Ela escolhe **Contra-Ataque** — aceita o golpe e
 - O pirata pode reagir ao contra-ataque de Mira normalmente.
 
 **Turno 3 — O Peitoral de Kael Quebra:**
-Outro pirata ataca Kael com uma adaga Tier C (2D6). Com a Durabilidade do peitoral em 2, o pirata tira **[3, 5]**.
+Outro pirata ataca Kael com uma adaga (pool: 2D6). Com a Durabilidade do peitoral em 1, o pirata rola **[2, 5]**.
 
-- Ambos os dados passam a DP 2: 2 pontos de dano.
-- A Durabilidade do peitoral vai de 2 para 0 — **o item quebra**.
-- Kael recebe os 2 pontos diretamente na Vida. **Vida de Kael: 8/10.**
+- [2]: ≥ DP 2 → 1 dano. Abaixo de 4 → sem dado duplo.
+- [5]: ≥ DP 2 → 1 dano. ≥ 4 → **dado duplo → 2 dano**.
+- **Total: 3 pontos de dano.**
+- A Durabilidade absorve 1 → **Durabilidade 0. O peitoral quebra.**
+- Os 2 pontos restantes vão direto para a Vida de Kael. **Vida de Kael: 8/10.**
 - O peitoral perde todas as propriedades: DA volta para a base 1.
