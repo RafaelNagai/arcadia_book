@@ -1,4 +1,10 @@
 {
+  "compilerOptions": {
+    "jsx": "react-jsx", // Essencial para não precisar importar React em todo arquivo
+    "jsxImportSource": "react",
+    "moduleResolution": "bundler", // Ou "node" se estiver em versão antiga
+    "skipLibCheck": true 
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
