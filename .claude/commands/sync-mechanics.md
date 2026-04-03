@@ -34,7 +34,7 @@ Leia todos os arquivos `.md` em `/Users/naga/Documents/arcadia/book/chapters/`. 
 
 ### Passo 2 — Inventário do manifest web
 
-Leia `/Users/naga/Documents/arcadia/web/src/data/chapterManifest.ts`. Extraia o array `CHAPTERS` com: `id`, `slug`, `title`, `part`, `order` de cada entrada.
+Leia `/Users/naga/Documents/arcadia/book/web/src/data/chapterManifest.ts`. Extraia o array `CHAPTERS` com: `id`, `slug`, `title`, `part`, `order` de cada entrada.
 
 ### Passo 3 — Comparação (diff)
 

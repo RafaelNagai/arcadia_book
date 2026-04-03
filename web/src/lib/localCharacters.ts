@@ -58,17 +58,18 @@ export function generateId(): string {
 
 /* ─── Derived stats ────────────────────────────────────────────── */
 
-const CUMULATIVE_BONUSES = [0, 5, 5, 6, 6, 7]
+const HP_BONUS:    number[] = [0, 5, 5, 6, 6, 7, 7, 8, 8, 8, 8, 8]
+const SANID_BONUS: number[] = [0, 4, 4, 3, 3, 2, 2, 1, 1, 1, 1, 1]
 
 export function calcHP(fisico: number): number {
   let hp = 12
-  for (let i = 1; i <= Math.min(fisico, 5); i++) hp += CUMULATIVE_BONUSES[i]
+  for (let i = 1; i <= fisico; i++) hp += HP_BONUS[Math.min(i, HP_BONUS.length - 1)]
   return hp
 }
 
 export function calcSanidade(intelecto: number, influencia: number): number {
   const val = Math.max(intelecto, influencia)
   let san = 15
-  for (let i = 1; i <= Math.min(val, 5); i++) san += CUMULATIVE_BONUSES[i]
+  for (let i = 1; i <= val; i++) san += SANID_BONUS[Math.min(i, SANID_BONUS.length - 1)]
   return san
 }
