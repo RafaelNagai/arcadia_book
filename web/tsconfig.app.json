@@ -28,7 +28,9 @@
       "@/*": ["src/*"],
       "@chapters/*": ["../chapters/*"],
       "@oneshots/*": ["../one-shots/*"],
-      "@creatures": ["../creatures.json"]
+      "@creatures": ["../creatures.json"],
+      "@ships": ["../ships.json"],
+      "@characters": ["../characters.json"]
     }
   },
   "include": ["src"]

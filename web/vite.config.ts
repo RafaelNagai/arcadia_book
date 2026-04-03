@@ -9,6 +9,8 @@ export default defineConfig({
       '@chapters': resolve(__dirname, '../chapters'),
       '@oneshots': resolve(__dirname, '../one-shots'),
       '@creatures': resolve(__dirname, '../creatures.json'),
+      '@ships': resolve(__dirname, '../ships.json'),
+      '@characters': resolve(__dirname, '../characters.json'),
       '@': resolve(__dirname, './src'),
     },
   },

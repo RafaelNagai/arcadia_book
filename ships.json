@@ -1,0 +1,71 @@
+[
+  {
+    "name": "A Lâmina Veloz",
+    "type": "Material — Madeira Élfica",
+    "size": "Corveta",
+    "image": null,
+    "lore": "Navio de contrabando reformado em Union. Rápida, discreta e com cicatrizes de batalha repintadas tantas vezes que ninguém sabe mais a cor original do casco. Carrega segredos melhor do que carga.",
+    "hp": 13,
+    "dn": 12,
+    "slots": { "total": 7, "used": 7 },
+    "captainAttribute": "Destreza",
+    "sectors": [
+      { "name": "Canhão a Pólvora", "category": "Armamento", "slots": 1, "effect": "4D12 de dano", "test": "—" },
+      { "name": "Madeira Élfica", "category": "Casco", "slots": 1, "effect": "DN 12 · +4 HP", "test": "Atletismo" },
+      { "name": "Vela de Tecido Nobre", "category": "Velas", "slots": 3, "effect": "+2 DN durante manobra", "test": "Precisão" },
+      { "name": "Radar Estrelar", "category": "Radar", "slots": 1, "effect": "+1 por dado de dano", "test": "Investigação" },
+      { "name": "Dormitório Padrão", "category": "Dormitório", "slots": 1, "effect": "Descanso Normal", "test": "—" }
+    ],
+    "traits": [
+      "Silenciosa — testes de Percepção inimigos para detectar têm Desvantagem a mais de 500m.",
+      "Passagem Falsa — possui um compartimento oculto (Investigação DT 16 para encontrar)."
+    ]
+  },
+  {
+    "name": "Punho de Ferro",
+    "type": "Material — Liga de Ferro Arcano",
+    "size": "Fragata",
+    "image": null,
+    "lore": "Fragata de guerra pertencente a um ex-Imperial de Camelot. Construída para impor — e consegue. O brasão dos Imperiais foi apagado, mas a silhueta ainda faz portos recuarem.",
+    "hp": 24,
+    "dn": 14,
+    "slots": { "total": 10, "used": 10 },
+    "captainAttribute": "Destreza",
+    "sectors": [
+      { "name": "Catapulta Flamejante", "category": "Armamento", "slots": 2, "effect": "3D20 de dano em área", "test": "—" },
+      { "name": "Canhão a Pólvora", "category": "Armamento", "slots": 1, "effect": "4D12 de dano", "test": "—" },
+      { "name": "Protetor Rúnico", "category": "Casco", "slots": 3, "effect": "DN 14 · anula todo dano (1× por combate)", "test": "Investigação" },
+      { "name": "Vela de Campo Gravítico", "category": "Velas", "slots": 3, "effect": "+3 DN durante manobra", "test": "Acrobacia" },
+      { "name": "Radar Náutico", "category": "Radar", "slots": 1, "effect": "+2 por dado de dano", "test": "Investigação" }
+    ],
+    "traits": [
+      "Blindagem Dupla — quando o Casco absorve dano, reduz 1 ponto adicional de dano por turno.",
+      "Presença Intimidadora — Capitão ganha +2 em testes de Influência contra Capitães de porte menor."
+    ]
+  },
+  {
+    "name": "Coração de Musgo",
+    "type": "Orgânico — Tartaruga de Casco-Ilha",
+    "size": "Galeão",
+    "image": null,
+    "lore": "Uma tartaruga colossal de 200 anos domesticada por um clã nômade Avaro. O convés cresceu sobre sua carapaça ao longo de décadas. Ela não é rápida — mas quando para, vira uma ilha. Literalmente.",
+    "hp": 35,
+    "dn": 10,
+    "slots": { "total": 13, "used": 12 },
+    "captainAttribute": "Influência",
+    "sectors": [
+      { "name": "Rugido Único", "category": "Armamento", "slots": 3, "effect": "6D20 de dano · requer gerador", "test": "—" },
+      { "name": "Escudo Cascudo", "category": "Casco", "slots": 2, "effect": "+8 HP · absorção pura de dano", "test": "—" },
+      { "name": "Vela Luminosa", "category": "Velas", "slots": 2, "effect": "+2 DN · +2 HP", "test": "Fortitude" },
+      { "name": "Cozinha Refinada", "category": "Cozinha", "slots": 2, "effect": "+5 no teste de cozinhar", "test": "—" },
+      { "name": "Biblioteca Compacta", "category": "Biblioteca", "slots": 1, "effect": "+2 em Conhecimento e Investigação", "test": "—" },
+      { "name": "Dormitório Luxuoso", "category": "Dormitório", "slots": 1, "effect": "Descanso Luxuoso", "test": "—" },
+      { "name": "Livraria", "category": "Biblioteca", "slots": 1, "effect": "+1 em testes de bordo", "test": "—" }
+    ],
+    "traits": [
+      "Regeneração — recupera 2 HP automaticamente a cada 3 turnos de combate.",
+      "Vontade Própria — se o Capitão falhar num teste de Dominação (Influência DT 14), a tartaruga ignora a ordem daquele turno.",
+      "Âncora Viva — quando imóvel, serve como base de operações. Tripulantes a bordo recuperam +1 Sanidade por descanso longo."
+    ]
+  }
+]
