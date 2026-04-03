@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import type { Character } from '@/data/characterTypes'
 import charactersData from '@characters'
+import { loadCustomCharacters, deleteCustomCharacter } from '@/lib/localCharacters'
 
-const CHARACTERS = charactersData as Character[]
+const PRESET_CHARACTERS = charactersData as Character[]
 
 const ELEMENT_COLORS: Record<string, { text: string; glow: string }> = {
   'Energia':   { text: '#E8803A', glow: 'rgba(232,128,58,0.35)' },
@@ -15,7 +16,7 @@ const ELEMENT_COLORS: Record<string, { text: string; glow: string }> = {
 }
 const DEFAULT_ACCENT = { text: '#80A8C8', glow: 'rgba(128,168,200,0.25)' }
 
-function getAccent(element: string | null) {
+function getAccent(element: string | null | undefined) {
   return element ? (ELEMENT_COLORS[element] ?? DEFAULT_ACCENT) : DEFAULT_ACCENT
 }
 
@@ -159,10 +160,18 @@ function CharacterCard({ character, index }: { character: Character; index: numb
 }
 
 export function CharacterListPage() {
+  const [customChars, setCustomChars] = useState<Character[]>([])
+
   useEffect(() => {
     document.title = 'Personagens — Arcádia'
     window.scrollTo({ top: 0 })
+    setCustomChars(loadCustomCharacters())
   }, [])
+
+  function handleDelete(id: string) {
+    deleteCustomCharacter(id)
+    setCustomChars(prev => prev.filter(c => c.id !== id))
+  }
 
   return (
     <motion.div
@@ -180,34 +189,88 @@ export function CharacterListPage() {
           borderBottom: '1px solid var(--color-border)',
           padding: '4rem 2rem 3rem',
         }}>
-        {/* Subtle grid */}
         <div style={{
           position: 'absolute', inset: 0, opacity: 0.025,
           backgroundImage: `repeating-linear-gradient(0deg, var(--color-arcano) 0px, var(--color-arcano) 1px, transparent 1px, transparent 60px),
                             repeating-linear-gradient(90deg, var(--color-arcano) 0px, var(--color-arcano) 1px, transparent 1px, transparent 60px)`,
           pointerEvents: 'none',
         }} />
-        <div className="relative max-w-4xl mx-auto">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-3"
-            style={{ color: 'var(--color-arcano-dim)', fontFamily: 'var(--font-ui)' }}>
-            Fichas de Personagem
-          </p>
-          <h1 className="font-display font-bold text-4xl mb-3" style={{ color: '#EEF4FC', letterSpacing: '-0.01em' }}>
-            Personagens Pré-criados
-          </h1>
-          <p className="font-body text-base" style={{ color: 'var(--color-text-secondary)', maxWidth: 520 }}>
-            Aventureiros prontos para o Mar de Nuvens. Escolha um e mergulhe na história.
-          </p>
+        <div className="relative max-w-4xl mx-auto flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-3"
+              style={{ color: 'var(--color-arcano-dim)', fontFamily: 'var(--font-ui)' }}>
+              Fichas de Personagem
+            </p>
+            <h1 className="font-display font-bold text-4xl mb-3" style={{ color: '#EEF4FC', letterSpacing: '-0.01em' }}>
+              Personagens
+            </h1>
+            <p className="font-body text-base" style={{ color: 'var(--color-text-secondary)', maxWidth: 520 }}>
+              Aventureiros prontos para o Mar de Nuvens — ou crie o seu próprio.
+            </p>
+          </div>
+          <Link
+            to="/criar-ficha"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+              padding: '0.6rem 1.1rem', borderRadius: 4,
+              background: 'var(--color-arcano)', border: 'none',
+              color: '#0A0A0A', fontFamily: 'var(--font-ui)',
+              fontSize: '0.75rem', fontWeight: 700,
+              letterSpacing: '0.15em', textTransform: 'uppercase',
+              textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0,
+            }}
+          >
+            + Criar Personagem
+          </Link>
         </div>
       </div>
 
-      {/* Grid */}
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {CHARACTERS.map((character, i) => (
-            <CharacterCard key={character.id} character={character} index={i} />
-          ))}
-        </div>
+      <div className="max-w-4xl mx-auto px-6 py-12 space-y-12">
+
+        {/* Custom characters */}
+        {customChars.length > 0 && (
+          <section>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-5"
+              style={{ color: 'var(--color-arcano-dim)', fontFamily: 'var(--font-ui)' }}>
+              Seus Personagens
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {customChars.map((character, i) => (
+                <div key={character.id} style={{ position: 'relative' }}>
+                  <CharacterCard character={character} index={i} />
+                  <button
+                    onClick={() => handleDelete(character.id)}
+                    title="Excluir personagem"
+                    style={{
+                      position: 'absolute', top: 8, right: 8, zIndex: 10,
+                      background: 'rgba(4,10,20,0.85)', border: '1px solid rgba(255,255,255,0.12)',
+                      borderRadius: 4, padding: '0.2rem 0.45rem', cursor: 'pointer',
+                      color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
+                      backdropFilter: 'blur(4px)',
+                    }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#C05050' }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Pre-made characters */}
+        <section>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-5"
+            style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}>
+            Personagens Pré-criados
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {PRESET_CHARACTERS.map((character, i) => (
+              <CharacterCard key={character.id} character={character} index={i} />
+            ))}
+          </div>
+        </section>
       </div>
     </motion.div>
   )

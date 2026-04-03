@@ -3,8 +3,9 @@ import { useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import type { Character } from '@/data/characterTypes'
 import charactersData from '@characters'
+import { getCustomCharacter } from '@/lib/localCharacters'
 
-const CHARACTERS = charactersData as Character[]
+const PRESET_CHARACTERS = charactersData as Character[]
 
 /* ─── Element colors ───────────────────────────────────────────── */
 const ELEMENT_COLORS: Record<string, { text: string; bg: string; glow: string }> = {
@@ -135,22 +136,6 @@ function HoneycombGrid({
   )
 }
 
-/* ─── Skill pips ───────────────────────────────────────────────── */
-function SkillPips({ value, hasTalent, color }: { value: number; hasTalent: boolean; color: string }) {
-  return (
-    <div className="flex items-center gap-1">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} style={{
-          width: 8, height: 8,
-          borderRadius: hasTalent && i < value ? 2 : '50%',
-          background: i < value ? color : 'rgba(255,255,255,0.07)',
-          border: `1px solid ${i < value ? color : 'rgba(255,255,255,0.13)'}`,
-          flexShrink: 0,
-        }} />
-      ))}
-    </div>
-  )
-}
 
 /* ─── Attribute block ──────────────────────────────────────────── */
 function AttributeBlock({ group, character }: { group: typeof ATTR_GROUPS[number]; character: Character }) {
@@ -194,7 +179,16 @@ function AttributeBlock({ group, character }: { group: typeof ATTR_GROUPS[number
                   {skill.label}
                 </span>
               </div>
-              <SkillPips value={val} hasTalent={hasTalent} color={group.color} />
+              <span style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 700,
+                fontSize: '1.1rem',
+                color: val > 0 ? group.color : 'rgba(255,255,255,0.18)',
+                minWidth: 24,
+                textAlign: 'right',
+              }}>
+                {val}
+              </span>
             </div>
           )
         })}
@@ -247,7 +241,9 @@ function SectionLabel({ children, accent }: { children: React.ReactNode; accent:
 export function CharacterPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const character = CHARACTERS.find(c => c.id === id)
+  const character = id
+    ? (PRESET_CHARACTERS.find(c => c.id === id) ?? getCustomCharacter(id))
+    : undefined
 
   const { scrollY } = useScroll()
   const heroImgY     = useTransform(scrollY, [0, 900], [0, -220])
@@ -464,7 +460,7 @@ export function CharacterPage() {
             ))}
           </div>
           <p className="text-xs mt-3" style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}>
-            ◆ talento · ◇ sem talento — com talento, pode rolar novamente um dado em testes desta perícia
+            ◆ com talento — pode rolar novamente um dado em testes desta perícia · ◇ sem talento
           </p>
         </section>
 
