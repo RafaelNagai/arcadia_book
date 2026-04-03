@@ -2,8 +2,7 @@
  * LocalStorage persistence for user-created characters.
  *
  * TODO (future): replace with API calls to a backend / auth service.
- * The functions below are designed to be swapped out for async API calls
- * without changing the call sites — just wrap in async/await.
+ * The `owned` flag on Character will map to server-side ownership once auth exists.
  */
 
 import type { Character } from '@/data/characterTypes'
@@ -39,13 +38,27 @@ export function getCustomCharacter(id: string): Character | undefined {
   return loadCustomCharacters().find(c => c.id === id)
 }
 
+/** Returns true if this character was created by the user (stored in localStorage). */
+export function isOwnedCharacter(id: string): boolean {
+  return !!getCustomCharacter(id)
+}
+
+/** Persist only the current HP/Sanidade without touching the rest of the sheet. */
+export function saveCurrentValues(id: string, currentHp: number, currentSanidade: number): void {
+  const all = loadCustomCharacters()
+  const idx = all.findIndex(c => c.id === id)
+  if (idx < 0) return
+  all[idx] = { ...all[idx], currentHp, currentSanidade }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(all))
+}
+
 export function generateId(): string {
   return `custom_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`
 }
 
 /* ─── Derived stats ────────────────────────────────────────────── */
 
-const CUMULATIVE_BONUSES = [0, 5, 5, 6, 6, 7] // index = attribute value
+const CUMULATIVE_BONUSES = [0, 5, 5, 6, 6, 7]
 
 export function calcHP(fisico: number): number {
   let hp = 12

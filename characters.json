@@ -6,7 +6,7 @@
     "concept": "Capitã de Corveta · Lâmina da Tempestade",
     "quote": "Eu não fujo das tempestades. Eu as dirijo.",
     "image": null,
-    "level": 8,
+    "level": 38,
     "attributes": {
       "fisico": 3,
       "destreza": 3,
@@ -44,7 +44,7 @@
   {
     "id": "eris",
     "name": "Eris",
-    "race": "Élfida",
+    "race": "Élfa",
     "concept": "Informante Arcana · Sombra do Mercado Negro",
     "quote": "A mentira mais eficaz é aquela que ninguém percebe que foi contada.",
     "image": null,
@@ -86,7 +86,7 @@
   {
     "id": "torga",
     "name": "Torga",
-    "race": "Orca",
+    "race": "Orc",
     "concept": "Guerreiro de Convés · Punho Inabalável",
     "quote": "Palavras são desnecessárias quando você tem músculos suficientes.",
     "image": null,

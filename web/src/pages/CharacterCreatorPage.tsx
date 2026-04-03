@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Character, CharacterSkills, CharacterAttributes } from '@/data/characterTypes'
-import { saveCustomCharacter, generateId, calcHP, calcSanidade } from '@/lib/localCharacters'
+import { saveCustomCharacter, generateId, getCustomCharacter, calcHP, calcSanidade } from '@/lib/localCharacters'
 
 /* ─── Constants ────────────────────────────────────────────────── */
 
@@ -762,32 +762,42 @@ function Step5({ antecedentes, traumas, onChange }: {
 /* ─── Main Page ────────────────────────────────────────────────── */
 export function CharacterCreatorPage() {
   const navigate = useNavigate()
-  const [step, setStep] = useState(1)
+  const { id: editId } = useParams<{ id?: string }>()
+  const [searchParams] = useSearchParams()
+
+  // Pre-fill from existing character when editing
+  const existing = editId ? getCustomCharacter(editId) : undefined
+  const isEditing = !!existing
+
+  const initialStep = Math.min(5, Math.max(1, Number(searchParams.get('step')) || 1))
+  const isSectionEdit = isEditing && searchParams.has('step')
+  const [step, setStep] = useState(initialStep)
   const [direction, setDirection] = useState(1)
 
-  const [name, setName]       = useState('')
-  const [race, setRace]       = useState('')
-  const [concept, setConcept] = useState('')
-  const [quote, setQuote]     = useState('')
-  const [attrs, setAttrs]     = useState<CharacterAttributes>(EMPTY_ATTRS)
-  const [skills, setSkills]   = useState<CharacterSkills>(EMPTY_SKILLS)
-  const [talents, setTalents] = useState<string[]>([])
-  const [afinidade, setAfinidade]   = useState('')
-  const [antitese, setAntitese]     = useState('')
-  const [entropia, setEntropia]     = useState(0)
-  const [runas, setRunas]           = useState<string[]>([])
-  const [antecedentes, setAntecedentes] = useState<string[]>([])
-  const [traumas, setTraumas]       = useState<string[]>([])
+  const [name, setName]       = useState(existing?.name ?? '')
+  const [race, setRace]       = useState(existing?.race ?? '')
+  const [concept, setConcept] = useState(existing?.concept ?? '')
+  const [quote, setQuote]     = useState(existing?.quote ?? '')
+  const [attrs, setAttrs]     = useState<CharacterAttributes>(existing?.attributes ?? EMPTY_ATTRS)
+  const [skills, setSkills]   = useState<CharacterSkills>(existing?.skills ?? EMPTY_SKILLS)
+  const [talents, setTalents] = useState<string[]>(existing?.talents ?? [])
+  const [afinidade, setAfinidade]   = useState(existing?.afinidade ?? '')
+  const [antitese, setAntitese]     = useState(existing?.antitese ?? '')
+  const [entropia, setEntropia]     = useState(existing?.entropia ?? 0)
+  const [runas, setRunas]           = useState<string[]>(existing?.runas ?? [])
+  const [antecedentes, setAntecedentes] = useState<string[]>(existing?.antecedentes ?? [])
+  const [traumas, setTraumas]       = useState<string[]>(existing?.traumas ?? [])
 
   const totalLevel = Object.values(skills).reduce((a, b) => a + b, 0)
 
   useEffect(() => {
-    document.title = 'Criar Personagem — Arcádia'
+    document.title = isEditing ? 'Editar Personagem — Arcádia' : 'Criar Personagem — Arcádia'
     window.scrollTo({ top: 0 })
-  }, [])
+  }, [isEditing])
 
   function goNext() { setDirection(1); setStep(s => s + 1); window.scrollTo({ top: 0 }) }
   function goBack() {
+    if (isSectionEdit) { navigate(`/ficha/${editId}`); return }
     if (step === 1) { navigate(-1); return }
     setDirection(-1); setStep(s => s - 1); window.scrollTo({ top: 0 })
   }
@@ -803,19 +813,26 @@ export function CharacterCreatorPage() {
   }, [])
 
   function handleSave() {
+    const newHp = calcHP(attrs.fisico)
+    const newSan = calcSanidade(attrs.intelecto, attrs.influencia)
     const character: Character = {
-      id: generateId(),
+      // Preserve id when editing so localStorage entry is updated in-place
+      id: isEditing ? existing!.id : generateId(),
       name: name.trim() || 'Sem Nome',
       race: race.trim() || 'Desconhecida',
       concept: concept.trim(),
       quote: quote.trim(),
-      image: null,
+      image: existing?.image ?? null,
       level: totalLevel,
       attributes: attrs,
       skills,
       talents,
-      hp: calcHP(attrs.fisico),
-      sanidade: calcSanidade(attrs.intelecto, attrs.influencia),
+      hp: newHp,
+      sanidade: newSan,
+      // Reset current values if max changed; keep if unchanged
+      currentHp: existing ? Math.min(existing.currentHp ?? existing.hp, newHp) : undefined,
+      currentSanidade: existing ? Math.min(existing.currentSanidade ?? existing.sanidade, newSan) : undefined,
+      owned: true,
       afinidade: afinidade || 'Energia',
       antitese: antitese || 'Anomalia',
       entropia,
@@ -888,7 +905,18 @@ export function CharacterCreatorPage() {
         padding: '0.875rem 1.5rem',
       }}>
         <div style={{ maxWidth: 680, margin: '0 auto' }}>
-          {step < STEPS.length ? (
+          {isSectionEdit ? (
+            <div className="flex gap-3">
+              <button onClick={goBack}
+                style={{ flex: '0 0 auto', padding: '0.75rem 1rem', borderRadius: 4, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.8rem' }}>
+                Cancelar
+              </button>
+              <button onClick={handleSave} disabled={!canProceed()}
+                style={{ flex: 1, padding: '0.75rem', borderRadius: 4, border: 'none', background: canProceed() ? 'var(--color-arcano)' : 'rgba(255,255,255,0.05)', cursor: canProceed() ? 'pointer' : 'not-allowed', color: canProceed() ? '#0A0A0A' : 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-ui)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                Salvar
+              </button>
+            </div>
+          ) : step < STEPS.length ? (
             <button onClick={goNext} disabled={!canProceed()}
               style={{
                 width: '100%', padding: '0.75rem', borderRadius: 4, border: 'none',

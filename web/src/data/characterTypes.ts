@@ -41,6 +41,12 @@ export interface Character {
   talents: string[]
   hp: number
   sanidade: number
+  // Tracked current values (only set for owned/custom characters)
+  currentHp?: number
+  currentSanidade?: number
+  // true for characters created by the user and stored in localStorage
+  // TODO (future): replace with server-side ownership/auth check
+  owned?: boolean
   afinidade: string
   antitese: string
   entropia: number

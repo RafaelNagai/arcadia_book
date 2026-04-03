@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import type { Character } from '@/data/characterTypes'
 import charactersData from '@characters'
-import { getCustomCharacter } from '@/lib/localCharacters'
+import { getCustomCharacter, isOwnedCharacter, saveCurrentValues } from '@/lib/localCharacters'
 
 const PRESET_CHARACTERS = charactersData as Character[]
 
@@ -81,16 +81,20 @@ function lerpHex(c1: string, c2: string, t: number): string {
 
 function HoneycombGrid({
   total,
+  current,
   colorTop,
   colorBottom,
   label,
   accentColor,
+  onCellClick,
 }: {
   total: number
+  current: number
   colorTop: string
   colorBottom: string
   label: string
   accentColor: string
+  onCellClick?: (idx: number) => void
 }) {
   const COLS = Math.min(8, Math.max(4, Math.round(Math.sqrt(total))))
   const totalRows = Math.ceil(total / COLS)
@@ -112,25 +116,39 @@ function HoneycombGrid({
 
   return (
     <div>
-      <div className="flex items-baseline gap-2 mb-3">
+      <div className="flex items-baseline gap-3 mb-3">
         <p className="text-xs font-semibold uppercase tracking-[0.2em]"
           style={{ color: accentColor, fontFamily: 'var(--font-ui)' }}>
           {label}
         </p>
         <span className="font-display font-bold text-3xl" style={{ color: '#EEF4FC' }}>
-          {total}
+          {current}
         </span>
+        <span style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.8rem' }}>
+          / {total}
+        </span>
+        {onCellClick && (
+          <span style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginLeft: 4 }}>
+            clique para editar
+          </span>
+        )}
       </div>
-      <svg width={svgW} height={svgH} style={{ display: 'block', overflow: 'visible' }}>
-        {cells.map(({ cx, cy, row, idx }) => (
-          <polygon
-            key={idx}
-            points={hexPoints(cx, cy)}
-            fill={lerpHex(colorTop, colorBottom, totalRows > 1 ? row / (totalRows - 1) : 1)}
-            stroke="rgba(0,0,0,0.35)"
-            strokeWidth={1.5}
-          />
-        ))}
+      <svg width={svgW} height={svgH} style={{ display: 'block', overflow: 'visible', cursor: onCellClick ? 'pointer' : 'default' }}>
+        {cells.map(({ cx, cy, row, idx }) => {
+          const alive = idx < current
+          const gradientT = totalRows > 1 ? row / (totalRows - 1) : 1
+          return (
+            <polygon
+              key={idx}
+              points={hexPoints(cx, cy)}
+              fill={alive ? lerpHex(colorTop, colorBottom, gradientT) : 'rgba(255,255,255,0.05)'}
+              stroke={alive ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.08)'}
+              strokeWidth={1.5}
+              onClick={onCellClick ? () => onCellClick(idx) : undefined}
+              style={onCellClick ? { transition: 'fill 0.1s' } : undefined}
+            />
+          )
+        })}
       </svg>
     </div>
   )
@@ -225,7 +243,37 @@ function Tag({ children, color, bg }: { children: React.ReactNode; color: string
   )
 }
 
-function SectionLabel({ children, accent }: { children: React.ReactNode; accent: string }) {
+function EditBtn({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        background: 'rgba(255,255,255,0.04)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        borderRadius: 4,
+        color: 'rgba(255,255,255,0.35)',
+        fontFamily: 'var(--font-ui)',
+        fontSize: '0.6rem',
+        letterSpacing: '0.14em',
+        textTransform: 'uppercase',
+        cursor: 'pointer',
+        padding: '0.25rem 0.6rem',
+        transition: 'color 0.15s, border-color 0.15s',
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#EEF4FC'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.3)' }}
+      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.1)' }}
+    >
+      ✎ {label}
+    </button>
+  )
+}
+
+function SectionLabel({ children, accent, onEdit, edits }: {
+  children: React.ReactNode
+  accent: string
+  onEdit?: () => void
+  edits?: { label: string; fn: () => void }[]
+}) {
   return (
     <div className="flex items-center gap-3 mb-4">
       <div style={{ width: 3, height: 16, background: accent, borderRadius: 2, flexShrink: 0 }} />
@@ -233,6 +281,8 @@ function SectionLabel({ children, accent }: { children: React.ReactNode; accent:
         style={{ color: accent, fontFamily: 'var(--font-ui)' }}>
         {children}
       </p>
+      {onEdit && <EditBtn label="editar" onClick={onEdit} />}
+      {edits && edits.map(e => <EditBtn key={e.label} label={e.label} onClick={e.fn} />)}
     </div>
   )
 }
@@ -244,6 +294,14 @@ export function CharacterPage() {
   const character = id
     ? (PRESET_CHARACTERS.find(c => c.id === id) ?? getCustomCharacter(id))
     : undefined
+  const owned = id ? isOwnedCharacter(id) : false
+
+  const [currentHp, setCurrentHp] = useState<number>(() =>
+    character ? (character.currentHp ?? character.hp) : 0
+  )
+  const [currentSanidade, setCurrentSanidade] = useState<number>(() =>
+    character ? (character.currentSanidade ?? character.sanidade) : 0
+  )
 
   const { scrollY } = useScroll()
   const heroImgY     = useTransform(scrollY, [0, 900], [0, -220])
@@ -254,7 +312,25 @@ export function CharacterPage() {
   useEffect(() => {
     document.title = character ? `${character.name} — Arcádia` : 'Arcádia'
     window.scrollTo({ top: 0 })
-  }, [character])
+  }, [id])
+
+  function goEdit(step: number) {
+    navigate(`/editar-ficha/${id}?step=${step}`)
+  }
+
+  function handleHpClick(idx: number) {
+    if (!owned || !id) return
+    const next = idx < currentHp ? idx : idx + 1
+    setCurrentHp(next)
+    saveCurrentValues(id, next, currentSanidade)
+  }
+
+  function handleSanidadeClick(idx: number) {
+    if (!owned || !id) return
+    const next = idx < currentSanidade ? idx : idx + 1
+    setCurrentSanidade(next)
+    saveCurrentValues(id, currentHp, next)
+  }
 
   if (!character) {
     return (
@@ -279,7 +355,7 @@ export function CharacterPage() {
   return (
     <div style={{ background: 'var(--color-abyss)', minHeight: '100vh' }}>
 
-      {/* ── Fixed back button ────────────────────────────── */}
+      {/* ── Fixed nav buttons ────────────────────────────── */}
       <motion.div
         style={{ opacity: backOpacity, position: 'fixed', top: 16, left: 16, zIndex: 50 }}>
         <button
@@ -299,6 +375,7 @@ export function CharacterPage() {
           ← Voltar
         </button>
       </motion.div>
+
 
       {/* ── HERO ─────────────────────────────────────────── */}
       <div style={{ height: '100vh', position: 'relative', overflow: 'hidden' }}>
@@ -413,6 +490,29 @@ export function CharacterPage() {
             }}>
               "{character.quote}"
             </p>
+
+            {owned && id && (
+              <button
+                onClick={() => goEdit(1)}
+                style={{
+                  marginTop: '1.25rem',
+                  background: 'rgba(4,10,20,0.65)',
+                  border: '1px solid rgba(255,255,255,0.18)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  borderRadius: 4,
+                  color: 'rgba(255,255,255,0.5)',
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: '0.6rem',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  padding: '0.3rem 0.7rem',
+                }}
+              >
+                ✎ editar identidade
+              </button>
+            )}
           </div>
         </motion.div>
 
@@ -432,28 +532,35 @@ export function CharacterPage() {
 
         {/* Pontos de Vida e Sanidade — colmeias */}
         <section>
-          <SectionLabel accent={accent.text}>Vitalidade</SectionLabel>
+          <SectionLabel accent={accent.text} onEdit={owned ? () => goEdit(2) : undefined}>Vitalidade</SectionLabel>
           <div className="flex flex-wrap gap-12">
             <HoneycombGrid
               total={character.hp}
+              current={currentHp}
               colorTop="#9EDA60"
               colorBottom="#1C5C10"
               label="Pontos de Vida"
               accentColor="#6EC840"
+              onCellClick={owned ? handleHpClick : undefined}
             />
             <HoneycombGrid
               total={character.sanidade}
+              current={currentSanidade}
               colorTop="#EAA8A8"
               colorBottom="#9C1818"
               label="Sanidade"
               accentColor="#D04040"
+              onCellClick={owned ? handleSanidadeClick : undefined}
             />
           </div>
         </section>
 
         {/* Atributos e Perícias */}
         <section>
-          <SectionLabel accent={accent.text}>Atributos e Perícias</SectionLabel>
+          <SectionLabel accent={accent.text} edits={owned ? [
+            { label: 'atributos', fn: () => goEdit(2) },
+            { label: 'perícias', fn: () => goEdit(3) },
+          ] : undefined}>Atributos e Perícias</SectionLabel>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             {ATTR_GROUPS.map(group => (
               <AttributeBlock key={group.attr} group={group} character={character} />
@@ -466,7 +573,7 @@ export function CharacterPage() {
 
         {/* Arcano */}
         <section>
-          <SectionLabel accent={accent.text}>Arcano</SectionLabel>
+          <SectionLabel accent={accent.text} onEdit={owned ? () => goEdit(4) : undefined}>Arcano</SectionLabel>
           <div className="rounded-sm p-5 space-y-5"
             style={{ background: 'rgba(4,10,20,0.7)', border: '1px solid rgba(255,255,255,0.06)' }}>
 
@@ -513,7 +620,7 @@ export function CharacterPage() {
 
         {/* Antecedentes */}
         <section>
-          <SectionLabel accent={accent.text}>Antecedentes</SectionLabel>
+          <SectionLabel accent={accent.text} onEdit={owned ? () => goEdit(5) : undefined}>Antecedentes</SectionLabel>
           <div className="flex flex-wrap gap-2">
             {character.antecedentes.map(ant => (
               <Tag key={ant} color="#80A8C8" bg="rgba(32,96,160,0.12)">{ant}</Tag>
@@ -524,7 +631,7 @@ export function CharacterPage() {
         {/* Traumas */}
         {character.traumas.length > 0 && (
           <section>
-            <SectionLabel accent={accent.text}>Traumas</SectionLabel>
+            <SectionLabel accent={accent.text} onEdit={owned ? () => goEdit(5) : undefined}>Traumas</SectionLabel>
             <div className="flex flex-wrap gap-2">
               {character.traumas.map(trauma => (
                 <Tag key={trauma} color="#C05050" bg="rgba(160,32,32,0.15)">{trauma}</Tag>

@@ -17,6 +17,7 @@ function App() {
       {/* Character sheets and creator are standalone (no sidebar) for full-screen experience */}
       <Route path="ficha/:id" element={<CharacterPage />} />
       <Route path="criar-ficha" element={<CharacterCreatorPage />} />
+      <Route path="editar-ficha/:id" element={<CharacterCreatorPage />} />
     </Routes>
   )
 }
