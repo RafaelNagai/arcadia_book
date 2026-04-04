@@ -1,8 +1,8 @@
 [
   {
-    "id": "kalista",
-    "name": "Kalista",
-    "race": "Humana",
+    "id": "kalissa",
+    "name": "Kalissa",
+    "race": "Elfa",
     "concept": "Capitã de Corveta · Lâmina da Tempestade",
     "quote": "Eu não fujo das tempestades. Eu as dirijo.",
     "image": "/assets/images/characters/character_1.jpg",
@@ -44,10 +44,10 @@
   {
     "id": "eris",
     "name": "Eris",
-    "race": "Élfa",
+    "race": "Avaro",
     "concept": "Informante Arcana · Sombra do Mercado Negro",
     "quote": "A mentira mais eficaz é aquela que ninguém percebe que foi contada.",
-    "image": null,
+    "image": "/assets/images/characters/character_2.jpg",
     "level": 35,
     "attributes": {
       "fisico": 1,
@@ -84,12 +84,12 @@
     "antecedentes": ["Espiã de Guilda", "Contrabandista", "Cartógrafa"]
   },
   {
-    "id": "torga",
-    "name": "Torga",
+    "id": "urgo",
+    "name": "Urgo o Albino",
     "race": "Orc",
     "concept": "Guerreiro de Convés · Punho Inabalável",
     "quote": "Palavras são desnecessárias quando você tem músculos suficientes.",
-    "image": null,
+    "image": "/assets/images/characters/character_3.jpg",
     "level": 9,
     "attributes": {
       "fisico": 5,
