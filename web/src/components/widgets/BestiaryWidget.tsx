@@ -113,6 +113,17 @@ function CreatureCard({ creature }: { creature: Creature }) {
         </div>
       </div>
 
+      {/* Creature image */}
+      {creature.image && (
+        <div style={{ height: 260, overflow: 'hidden' }}>
+          <img
+            src={creature.image}
+            alt={creature.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+          />
+        </div>
+      )}
+
       <div className="px-6 py-5 space-y-5">
 
         {/* Lore */}

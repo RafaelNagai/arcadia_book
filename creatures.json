@@ -3,7 +3,7 @@
     "name": "Pedroso",
     "levelRange": "4 – 8",
     "style": "Territorial · Selvagem",
-    "image": null,
+    "image": "/assets/images/creatures/creature_pedroso.jpg",
     "lore": "Criaturas rochosas que habitam cavernas e dutos subterrâneos, especialmente em Britannia. Alimentam-se de gemas e Eltys, acumulando fragmentos cristalinos no núcleo do corpo. Quando morto com o núcleo intacto, a energia acumulada causa uma divisão celular abrupta. Um Pedroso sozinho raramente ataca — um bando em território ameaçado é outra conversa.",
     "diceBase": "2D12",
     "hp": 30,
