@@ -208,13 +208,15 @@ Resolva o preço base da transação e, se o jogador desejar negociar condiçõe
 
 Role **2D12 + Perícia relevante** (Atletismo para trabalho braçal, Conhecimento para serviços técnicos, etc.):
 
-| Resultado | Efeito |
+| Resultado | Efeito no PM |
 |---|---|
-| 20+ | Dinheiro + Comida + Utilitário |
-| ≥ 15 | Dinheiro + Comida |
-| ≥ 10 | Dinheiro |
-| Alto | Contratos ou favores além da paga imediata |
-| Fracasso | Perda de materiais ou reputação |
+| 20+ | Escolha 2 dados do PM. Rerole ambos — fique com os novos valores. Receba também 1 item utilitário ou ração. |
+| ≥ 15 | Escolha 1 dado do PM. Rerole — fique com o maior entre o valor atual e o novo. |
+| ≥ 10 | Escolha 1 dado do PM com valor abaixo de 6. Recebe **+2** ao valor atual (máximo 6). |
+| ≥ 25 | Além da recuperação normal, feche um contrato ou favor para uso futuro. |
+| Fracasso | Nenhuma recuperação. O trabalho não rendeu desta vez. |
+
+> Para as regras completas de como o PM funciona como moeda, ver **O Pote como Moeda** no capítulo de Moral.
 
 ---
 

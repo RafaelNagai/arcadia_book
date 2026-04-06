@@ -38,7 +38,7 @@ A **Fortitude** mede a saúde e a resistência do personagem. É usada para resi
 
 **Exemplos de uso:**
 - Resistir aos efeitos de um veneno ou ferimento grave.
-- Aguentar tortura, dor intensa ou temperaturas extremas.
+- Beber uma bebida alcolica e não ficar bebado.
 - Continuar lutando mesmo com ferimentos críticos.
 
 ---
@@ -79,7 +79,6 @@ Cada estilo de luta (espada, lança, garras, punhos) pode ser interpretado dentr
 - Golpear um inimigo em combate corpo a corpo.
 - Desarmar ou imobilizar um oponente.
 - Aplicar técnicas marciais ou ataques coordenados.
-- Prever o movimento do adversário em curta distância.
 
 > **Nota:** A perícia de Combate define *o quão bem* o personagem luta. As regras de *como* o combate funciona — ações, reações, dano — estão no capítulo dedicado ao Combate.
 
@@ -115,6 +114,7 @@ A **Precisão** mede o acerto e o controle ao atacar à distância. Aplica-se a 
 - Acertar um alvo distante ou em movimento.
 - Disparar através de uma abertura estreita.
 - Controlar a trajetória de um projétil em condições adversas.
+- Realizar um corte cirurgico.
 
 ---
 
@@ -262,7 +262,6 @@ A **Performance** mede a expressão artística e a presença cênica. Músicos, 
 - Cantar ou tocar para emocionar uma plateia.
 - Enganar inimigos com uma atuação convincente.
 - Distrair guardas com um espetáculo improvisado.
-- Usar uma apresentação artística como veículo para magia.
 
 ---
 

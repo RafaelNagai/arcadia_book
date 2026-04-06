@@ -65,13 +65,15 @@ Por sua natureza, magias de Paradoxo **tendem** a alta Complexidade — o Mestre
 
 > *Nem toda luz é bondosa — algumas brilham demais para mortais verem.*
 
-O **Astral** é transitar entre os planos.
+O **Astral** é emprestar o poder de outro plano.
 
-Magos astrais projetam consciência, invocam entidades superiores e acessam outros planos de existência. A força de suas magias vem ligada aos planos que tocam — cada plano oferece uma forma de poder diferente e impõe um preço diferente.
+Magos astrais conseguem migrar e moldar o poder de outro plano ao plano Finito. Tocar no plano **Rede dos sonhos** permite acessar memorias e conhecimentos de todo e qualquer pessoa, isso permite ao usuario incorporar os conhecimentos de luta de um antigo guerreiro, aumentando sua pericia de Combate.
+Tocar no plano **Mundo das Tintas** precisa encontar na cor desejada, e trazer os desejos daquela cor ao plano Finito, sendo algo totalmente aleatorio.
+Tocar no plano **Reino das almas** permite conversar e resgatar essas almas estagnadas enquanto esperam para serem esquecidas.
 
 **Exemplos de execução:**
-- Golpe espiritual que ignora armaduras físicas, acertando diretamente na alma do alvo.
-- Curar a Sanidade de um aliado, consumindo parte da própria alma do conjurador.
+- Acessar as memorias de um grande mago, e conhecer novas runas que o personagem não conhecia.
+- Usar a cor verde e manifestar um enxame de gafanhotos que surgem como tinta verde.
 - Comunicar-se em forma etérea com um aliado a longas distâncias.
 
 ---

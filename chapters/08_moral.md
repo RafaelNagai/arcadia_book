@@ -78,9 +78,139 @@ Narrativamente, o personagem fez o trabalho duro parecer fácil, inspirando os c
 Durante o Interlúdio (ver capítulo de Interlúdio), o Capitão pode gastar tempo e recursos para elevar o PM:
 
 **Festas e Bebidas**
-O Capitão gasta ouro ou suprimentos para organizar uma celebração a bordo. Todos os dados do PM com valor **menor que 6** são **rerolados**. Resultados novos substituem os anteriores.
+O Capitão gasta **6 dinheiros** (reduzindo dados do PM) para organizar uma celebração a bordo. Todos os dados do PM com valor **menor que 6** são **rerolados**. Resultados novos substituem os anteriores.
 
 **Discurso Inspirador**
 Com um teste bem-sucedido de **Persuasão** ou **Performance**, o Capitão motiva a tripulação com palavras. Um dado do PM à escolha do Capitão recebe **+2** ao seu valor atual — até o máximo de **6**.
 
 > *Exemplo: Um dado no PM mostra 3. O Capitão faz um discurso e o valor sobe para 5. Se mostrasse 5, subiria para 6 — não além.*
+
+---
+
+## O Pote como Moeda
+
+> *No Mar de Nuvens, não existe ouro que não venha com uma história. E toda história tem um custo.*
+
+Em Arcádia, dinheiro não é uma pilha de moedas num cinto. É a capacidade da tripulação de agir no mundo — de chamar favores, garantir dormida, consertar o casco e comprar a pólvora de que precisam antes da próxima batalha. Essa capacidade tem um nome: o **Pote de Moral**.
+
+O PM não é só o ânimo da tripulação. É também seu crédito, sua influência, seus recursos. Quando o PM está alto, o grupo se move com facilidade pelo mundo. Quando está baixo, o mundo fecha as portas.
+
+---
+
+### Como Gastar: A Mecânica do Dinheiro
+
+Cada **1 dinheiro** gasto reduz o valor atual de **um dado do PM em 1 ponto**. Essa redução é física e imediata — mova o dado para mostrar o novo valor assim que o pagamento for declarado.
+
+**Regras de Gasto:**
+
+1. **Quem decide:** O Capitão autoriza toda compra. Em situações urgentes, a tripulação pode deliberar — mas a palavra final é sempre dele.
+2. **Distribuição do custo:** O custo pode ser distribuído livremente entre quantos dados o grupo quiser. Um item de 6 dinheiros pode sair de um único dado (de 8 para 2) ou de vários dados (−2 em um, −2 em outro, −2 em um terceiro).
+3. **O limite do dado:** Nenhum dado pode ser reduzido abaixo de **1**. Um dado mostrando 1 está esgotado para fins de gasto.
+4. **Falência:** Se **todos os dados** do PM mostram **1**, a tripulação não pode realizar nenhuma compra até que o PM se recupere.
+
+> *Exemplo: PM atual é [3, 7, 5, 2, 8] — Soma: 25. A tripulação paga 6 dinheiros por uma pousada segura para a noite. O Capitão distribui: o dado 7 cai para 4 e o dado 5 cai para 2. Novo PM: [3, 4, 2, 2, 8] — Soma: 19. A tripulação dorme bem. O PM sente o peso da noite.*
+
+---
+
+### Tabela de Preços
+
+Os preços abaixo são referências para o Mestre. Ajuste conforme a região, a raridade local e o estado das relações da tripulação com o vendedor.
+
+#### Sustento Diário
+
+| Item | Custo |
+|---|---|
+| Refeição simples (uma pessoa, um dia) | 1 |
+| Refeição decente (comida quente, porção generosa) | 2 |
+| Pousada comum (dormitório coletivo, uma noite) | 3 |
+| Pousada decente (quarto privado, refeição inclusa) | 5 |
+| Pousada luxuosa (cama larga, banho, atenção discreta) | 6 |
+| Suprimentos de viagem (ração para 1 pessoa, 1 semana) | 4 |
+| Suprimentos de viagem (ração para tripulação inteira, 1 semana) | 12 |
+
+#### Serviços
+
+| Serviço | Custo |
+|---|---|
+| Informação vaga (rumor de taverna) | 2 |
+| Informação útil (pista concreta, mapa parcial) | 5 |
+| Informação privilegiada (rota de contrabando, segredo de guilda) | 10 |
+| Cura básica (curativo, ervas, recupera 1D6 HP) | 3 |
+| Cura completa (curandeiro qualificado, recuperação total) | 8 |
+| Ajudante contratado por um dia (trabalho braçal) | 3 |
+| Especialista por uma tarefa (engenheiro, piloto, arcanista) | 10 |
+| Suborno de guarda comum | 4 |
+| Suborno de autoridade local | 12 |
+
+#### Equipamentos por Tier
+
+| Tier | Custo aproximado | Referência |
+|---|---|---|
+| **E** | 2–3 | Improvisado — faca de sucata, escudo de madeira podre |
+| **D** | 4–6 | Simples — espada básica, couro curtido |
+| **C** | 8–12 | Normal — revólver comum, armadura funcional |
+| **B** | 15–20 | Melhorado — sabre refinado, peitoral de ferro |
+| **A** | 25–35 | Reforjado — arma com efeitos especiais |
+| **S** | 40–55 | Raro — obra de mestre, item com história |
+| **SS** | Não está à venda | Itens SS são conquistados, não comprados |
+
+#### Despesas do Navio
+
+| Despesa | Custo |
+|---|---|
+| Reparos leves (1–2 pontos de Vida do navio) | 4 |
+| Reparos significativos (3–5 pontos de Vida do navio) | 10 |
+| Reparos de emergência (navio quase destruído) | 20 |
+| Abastecimento de Eltys (combustível arcano, 1 viagem) | 6 |
+| Abastecimento de Eltys (reserva para 3 viagens) | 15 |
+| Taxa de ancoragem em porto neutro (uma noite) | 2 |
+| Taxa de ancoragem em porto de facção inimiga | 8 |
+
+#### Itens Incomuns e Luxos
+
+| Item | Custo |
+|---|---|
+| Documento falso (identidade nova, carta de passagem) | 8 |
+| Passagem discreta em embarcação de terceiros | 5 |
+| Festa a bordo (ver Festas e Bebidas) | 6 |
+| Presente de valor para contato importante | 10 |
+| Relíquia arcana menor (efeito narrativo) | 15 |
+| Localização de artefato ou rota lendária | 30 |
+
+---
+
+### Exemplos de Compra
+
+> **1. O Jantar Merecido**
+> Após três dias sem parar, a tripulação de cinco amarra em União. Refeições decentes para todos: 2 × 5 pessoas = **10 dinheiros**. O Capitão distribui a redução entre três dados. O jantar custa — mas a moral restante ainda sustenta a próxima batalha.
+
+> **2. A Informação que Muda Tudo**
+> O grupo precisa localizar a Constelação de uma ilha desaparecida. Um contrabandista cobra **10 dinheiros** pela rota. PM atual: [9, 6, 4, 3, 7]. O Capitão reduz o 9 para 2 e o 6 para 3. Novo PM: [2, 3, 4, 3, 7] — Soma: 19. Moral Baixa se nada for recuperado antes do fim da sessão.
+
+> **3. O Suborno Silencioso**
+> Um guarda bloqueia o acesso ao armazém. O Capitão oferece **4 dinheiros** — reduz um único dado de 8 para 4. O guarda olha para o outro lado. Às vezes, o PM é o melhor argumento.
+
+> **4. O Casco Que Não Pode Esperar**
+> Uma batalha naval deixou o navio com 4 pontos de Vida a menos. Reparos significativos custam **10 dinheiros**. Com PM em [5, 5, 3, 8, 6], o grupo distribui entre três dados. Caro — mas voar com um casco furado é mais caro ainda.
+
+> **5. A Espada do Ferreiro**
+> Em Britannia, a tripulação encontra um sabre Tier B. O ferreiro pede **18 dinheiros**. Um teste bem-sucedido de Persuasão o reduz para **15**. Ainda sangra o PM — mas o grupo decide que vale.
+
+> **6. A Noite de Luxo**
+> Após uma missão brutal, o grupo quer descanso real. Pousada luxuosa para cinco: 6 × 5 = **30 dinheiros**. Com PM em [8, 11, 7, 9, 6] — Soma: 41, o grupo pode pagar. Novo PM: [2, 5, 1, 3, 1] — Soma: 12. Descansaram como capitães. Amanheceram quase na lona.
+
+> **7. Os Documentos Falsos**
+> Entrar em Camelot com mandado de prisão em aberto exige identidades novas para dois personagens. **8 × 2 = 16 dinheiros**. O PM sangra — mas cruzar os portões imperiais sem ser reconhecido não tem preço.
+
+> **8. A Partida Preparada**
+> Antes de uma longa rota pelo Mar de Nuvens, o grupo compra reserva de Eltys (**15**), ração para toda a tripulação por duas semanas (**12**) e paga a taxa de ancoragem (**2**): total de **29 dinheiros**. Partir com o PM comprometido é o custo de chegar com vida.
+
+---
+
+### A Tensão da Escolha
+
+O PM como moeda cria um dilema que define cada sessão: **cada dado alto no Pote é tanto um aliado em potencial no Grito de Guerra quanto um recurso para agir no mundo**.
+
+Reduzir um 10 para comprar uma pousada significa que, na próxima batalha, aquela troca não estará disponível. A tripulação que gasta com abandono chega ao combate de mãos vazias. A que economiza demais chega exausta, mal informada e com o navio a um passo de desmoronar.
+
+Não existe a escolha certa. Existe a escolha que vocês fizeram — e as consequências que ela trouxe.
