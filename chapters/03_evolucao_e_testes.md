@@ -6,7 +6,7 @@
 
 ## A Regra dos Dados
 
-Toda vez que o resultado de uma ação é incerto e as consequências importam, o Mestre pode pedir um **teste de perícia**. A mecânica central de Arcádia é construída sobre dois dados de doze faces.
+Toda vez que o resultado de uma ação é incerto e as consequências importam, o Mestre pode pedir um **teste de perícia**. A mecânica central de Arcádia é construída sobre dois dados de doze faces(D12).
 
 ### O Teste Padrão
 
@@ -17,21 +17,21 @@ Role **2D12** e some os dois resultados. Em seguida, adicione o seu **bônus**:
 Se o Resultado Final for **igual ou maior** que a **Dificuldade (DT)** definida pelo Mestre, o teste é um sucesso.
 
 **Exemplo:**
-> Lyra tenta escalar uma muralha encharcada pela chuva. O Mestre define DT 14.
-> Lyra tem Físico 2 e Atletismo 3. Ela rola 2D12 e tira [5, 6].
-> Resultado Final: 5 + 6 + 2 + 3 = **16**. Sucesso.
+> Lyra tenta escalar uma muralha encharcada pela chuva. O Mestre define DT 20.
+> Lyra tem Físico 2 e Atletismo 3. Ela rola 2D12 e tira [10, 6].
+> Resultado Final: 10 + 6 + 2 + 3 = **21**. Sucesso.
 
 ### Referência de Dificuldades
 
-O Mestre usa as faixas abaixo como guia ao definir DTs. A escala foi calibrada para que personagens sem investimento sintam pressão a partir de testes Moderados, enquanto veteranos ainda encontrem desafio real em testes Severos e Lendários.
+O Mestre usa as faixas abaixo como guia ao definir DTs. A escala foi calibrada para que personagens sem investimento sintam pressão a partir de testes Moderados, enquanto veteranos ainda encontrem desafio real em testes Severos e Épicos.
 
 | Faixa de DT | Nível | Referência |
 |---|---|---|
-| 8 – 14 | **Simples** | Qualquer personagem consegue, mesmo sem treino |
-| 15 – 20 | **Moderado** | Requer algum investimento em Atributo ou Perícia |
-| 21 – 26 | **Difícil** | Requer investimento sólido nos dois |
-| 27 – 32 | **Severo** | Território de veteranos com bônus altos |
-| 33+ | **Lendário** | Apenas mestres absolutos têm chance real |
+| 10 – 15 | **Simples** | Qualquer personagem consegue, mesmo sem treino |
+| 16 – 20 | **Moderado** | Requer algum investimento em Atributo ou Perícia |
+| 21 – 25 | **Difícil** | Requer investimento sólido nos dois |
+| 26 – 30 | **Severo** | Território de veteranos com bônus altos |
+| 30+ | **Épico** | Apenas mestres absolutos têm chance real |
 
 ---
 
@@ -39,15 +39,15 @@ O Mestre usa as faixas abaixo como guia ao definir DTs. A escala foi calibrada p
 
 Quando um personagem possui um **Talento** em uma perícia, ele demonstra um domínio acima da média — não apenas treinamento, mas afinidade natural.
 
-**Mecânica:** Em vez de rolar 2D12, o jogador rola **3D12** e escolhe quais **2 dados** vai usar. O terceiro dado é descartado.
+**Mecânica:** Em vez de rolar 2D12, o jogador rola **3D12** e escolhe quais **2 dados** vai usar. O terceiro dado é descartado. Os dados que ele escolher são os **dados usados**.
 
-Isso concede controle sobre o resultado: o jogador pode descartar o pior dado, maximizando a chance de sucesso — ou preservar um 12 para acionar a Evolução.
+Isso concede controle sobre o resultado: o jogador pode descartar o pior dado, maximizando a chance de sucesso.
 
 > **Exemplo:** Kael tem Talento em Combate. Ele rola 3D12 e tira [3, 9, 12]. Ele descarta o 3 e usa o 9 e o 12 como seus Dados Usados.
 
 ### Como Adquirir Talentos
 
-Na **criação do personagem**, o jogador distribui **3 Talentos** livremente entre as perícias que desejar. Talentos adicionais podem ser aprendidos durante o jogo, a critério do Mestre — como recompensa por feitos extraordinários, treinamento intenso ou momentos de revelação narrativa.
+Normalmente na **criação do personagem**, o jogador distribui **1 Talento** livremente entre as perícias que desejar, mas fica ao critério do mestre. Talentos adicionais podem ser aprendidos durante o jogo, a critério do Mestre — como recompensa por feitos extraordinários, treinamento intenso ou momentos de revelação narrativa.
 
 ---
 
@@ -69,6 +69,8 @@ Um feito lendário. O Mestre pode permitir que o personagem ignore quase qualque
 **Condição:** Tirar **1 natural** em qualquer um dos Dados Usados **e** não atingir a DT.
 
 Algo dá errado além da simples falha. O Mestre introduz uma complicação inesperada — não apenas o personagem não conseguiu, mas a situação piorou.
+
+> Quando **1 natural** é obtido, não é somado os bonus para efetuar os calculos.
 
 > **Importante:** A Falha Crítica só ocorre quando **ambas** as condições se cumprem. Tirar um 1 natural em um teste que ainda assim passa na DT não é uma Falha Crítica — é apenas um sucesso difícil.
 
@@ -103,9 +105,7 @@ O personagem opera em condições adversas. Cada nível de Desvantagem **remove 
 Quando a Desvantagem reduz o pool a **zero dados**, o personagem não pode usar aquela perícia. As Desvantagens são **acumulativas**.
 
 ### Vantagem
-O personagem opera em condições favoráveis. Cada nível de Vantagem **adiciona um dado** à rolagem, até o máximo de **3D12** — o mesmo limite do Talento.
-
-> **Nota:** Ter Talento em uma perícia e receber Vantagem não acumula dados além de 3D12. O limite é sempre 3.
+O personagem opera em condições favoráveis. Cada nível de Vantagem **adiciona um dado** à rolagem.
 
 ---
 
@@ -125,9 +125,9 @@ Gaste 1 PE do Atributo relevante para adicionar **+1** ao Resultado Final. Pode 
 > *Exemplo: Lyra falhou por 2 pontos. Ela gasta 2 PE de Físico para empatar e, então, passar na DT.*
 
 **B. Forçar o 12**
-Gaste PE para transformar o valor de **um** Dado Usado em 12. Útil para garantir a Evolução ou ativar efeitos que exigem 12 natural.
+Gaste PE para transformar o valor de **um** Dado Usado em 12. Útil para garantir a Evolução.
 
-> **Atenção:** Um 12 forçado por PE **não conta como Crítico** para efeitos de dano ou bônus narrativos. Ele serve para progressão e para atingir DTs — não para amplificar o impacto de um ataque.
+> **Atenção:** Um 12 forçado por PE **não conta como Crítico** para efeitos de dano ou bônus narrativos. Ele serve apenas para progressão e para atingir DTs — não para amplificar o impacto de um ataque.
 
 ### Como Ganhar PE
 
@@ -147,7 +147,7 @@ O **nível** de um personagem em Arcádia não é um número atribuído manualme
 
 > **Nível = soma total de todos os pontos em todas as 16 perícias.**
 
-Cada vez que uma perícia ganha +1 permanente pela Regra de Ouro, o nível do personagem sobe em 1. O nível não concede bônus diretos em testes — é uma referência de progressão que o Mestre pode usar para calibrar recompensas e desafios.
+Cada vez que uma perícia ganha +1 permanente, o nível do personagem sobe em 1. O nível não concede bônus diretos em testes — é uma referência de progressão que o Mestre pode usar para calibrar recompensas e desafios.
 
 ### Pontos de Atributo
 
@@ -161,15 +161,15 @@ Os **Atributos** (Físico, Destreza, Intelecto, Influência) começam com o valo
 
 Em Arcádia, as perícias não evoluem através de pontos de experiência distribuídos entre sessões. Elas evoluem **no momento em que são usadas com maestria absoluta**.
 
-### A Regra de Ouro
+### A Regra da Evolução
 
 > Sempre que os seus dois **Dados Usados** resultarem em **12 Natural**, você ganha **+1 ponto permanente** naquela perícia.
 
 Este é o único caminho para evolução orgânica de perícias. Não há atalho — apenas o momento em que tudo se alinha e os dados mostram o máximo.
 
 **Condições importantes:**
-- Os dois dados devem ser **12 natural** — não forçados por PE.
-- Se o jogador usou Talento (3D12), os dois dados **escolhidos** devem ser 12. O dado descartado não conta.
+- Os dois dados devem ser **12**, pode ser **12 natural** ou 12 com adição dos PE.
+- Se o jogador usou Talento (3D12), os dois dados **escolhidos** devem ser 12. O dado descartado não conta. Devem seguir a regra acima.
 - A evolução ocorre independentemente de passar ou não na DT — o feito importa, não o resultado narrativo.
 
 > *Exemplo: Mira rola 3D12 com seu Talento em Furtividade e tira [12, 12, 4]. Ela descarta o 4 e usa os dois 12s. O teste resulta em Milagre — e ela ganha +1 permanente em Furtividade.*

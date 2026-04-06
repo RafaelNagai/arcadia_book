@@ -37,31 +37,6 @@ O lado que venceu a Iniciativa age primeiro. Os membros do lado decidem a ordem 
 
 Cada personagem tem um número de **Reações** por rodada igual ao seu valor de **Destreza** (mínimo 1, mesmo se Destreza for 0). Reações podem ser usadas a qualquer momento — dentro ou fora do seu turno — em resposta a qualquer ação em cena.
 
----
-
-## Ações
-
-### Ações Físicas
-
-| Tipo de Ação | Custo | Perícia | Observações |
-|---|---|---|---|
-| **Ataque corpo-a-corpo** | 1 ação | Combate | Disputa contra a reação do alvo |
-| **Ataque à distância** | 2 ações | Precisão | Disputa contra a reação do alvo |
-
-### Ações Arcanas
-
-| Tipo de Ação | Custo | Observações |
-|---|---|---|
-| **Rápida** | 1 ação ou 1 reação | Magia instantânea, se dissipa imediatamente |
-| **Concentrada** | 2 ações | Persiste enquanto o conjurador mantiver foco |
-| **Maldição** | 2 ações | Permanece em cena até ser dissipada |
-
-> **Lembre-se:** Qualquer perícia pode ser usada para atacar ou realizar um feito em combate, desde que a narração justifique. Os tipos de ação acima representam os caminhos mais comuns — não os únicos.
-
----
-
-## Reações
-
 Quando qualquer ação é realizada em cena, qualquer personagem pode gastar **1 Reação** para responder. Uma reação pode ser qualquer coisa — esquivar, defender, conjurar, contra-atacar, interromper, empurrar um aliado para fora do caminho — desde que a narração justifique e uma perícia faça sentido.
 
 ---
@@ -97,6 +72,8 @@ Você se prepara para o impacto. Não há disputa de dados — você confia na s
 
 - **Mecânica:** O Atacante rola seus dados de teste apenas para verificar críticos ou falhas. Em seguida, rola os **dados de dano** diretamente contra sua **Defesa Ativa (DA)**.
 - **Quando usar:** Ideal quando sua DA é alta e você prefere não arriscar uma esquiva com dados ruins.
+
+> Se no teste houver um crítico, o dano é dobrado. Se for uma falha, o dano é dividido pela metade, arredondando para baixo.
 
 ---
 
@@ -180,7 +157,7 @@ A DP é usada quando o personagem está Indefeso ou falhou na Esquiva.
 | 6 | 3 |
 | 7 | 3 |
 
-> **Nota:** DA 1 (sem armadura) resulta em DP 0 — qualquer dado de dano causa ferimento. Isso é intencional: um personagem sem proteção é extremamente vulnerável quando Indefeso.
+> **Nota:** DA 1 (sem armadura) resulta em DP 0 — qualquer dado de dano causa dado duplo. Isso é intencional: um personagem sem proteção é extremamente vulnerável quando Indefeso.
 
 ---
 
@@ -188,9 +165,9 @@ A DP é usada quando o personagem está Indefeso ou falhou na Esquiva.
 
 O equipamento protege a vida do personagem — mas ele sofre o castigo no lugar dele. **O dano sempre atinge a Durabilidade do item antes de atingir a Vida.**
 
-- **Absorção:** Cada ponto de dano recebido reduz a Durabilidade do item equipado em 1.
-- **Quebra:** Quando a Durabilidade chega a 0, o item perde todas as suas propriedades. Cada ponto de dano adicional passa direto para a Vida do personagem.
-- **Sacrifício Voluntário:** O personagem pode optar por "não usar" o equipamento num golpe específico para preservá-lo. Nesse caso, perde todos os bônus de DA e efeitos do item naquele ataque.
+- **Absorção:** Cada ponto de dano recebido reduz a Durabilidade do item equipado em 1, o jogador pode decidir em qual equipamento é direcionado a redução da durabilidade.
+- **Quebra:** Quando a Durabilidade chega a 0, o item é quebrado e sem possiblidade de reparo. Cada ponto de dano adicional passa direto para a Vida do personagem.
+- **Sacrifício Voluntário:** O personagem pode optar por "não usar" o equipamento num golpe específico para preservá-lo. Nesse caso, perde todos os bônus de DA e efeitos do item naquele ataque. Esta decisão tem que ser feita antes de calcular o dano tomado.
 
 ---
 
@@ -254,4 +231,4 @@ Outro pirata ataca Kael com uma adaga (pool: 2D6). Com a Durabilidade do peitora
 - **Total: 3 pontos de dano.**
 - A Durabilidade absorve 1 → **Durabilidade 0. O peitoral quebra.**
 - Os 2 pontos restantes vão direto para a Vida de Kael. **Vida de Kael: 8/10.**
-- O peitoral perde todas as propriedades: DA volta para a base 1.
+- O peitoral é destruido: DA volta para a base 1.
