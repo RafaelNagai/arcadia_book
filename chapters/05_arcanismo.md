@@ -61,10 +61,10 @@ Para subir um nível de Entropia e ganhar um slot adicional, o personagem deve *
 
 | Subindo para | Custo |
 |---|---|
-| Entropia 1 | Rola 1D12 — perde esse valor de Sanidade permanentemente |
-| Entropia 2 | Rola 2D12 — perde esse valor de Sanidade permanentemente |
-| Entropia 3 | Rola 3D12 — perde esse valor de Sanidade permanentemente |
-| Entropia N | Rola ND12 — perde esse valor de Sanidade permanentemente |
+| Entropia 1 | Rola 1D12 — perde esse valor de Sanidade |
+| Entropia 2 | Rola 2D12 — perde esse valor de Sanidade |
+| Entropia 3 | Rola 3D12 — perde esse valor de Sanidade |
+| Entropia N | Rola ND12 — perde esse valor de Sanidade |
 
 > *O Arcano não é gratuito. Cada camada mais funda que você abre em si mesmo deixa uma cicatriz na alma.*
 
@@ -94,14 +94,11 @@ Quando a Sanidade de um personagem **chega a zero**, ele adquire **1 Trauma**.
 O Estado de Loucura é um mini-jogo de sobrevivência mental. O personagem enfrenta a própria fragmentação como se ela fosse uma entidade com vontade própria — e o resultado determina se ele consegue voltar.
 
 **Estrutura:**
-- O jogador rola **1D6 + 1D12 + 1D20** e escolhe o **melhor resultado** entre os três dados.
-- A **Morte Mental** rola seu próprio pool e também escolhe o melhor resultado.
-- Se o personagem tira **igual ou maior**, sobrevive àquela rodada.
-- Se a Morte Mental tira **maior**, o personagem sucumbe.
-
-**Escalada:**
-- A cada rodada que o personagem sobrevive, a Morte Mental ganha **+1D20** ao seu pool — tornando cada rodada subsequente mais perigosa.
-- O jogador pode gastar **PE** para converter um de seus dados em **1D20** antes de rolar.
+- O jogador rola **1D6, 1D12, 1D20** e escolhe a **ordem que vai jogar** entre os três dados.
+- A **Morte(Mestre)** rola seu próprio pool e também escolhe a ordem.
+- Jogador e mestre jogam o primeiro dado da ordem, e comparam o valor, aquele que obtiver o maior valor, ganha aquela rodada. Eles continuam com a ordem dos dados, até ver quem ganha 2 rodadas.
+- Se o personagem vencer, o personagem aguenta e não sucumbe, ganhando um **trauma** e voltando com **1 de Sanidade**.
+- Se o mestre vencer, o personagem sucumbe e aquele personagem morre para o jogador e vira um NPC louco para o mestre.
 
 As consequências de sucumbir, os tipos de Trauma e a recuperação de Sanidade estão detalhados no capítulo de Condições e Trauma.
 
@@ -137,11 +134,11 @@ As Runas são aprendidas durante o jogo — encontradas em artefatos, ensinadas 
 
 As Runas estão organizadas em três categorias. Essa lista não é exaustiva — o Mestre pode introduzir Runas novas conforme a narrativa exigir.
 
-**Verbos:** DISPARAR, EXPLODIR, INVOCAR, PURIFICAR, ABSORVER, PROJETAR, DRENAR, DISSIPAR, CRIAR, DESTRUIR, VINCULAR, LIBERTAR, PENETRAR, REPELIR, TRANSFORMAR, CONCENTRAR, DIVIDIR, RESTAURAR, PARALISAR, REVELAR
+**Verbos:** DISPARAR, EXPLODIR, INVOCAR, PURIFICAR, ABSORVER, PROJETAR, DRENAR, DISSIPAR, CRIAR, DESTRUIR, VINCULAR, LIBERTAR, PENETRAR, REPELIR, TRANSFORMAR, AUMENTAR, DIVIDIR, RESTAURAR, PARAR, REVELAR
 
-**Adjetivos:** ARDENTE, FRIO, VELOZ, DENSO, AGUDO, AMPLO, ETERNO, SILENCIOSO, INVISÍVEL, CAÓTICO, PRECISO, SOMBRIO, LUMINOSO, PESADO, FRAGMENTADO, PURO, VENENOSO, VASTO, EFÊMERO, INVERTIDO
+**Adjetivos:** ARDENTE, FRIO, VELOZ, DENSO, AGUDO, AMPLO, SILENCIOSO, INVISÍVEL, RAPIDO, SOLIDO, ESCURO, LUMINOSO, PESADO, FRAGMENTADO, PURO, VENENOSO, VASTO, EFÊMERO, INVERTIDO
 
-**Substantivos:** FOGO, GELO, TEMPO, MENTE, BARREIRA, VENENO, SOMBRA, LUZ, VOZ, SANGUE, VENTO, PEDRA, ALMA, VAZIO, CORRENTE, ECO, NÉVOA, RAIO, MEMÓRIA, PORTAL
+**Substantivos:** FOGO, GELO, TEMPO, MENTE, BARREIRA, VENENO, SOMBRA, LUZ, VOZ, SANGUE, VENTO, PEDRA, ALMA, VAZIO, CORRENTE, ECO, NÉVOA, RAIO, MEMÓRIA, PORTAL, ALMA, ESPIRITO, CRIATURA, CORRENTE, TEMPO
 
 ---
 
@@ -152,24 +149,21 @@ A forma como o conjurador libera a energia determina **quanto tempo a magia perm
 ### Rápida
 A magia é um lampejo — ocorre instantaneamente e se dissipa.
 
-- **Custo:** 1 ação ou 1 reação
 - **Duração:** Imediata, sem persistência
 - **Uso típico:** Disparos, curas rápidas, escudos instantâneos
 
 ### Concentrada
 A magia persiste enquanto o conjurador mantiver o foco.
 
-- **Custo:** 2 ações para iniciar
 - **Manutenção:** Sempre que o personagem realizar uma ação complexa enquanto mantém a Concentrada, deve rolar um teste de **Vontade** para manter a execução ativa. Falha encerra a magia imediatamente.
 - **Uso típico:** Barreiras sustentadas, campos de força, buffs prolongados
 
 ### Maldição
 A magia é tecida na própria realidade — permanente até ser removida.
 
-- **Custo:** 2 ações
 - **Duração:** Permanente em cena, até que um ritual de dissipação seja realizado ou o conjurador a cancele voluntariamente
-- **Complexidade:** Execuções de Maldição são **sempre** consideradas de Complexidade máxima no cálculo da DT
-- **Uso típico:** Amaldiçoar alvos, alterar permanentemente um ambiente, vincular efeitos a objetos ou locais
+- **Complexidade:** Execuções de Maldição são **sempre** consideradas de Complexidade alta no cálculo da DT
+- **Uso típico:** Invocações, Amaldiçoar alvos, alterar permanentemente um ambiente, vincular efeitos a objetos ou locais
 
 ---
 
@@ -191,7 +185,7 @@ Quando a intenção da magia é causar dano direto, o resultado do teste arcano 
 Os dados de dano arcano funcionam como qualquer outro dano — cada resultado é comparado à DA do alvo individualmente.
 
 ### Armamentos Arcanos
-Cajados e Livros aumentam diretamente a quantidade de dados no total do dano arcano, conforme o Tier do item (ver capítulo de Combate).
+Cajados e Livros aumentam diretamente a quantidade de dados no total do dano arcano, conforme descrição do item.
 
 ---
 
@@ -210,16 +204,16 @@ Cada stack pode ser usado para:
 
 Um único teste arcano pode **distribuir seus stacks entre múltiplas condições diferentes**, desde que a magia descrita faça sentido para todos os efeitos aplicados.
 
-> *Exemplo: Mira conjura uma magia de vento cortante e tira 20 no teste (4 stacks). Ela distribui: 2 stacks de -2 em Acrobacia do inimigo (desequilibrado), 1 stack de -1 DA (armadura danificada) e 1 stack de sangramento. Tudo coerente com "vento cortante".*
+> *Exemplo: Mira conjura uma magia de rajada de vento e tira 20 no teste (4 stacks). Ela distribui: 2 stacks de -2 em Acrobacia do inimigo (desequilibrado) e -2 stack de combate do inimigo. Tudo coerente com "rajada de vento".*
 
 ### Resistência do Alvo
 
 Alvos que **não desejam** receber o efeito podem resistir:
 
 - **Resistência Ativa:** O alvo rola um teste de **Vontade** (ou outra perícia relevante) contra o resultado arcano do conjurador.
-- **Resistência Passiva:** Se o alvo não está ativamente tentando resistir, usa-se sua **Vontade Passiva** (⌊Vontade ÷ 2⌋) como DT de referência.
+- **Resistência Passiva:** Se o alvo não está ativamente tentando resistir, o mestre achar necessario um teste, deve rolar um teste de **Vontade** com **Desvantagem**.
 
-> **Nota para o Mestre:** Um alvo que se recusa a receber mesmo um efeito positivo (ex: uma cura não desejada) **aumenta a Complexidade** do teste arcano. Forçar o Arcano sobre uma vontade resistente é inerentemente mais difícil.
+> **Nota para o Mestre:** Um alvo que se recusa a receber mesmo um efeito positivo (ex: uma cura não desejada) **aumenta a Complexidade** do teste arcano. Forçar o Arcano sobre uma vontade resistente é inerentemente mais difícil, aumentando a DT do teste arcano.
 
 ### Infundir Arcano em Objetos
 
@@ -232,6 +226,8 @@ O processo segue a mesma regra de stacks:
 Stacks infundidos podem adicionar dano extra ao objeto, aumentar DA, aplicar efeitos ao ser atingido, ou qualquer propriedade narrativamente coerente.
 
 > *Exemplo: Kain deseja encantar sua espada com fogo que queima ao contato. Ele faz o teste arcano e obtém 20 — 4 stacks. Ele infunde 4 stacks de queimadura na lâmina: cada acerto com a espada passa a aplicar 4 stacks de queimadura ao alvo.*
+
+> Aplicar infusão em equipamentos ou itens que já possuem um efeito, a complexidade para realizar o teste arcano se torna mais dificil.
 
 ---
 
@@ -267,11 +263,14 @@ A DT final é uma combinação dos dois pilares. O Mestre escolhe um número den
 
 | Grandeza × Complexidade | DT Sugerida |
 |---|---|
-| Pequena × Simples | 10 – 14 |
-| Pequena × Moderada | 16 – 18 |
-| Média × Simples | 14 – 18 |
-| Média × Moderada | 20 – 24 |
-| Grande × Moderada | 24 – 28 |
-| Qualquer × Complexa | 28 – 36+ |
+| Pequena × Simples | 12 – 18 |
+| Pequena × Moderada | 18 – 24 |
+| Pequena × Complexa | 24+ |
+| Média × Simples | 18 – 24 |
+| Média × Moderada | 24 – 30 |
+| Média × Complexa | 30+ |
+| Grande × Simples | 24 - 30 |
+| Grande × Moderada | 30 – 40 |
+| Grande × Complexa | 40+ |
 
-> *Exemplo: "Criar uma barreira de chamas entre nós e os inimigos" — Grandeza Média (cobre uma linha de 3 metros), Complexidade Moderada (forma específica, duração sustentada). DT sugerida: 20–22.*
+> *Exemplo: "Criar uma barreira de chamas entre nós e os inimigos" — Grandeza Média (cobre uma linha de 3 metros), Complexidade Moderada (forma específica, duração sustentada). DT sugerida: 24–30.*
