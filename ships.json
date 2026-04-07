@@ -1,11 +1,11 @@
 [
   {
-    "name": "A Lâmina Veloz",
+    "name": "Céu Partido",
     "type": "Material — Madeira Élfica",
     "size": "Corveta",
     "image": null,
     "lore": "Navio de contrabando reformado em Union. Rápida, discreta e com cicatrizes de batalha repintadas tantas vezes que ninguém sabe mais a cor original do casco. Carrega segredos melhor do que carga.",
-    "hp": 13,
+    "hp": 11,
     "dn": 12,
     "slots": { "total": 7, "used": 7 },
     "captainAttribute": "Destreza",
@@ -22,12 +22,12 @@
     ]
   },
   {
-    "name": "Punho de Ferro",
+    "name": "Cascudo",
     "type": "Material — Liga de Ferro Arcano",
     "size": "Fragata",
     "image": null,
     "lore": "Fragata de guerra pertencente a um ex-Imperial de Camelot. Construída para impor — e consegue. O brasão dos Imperiais foi apagado, mas a silhueta ainda faz portos recuarem.",
-    "hp": 24,
+    "hp": 10,
     "dn": 14,
     "slots": { "total": 10, "used": 10 },
     "captainAttribute": "Destreza",
@@ -49,7 +49,7 @@
     "size": "Galeão",
     "image": null,
     "lore": "Uma tartaruga colossal de 200 anos domesticada por um clã nômade Avaro. O convés cresceu sobre sua carapaça ao longo de décadas. Ela não é rápida — mas quando para, vira uma ilha. Literalmente.",
-    "hp": 35,
+    "hp": 23,
     "dn": 10,
     "slots": { "total": 13, "used": 12 },
     "captainAttribute": "Influência",
@@ -63,7 +63,7 @@
       { "name": "Livraria", "category": "Biblioteca", "slots": 1, "effect": "+1 em testes de bordo", "test": "—" }
     ],
     "traits": [
-      "Regeneração — recupera 2 HP automaticamente a cada 3 turnos de combate.",
+      "Regeneração — recupera 1 HP automaticamente a cada 3 turnos de combate.",
       "Vontade Própria — se o Capitão falhar num teste de Dominação (Influência DT 14), a tartaruga ignora a ordem daquele turno.",
       "Âncora Viva — quando imóvel, serve como base de operações. Tripulantes a bordo recuperam +1 Sanidade por descanso longo."
     ]

@@ -1,7 +1,7 @@
 [
   {
     "name": "Pedroso",
-    "levelRange": "4 – 8",
+    "levelRange": "20 – 30",
     "style": "Territorial · Selvagem",
     "image": "/assets/images/creatures/creature_pedroso.jpg",
     "lore": "Criaturas rochosas que habitam cavernas e dutos subterrâneos, especialmente em Britannia. Alimentam-se de gemas e Eltys, acumulando fragmentos cristalinos no núcleo do corpo. Quando morto com o núcleo intacto, a energia acumulada causa uma divisão celular abrupta. Um Pedroso sozinho raramente ataca — um bando em território ameaçado é outra conversa.",
@@ -24,69 +24,65 @@
       { "name": "Mitose", "description": "(Interação — ocorre na morte) Com o núcleo intacto, o corpo se fragmenta em 2 Pedrosos Menores. Acontece automaticamente.", "once": "Na morte" }
     ],
     "reactions": [
-      { "name": "Defender", "description": "Comprime o corpo, elevando a DA em +3 neste turno.", "once": "1× por turno" }
+      { "name": "Defender", "description": "Permite DEFENDER" }
     ],
     "variants": [
       { "name": "Pedroso Menor", "diceBase": "2D12", "hp": 15, "da": 4, "note": "Mesmos atributos e ações, sem Aglomerar nem Mitose." }
     ]
   },
   {
-    "name": "Névoa-Garras",
-    "levelRange": "6 – 12",
-    "style": "Territorial · Furtivo",
-    "image": null,
-    "lore": "Criatura semissólida que habita as camadas mais densas do Mar de Nuvens. Sua forma lembra um felino — mas translúcida, com nervos de energia arcana pulsando sob a superfície. Não ataca por fome: ataca por território. Uma que detecta uma embarcação ou grupo frequentemente os persegue por horas.",
-    "diceBase": "2D12",
-    "hp": 45,
-    "da": 3,
-    "dp": 1,
-    "attributes": { "fisico": 2, "destreza": 5, "intelecto": 1, "influencia": 3 },
-    "immune": ["Congelado", "Paralisado"],
-    "vulnerable": ["Arcano (Energia)", "Fogo"],
+    "name": "Dragão das Planicies",
+    "levelRange": "60 – 80",
+    "style": "Territorial · Agressivo",
+    "image": "/assets/images/creatures/creature_planicie_dragon.jpg",
+    "lore": "São os dragões mais comuns de se encontrar, normalmente ficam no topo de colinas e evitam voar fora das planícies, por isso o nome de Dragão da Planície. Sua pele verde os ajudam a se camuflar, fazendo que muitas presas não notem sua presença. Facilitando em sua caçada.",
+    "diceBase": "3D20",
+    "hp": 40,
+    "da": 11,
+    "dp": 5,
+    "attributes": { "fisico": 10, "destreza": 10, "intelecto": 10, "influencia": 9 },
+    "immune": ["Anomalia", "Fogo", "Gelo"],
+    "vulnerable": ["Perfurante", "Veneno"],
     "interactions": [
-      { "name": "Dissolução", "description": "Em qualquer turno que não receber dano, fica invisível até o próximo ataque. Atacar invisível aplica Desvantagem. Percepção (DT 16) revela a posição." },
-      { "name": "Instabilidade Arcana", "description": "Dano Arcano (Energia) dissipa a névoa: perde Dissolução por 1 turno e sofre +1 dano por dado que passar da DA." },
-      { "name": "Bando", "description": "Com duas ou mais Névoa-Garras no combate, cada uma ganha +1 em todos os testes enquanto houver um aliado vivo." }
+      { "name": "Camuflagem", "description": "Se estiver em uma floresta ou campo verde, o Dragão da Planície pode se camuflar. Todos devem rodar um teste de PERCEPÇÃO antes de notar sua presença." },
+      { "name": "Carapaça", "description": "Reduz o dano recebido em 3 pontos para danos provenientes de arcano." },
+      { "name": "Fúria", "description": "Quando o Dragão da Planície atinge 50% de sua vida, ele entra em fúria. Ele ganha +2 em todos os seus atributos e suas ações causam dano adicional de 1D6." }
     ],
     "actions": [
-      { "name": "Garras de Névoa", "description": "Ataque rápido. Dano: 2D8 Corte. Se ambos os dados passarem da DA, aplica Sangramento (1 stack)." },
-      { "name": "Mergulho", "description": "Mergulha em alta velocidade de cima. Reflexo (DT 15): falha = 3D10 Corte + Derrubado. Sucesso = metade dos dados." },
-      { "name": "Uivo da Névoa", "description": "Som gutural em raio de 15m. Vontade (DT 14): falha = Atordoado por 1 turno.", "once": "1× por combate" }
+      { "name": "Presas Verdejantes", "description": "Causa XD10 de dano Perfurante, sendo X o FISICO do dragao da Planicie." },
+      { "name": "Voar", "description": "Permite voar, isso dobrar sua ação de Deslocamento." },
+      { "name": "Uivo da Planície", "description": "Som gutural em raio de 15m. Vontade (DT 14): falha = Atordoado por 1 turno.", "once": "1× por combate" }
     ],
     "reactions": [
-      { "name": "Desvio de Névoa", "description": "Teste de Destreza (2D12+5) contra o ataque. Se superar, dano reduzido à metade.", "once": "2× por turno" },
-      { "name": "Contra-Garra", "description": "Quando acertada em corpo a corpo, reage com 1D8 Corte imediato. O atacante pode usar sua Reação para bloquear." }
+      { "name": "Defender", "description": "Permite DEFENDER." },
+      { "name": "Contra-Rabada", "description": "Recebe o dano e vira rapidamente tentando acertar com uma rabada, causando XD10 sendo X o FISICO do dragao da Planicie." }
     ],
     "variants": []
   },
   {
-    "name": "Leme-Sombra",
+    "name": "Hondra",
     "levelRange": "12 – 18",
-    "style": "Passivo · Selvagem",
-    "image": null,
-    "lore": "Entidade colossal (~30m) que navega as correntes profundas do Mar de Nuvens. Seu dorso emite luz arcana pulsante que muitos navegadores já confundiram com estrelas baixas. Quando ascende, bloqueia o sol por minutos inteiros. Não é malévolo — simplesmente não percebe que navios são habitados.",
-    "diceBase": "2D20",
-    "hp": 130,
-    "da": 5,
-    "dp": 2,
-    "attributes": { "fisico": 8, "destreza": 1, "intelecto": -2, "influencia": 4 },
-    "immune": ["Veneno", "Sangramento", "Congelado", "Psíquico"],
-    "vulnerable": ["Arcano (Anomalia)"],
+    "style": "Agressivo · Selvagem · Predador",
+    "image": "/assets/images/creatures/creature_hondra.jpg",
+    "lore": "São grandes onças com uma carapaça de pedra que cobre suas costas e ombros, dando-lhes uma aparência imponente. Elas são caçadoras ágeis e silenciosas, usando suas garras afiadas para atacar suas presas. As Hondras são conhecidas por sua habilidade de se camuflar em ambientes rochosos, graças a sua pelagem grudenta que permite com que as rochas fiquem grudadas. Elas são predadores solitários, mas podem ser encontradas em grupos durante a época de acasalamento.",
+    "diceBase": "3D12",
+    "hp": 25,
+    "da": 6,
+    "dp": 3,
+    "attributes": { "fisico": 6, "destreza": 6, "intelecto": 0, "influencia": 0 },
+    "immune": [],
+    "vulnerable": ["Bruto"],
     "interactions": [
-      { "name": "Colossal", "description": "Armas de mão causam apenas metade dos dados de dano. Longa distância, magias e armamentos de navio causam dano normal." },
-      { "name": "Luz Arcana", "description": "Irradia 60m. Furtividade com Desvantagem no raio. Conjuradores dentro do raio reduzem a DT de conjurações em 2." },
-      { "name": "Despertar", "description": "Só ataca ativamente após sofrer mais de 30 pontos de dano acumulado. Antes, age apenas por descuido." },
-      { "name": "Sangue Arcano", "description": "Abaixo de 50% de Vida, ataques corpo a corpo causam 1D6 Arcano de volta ao atacante." }
+      { "name": "Quebra Nozes", "description": "Sempre que Hondra receber um golpe da categoria BRUTO, ela GANHA +1 de DESTREZA porem perde 1 DA. Até chegar no maximo 10 de DESTREZA." },
+      { "name": "Ganho de Massa", "description": "Cada vez que pedras são grudadas em Hondra, sua DESTREZA diminui em -1 porem ganha 1 DA. Até chegar no mínimo 3 de DESTREZA." }
     ],
     "actions": [
-      { "name": "Passagem", "description": "Atravessa o espaço dos personagens. Faixa de 6m de largura: 4D12 Esmagamento. Atletismo (DT 18) para desviar sem dano." },
-      { "name": "Vibração do Abismo", "description": "Vibração profunda em raio de 30m. Fortitude (DT 16): falha = Atordoado por 1 turno. Estruturas frágeis sofrem dano automaticamente.", "once": "1× a cada 2 turnos" },
-      { "name": "Caudada", "description": "Cauda larga em arco 180°. Dano: 3D12 Esmagamento. Escudo permite Defender — demais só Esquivar (Atletismo DT 16)." },
-      { "name": "Mergulho de Emergência", "description": "Mergulha abruptamente. Sucção: raio 20m, Atletismo (DT 18) ou arrastado 10m + Desequilibrado por 2 turnos.", "once": "1× por combate" }
+      { "name": "Garras Letais", "description": "Causa XD6 de dano PERFURANTE, sendo X o valor de DESTREZA" },
+      { "name": "Vibração Sismica", "description": "Explode todo o casco em sua volta, acertando todos com dano BRUTO de XD8 sendo X o valor da DA. Isso ativa o QUEBRA NOZES uma vez.", "once": "DA >= 7" }
     ],
     "reactions": [
-      { "name": "Carapaça Arcana", "description": "Ativa o campo de energia do dorso. Eleva DA em +2 para aquele ataque.", "once": "1× por turno" },
-      { "name": "Varredura de Cauda", "description": "Se atingido por 2+ atacantes no mesmo turno, afasta todos adjacentes. Reflexo (DT 16): falha = empurrado 5m + Derrubado." }
+      { "name": "Casco Rígido", "description": "Permite DEFENDER." },
+      { "name": "Mobilidade", "description": "Apenas depois de alcançar 7 DESTREZA, ele pode usar essa habilidade para ESQUIVAR com 3D12 + DESTREZA." }
     ],
     "variants": []
   }
