@@ -43,6 +43,27 @@ export function isOwnedCharacter(id: string): boolean {
   return !!getCustomCharacter(id)
 }
 
+const PE_KEY = 'arcadia_pe_checks'
+
+export function loadPeChecks(id: string): Record<string, boolean[]> {
+  try {
+    const raw = localStorage.getItem(PE_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, Record<string, boolean[]>>) : {}
+    return all[id] ?? {}
+  } catch {
+    return {}
+  }
+}
+
+export function savePeChecks(id: string, checks: Record<string, boolean[]>): void {
+  try {
+    const raw = localStorage.getItem(PE_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, Record<string, boolean[]>>) : {}
+    all[id] = checks
+    localStorage.setItem(PE_KEY, JSON.stringify(all))
+  } catch {}
+}
+
 /** Persist only the current HP/Sanidade without touching the rest of the sheet. */
 export function saveCurrentValues(id: string, currentHp: number, currentSanidade: number): void {
   const all = loadCustomCharacters()

@@ -18,6 +18,8 @@ import {
   getCustomCharacter,
   isOwnedCharacter,
   saveCurrentValues,
+  loadPeChecks,
+  savePeChecks,
 } from "@/lib/localCharacters";
 
 const PRESET_CHARACTERS = charactersData as Character[];
@@ -249,7 +251,7 @@ const ATTR_GROUPS = [
 ];
 
 /* ─── Honeycomb grid ───────────────────────────────────────────── */
-const HEX_R = 11;
+const HEX_R = 14;
 const HEX_W = Math.sqrt(3) * HEX_R;
 const ROW_SPACING = HEX_R * 1.5;
 
@@ -303,7 +305,7 @@ function HoneycombGrid({
 
   return (
     <div>
-      <div className="flex items-baseline gap-3 mb-3">
+      <div className="flex items-baseline gap-3 mb-2">
         <p
           className="text-xs font-semibold uppercase tracking-[0.2em]"
           style={{ color: accentColor, fontFamily: "var(--font-ui)" }}
@@ -325,7 +327,55 @@ function HoneycombGrid({
         >
           / {total}
         </span>
-        {onCellClick && (
+      </div>
+      {onCellClick && (
+        <div className="flex items-center gap-2 mb-3">
+          <button
+            disabled={current <= 0}
+            onClick={() => onCellClick(current - 1)}
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: 4,
+              background: current > 0 ? `${accentColor}18` : "rgba(255,255,255,0.03)",
+              border: `1px solid ${current > 0 ? accentColor + "55" : "rgba(255,255,255,0.08)"}`,
+              color: current > 0 ? accentColor : "rgba(255,255,255,0.18)",
+              fontFamily: "var(--font-ui)",
+              fontSize: "1rem",
+              lineHeight: 1,
+              cursor: current > 0 ? "pointer" : "not-allowed",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "all 0.15s",
+              flexShrink: 0,
+            }}
+          >
+            −
+          </button>
+          <button
+            disabled={current >= total}
+            onClick={() => onCellClick(current)}
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: 4,
+              background: current < total ? `${accentColor}18` : "rgba(255,255,255,0.03)",
+              border: `1px solid ${current < total ? accentColor + "55" : "rgba(255,255,255,0.08)"}`,
+              color: current < total ? accentColor : "rgba(255,255,255,0.18)",
+              fontFamily: "var(--font-ui)",
+              fontSize: "1rem",
+              lineHeight: 1,
+              cursor: current < total ? "pointer" : "not-allowed",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "all 0.15s",
+              flexShrink: 0,
+            }}
+          >
+            +
+          </button>
           <span
             style={{
               color: "var(--color-text-muted)",
@@ -333,13 +383,12 @@ function HoneycombGrid({
               fontSize: "0.6rem",
               letterSpacing: "0.1em",
               textTransform: "uppercase",
-              marginLeft: 4,
             }}
           >
-            clique para editar
+            ou clique no hexágono
           </span>
-        )}
-      </div>
+        </div>
+      )}
       <svg
         width={svgW}
         height={svgH}
@@ -377,9 +426,13 @@ function HoneycombGrid({
 function AttributeBlock({
   group,
   character,
+  peChecks,
+  onPeToggle,
 }: {
   group: (typeof ATTR_GROUPS)[number];
   character: Character;
+  peChecks: boolean[];
+  onPeToggle: (idx: number) => void;
 }) {
   return (
     <div
@@ -409,6 +462,52 @@ function AttributeBlock({
           {character.attributes[group.attr]}
         </span>
       </div>
+
+      {/* PE checkboxes */}
+      <div
+        className="px-4 py-2 flex items-center gap-2"
+        style={{ borderBottom: `1px solid ${group.color}22` }}
+      >
+        <span
+          style={{
+            fontFamily: "var(--font-ui)",
+            fontSize: "0.55rem",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: "rgba(200,210,230,0.7)",
+            marginRight: 2,
+          }}
+        >
+          PE
+        </span>
+        {peChecks.map((checked, i) => (
+          <button
+            key={i}
+            onClick={() => onPeToggle(i)}
+            title={checked ? `Desmarcar PE ${i + 1}` : `Marcar PE ${i + 1}`}
+            style={{
+              width: 16,
+              height: 16,
+              borderRadius: 3,
+              background: checked ? `${group.color}33` : "rgba(255,255,255,0.06)",
+              border: `1px solid ${checked ? group.color + "CC" : "rgba(200,210,230,0.35)"}`,
+              color: checked ? group.color : "rgba(200,210,230,0.35)",
+              fontSize: "0.55rem",
+              lineHeight: 1,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "all 0.12s",
+              flexShrink: 0,
+              padding: 0,
+            }}
+          >
+            {checked ? "✦" : "✧"}
+          </button>
+        ))}
+      </div>
+
       <div className="px-4 py-3 space-y-2.5">
         {group.skills.map((skill) => {
           const val = character.skills[skill.key];
@@ -877,6 +976,16 @@ export function CharacterPage() {
   );
   const [draggingRuna, setDraggingRuna] = useState<string | null>(null);
 
+  const [peChecks, setPeChecks] = useState<Record<string, boolean[]>>(() => {
+    const saved = id ? loadPeChecks(id) : {};
+    return {
+      fisico:    saved.fisico    ?? Array(5).fill(false),
+      destreza:  saved.destreza  ?? Array(5).fill(false),
+      intelecto: saved.intelecto ?? Array(5).fill(false),
+      influencia: saved.influencia ?? Array(5).fill(false),
+    };
+  });
+
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
   );
@@ -916,6 +1025,15 @@ export function CharacterPage() {
     setSlottedRunas((prev) => {
       const next = [...prev];
       next[slotIdx] = null;
+      return next;
+    });
+  }
+
+  function handlePeToggle(attr: string, idx: number) {
+    setPeChecks((prev) => {
+      const next = { ...prev, [attr]: [...prev[attr]] };
+      next[attr][idx] = !next[attr][idx];
+      if (id) savePeChecks(id, next);
       return next;
     });
   }
@@ -1255,6 +1373,8 @@ export function CharacterPage() {
                 key={group.attr}
                 group={group}
                 character={character}
+                peChecks={peChecks[group.attr]}
+                onPeToggle={(idx) => handlePeToggle(group.attr, idx)}
               />
             ))}
           </div>
