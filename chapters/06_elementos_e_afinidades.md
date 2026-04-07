@@ -18,7 +18,7 @@ O Mestre usa os elementos para classificar cada intenção arcana e determinar o
 
 A **Energia** é a manifestação.
 
-Representa a criação de qualquer material ou elemento físico — fogo, eletricidade, plasma, luz concentrada. É o mais explosivo e direto dos elementos: impossível de ignorar, difícil de esconder.
+Representa a criação de qualquer material ou elemento físico — fogo, eletricidade, gelo, luz. É o mais explosivo e direto dos elementos: impossível de ignorar, difícil de esconder.
 
 Conjuradores de Energia não perguntam. Eles criam.
 
@@ -37,10 +37,13 @@ A **Anomalia** é a transmutação.
 
 Conjuradores dessa vertente manipulam formas vivas de entropia, mutação e alteração física. Criam seres, dobram corpos e moldam matéria com instinto — não com lógica. A Anomalia não segue regras naturais: ela as reescreve.
 
+Permite manipular elementos já existentes, e moldar eles a sua vontade.
+
 **Exemplos de execução:**
 - Transformar água em gelo sólido.
 - Criar um braço extra funcional a partir do próprio corpo.
 - Forjar uma lâmina nas mãos, dura como aço.
+- Se tiver uma tocha perto, permite manipular o fogo da tocha para lançar ela a um inimigo.
 
 ---
 
@@ -52,23 +55,49 @@ O **Paradoxo** é manipular o conceito.
 
 Seus praticantes distorcem e moldam conceitos abstratos — tempo, probabilidade, gravidade, trajeto. O "tempo" é uma verdade que todos aceitam; um conjurador de Paradoxo pode pegá-lo, dobrá-lo e fazer com que essa verdade perca o consenso.
 
+É considerado conceito, tudo o que a maioria das pessoas acreditam ser verdade em Arcadia, o paradoxo pode moldar ou alterar esse conceito para seu propósito.
+Sempre quando for usar uma magia do tipo paradoxo, o **conjurador** deve deixar explicito qual conceito quer usar e o que deseja alterar, quanto mais oposto ao que o conceito normalmente faz, mais complexo vai ser a magia.
+Exemplo: 
+> **facil:** Manipular a gravidade para cair mais levemente.
+> **dificil:** Manipular a gravidade para nega-la e permitir voar.
+
 Por sua natureza, magias de Paradoxo **tendem** a alta Complexidade — o Mestre deve calibrar com atenção. Não é uma regra absoluta, mas distorcer um conceito fundamental raramente é simples.
 
 **Exemplos de execução:**
 - Manipular uma moeda para cair "coroa" todas as vezes, alterando o conceito de probabilidade.
-- Teletransportar um alvo para um local visível, moldando o conceito de trajeto.
+- Teletransportar um alvo para um local visível, moldando o conceito de espaço.
 - Anular o conceito de gravidade para si mesmo, permitindo voar.
 
 ---
 
 ### Astral
 
-> *Nem toda luz é bondosa — algumas brilham demais para mortais verem.*
+> *Mergulhar entre os planos, pode afogar até os mais experientes.*
 
 O **Astral** é emprestar o poder de outro plano.
 
-Magos astrais conseguem migrar e moldar o poder de outro plano ao plano Finito. Tocar no plano **Rede dos sonhos** permite acessar memorias e conhecimentos de todo e qualquer pessoa, isso permite ao usuario incorporar os conhecimentos de luta de um antigo guerreiro, aumentando sua pericia de Combate.
-Tocar no plano **Mundo das Tintas** precisa encontar na cor desejada, e trazer os desejos daquela cor ao plano Finito, sendo algo totalmente aleatorio.
+Magos astrais conseguem migrar e moldar o poder de outro plano ao seu plano atual, normalmente o plano Finito.
+Para cada plano, existe uma interação diferente:
+#### Rede dos Sonhos
+Tocar no plano **Rede dos sonhos** permite acessar memorias e conhecimentos de todo e qualquer pessoa, acessando suas habilidades e pericias.
+Isso permite, por exemplo, um usuario incorporar os conhecimentos de luta de um antigo guerreiro, aumentando sua pericia de Combate.
+
+#### Mundo das Tintas
+Tocar no plano **Mundo das Tintas** precisa encontrar a cor desejada no local que o personagem estiver, e trazer os desejos daquela cor ao plano Finito, sendo algo totalmente aleatorio.
+| Dado | **Cor** | **Intenção** |
+| ---- |---|-------|
+| 1    | Azul | Mover |
+| 2    | Vermelho | Aprimorar |
+| 3    | Amarelo | Barreira |
+| 4    | Laranja | Projétil |
+| 5    | Roxo | Ilusão |
+| 6    | Verde | Invocação |
+| -    | Preto | é ausencia de cor, não consegue acessar nenhum poder através dessa cor. |
+| -    | Qualquer outra Cor | totalmente aleatorio |
+
+> Quando for **qualquer outra cor**, o conjurador deve rodar **1D6** para definir qual vai ser a intenção da cor sobre aquele alvo.
+
+#### Reino das Almas
 Tocar no plano **Reino das almas** permite conversar e resgatar essas almas estagnadas enquanto esperam para serem esquecidas.
 
 **Exemplos de execução:**

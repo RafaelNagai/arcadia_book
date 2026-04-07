@@ -1,6 +1,6 @@
 # Condições e Trauma
 
-> *Todo corpo tem um limite. Toda mente também. A diferença é que o corpo avisa quando está chegando lá.*
+> *Todo corpo tem um limite. Toda mente também. A diferença é que o corpo avisa quando está chegando em seu limite.*
 
 ---
 
@@ -20,13 +20,33 @@ Os dois recursos são independentes. Um guerreiro pode estar fisicamente intacto
 
 O HP mede a resistência do corpo. Quando chega a **zero ou menos**, o personagem entra no **Estado Morrendo**.
 
+### Valor Incial de Vida
+
+Todo personagem começa com **15 de Vida Máxima**, acrescidos de um bônus baseado no **Fisico** do personagem. O bônus é cumulativo: cada ponto no atributo soma o valor daquela faixa ao total.
+
+| Valor do Atributo | Bônus por ponto | HP Total |
+|--- |---|---|
+| 0  | —  | 15 |
+| 1  | +4 | 19 |
+| 2  | +4 | 23 |
+| 3  | +3 | 26 |
+| 4  | +3 | 29 |
+| 5  | +2 | 31 |
+| 6  | +2 | 33 |
+| 7  | +2 | 35 |
+| 8  | +2 | 37 |
+| 9  | +2 | 39 |
+| 10 | +2 | 41 |
+| 11 | +2 | 43 |
+| Assim sucessivamente |
+
 ### Estado Morrendo
 
 O personagem está à beira da morte — consciente apenas o suficiente para sentir o limite entre a vida e o vazio.
 
 - A cada **turno**, o jogador participa do **Mini Game da Vida** (ver seção adiante).
 - **Aliados** podem tentar estabilizá-lo ou curá-lo durante esse tempo.
-- **Todo dano recebido** enquanto em Estado Morrendo é considerado **crítico** — o corpo não aguenta mais golpes.
+- **Todo dano recebido** enquanto em Estado Morrendo é considerado **crítico** — o corpo não aguenta mais golpes, isso faz com que ele perca automaticamente uma das rodadas do mini-game.
 - Se o personagem recuperar HP suficiente para ficar **acima de 0**, ele escapa do Estado Morrendo.
 - Se **perder o Mini Game**, morre definitivamente.
 
@@ -38,19 +58,23 @@ A Sanidade mede o equilíbrio interno. Quando chega a **zero**, o corpo ainda vi
 
 ### Valor Inicial de Sanidade
 
-Todo personagem começa com **15 de Sanidade**, acrescidos de um bônus baseado no maior entre **Intelecto** e **Influência**. Compare os dois Atributos e use o de maior valor como referência na tabela abaixo. O bônus é cumulativo: cada ponto no atributo soma o valor daquela faixa ao total.
+Todo personagem começa com **15 de Sanidade Máxima**, acrescidos de um bônus baseado no maior entre **Intelecto** e **Influência**. Compare os dois Atributos e use o de maior valor como referência na tabela abaixo. O bônus é cumulativo: cada ponto no atributo soma o valor daquela faixa ao total.
 
 | Valor do Atributo | Bônus por ponto | Sanidade Total |
 |---|---|---|
-| 0 | — | 15 |
-| 1 | +4 | 19 |
-| 2 | +4 | 23 |
-| 3 | +3 | 26 |
-| 4 | +3 | 29 |
-| 5 | +2 | 31 |
-| 6 | +2 | 33 |
-| 7 | +1 | 34 |
-| 8 | +1 | 35 |
+| 0  | —  | 15 |
+| 1  | +4 | 19 |
+| 2  | +4 | 23 |
+| 3  | +3 | 26 |
+| 4  | +3 | 29 |
+| 5  | +2 | 31 |
+| 6  | +2 | 33 |
+| 7  | +2 | 35 |
+| 8  | +2 | 37 |
+| 9  | +2 | 39 |
+| 10 | +2 | 41 |
+| 11 | +2 | 43 |
+| Assim sucessivamente |
 
 > *Exemplo: Mira tem Intelecto 2 e Influência 4. Influência é maior — ela usa esse valor como referência. Sanidade inicial: **29**.*
 
@@ -92,7 +116,7 @@ O Mini Game é decidido em **melhor de 3** — quem vencer **2 rodadas** primeir
 
 | Resultado | Consequência |
 |---|---|
-| **Jogador vence** | O personagem mantém o sopro de vida — aliados podem agir para estabilizá-lo |
+| **Jogador vence** | O personagem mantém o sopro de vida por mais uma rodada — aliados podem agir para estabilizá-lo |
 | **Morte vence** | Morte física definitiva, ou personagem perdido à loucura |
 
 ### Escalada
@@ -147,7 +171,7 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Ferida aberta que causa perda de sangue ao ser reativada.
 
-**Mecânica:** O Sangramento **não causa dano por turno automaticamente**. Em vez disso, cada vez que novo Sangramento é aplicado ao personagem, ele sofre dano imediato igual ao seu **número atual de stacks** — e o stack sobe em 1 (máximo: 6). O dano **ignora Durabilidade** — vai diretamente ao HP.
+**Mecânica:** O Sangramento **não causa dano por turno automaticamente**. Em vez disso, cada vez que novo Sangramento é aplicado ao personagem, ele sofre dano imediato igual ao seu **número atual de stacks** — e o stack sobe em 1. O dano **ignora Durabilidade** — vai diretamente ao HP.
 
 > *Exemplo: Ren tem 3 stacks de Sangramento. Um inimigo aplica outro — ele sofre 3 de dano imediato e o stack passa para 4.*
 
@@ -164,9 +188,9 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Ossos quebrados — limitações físicas significativas.
 
-**Mecânica:** Aplica uma **Penalidade de 1 a 3** (conforme a gravidade) em todas as perícias ligadas a **Físico** e **Destreza**.
+**Mecânica:** Aplica uma **Penalidade de 2 a 10** (conforme a gravidade) em todas as perícias ligadas a **Físico** e **Destreza**.
 
-**Resistência:** Atletismo — teste bem-sucedido pode reduzir a penalidade em 1.
+**Resistência:** Atletismo — teste bem-sucedido pode reduzir a penalidade em 1, dependendo da gravidade.
 
 **Cura e redução:**
 - Imobilização + descanso longo: cura em dias.
@@ -238,8 +262,8 @@ Role **1D20** e consulte a tabela:
 | 5–7 | **Paranoia** | O personagem pode ser forçado a substituir uma perícia escolhida pelo jogador por outra, sem aviso. |
 | 8–10 | **Fobia** | O personagem perde **1 ação** sempre que estiver na presença do Alvo do trauma. |
 | 11–13 | **Medo** | O personagem tem **Desvantagem** em perícias quando age perante o Alvo do trauma. |
-| 14–16 | **Alergia** | O problema se externaliza no corpo: **−3 a −6** em perícias específicas. |
-| 17–19 | **Arrogância / Preconceito** | O personagem não soma bônus de Atributo nem pode usar PE em ações contra o Alvo do trauma. |
+| 14–16 | **Alergia** | O problema se externaliza no corpo: **−3 a −8** em perícias específicas. |
+| 17–19 | **Arrogância / Preconceito** | O personagem não soma bônus de atributo e pericia, e nem pode usar PE em ações contra o Alvo do trauma. |
 | 20 | **Jogador decide** | — |
 
 ### Determinando o Alvo

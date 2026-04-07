@@ -1,6 +1,6 @@
 # Navios
 
-> *Não existe aventura sem uma embarcação. Não existe tripulação sem um lar que voe. E não existe lar que voe sem as mãos que o mantêm de pé.*
+> *A embarcação é o vinculo para nova aventuras.*
 
 ---
 
@@ -188,8 +188,8 @@ Cada dado distribuído pode ser somado a **um teste ou resultado** realizado pel
 
 Cada tripulante pode fazer **1 ação por turno**:
 
-- **Movimentar:** Deslocar-se de um setor para outro.
-- **Executar:** Realizar a ação do setor onde está.
+- **Ação Livre:** Pode se alocar em algum setor ou fazer uma ação livre portanto que convença usando pericias.
+> Ataques de longa-distancia ou magias feitas por tripulantes, que não sejam as ações dos setores, vão ter desvantagem nos testes.
 
 ### 4. Resolução de Ataque
 
@@ -198,8 +198,6 @@ Cada tripulante pode fazer **1 ação por turno**:
 3. Se o resultado de um dado **ultrapassa o dobro da DN** = **2 de dano** naquele dado.
 
 > *Exemplo: DN inimiga = 5. Um tripulante rola 4D12 e obtém [3, 6, 8, 11]. O 3 não passa — 0 dano. O 6 passa a DN — 1 dano. O 8 passa a DN — 1 dano. O 11 ultrapassa o dobro (DN×2 = 10) — 2 de dano. Total: 4 de dano.*
-
-**Milagre em Combate Naval:** Se um tripulante tirar **dois 12s naturais** num ataque, pode escolher **desativar um setor específico** do navio inimigo em vez de causar dano normal.
 
 ---
 
@@ -219,6 +217,8 @@ O campo de batalha se divide em dois cenários:
 
 - **Cenário A:** Navio Atacante
 - **Cenário B:** Navio Defensor
+
+Quando é feito a conexão, isso se torna um campo de batalha, e deve-se usar as regras do combate, com apenas esse adendo as regras:.
 
 | Situação | Regra |
 |---|---|

@@ -55,9 +55,22 @@ A soma dos dados no Pote de Moral é avaliada **ao final de cada sessão** e det
 
 | Nível | Soma | Consequência |
 |---|---|---|
-| **Moral Lendária** | 50 – 60 | Todos ganham dinheiro e **+1 PE** extra. |
+| **Moral Lendária** | 50 – 60 | Todos ganham **+1 PE** extra, equipamentos ou alguma recompensa que o mestre desejar. |
 | **Moral Estável** | 25 – 49 | O navio opera com eficiência normal. Nada acontece. |
-| **Moral Baixa** | 10 – 24 | Clima de tensão. Todos **perdem dinheiro e PE**. |
+| **Moral Baixa** | 10 – 24 | Clima de tensão. Todos **perdem equipamento ou PE**, fica a criterio do mestre. |
+
+### PM para o Mestre
+
+O PM também pode ser um recurso para o mestre, sempre que pote obtiver um valor 1 em qualquer dado, o mestre pode usar esse valor para acontecer algum evento ou catastrofe.
+Quando o mestre usa um dos dados, ele aumenta o seu valor em 1.
+
+> **O que o mestre pode fazer?**
+Isso pode ficar a vontade do mestre, mas aqui vai algumas dicas de como utilizar.
+- O mestre pode destruir e manter inativado um setor do navio.
+- O mestre pode trazer uma vantagem ao inimigo ou complicação aos personagens em batalha.
+- O mestre pode dizer que uma doença se espalhou pelo navio, e todos os tripulantes estão envenenados e com algum desvantagem em uma pericia especifica.
+
+> Isso ajuda eles a lembrarem a nunca deixarem os dados cairem até o ponto de chegar ao valor 1.
 
 ---
 
@@ -78,12 +91,14 @@ Narrativamente, o personagem fez o trabalho duro parecer fácil, inspirando os c
 Durante o Interlúdio (ver capítulo de Interlúdio), o Capitão pode gastar tempo e recursos para elevar o PM:
 
 **Festas e Bebidas**
-O Capitão gasta **6 dinheiros** (reduzindo dados do PM) para organizar uma celebração a bordo. Todos os dados do PM com valor **menor que 6** são **rerolados**. Resultados novos substituem os anteriores.
+O Capitão gastar recursos próprios ou do navio, para celebrar e tentar aumentar o PM dos tripulantes. Fica ao criterio do mestre o quão bem foi a festa, podendo aumentar de 1 a 3 pontos de algum dado no POTE, até no maximo 11. Não pode aumentar dados para deixar com o valor 12.
 
 **Discurso Inspirador**
-Com um teste bem-sucedido de **Persuasão** ou **Performance**, o Capitão motiva a tripulação com palavras. Um dado do PM à escolha do Capitão recebe **+2** ao seu valor atual — até o máximo de **6**.
+Com um teste bem-sucedido de **Persuasão** ou **Performance**, o Capitão motiva a tripulação com palavras. Um dado do PM à escolha do Capitão pode ser **rerolado**.
 
-> *Exemplo: Um dado no PM mostra 3. O Capitão faz um discurso e o valor sobe para 5. Se mostrasse 5, subiria para 6 — não além.*
+### C. Interação entre tripulantes
+
+O mestre pode distribuir pontos de PM, para interpretação e ações feitas pelos tripulantes que foram relevantes ou que ajudaram o navio ou a tripulação de alguma forma.
 
 ---
 
@@ -103,12 +118,12 @@ Cada **1 dinheiro** gasto reduz o valor atual de **um dado do PM em 1 ponto**. E
 
 **Regras de Gasto:**
 
-1. **Quem decide:** O Capitão autoriza toda compra. Em situações urgentes, a tripulação pode deliberar — mas a palavra final é sempre dele.
+1. **Quem decide:** Qualquer tripulante pode gastar o dinheiro do PM.
 2. **Distribuição do custo:** O custo pode ser distribuído livremente entre quantos dados o grupo quiser. Um item de 6 dinheiros pode sair de um único dado (de 8 para 2) ou de vários dados (−2 em um, −2 em outro, −2 em um terceiro).
 3. **O limite do dado:** Nenhum dado pode ser reduzido abaixo de **1**. Um dado mostrando 1 está esgotado para fins de gasto.
 4. **Falência:** Se **todos os dados** do PM mostram **1**, a tripulação não pode realizar nenhuma compra até que o PM se recupere.
 
-> *Exemplo: PM atual é [3, 7, 5, 2, 8] — Soma: 25. A tripulação paga 6 dinheiros por uma pousada segura para a noite. O Capitão distribui: o dado 7 cai para 4 e o dado 5 cai para 2. Novo PM: [3, 4, 2, 2, 8] — Soma: 19. A tripulação dorme bem. O PM sente o peso da noite.*
+> *Exemplo: PM atual é [3, 7, 5, 2, 8] — Soma: 25. A tripulação paga 6 dinheiros por uma pousada segura para a noite. O dado 7 cai para 4 e o dado 5 cai para 2. Novo PM: [3, 4, 2, 2, 8] — Soma: 19. A tripulação dorme bem. O PM sente o peso da noite.*
 
 ---
 
@@ -149,9 +164,9 @@ Os preços abaixo são referências para o Mestre. Ajuste conforme a região, a 
 | **E** | 2–3 | Improvisado — faca de sucata, escudo de madeira podre |
 | **D** | 4–6 | Simples — espada básica, couro curtido |
 | **C** | 8–12 | Normal — revólver comum, armadura funcional |
-| **B** | 15–20 | Melhorado — sabre refinado, peitoral de ferro |
-| **A** | 25–35 | Reforjado — arma com efeitos especiais |
-| **S** | 40–55 | Raro — obra de mestre, item com história |
+| **B** | 15–25 | Melhorado — sabre refinado, peitoral de ferro |
+| **A** | 30–40 | Reforjado — arma com efeitos especiais |
+| **S** | 45–60 | Raro — obra de mestre, item com história |
 | **SS** | Não está à venda | Itens SS são conquistados, não comprados |
 
 #### Despesas do Navio

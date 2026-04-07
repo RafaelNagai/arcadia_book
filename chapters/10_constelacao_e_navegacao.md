@@ -1,12 +1,12 @@
 # Constelação e Navegação
 
-> *Diz-se que o velho cartógrafo Fennick gastou quarenta anos mapeando o mundo em papel e tinta. Quando sua última ilha favorita desapareceu numa tempestade arcana, ele queimou todos os mapas e passou o resto da vida aprendendo a ler Constelações. Morreu, aos noventa e dois anos, como o melhor Navegador de sua geração.*
+> *Diz-se que o velho cartógrafo Fennick caiu no abismo dos mares, e conseguiu retornar, e trouxe contigo o conhecimento para criar uma constelação.*
 
 ---
 
 ## O Que São Constelações
 
-As terras de Arcádia estão em constante deriva, levadas pelas correntes de vento e pelas marés de nuvens. Mapas de papel são relíquias inúteis — um destino que existia a leste ontem pode estar perdido numa tormenta a oeste amanhã.
+As terras de Arcádia estão em constante deriva, levadas pelas correntes de vento e pelas marés de nuvens. Mapas de papel não existem nesse mundo — um destino que existia a leste ontem pode estar perdido numa tormenta a oeste amanhã.
 
 Para encontrar um destino, um Navegador precisa de uma **Constelação**.
 
@@ -42,7 +42,7 @@ O Mestre cria a Sequência de Constelação de cada ilha. Uma forma prática é 
 
 ### O Fluxo da Viagem
 
-A cada **turno de navegação** (que pode representar horas ou dias de viagem dependendo da escala da campanha), o Capitão rola **1D6** e compara com o próximo número da sequência:
+A cada **turno de navegação** (que pode representar horas ou dias de viagem dependendo da escala da campanha), o Capitão ou quem estiver no leme rola **1D6** e compara com o próximo número da sequência:
 
 **Sincronia** — O valor rolado é **igual** ao número da sequência.
 > A rota é perfeita. O vento é favorável, o horizonte está limpo. A tripulação pode realizar um **Intervalo de Capítulo** durante esse trecho tranquilo.
@@ -52,6 +52,8 @@ A cada **turno de navegação** (que pode representar horas ou dias de viagem de
 >
 > **Diferença = |Valor Rolado − Valor da Sequência|**
 
+> Quem estiver no Leme, pode modificar o valor que saiu no dado. Por exemplo, se no dado(D6) saiu 1 mas quem estiver no Leme tem a sensação de ser 3, ele pode alterar.
+
 ---
 
 ## Tabela de Catástrofes e Riscos
@@ -59,8 +61,8 @@ A cada **turno de navegação** (que pode representar horas ou dias de viagem de
 | Diferença | Situação | Descrição Narrativa |
 |---|---|---|
 | 0 | **Sincronia** | Rota perfeita. O navio desliza suavemente. |
-| 1 – 3 | **Ruim** | Chuvas fortes, ventos contrários ou neblina densa. |
-| 4 | **Péssima** | Tempestades de raios arcanos ou águas turbulentas. |
+| 1 – 2 | **Ruim** | Chuvas fortes, ventos contrários ou neblina densa. |
+| 3 - 4 | **Péssima** | Tempestades de raios arcanos ou águas turbulentas. |
 | 5 | **Caótica** | Tormentas violentas ou ataques de predadores das nuvens. |
 
 ### O Papel do Mestre nas Situações
@@ -77,9 +79,9 @@ Se a tripulação **falhar** nos testes definidos pelo Mestre para superar a sit
 
 | Situação | Penalidade no Pote de Moral |
 |---|---|
-| **Ruim** | −1 de valor em **um único dado** do PM |
-| **Péssima** | −1 de valor em **todos os dados** do PM |
-| **Caótica** | −2 de valor em **todos os dados** do PM |
+| **Ruim** | −1 a -3 de valor em **um único dado** do PM |
+| **Péssima** | −1 a -3 de valor em **todos os dados** do PM |
+| **Caótica** | −3 a -5 de valor em **todos os dados** do PM |
 
 > Os dados do PM nunca descem abaixo de 1.
 
@@ -100,7 +102,7 @@ O Pote de Moral atual da tripulação: **[8, 7, 10, 6, 9]** — Soma: 40 (Moral 
 > **Sincronia.** O navio desliza pelo corredor de ventos com precisão perfeita. A tripulação descansa e realiza um Intervalo de Capítulo.
 
 **Turno 2 — Alvo: 3**
-> O Capitão rola **6**. Diferença: 3.
+> O Capitão rola **5**. Diferença: 2.
 > **Situação Ruim.** Uma zona de neblina densa engole o navio — visibilidade quase zero. O Mestre pede um teste de **Percepção (DT 14)** para detectar rochas à frente. A tripulação passa. Moral intacta.
 
 **Turno 3 — Alvo: 6**

@@ -20,7 +20,7 @@ Durante um Intervalo, cada personagem pode executar **uma ação longa** ou **du
 
 1. O Mestre declara que o grupo entra em Intervalo de Capítulo — viagem, pausa na trama, cidade segura.
 2. Cada jogador declara sua ação principal (longa) e até duas ações rápidas.
-3. O Mestre resolve testes, aplica custos (tempo, materiais, risco) e registra consequências — cura, ganhos, penalidades, novas conexões.
+3. O Mestre narra cada encontro, resolve testes, aplica custos (tempo, materiais, risco) e registra consequências — cura, ganhos, penalidades, novas conexões.
 4. Registrar efeitos que persistem além do Intervalo: bônus de forja, progressos de treino, favores ganhos.
 
 ---
@@ -36,7 +36,7 @@ O descanso é definido pela combinação de duas escolhas: a **forma** e o **loc
 **Forma — define o dado de recuperação:**
 
 - **Soneca** (2–4h): dado de recuperação = **D4**
-- **Dormir Profundo** (8h+): dado de recuperação = **D12**
+- **Dormir Profundo** (8h+): dado de recuperação = **D8**
 
 **Local — define a quantidade de dados:**
 
@@ -46,7 +46,7 @@ O descanso é definido pela combinação de duas escolhas: a **forma** e o **loc
 
 Role todos os dados e some o resultado. Esse valor é recuperado em **HP**.
 
-> *Exemplos: uma Soneca em dormitório luxuoso recupera 4D4 HP. Um Dormir Profundo em local precário — acampamento improvisado após uma batalha — recupera 1D12 HP.*
+> *Exemplos: uma Soneca em dormitório luxuoso recupera 4D4 HP. Um Dormir Profundo em local precário — acampamento improvisado após uma batalha — recupera 1D8 HP.*
 
 > O **Dormitório** instalado no navio (ver capítulo de Navios) pode elevar a qualidade do local de descanso.
 
@@ -72,7 +72,7 @@ Role **2D12 + Precisão**:
 
 | Resultado | Efeito |
 |---|---|
-| ≥ 20 | Recupera **1D20 de HP** e **1D20 de Sanidade** |
+| ≥ 20 | Recupera **1D12 de HP** e **1D12 de Sanidade** |
 | ≥ 10 | Recupera **1D6 de HP** e **1D6 de Sanidade** |
 | < 10 | Nada acontece |
 
@@ -84,7 +84,8 @@ Role **2D12 + Precisão**:
 
 **Tempo:** 4–24h (dependendo da complexidade do item).
 
-**Recursos necessários:** materiais adequados, ferramentas ou oficina, e possivelmente arcano para itens mágicos.
+**Recursos necessários:**
+- materiais adequados, ferramentas ou oficina, e possivelmente arcano para itens mágicos. **(Reduz 4 a 12 de PM) **
 
 Este é um minigame em três fases. O artesão avança sequencialmente — uma falha crítica na Fase A ou qualquer falha na Fase C interrompem o processo com consequências.
 
@@ -146,6 +147,9 @@ Role **2D12 + Conhecimento** quantas vezes quiser. Cada resultado **≥ 20** per
 ### 4. Treinar
 
 **Tempo:** 2–48h (definido pelo jogador).
+
+**Recursos necessários:**
+- Reduz 1 a 2 de PM por teste realizado.
 
 **Descrição:** Praticar uma perícia de forma repetida e deliberada para progredir.
 
@@ -210,13 +214,16 @@ Role **2D12 + Perícia relevante** (Atletismo para trabalho braçal, Conheciment
 
 | Resultado | Efeito no PM |
 |---|---|
-| 20+ | Escolha 2 dados do PM. Rerole ambos — fique com os novos valores. Receba também 1 item utilitário ou ração. |
-| ≥ 15 | Escolha 1 dado do PM. Rerole — fique com o maior entre o valor atual e o novo. |
-| ≥ 10 | Escolha 1 dado do PM com valor abaixo de 6. Recebe **+2** ao valor atual (máximo 6). |
-| ≥ 25 | Além da recuperação normal, feche um contrato ou favor para uso futuro. |
+| 25+ | Escolha 3 dados do PM para aumentar em 2. Receba também 1 item utilitário ou ração. |
+| ≥ 20 | Escolha 2 dados do PM para aumentar em 2. Receba também 1 item utilitário ou ração. |
+| ≥ 15 | Escolha 1 dado do PM para aumentar em 2 — fique com o maior entre o valor atual e o novo. |
+| ≥ 10 | Escolha 1 dado do PM para aumentar em 1. |
 | Fracasso | Nenhuma recuperação. O trabalho não rendeu desta vez. |
 
+**Nenhum dado do PM pode receber um aumento maior que 11.**
+
 > Para as regras completas de como o PM funciona como moeda, ver **O Pote como Moeda** no capítulo de Moral.
+> Esta mecanica para ganhar pontos de PM é apenas figurativa e para ajudar os mestres como guiar seus tripulantes, permita que os personagens façam suas ações livremente e conforme o que fizerem identifique qual ação de intervalo de capitulo faz sentido e faça o teste relacionado e dê seus resultados.
 
 ---
 

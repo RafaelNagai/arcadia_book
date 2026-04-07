@@ -58,11 +58,11 @@ export function generateId(): string {
 
 /* ─── Derived stats ────────────────────────────────────────────── */
 
-const HP_BONUS:    number[] = [0, 5, 5, 6, 6, 7, 7, 8, 8, 8, 8, 8]
-const SANID_BONUS: number[] = [0, 4, 4, 3, 3, 2, 2, 1, 1, 1, 1, 1]
+const HP_BONUS:    number[] = [0, 4, 4, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+const SANID_BONUS: number[] = [0, 4, 4, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
 
 export function calcHP(fisico: number): number {
-  let hp = 12
+  let hp = 15
   for (let i = 1; i <= fisico; i++) hp += HP_BONUS[Math.min(i, HP_BONUS.length - 1)]
   return hp
 }

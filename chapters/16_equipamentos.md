@@ -24,7 +24,7 @@ Todo item em Arcádia possui um **Tier** — uma classificação que define sua 
 
 > **Nota:** O dado D20 não aparece em armas individuais — está reservado para armamentos de grande escala instalados em navios (ver capítulo de Navios).
 
-> **Como usar estas tabelas:** O Tier serve como **referência de criação e forja**. Cada arma no mundo possui seu próprio pool de dados definido na ficha do item — as tabelas abaixo indicam o que é esperado para cada Tier.
+> **Como usar estas tabelas:** O Tier serve como **referência de criação e forja**. Cada arma no mundo possui seu próprio pool de dados definido na ficha do item — as tabelas abaixo indicam o que é esperado para cada Tier. Lembrando que esta tabela é apenas um referencia, podendo ser adaptada para cada equipamento que quiser criar.
 
 **Armamentos Corpo-a-Corpo:**
 
