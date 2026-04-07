@@ -7,6 +7,7 @@
     "module": "ESNext",
     "types": ["vite/client"],
     "skipLibCheck": true,
+    "resolveJsonModule": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -30,7 +31,8 @@
       "@oneshots/*": ["../one-shots/*"],
       "@creatures": ["../creatures.json"],
       "@ships": ["../ships.json"],
-      "@characters": ["../characters.json"]
+      "@characters": ["../characters.json"],
+      "@version": ["../version.json"]
     }
   },
   "include": ["src"]

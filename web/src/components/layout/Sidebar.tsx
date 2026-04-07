@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { PARTS, getChaptersByPart } from '@/data/chapterManifest'
 import type { Part } from '@/data/chapterManifest'
+import versionData from '@version'
 
 const PART_NUMBERS: Record<Part, string> = {
   'Fundamentos':             'I',
@@ -44,7 +45,7 @@ export function Sidebar({ onClose, onSearchOpen }: SidebarProps) {
           }}
         />
         <p className="text-xs mt-2" style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}>
-          Livro do Sistema
+          Livro (v{versionData.version})
         </p>
       </NavLink>
 

@@ -22,8 +22,9 @@ interface TopBarProps {
 export function TopBar({ onMenuToggle, isSidebarOpen, onSearchOpen }: TopBarProps) {
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 h-14 border-b lg:hidden"
+      className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 h-14 border-b lg:hidden"
       style={{
+        zIndex: 220,
         background: 'rgba(10, 15, 30, 0.95)',
         backdropFilter: 'blur(8px)',
         borderColor: 'var(--color-border)',

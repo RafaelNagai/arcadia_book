@@ -1,7 +1,7 @@
 # Introdução
 
-> *Você não nasceu em terra firme. Nasceu no vento.*
-> *E o vento, aqui, não tem fim.*
+> *Um mar de nuvens, tempestades e criaturas nas profundezas.*
+> *Navegar é mais do que um transporte.*
 
 ---
 

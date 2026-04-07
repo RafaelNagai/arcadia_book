@@ -22,6 +22,18 @@ export function AppShell() {
     setSearchOpen(false)
   }, [location.pathname])
 
+  // Lock body scroll when mobile sidebar is open (fixes Chrome mobile scroll glitch)
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [sidebarOpen])
+
   // Global Cmd+K / Ctrl+K shortcut
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -64,8 +76,8 @@ export function AppShell() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 lg:hidden"
-              style={{ background: 'rgba(4,6,12,0.75)', backdropFilter: 'blur(4px)' }}
+              className="fixed inset-0 lg:hidden"
+              style={{ background: 'rgba(4,6,12,0.75)', backdropFilter: 'blur(4px)', zIndex: 200 }}
               onClick={() => setSidebarOpen(false)}
             />
             <motion.aside
@@ -73,11 +85,12 @@ export function AppShell() {
               animate={{ x: 0 }}
               exit={{ x: -SIDEBAR_WIDTH }}
               transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-              className="fixed top-0 left-0 h-full z-50 border-r lg:hidden"
+              className="fixed top-0 left-0 h-full border-r lg:hidden"
               style={{
                 width: SIDEBAR_WIDTH,
                 background: 'var(--color-deep)',
                 borderColor: 'var(--color-border)',
+                zIndex: 210,
               }}
             >
               <Sidebar onClose={() => setSidebarOpen(false)} onSearchOpen={() => setSearchOpen(true)} />

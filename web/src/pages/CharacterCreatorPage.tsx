@@ -304,8 +304,9 @@ function Step1({ data, onChange }: {
   data: { name: string; race: string; concept: string; quote: string }
   onChange: (k: string, v: string) => void
 }) {
-  const [customRace, setCustomRace] = useState(!RACES.slice(0, -1).includes(data.race) ? data.race : '')
-  const isCustom = !RACES.slice(0, -1).includes(data.race) && data.race !== ''
+  const isExistingCustom = !RACES.slice(0, -1).includes(data.race) && data.race !== ''
+  const [customRace, setCustomRace] = useState(isExistingCustom ? data.race : '')
+  const [outroActive, setOutroActive] = useState(isExistingCustom)
   return (
     <div className="space-y-5">
       <Field label="Nome do Personagem">
@@ -314,11 +315,16 @@ function Step1({ data, onChange }: {
       <Field label="Raça">
         <div className="flex flex-wrap gap-2 mb-2">
           {RACES.map(r => {
-            const active = r === 'Outro' ? isCustom : data.race === r
+            const active = r === 'Outro' ? outroActive : (!outroActive && data.race === r)
             return (
               <button key={r} onClick={() => {
-                if (r === 'Outro') onChange('race', customRace)
-                else onChange('race', r)
+                if (r === 'Outro') {
+                  setOutroActive(true)
+                  onChange('race', customRace)
+                } else {
+                  setOutroActive(false)
+                  onChange('race', r)
+                }
               }}
                 style={{
                   padding: '0.35rem 0.75rem', borderRadius: 4, cursor: 'pointer', transition: 'all 0.15s',
@@ -332,7 +338,7 @@ function Step1({ data, onChange }: {
             )
           })}
         </div>
-        {isCustom && (
+        {outroActive && (
           <TextInput value={customRace} onChange={v => { setCustomRace(v); onChange('race', v) }} placeholder="Escreva a raça…" />
         )}
       </Field>

@@ -6,6 +6,7 @@ import { HeroParallax } from '@/components/parallax/HeroParallax'
 import { WorldIntro } from '@/components/home/WorldIntro'
 import { MechanicsHighlight } from '@/components/home/MechanicsHighlight'
 import { CharacterShowcase } from '@/components/home/CharacterShowcase'
+import versionData from '@version'
 
 const DOORS = [
   {
@@ -163,6 +164,12 @@ function Footer() {
         style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}
       >
         Sistema de RPG de Mesa — Livro do Sistema
+      </p>
+      <p
+        className="text-xs mt-1"
+        style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', opacity: 0.4 }}
+      >
+        v{versionData.version}
       </p>
     </footer>
   )

@@ -80,15 +80,33 @@ function CloudLayerA() {
       {!loaded && (
         <div className="absolute inset-0">
           {[
-            { top: "55%", left: "-5%", width: "50vw", height: 120, delay: "0s", duration: "80s" },
-            { top: "70%", left: "60%", width: "40vw", height: 80, delay: "-50s", duration: "90s" },
+            {
+              top: "55%",
+              left: "-5%",
+              width: "50vw",
+              height: 120,
+              delay: "0s",
+              duration: "80s",
+            },
+            {
+              top: "70%",
+              left: "60%",
+              width: "40vw",
+              height: 80,
+              delay: "-50s",
+              duration: "90s",
+            },
           ].map((c, i) => (
             <div
               key={i}
               className="absolute rounded-full"
               style={{
-                top: c.top, left: c.left, width: c.width, height: c.height,
-                background: "radial-gradient(ellipse, rgba(122,155,200,0.15) 0%, transparent 70%)",
+                top: c.top,
+                left: c.left,
+                width: c.width,
+                height: c.height,
+                background:
+                  "radial-gradient(ellipse, rgba(122,155,200,0.15) 0%, transparent 70%)",
                 filter: "blur(30px)",
                 animation: `cloudDrift ${c.duration} linear ${c.delay} infinite`,
               }}
@@ -196,7 +214,7 @@ function HeroContent() {
           fontFamily: "var(--font-ui)",
         }}
       >
-        Sistema de RPG de Mesa
+        RPG de Mesa
       </motion.p>
 
       {/* Logo image */}
@@ -225,9 +243,9 @@ function HeroContent() {
         className="font-body italic text-lg md:text-xl max-w-md mb-12"
         style={{ color: "var(--color-text-secondary)" }}
       >
-        "Você não nasceu em terra firme.
+        "Entre o abismo e o vacuo, um mar de nuvens
         <br />
-        Nasceu no vento."
+        para explorar."
       </motion.p>
 
       {/* CTA buttons */}
@@ -315,7 +333,7 @@ export function HeroParallax() {
       </ParallaxLayer>
 
       {/* Layer 2b: Far clouds B (speed 0.20) */}
-      <ParallaxLayer speed={0.20} zIndex={21}>
+      <ParallaxLayer speed={0.2} zIndex={21}>
         <CloudLayerB />
       </ParallaxLayer>
 
