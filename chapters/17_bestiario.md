@@ -161,5 +161,3 @@ Interações são a alma da criatura. Elas respondem à pergunta: *"Como os joga
 
 ## Criaturas
 
-As fichas abaixo estão disponíveis de forma interativa ao final desta página.
-

@@ -70,7 +70,7 @@ Um feito lendário. O Mestre pode permitir que o personagem ignore quase qualque
 
 Algo dá errado além da simples falha. O Mestre introduz uma complicação inesperada — não apenas o personagem não conseguiu, mas a situação piorou.
 
-> Quando **1 natural** é obtido, não é somado os bonus para efetuar os calculos.
+> Quando **1 natural** é obtido, os bônus não são somados para efetuar os cálculos.
 
 > **Importante:** A Falha Crítica só ocorre quando **ambas** as condições se cumprem. Tirar um 1 natural em um teste que ainda assim passa na DT não é uma Falha Crítica — é apenas um sucesso difícil.
 
@@ -125,7 +125,7 @@ Gaste 1 PE do Atributo relevante para adicionar **+1** ao Resultado Final. Pode 
 > *Exemplo: Lyra falhou por 2 pontos. Ela gasta 2 PE de Físico para empatar e, então, passar na DT.*
 
 **B. Forçar o 12**
-Gaste PE para transformar o valor de **um** Dado Usado em 12. Útil para garantir a Evolução.
+Gaste **1 PE** para transformar o valor de **um** Dado Usado em 12. Útil para garantir a Evolução.
 
 > **Atenção:** Um 12 forçado por PE **não conta como Crítico** para efeitos de dano ou bônus narrativos. Ele serve apenas para progressão e para atingir DTs — não para amplificar o impacto de um ataque.
 

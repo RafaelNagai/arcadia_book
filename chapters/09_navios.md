@@ -1,6 +1,6 @@
 # Navios
 
-> *A embarcação é o vinculo para nova aventuras.*
+> *A embarcação é o vínculo para novas aventuras.*
 
 ---
 
@@ -83,7 +83,7 @@ Setores ativos durante o combate naval.
 
 **Radar** — Adiciona bônus ao **valor de cada dado** de dano rolado. Um Radar Náutico (+2) sobre um disparo de 4D20 adiciona +2 ao resultado de cada um dos 4 dados individualmente.
 
-**Velas e Motor** — Controla a Acrobacia e o Deslocamento do navio. Operá-lo melhora a DN, tornando o navio mais difícil de ser atingido.
+**Velas e Motor** — Controla a acrobacia e o deslocamento do navio. Um tripulante neste setor pode fazer um teste usando a perícia indicada pelo setor instalado. Em caso de sucesso, o navio ganha o bônus de DN descrito no setor até o próximo turno — tornando-o mais difícil de ser atingido.
 
 ### Setores de Intervalo
 
@@ -188,7 +188,7 @@ Cada dado distribuído pode ser somado a **um teste ou resultado** realizado pel
 
 Cada tripulante pode fazer **1 ação por turno**:
 
-- **Ação Livre:** Pode se alocar em algum setor ou fazer uma ação livre portanto que convença usando pericias.
+- **Ação Livre:** Pode se alocar em algum setor ou fazer uma ação livre desde que convença usando perícias.
 > Ataques de longa-distancia ou magias feitas por tripulantes, que não sejam as ações dos setores, vão ter desvantagem nos testes.
 
 ### 4. Resolução de Ataque
@@ -218,7 +218,7 @@ O campo de batalha se divide em dois cenários:
 - **Cenário A:** Navio Atacante
 - **Cenário B:** Navio Defensor
 
-Quando é feito a conexão, isso se torna um campo de batalha, e deve-se usar as regras do combate, com apenas esse adendo as regras:.
+Quando a conexão é feita, isso se torna um campo de batalha — usam-se as regras de combate, com apenas estes adendos:
 
 | Situação | Regra |
 |---|---|

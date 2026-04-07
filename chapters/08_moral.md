@@ -57,20 +57,20 @@ A soma dos dados no Pote de Moral é avaliada **ao final de cada sessão** e det
 |---|---|---|
 | **Moral Lendária** | 50 – 60 | Todos ganham **+1 PE** extra, equipamentos ou alguma recompensa que o mestre desejar. |
 | **Moral Estável** | 25 – 49 | O navio opera com eficiência normal. Nada acontece. |
-| **Moral Baixa** | 10 – 24 | Clima de tensão. Todos **perdem equipamento ou PE**, fica a criterio do mestre. |
+| **Moral Baixa** | 10 – 24 | Clima de tensão. Todos **perdem equipamento ou PE**, fica a critério do mestre. |
 
 ### PM para o Mestre
 
-O PM também pode ser um recurso para o mestre, sempre que pote obtiver um valor 1 em qualquer dado, o mestre pode usar esse valor para acontecer algum evento ou catastrofe.
+O PM também pode ser um recurso para o mestre, sempre que o pote obtiver um valor 1 em qualquer dado, o mestre pode usar esse valor para acontecer algum evento ou catástrofe.
 Quando o mestre usa um dos dados, ele aumenta o seu valor em 1.
 
 > **O que o mestre pode fazer?**
-Isso pode ficar a vontade do mestre, mas aqui vai algumas dicas de como utilizar.
+Isso pode ficar à vontade do mestre, mas aqui vão algumas dicas de como utilizar.
 - O mestre pode destruir e manter inativado um setor do navio.
 - O mestre pode trazer uma vantagem ao inimigo ou complicação aos personagens em batalha.
 - O mestre pode dizer que uma doença se espalhou pelo navio, e todos os tripulantes estão envenenados e com algum desvantagem em uma pericia especifica.
 
-> Isso ajuda eles a lembrarem a nunca deixarem os dados cairem até o ponto de chegar ao valor 1.
+> Isso ajuda a nunca deixar os dados caírem até o valor 1.
 
 ---
 
@@ -91,7 +91,7 @@ Narrativamente, o personagem fez o trabalho duro parecer fácil, inspirando os c
 Durante o Interlúdio (ver capítulo de Interlúdio), o Capitão pode gastar tempo e recursos para elevar o PM:
 
 **Festas e Bebidas**
-O Capitão gastar recursos próprios ou do navio, para celebrar e tentar aumentar o PM dos tripulantes. Fica ao criterio do mestre o quão bem foi a festa, podendo aumentar de 1 a 3 pontos de algum dado no POTE, até no maximo 11. Não pode aumentar dados para deixar com o valor 12.
+O Capitão gasta recursos próprios ou do navio para celebrar e tentar aumentar o PM dos tripulantes. Fica ao critério do mestre o quão bem foi a festa, podendo aumentar de 1 a 3 pontos de algum dado no POTE, até no máximo 11. Não pode aumentar dados para deixar com o valor 12.
 
 **Discurso Inspirador**
 Com um teste bem-sucedido de **Persuasão** ou **Performance**, o Capitão motiva a tripulação com palavras. Um dado do PM à escolha do Capitão pode ser **rerolado**.

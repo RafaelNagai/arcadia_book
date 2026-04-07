@@ -38,7 +38,7 @@ A **Fortitude** mede a saúde e a resistência do personagem. É usada para resi
 
 **Exemplos de uso:**
 - Resistir aos efeitos de um veneno ou ferimento grave.
-- Beber uma bebida alcolica e não ficar bebado.
+- Beber uma bebida alcoólica e não ficar bêbado.
 - Continuar lutando mesmo com ferimentos críticos.
 
 ---
@@ -114,7 +114,7 @@ A **Precisão** mede o acerto e o controle ao atacar à distância. Aplica-se a 
 - Acertar um alvo distante ou em movimento.
 - Disparar através de uma abertura estreita.
 - Controlar a trajetória de um projétil em condições adversas.
-- Realizar um corte cirurgico.
+- Realizar um corte cirúrgico.
 
 ---
 

@@ -103,4 +103,4 @@ Cada plano habilita categorias específicas de magia. O Mestre usa essas categor
 
 **O que habilita:** Amplificação ou supressão de emoções em alvos. Manifestação de construtos emocionais — raiva como calor físico, luto como peso opressor, euforia como velocidade. Leitura da memória emocional de um lugar ou objeto.
 
-**A marca:** O conjurador floresce a vontade dos sentimentos, cada cor presente no mundo foi colocado com um sentimento, e este tipo de conjurador permite manifesta-la sem muito controle, uma magia descontrolada.
+**A marca:** O conjurador passa a sentir o peso emocional de cada cor ao redor. As cores do mundo carregam sentimentos de quem as colocou ali — e o conjurador começa a manifestá-los involuntariamente, sem filtro e sem controle. Uma emoção ajena pode tornar-se magia antes que ele perceba.

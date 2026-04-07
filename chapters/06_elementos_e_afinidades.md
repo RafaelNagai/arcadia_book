@@ -37,7 +37,7 @@ A **Anomalia** é a transmutação.
 
 Conjuradores dessa vertente manipulam formas vivas de entropia, mutação e alteração física. Criam seres, dobram corpos e moldam matéria com instinto — não com lógica. A Anomalia não segue regras naturais: ela as reescreve.
 
-Permite manipular elementos já existentes, e moldar eles a sua vontade.
+Permite manipular elementos já existentes e moldá-los a sua vontade.
 
 **Exemplos de execução:**
 - Transformar água em gelo sólido.
@@ -55,8 +55,7 @@ O **Paradoxo** é manipular o conceito.
 
 Seus praticantes distorcem e moldam conceitos abstratos — tempo, probabilidade, gravidade, trajeto. O "tempo" é uma verdade que todos aceitam; um conjurador de Paradoxo pode pegá-lo, dobrá-lo e fazer com que essa verdade perca o consenso.
 
-É considerado conceito, tudo o que a maioria das pessoas acreditam ser verdade em Arcadia, o paradoxo pode moldar ou alterar esse conceito para seu propósito.
-Sempre quando for usar uma magia do tipo paradoxo, o **conjurador** deve deixar explicito qual conceito quer usar e o que deseja alterar, quanto mais oposto ao que o conceito normalmente faz, mais complexo vai ser a magia.
+Tudo o que a maioria das pessoas acredita ser verdade em Arcádia é um conceito passível de ser moldado pelo Paradoxo. Ao usar uma magia deste elemento, o **conjurador** deve declarar qual conceito quer alterar e em que direção. Quanto mais oposto ao funcionamento natural do conceito, mais complexa será a magia.
 Exemplo: 
 > **facil:** Manipular a gravidade para cair mais levemente.
 > **dificil:** Manipular a gravidade para nega-la e permitir voar.
@@ -79,8 +78,8 @@ O **Astral** é emprestar o poder de outro plano.
 Magos astrais conseguem migrar e moldar o poder de outro plano ao seu plano atual, normalmente o plano Finito.
 Para cada plano, existe uma interação diferente:
 #### Rede dos Sonhos
-Tocar no plano **Rede dos sonhos** permite acessar memorias e conhecimentos de todo e qualquer pessoa, acessando suas habilidades e pericias.
-Isso permite, por exemplo, um usuario incorporar os conhecimentos de luta de um antigo guerreiro, aumentando sua pericia de Combate.
+Tocar no plano **Rede dos Sonhos** permite acessar memórias e conhecimentos de qualquer pessoa, incorporando suas habilidades e perícias.
+Isso permite, por exemplo, um usuário incorporar os conhecimentos de luta de um antigo guerreiro, aumentando sua perícia de Combate.
 
 #### Mundo das Tintas
 Tocar no plano **Mundo das Tintas** precisa encontrar a cor desejada no local que o personagem estiver, e trazer os desejos daquela cor ao plano Finito, sendo algo totalmente aleatorio.
@@ -92,16 +91,16 @@ Tocar no plano **Mundo das Tintas** precisa encontrar a cor desejada no local qu
 | 4    | Laranja | Projétil |
 | 5    | Roxo | Ilusão |
 | 6    | Verde | Invocação |
-| -    | Preto | é ausencia de cor, não consegue acessar nenhum poder através dessa cor. |
-| -    | Qualquer outra Cor | totalmente aleatorio |
+| -    | Preto | É ausência de cor — não consegue acessar nenhum poder através dela. |
+| -    | Qualquer outra Cor | Totalmente aleatório |
 
-> Quando for **qualquer outra cor**, o conjurador deve rodar **1D6** para definir qual vai ser a intenção da cor sobre aquele alvo.
+> Quando for **qualquer outra cor**, o conjurador deve rolar **1D6** para definir qual vai ser a intenção da cor sobre aquele alvo.
 
 #### Reino das Almas
 Tocar no plano **Reino das almas** permite conversar e resgatar essas almas estagnadas enquanto esperam para serem esquecidas.
 
 **Exemplos de execução:**
-- Acessar as memorias de um grande mago, e conhecer novas runas que o personagem não conhecia.
+- Acessar as memórias de um grande mago e conhecer novas runas que o personagem não conhecia.
 - Usar a cor verde e manifestar um enxame de gafanhotos que surgem como tinta verde.
 - Comunicar-se em forma etérea com um aliado a longas distâncias.
 

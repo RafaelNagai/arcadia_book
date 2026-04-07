@@ -17,7 +17,7 @@ Aqui, sobrevivência e glória dependem de uma única capacidade: **navegar pelo
 
 ## O Mar de Nuvens
 
-As terras de Arcádia existem no chamado **Plano Finito** — a camada mais densa da realidade, a fantasia cruza os céus com navios voadores. Nele, ilhas e continentes não estão ancorados a placas tectônicas. Eles flutuam, movidos pelas correntes de vento e pela própria vontade do **Arcano** — a energia bruta que permeia tudo o que existe.
+As terras de Arcádia existem no chamado **Plano Finito** — a camada mais densa da realidade, onde a fantasia cruza os céus com navios voadores. Nele, ilhas e continentes não estão ancorados a placas tectônicas. Eles flutuam, movidos pelas correntes de vento e pela própria vontade do **Arcano** — a energia bruta que permeia tudo o que existe.
 
 A consequência direta disso é simples e devastadora: **a geografia é viva**.
 
@@ -25,9 +25,9 @@ Uma ilha que hoje está ao norte pode, em um mês, estar perdida em uma tempesta
 
 Para sobreviver nesse mundo em deriva, a humanidade aprendeu a criar mapas chamados de **Constelações** — assinaturas mágicas únicas, extraídas da essência vital de cada ilha. Uma Constelação não é um desenho estelar: é a impressão digital de uma terra. Com ela, um Navegador habilidoso pode rastrear qualquer destino pelo Mar de Nuvens, não importa onde os ventos o tenham levado.
 
-As **constelações** se tornaram rotas seguras e privadas para mercados e exploradores extrair recursos dessas ilhas, como frutas e plantas e mineiros como Eltys. Como as ilhas nunca se encontram no mesmo lugar, esses recursos são valiosos e vender **constelações** se tornou a principal renda de exploradores. 
+As **constelações** se tornaram rotas seguras e privadas para mercados e exploradores extrair recursos dessas ilhas, como frutas, plantas e minérios como Eltys. Como as ilhas nunca se encontram no mesmo lugar, esses recursos são valiosos e vender **constelações** se tornou a principal renda de exploradores.
 
-> *Diz-se que o velho cartógrafo Fennick caiu no abismo dos mares, e conseguiu retornar, e trouxe contigo o conhecimento para criar uma constelação.*
+> *Diz-se que o velho cartógrafo Fennick caiu no abismo dos mares, conseguiu retornar, e trouxe consigo o conhecimento para criar uma constelação.*
 
 ---
 
@@ -50,7 +50,7 @@ Independente do tipo, todo navio é mais do que um meio de transporte. Ele possu
 
 ## A Filosofia do Sistema
 
-Arcádia é sistema para evoluir o personagem com base em suas ações.
+Arcádia é um sistema para evoluir o personagem com base em suas ações.
 
 A mecânica central reflete isso de forma direta: você não evolui apenas matando monstros. Você evolui **agindo**. Cada vez que desafia o destino com seus dados e alcança a perfeição natural — quando tudo se alinha e os dados mostram o máximo — suas habilidades crescem de forma permanente. O esforço deixa uma marca.
 

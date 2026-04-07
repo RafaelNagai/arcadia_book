@@ -42,12 +42,14 @@ Com o elemento definido, verifica-se a relação do personagem com ele:
 | Nenhuma relação | +0 |
 
 ### 4. Runas
-O jogador escolhe quais **Runas** conhecidas vai aplicar à conjuração, limitado pelos seus **Slots de Entropia** disponíveis. Cada runa que faça sentido narrativo com a intenção soma um bônus crescente ao teste.
+O jogador escolhe quais **Runas** conhecidas vai aplicar à conjuração, limitado pelos seus **Slots de Entropia** disponíveis *(ver seção de Entropia abaixo)*. Cada runa que faça sentido narrativo com a intenção soma um bônus crescente ao teste.
 
 ### 5. O Teste
 O jogador rola **2D12 + bônus** contra a **DT (Dificuldade)** definida pelo Mestre com base na grandeza e complexidade da magia.
 
 > **Resultado Final = 2D12 + Afinidade/Antítese + bônus de Runas**
+
+> **Nota:** Diferente dos testes comuns, conjurações **não somam Atributo nem Perícia**. A força do conjurador vem da sua relação com o elemento (Afinidade/Antítese) e das Runas que domina.
 
 ---
 
@@ -83,26 +85,9 @@ A **Sanidade** representa a saúde mental do personagem — sua capacidade de pr
 
 > **Valor inicial:** 15 + bônus cumulativo baseado no maior entre Intelecto e Influência (ver tabela no capítulo de Condições e Trauma).
 
-### Traumas
+Quando a Sanidade chega a **zero**, o personagem adquire **1 Trauma**. Ao acumular **3 Traumas**, o personagem entra no **Estado de Loucura** — um mini-jogo de sobrevivência mental onde o resultado determina se ele consegue voltar.
 
-Quando a Sanidade de um personagem **chega a zero**, ele adquire **1 Trauma**.
-
-- O Trauma pode ser **aleatório** ou **narrativamente coerente** com a situação — a critério do Mestre.
-- Após adquirir o Trauma, a Sanidade é restaurada a **1** e o personagem continua.
-- Ao acumular **3 Traumas**, o personagem entra no **Estado de Loucura**.
-
-### Estado de Loucura
-
-O Estado de Loucura é um mini-jogo de sobrevivência mental. O personagem enfrenta a própria fragmentação como se ela fosse uma entidade com vontade própria — e o resultado determina se ele consegue voltar.
-
-**Estrutura:**
-- O jogador rola **1D6, 1D12, 1D20** e escolhe a **ordem que vai jogar** entre os três dados.
-- A **Morte(Mestre)** rola seu próprio pool e também escolhe a ordem.
-- Jogador e mestre jogam o primeiro dado da ordem, e comparam o valor, aquele que obtiver o maior valor, ganha aquela rodada. Eles continuam com a ordem dos dados, até ver quem ganha 2 rodadas.
-- Se o personagem vencer, o personagem aguenta e não sucumbe, ganhando um **trauma** e voltando com **1 de Sanidade**.
-- Se o mestre vencer, o personagem sucumbe e aquele personagem morre para o jogador e vira um NPC louco para o mestre.
-
-As consequências de sucumbir, os tipos de Trauma e a recuperação de Sanidade estão detalhados no capítulo de Condições e Trauma.
+> Para a mecânica completa de Traumas, Estado de Loucura e recuperação de Sanidade, consulte o capítulo de **Condições e Trauma**.
 
 ---
 
@@ -213,7 +198,7 @@ Um único teste arcano pode **distribuir seus stacks entre múltiplas condiçõe
 Alvos que **não desejam** receber o efeito podem resistir:
 
 - **Resistência Ativa:** O alvo rola um teste de **Vontade** (ou outra perícia relevante) contra o resultado arcano do conjurador.
-- **Resistência Passiva:** Se o alvo não está ativamente tentando resistir, o mestre achar necessario um teste, deve rolar um teste de **Vontade** com **Desvantagem**.
+- **Resistência Passiva:** Se o alvo não está ativamente tentando resistir e o mestre achar necessário um teste, deve rolar um teste de **Vontade** com **Desvantagem**.
 
 > **Nota para o Mestre:** Um alvo que se recusa a receber mesmo um efeito positivo (ex: uma cura não desejada) **aumenta a Complexidade** do teste arcano. Forçar o Arcano sobre uma vontade resistente é inerentemente mais difícil, aumentando a DT do teste arcano.
 
@@ -229,7 +214,7 @@ Stacks infundidos podem adicionar dano extra ao objeto, aumentar DA, aplicar efe
 
 > *Exemplo: Kain deseja encantar sua espada com fogo que queima ao contato. Ele faz o teste arcano e obtém 20 — 4 stacks. Ele infunde 4 stacks de queimadura na lâmina: cada acerto com a espada passa a aplicar 4 stacks de queimadura ao alvo.*
 
-> Aplicar infusão em equipamentos ou itens que já possuem um efeito, a complexidade para realizar o teste arcano se torna mais dificil.
+> Aplicar infusão em equipamentos ou itens que já possuem um efeito aumenta a Complexidade do teste arcano.
 
 ---
 

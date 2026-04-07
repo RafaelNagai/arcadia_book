@@ -122,7 +122,7 @@ O total de pontos de progresso acumulados determina o **Tier** do item. A tabela
 
 O artesão pode parar quando quiser e registrar o Tier alcançado.
 
-> O Tier define os valores de dano, DA e Durabilidade do item forjado. Consulte as tabelas de Tiers no capítulo de Combate.
+> O Tier define os valores de dano, DA e Durabilidade do item forjado. Consulte as tabelas de Tiers no capítulo de Equipamentos.
 
 #### Fase C — Finalização e Qualidade (opcional)
 
@@ -223,7 +223,7 @@ Role **2D12 + Perícia relevante** (Atletismo para trabalho braçal, Conheciment
 **Nenhum dado do PM pode receber um aumento maior que 11.**
 
 > Para as regras completas de como o PM funciona como moeda, ver **O Pote como Moeda** no capítulo de Moral.
-> Esta mecanica para ganhar pontos de PM é apenas figurativa e para ajudar os mestres como guiar seus tripulantes, permita que os personagens façam suas ações livremente e conforme o que fizerem identifique qual ação de intervalo de capitulo faz sentido e faça o teste relacionado e dê seus resultados.
+> Esta mecânica para ganhar pontos de PM é apenas figurativa e serve para ajudar os mestres a guiar seus tripulantes. Permita que os personagens façam suas ações livremente e, conforme o que fizerem, identifique qual ação de intervalo de capítulo faz sentido, realize o teste relacionado e aplique os resultados.
 
 ---
 

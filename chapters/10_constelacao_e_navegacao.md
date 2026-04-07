@@ -1,6 +1,6 @@
 # Constelação e Navegação
 
-> *Diz-se que o velho cartógrafo Fennick caiu no abismo dos mares, e conseguiu retornar, e trouxe contigo o conhecimento para criar uma constelação.*
+> *Uma constelação não é um destino. É a certeza de que aquele lugar ainda existe — esperando por você em algum canto do Mar de Nuvens.*
 
 ---
 
@@ -14,7 +14,7 @@ Uma Constelação não é um desenho estelar. É a **Assinatura Mágica** única
 
 ### A Essência de Eltys
 
-A **Essência de Eltys** é uma pedra negra opaca — inerte enquanto mantida longe de qualquer ilha.
+A **Essência de Eltys** é uma pedra negra opaca — inerte enquanto mantida longe de qualquer ilha. *(Para a definição completa do Eltys como mineral arcano, ver capítulo de Regiões.)*
 
 Para criar uma Constelação, o explorador deve levar a pedra até a ilha de destino e expô-la ao Eltys que pulsa naquela terra. Cada ilha possui uma frequência arcana única — e ao entrar em contato com ela, a pedra reage: o negro se dissolve de dentro para fora, substituído por um azul profundo que pulsa como um universo em miniatura. Uma constelação singular forma-se no interior da pedra — o registro permanente da assinatura daquela ilha.
 

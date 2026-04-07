@@ -24,7 +24,7 @@ Todo item em Arcádia possui um **Tier** — uma classificação que define sua 
 
 > **Nota:** O dado D20 não aparece em armas individuais — está reservado para armamentos de grande escala instalados em navios (ver capítulo de Navios).
 
-> **Como usar estas tabelas:** O Tier serve como **referência de criação e forja**. Cada arma no mundo possui seu próprio pool de dados definido na ficha do item — as tabelas abaixo indicam o que é esperado para cada Tier. Lembrando que esta tabela é apenas um referencia, podendo ser adaptada para cada equipamento que quiser criar.
+> **Como usar estas tabelas:** O Tier serve como **referência de criação e forja**. Cada arma no mundo possui seu próprio pool de dados definido na ficha do item — as tabelas abaixo indicam o que é esperado para cada Tier. Lembrando que esta tabela é apenas uma referência, podendo ser adaptada para cada equipamento que quiser criar.
 
 **Armamentos Corpo-a-Corpo:**
 
@@ -154,7 +154,7 @@ Este catálogo apresenta itens pré-criados para uso imediato em campanhas. Cada
 > *Tipo:* Corpo-a-Corpo | *Tier:* A
 > *Dano:* 2D10 | *Durabilidade:* 5 | *Peso:* 4 (Médio)
 > *Efeito 1:* +2 em testes de Combate ao atacar alvos sem Reação disponível neste turno.
-> *Efeito 2:* Ao causar dano, aplica **Lento** — o alvo gasta 1 Ação adicional para se mover no próximo turno.
+> *Efeito 2:* Ao causar dano, o alvo precisa gastar 1 Ação adicional para se mover no próximo turno — a ferida arcana pesa nos movimentos.
 > *"Forjada em névoa arcana — seu corte é silencioso como o espaço entre ilhas."*
 
 ---
@@ -200,7 +200,7 @@ Este catálogo apresenta itens pré-criados para uso imediato em campanhas. Cada
 > *Tipo:* Corpo-a-Corpo | *Tier:* A
 > *Dano:* 3D10 | *Durabilidade:* 6 | *Peso:* 8 (Pesado)
 > *Efeito 1:* Se dois ou mais dados causarem dano no mesmo ataque, a DA do alvo é reduzida em 1 até o fim do round.
-> *Efeito 2:* Uma vez por round, force o alvo a gastar uma Reação sem que ela produza efeito defensivo.
+> *Efeito 2:* Uma vez por round, ao acertar um inimigo de pé, o impacto o desequilibra — ele sofre Desvantagem na próxima Reação deste turno.
 > *"As correntes nos cabos não são para estilo — são para agarrar o braço que tenta fugir."*
 
 ---
@@ -369,7 +369,7 @@ Este catálogo apresenta itens pré-criados para uso imediato em campanhas. Cada
 > *Tipo:* Capacete | *Tier:* A
 > *DA:* 3 | *Durabilidade:* 3 | *Peso:* 4 (Médio)
 > *Efeito 1:* +1 DA (bônus aditivo).
-> *Efeito 2:* Imunidade a feitiços de manipulação mental de Execução Nível 1 (feitiços de baixo alcance arcano não funcionam contra o portador).
+> *Efeito 2:* Imunidade a feitiços de manipulação mental de Execução Rápida — conjurações instantâneas de controle mental não funcionam contra o portador.
 > *"Gravado com runas de bloqueio mental — uma escolha sábia num mundo onde arcanistas miram na cabeça."*
 
 ---

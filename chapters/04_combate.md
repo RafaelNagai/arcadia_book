@@ -166,8 +166,8 @@ A DP é usada quando o personagem está Indefeso ou falhou na Esquiva.
 O equipamento protege a vida do personagem — mas ele sofre o castigo no lugar dele. **O dano sempre atinge a Durabilidade do item antes de atingir a Vida.**
 
 - **Absorção:** Cada ponto de dano recebido reduz a Durabilidade do item equipado em 1, o jogador pode decidir em qual equipamento é direcionado a redução da durabilidade.
-- **Quebra:** Quando a Durabilidade chega a 0, o item é quebrado e sem possiblidade de reparo. Cada ponto de dano adicional passa direto para a Vida do personagem.
-- **Sacrifício Voluntário:** O personagem pode optar por "não usar" o equipamento num golpe específico para preservá-lo. Nesse caso, perde todos os bônus de DA e efeitos do item naquele ataque. Esta decisão tem que ser feita antes de calcular o dano tomado.
+- **Quebra:** Quando a Durabilidade chega a 0, o item é quebrado e sem possibilidade de reparo. Cada ponto de dano adicional passa direto para a Vida do personagem.
+- **Sacrifício Voluntário:** O personagem pode optar por "não usar" o equipamento num golpe específico para preservá-lo. Nesse caso, perde todos os bônus de DA e efeitos do item naquele ataque. Esta decisão tem que ser feita antes de calcular o dano recebido.
 
 ---
 
@@ -231,4 +231,4 @@ Outro pirata ataca Kael com uma adaga (pool: 2D6). Com a Durabilidade do peitora
 - **Total: 3 pontos de dano.**
 - A Durabilidade absorve 1 → **Durabilidade 0. O peitoral quebra.**
 - Os 2 pontos restantes vão direto para a Vida de Kael. **Vida de Kael: 8/10.**
-- O peitoral é destruido: DA volta para a base 1.
+- O peitoral é destruído: DA volta para a base 1.

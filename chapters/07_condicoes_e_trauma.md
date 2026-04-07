@@ -20,7 +20,7 @@ Os dois recursos são independentes. Um guerreiro pode estar fisicamente intacto
 
 O HP mede a resistência do corpo. Quando chega a **zero ou menos**, o personagem entra no **Estado Morrendo**.
 
-### Valor Incial de Vida
+### Valor Inicial de Vida
 
 Todo personagem começa com **15 de Vida Máxima**, acrescidos de um bônus baseado no **Fisico** do personagem. O bônus é cumulativo: cada ponto no atributo soma o valor daquela faixa ao total.
 
@@ -37,8 +37,7 @@ Todo personagem começa com **15 de Vida Máxima**, acrescidos de um bônus base
 | 8  | +2 | 37 |
 | 9  | +2 | 39 |
 | 10 | +2 | 41 |
-| 11 | +2 | 43 |
-| Assim sucessivamente |
+| 11+ | +2 | … |
 
 ### Estado Morrendo
 
@@ -73,8 +72,7 @@ Todo personagem começa com **15 de Sanidade Máxima**, acrescidos de um bônus 
 | 8  | +2 | 37 |
 | 9  | +2 | 39 |
 | 10 | +2 | 41 |
-| 11 | +2 | 43 |
-| Assim sucessivamente |
+| 11+ | +2 | … |
 
 > *Exemplo: Mira tem Intelecto 2 e Influência 4. Influência é maior — ela usa esse valor como referência. Sanidade inicial: **29**.*
 
