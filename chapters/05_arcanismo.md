@@ -6,6 +6,8 @@
 
 ## A Natureza do Arcano
 
+![](/assets/images/chapters/arcanism/image_01.jpg)
+
 O **Arcano** é a energia bruta que preenche o vácuo entre as ilhas flutuantes e corre nas veias de todos os seres vivos. Não é uma força criada por deuses nem descoberta por sábios — ela simplesmente existe, anterior a qualquer nome que lhe deram.
 
 Magia, em Arcádia, é o ato de **moldar** essa energia: transformar a intenção em algo tangível, extrair forma do informe.

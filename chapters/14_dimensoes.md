@@ -16,6 +16,8 @@ Arcádia se encontra no **Plano Finito** — mas o que acontece nos outros plano
 
 ### Plano Finito
 
+![Plano Finito](/assets/images/chapters/dimensions/dimension_finit.jpg)
+
 O Plano Finito é o mundo físico — o plano onde todos vivem e experimentam a realidade tangível.
 
 Nele, os conceitos tomam forma, e tudo o que existe é uma manifestação das ideias e essências que residem nos outros planos. É considerado o **"rascunho da existência"**: o espaço onde as criações ganham corpo e as intenções se transformam em ações — mas tudo criado aqui tem um fim determinado.
@@ -28,6 +30,8 @@ Há, porém, uma anomalia que nenhum estudioso conseguiu explicar: apesar de o P
 
 ### Rede dos Sonhos
 
+![Rede dos Sonhos](/assets/images/chapters/dimensions/dimension_dream.jpg)
+
 A Rede dos Sonhos é o **mundo das ideias** — o plano onde todo o conhecimento, lembrança e imaginação são armazenados.
 
 Cada memória — de um ser vivo ou de alguém há muito morto — é um fragmento dessa vasta rede interligada, formando uma teia infinita de pensamentos. Nada é realmente esquecido aqui. Cada ideia que alguma mente já concebeu existe como um nó nessa teia, conectado a outros por **linhas de luz pura** que tornam o conhecimento palpável e visível.
@@ -39,6 +43,8 @@ Místicos afirmam que durante o sono ou em estados de transe profundo, a mente h
 ---
 
 ### Reino das Almas
+
+![Reino das Almas](/assets/images/chapters/dimensions/dimension_soul.jpg)
 
 Quando alguém morre, seu corpo se desconecta do arcano — a centelha espiritual que o ligava ao Plano Finito. Esse arcano residual carrega ainda fragmentos da vontade, da determinação e da memória do ser que o habitava.
 
@@ -53,6 +59,8 @@ O Reino das Almas é um lugar silencioso, envolto em névoas de energia cinzenta
 ---
 
 ### Mundo das Tintas
+
+![Mundo das Tintas](/assets/images/chapters/dimensions/dimension_tint.jpg)
 
 O Mundo das Tintas é um plano **emocional e caótico**, onde cada sentimento e intenção se manifesta como cores, formas e auras vivas.
 
