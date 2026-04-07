@@ -424,7 +424,7 @@ function AttributeBlock({
                     fontSize: "0.6rem",
                     lineHeight: 1,
                     flexShrink: 0,
-                    color: hasTalent ? group.color : "rgba(255,255,255,0.18)",
+                    color: hasTalent ? group.color : "rgba(255,255,255,0.38)",
                     fontWeight: hasTalent ? 700 : 400,
                   }}
                 >
@@ -449,7 +449,7 @@ function AttributeBlock({
                   fontFamily: "var(--font-display)",
                   fontWeight: 700,
                   fontSize: "1.1rem",
-                  color: val > 0 ? group.color : "rgba(255,255,255,0.18)",
+                  color: val > 0 ? group.color : "rgba(255,255,255,0.38)",
                   minWidth: 24,
                   textAlign: "right",
                 }}
@@ -698,7 +698,7 @@ function EntropiaDisplay({
                 fontFamily: "var(--font-ui)",
                 fontSize: "0.55rem",
                 letterSpacing: "0.15em",
-                color: "rgba(255,255,255,0.3)",
+                color: "rgba(255,255,255,0.55)",
                 textTransform: "uppercase",
                 marginBottom: 2,
               }}
@@ -710,7 +710,7 @@ function EntropiaDisplay({
                 fontFamily: "var(--font-display)",
                 fontWeight: 700,
                 fontSize: "1.4rem",
-                color: activeBonus > 0 ? "#D080F0" : "rgba(255,255,255,0.15)",
+                color: activeBonus > 0 ? "#D080F0" : "rgba(255,255,255,0.38)",
                 lineHeight: 1,
                 transition: "color 0.2s",
               }}
@@ -737,7 +737,7 @@ function EntropiaDisplay({
         <p
           className="mt-3 text-xs"
           style={{
-            color: "rgba(255,255,255,0.2)",
+            color: "rgba(255,255,255,0.50)",
             fontFamily: "var(--font-ui)",
           }}
         >
@@ -750,7 +750,7 @@ function EntropiaDisplay({
           <p
             className="mt-3 text-xs"
             style={{
-              color: "rgba(180,100,220,0.35)",
+              color: "rgba(200,150,240,0.75)",
               fontFamily: "var(--font-ui)",
             }}
           >
