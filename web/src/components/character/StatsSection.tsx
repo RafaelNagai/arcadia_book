@@ -1,0 +1,54 @@
+import type { Character } from "@/data/characterTypes"
+import { HoneycombGrid } from "./HoneycombGrid"
+import { SectionLabel } from "./CharacterUI"
+
+export function StatsSection({
+  character,
+  accentText,
+  currentHp,
+  currentSanidade,
+  owned,
+  onHpClick,
+  onSanidadeClick,
+  onEdit,
+}: {
+  character: Character
+  accentText: string
+  currentHp: number
+  currentSanidade: number
+  owned: boolean
+  onHpClick: (idx: number) => void
+  onSanidadeClick: (idx: number) => void
+  onEdit?: () => void
+}) {
+  return (
+    <section>
+      <SectionLabel
+        accent={accentText}
+        edits={onEdit ? [{ label: "identidade", fn: onEdit }] : undefined}
+      >
+        Vitalidade
+      </SectionLabel>
+      <div className="flex flex-wrap gap-12">
+        <HoneycombGrid
+          total={character.hp}
+          current={currentHp}
+          colorTop="#9EDA60"
+          colorBottom="#1C5C10"
+          label="Pontos de Vida"
+          accentColor="#6EC840"
+          onCellClick={owned ? onHpClick : undefined}
+        />
+        <HoneycombGrid
+          total={character.sanidade}
+          current={currentSanidade}
+          colorTop="#EAA8A8"
+          colorBottom="#9C1818"
+          label="Sanidade"
+          accentColor="#D04040"
+          onCellClick={owned ? onSanidadeClick : undefined}
+        />
+      </div>
+    </section>
+  )
+}
