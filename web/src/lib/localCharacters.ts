@@ -5,7 +5,7 @@
  * The `owned` flag on Character will map to server-side ownership once auth exists.
  */
 
-import type { Character, InventoryItem } from '@/data/characterTypes'
+import type { Character, InventoryBag, InventoryItem } from '@/data/characterTypes'
 
 const STORAGE_KEY = 'arcadia_custom_characters'
 
@@ -117,6 +117,52 @@ export function saveInventory(characterId: string, items: InventoryItem[]): void
     const all = raw ? (JSON.parse(raw) as Record<string, InventoryItem[]>) : {}
     all[characterId] = items
     localStorage.setItem(INVENTORY_KEY, JSON.stringify(all))
+  } catch {}
+}
+
+/* ─── Bonus slots (bags / containers) ─────────────────────────── */
+
+const BONUS_SLOTS_KEY = 'arcadia_bonus_slots'
+
+export function loadBonusSlots(characterId: string): number {
+  try {
+    const raw = localStorage.getItem(BONUS_SLOTS_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, number>) : {}
+    return all[characterId] ?? 0
+  } catch {
+    return 0
+  }
+}
+
+export function saveBonusSlots(characterId: string, bonus: number): void {
+  try {
+    const raw = localStorage.getItem(BONUS_SLOTS_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, number>) : {}
+    all[characterId] = bonus
+    localStorage.setItem(BONUS_SLOTS_KEY, JSON.stringify(all))
+  } catch {}
+}
+
+/* ─── Bags ─────────────────────────────────────────────────────── */
+
+const BAGS_KEY = 'arcadia_bags'
+
+export function loadBags(characterId: string): InventoryBag[] {
+  try {
+    const raw = localStorage.getItem(BAGS_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, InventoryBag[]>) : {}
+    return all[characterId] ?? []
+  } catch {
+    return []
+  }
+}
+
+export function saveBags(characterId: string, bags: InventoryBag[]): void {
+  try {
+    const raw = localStorage.getItem(BAGS_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, InventoryBag[]>) : {}
+    all[characterId] = bags
+    localStorage.setItem(BAGS_KEY, JSON.stringify(all))
   } catch {}
 }
 

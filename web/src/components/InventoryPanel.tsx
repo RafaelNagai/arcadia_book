@@ -1,8 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { InventoryItem, WeightCategory } from "@/data/characterTypes";
+import type { InventoryBag, InventoryItem, WeightCategory } from "@/data/characterTypes";
 import { WEIGHT_VALUES, WEIGHT_LABELS } from "@/data/characterTypes";
-import { loadInventory, saveInventory } from "@/lib/localCharacters";
+import { loadInventory, saveInventory, loadBags, saveBags } from "@/lib/localCharacters";
 import catalogData from "@equipment";
 
 /* ─── Catalog types ─────────────────────────────────────────────── */
@@ -1252,14 +1252,21 @@ export function InventoryPanel({
   const [items, setItems] = useState<InventoryItem[]>(() =>
     loadInventory(characterId),
   );
+  const [bags, setBags] = useState<InventoryBag[]>(() =>
+    loadBags(characterId),
+  );
 
   const [modal, setModal] = useState<
     | null
-    | { mode: "create"; slotIdx: number }
-    | { mode: "edit"; slotIdx: number }
+    | { mode: "create"; slotIdx: number; bagId?: string }
+    | { mode: "edit"; slotIdx: number; bagId?: string }
   >(null);
 
-  const currentWeight = items.reduce(
+  const allItems = [
+    ...items,
+    ...bags.flatMap((b) => b.items),
+  ];
+  const currentWeight = allItems.reduce(
     (sum, item) => sum + WEIGHT_VALUES[item.weight],
     0,
   );
@@ -1279,36 +1286,42 @@ export function InventoryPanel({
     saveInventory(characterId, next);
   }
 
-  function handleCatalogSelect(entry: CatalogEntry) {
-    if (modal?.mode !== "create") return;
-    const slotIdx = modal.slotIdx;
-    const newItem: InventoryItem = {
-      id: generateItemId(),
-      name: entry.name,
-      description: entry.description,
-      weight: entry.weight,
-      isEquipment: entry.isEquipment,
-      maxDurability: entry.isEquipment ? (entry.maxDurability ?? 5) : undefined,
-      currentDurability: entry.isEquipment
-        ? (entry.maxDurability ?? 5)
-        : undefined,
-      catalogImage: resolveCatalogImage(entry.image),
-      fromCatalog: true,
-      catalogSubcategory: entry.subcategory,
-      catalogTier: entry.tier,
-      damage: entry.damage ?? null,
-      effects: entry.effects,
-    };
-    const next = [...items];
-    next.splice(slotIdx, 0, newItem);
-    persist(next.slice(0, totalSlots));
-    setModal(null);
+  function persistBags(next: InventoryBag[]) {
+    setBags(next);
+    saveBags(characterId, next);
   }
 
-  function handleCreateConfirm(data: ItemFormData) {
-    if (modal?.mode !== "create") return;
-    const slotIdx = modal.slotIdx;
-    const newItem: InventoryItem = {
+  function updateBag(bagId: string, fn: (bag: InventoryBag) => InventoryBag) {
+    persistBags(bags.map((b) => (b.id === bagId ? fn(b) : b)));
+  }
+
+  function addBag() {
+    const newBag: InventoryBag = {
+      id: `bag_${Date.now()}`,
+      name: "Mochila",
+      slots: 4,
+      items: [],
+    };
+    persistBags([...bags, newBag]);
+  }
+
+  function deleteBag(bagId: string) {
+    persistBags(bags.filter((b) => b.id !== bagId));
+  }
+
+  function renameBag(bagId: string, name: string) {
+    updateBag(bagId, (b) => ({ ...b, name }));
+  }
+
+  function changeBagSlots(bagId: string, delta: number) {
+    updateBag(bagId, (b) => ({
+      ...b,
+      slots: Math.max(1, b.slots + delta),
+    }));
+  }
+
+  function buildItem(data: ItemFormData): InventoryItem {
+    return {
       id: generateItemId(),
       name: data.name.trim(),
       description: data.description.trim(),
@@ -1320,57 +1333,129 @@ export function InventoryPanel({
       damage: data.damage.trim() || null,
       effects: data.effects.filter((e) => e.trim()),
     };
-    const next = [...items];
-    next.splice(slotIdx, 0, newItem);
-    persist(next.slice(0, totalSlots));
+  }
+
+  function handleCatalogSelect(entry: CatalogEntry) {
+    if (modal?.mode !== "create") return;
+    const { slotIdx, bagId } = modal;
+    const newItem: InventoryItem = {
+      id: generateItemId(),
+      name: entry.name,
+      description: entry.description,
+      weight: entry.weight,
+      isEquipment: entry.isEquipment,
+      maxDurability: entry.isEquipment ? (entry.maxDurability ?? 5) : undefined,
+      currentDurability: entry.isEquipment ? (entry.maxDurability ?? 5) : undefined,
+      catalogImage: resolveCatalogImage(entry.image),
+      fromCatalog: true,
+      catalogSubcategory: entry.subcategory,
+      catalogTier: entry.tier,
+      damage: entry.damage ?? null,
+      effects: entry.effects,
+    };
+    if (bagId) {
+      updateBag(bagId, (b) => {
+        const next = [...b.items];
+        next.splice(slotIdx, 0, newItem);
+        return { ...b, items: next.slice(0, b.slots) };
+      });
+    } else {
+      const next = [...items];
+      next.splice(slotIdx, 0, newItem);
+      persist(next.slice(0, totalSlots));
+    }
+    setModal(null);
+  }
+
+  function handleCreateConfirm(data: ItemFormData) {
+    if (modal?.mode !== "create") return;
+    const { slotIdx, bagId } = modal;
+    const newItem = buildItem(data);
+    if (bagId) {
+      updateBag(bagId, (b) => {
+        const next = [...b.items];
+        next.splice(slotIdx, 0, newItem);
+        return { ...b, items: next.slice(0, b.slots) };
+      });
+    } else {
+      const next = [...items];
+      next.splice(slotIdx, 0, newItem);
+      persist(next.slice(0, totalSlots));
+    }
     setModal(null);
   }
 
   function handleEditConfirm(data: ItemFormData) {
     if (modal?.mode !== "edit") return;
-    const slotIdx = modal.slotIdx;
-    const existing = items[slotIdx];
-    const customUrl = data.image.trim();
-    const updated: InventoryItem = {
-      ...existing,
-      name: data.name.trim(),
-      description: data.description.trim(),
-      weight: data.weight,
-      isEquipment: data.isEquipment,
-      maxDurability: data.isEquipment ? data.maxDurability : undefined,
-      currentDurability: data.isEquipment
-        ? Math.min(
-            existing.currentDurability ?? data.maxDurability,
-            data.maxDurability,
-          )
-        : undefined,
-      // If URL provided → use it; if blank → clear custom image (catalogImage still used as fallback)
-      image: customUrl || undefined,
-      damage: data.damage.trim() || null,
-      effects: data.effects.filter((e) => e.trim()),
-    };
-    const next = [...items];
-    next[slotIdx] = updated;
-    persist(next);
+    const { slotIdx, bagId } = modal;
+    if (bagId) {
+      updateBag(bagId, (b) => {
+        const existing = b.items[slotIdx];
+        const customUrl = data.image.trim();
+        const updated: InventoryItem = {
+          ...existing,
+          name: data.name.trim(),
+          description: data.description.trim(),
+          weight: data.weight,
+          isEquipment: data.isEquipment,
+          maxDurability: data.isEquipment ? data.maxDurability : undefined,
+          currentDurability: data.isEquipment
+            ? Math.min(existing.currentDurability ?? data.maxDurability, data.maxDurability)
+            : undefined,
+          image: customUrl || undefined,
+          damage: data.damage.trim() || null,
+          effects: data.effects.filter((e) => e.trim()),
+        };
+        const next = [...b.items];
+        next[slotIdx] = updated;
+        return { ...b, items: next };
+      });
+    } else {
+      const existing = items[slotIdx];
+      const customUrl = data.image.trim();
+      const updated: InventoryItem = {
+        ...existing,
+        name: data.name.trim(),
+        description: data.description.trim(),
+        weight: data.weight,
+        isEquipment: data.isEquipment,
+        maxDurability: data.isEquipment ? data.maxDurability : undefined,
+        currentDurability: data.isEquipment
+          ? Math.min(existing.currentDurability ?? data.maxDurability, data.maxDurability)
+          : undefined,
+        image: customUrl || undefined,
+        damage: data.damage.trim() || null,
+        effects: data.effects.filter((e) => e.trim()),
+      };
+      const next = [...items];
+      next[slotIdx] = updated;
+      persist(next);
+    }
     setModal(null);
   }
 
-  function handleDelete(slotIdx: number) {
-    persist(items.filter((_, i) => i !== slotIdx));
+  function handleDelete(slotIdx: number, bagId?: string) {
+    if (bagId) {
+      updateBag(bagId, (b) => ({ ...b, items: b.items.filter((_, i) => i !== slotIdx) }));
+    } else {
+      persist(items.filter((_, i) => i !== slotIdx));
+    }
   }
 
-  function handleDurabilityChange(slotIdx: number, delta: number) {
-    persist(
-      items.map((item, i) => {
+  function handleDurabilityChange(slotIdx: number, delta: number, bagId?: string) {
+    function applyDelta(list: InventoryItem[]) {
+      return list.map((item, i) => {
         if (i !== slotIdx || !item.isEquipment) return item;
         const maxDur = item.maxDurability ?? 0;
         const cur = item.currentDurability ?? maxDur;
-        return {
-          ...item,
-          currentDurability: Math.max(0, Math.min(maxDur, cur + delta)),
-        };
-      }),
-    );
+        return { ...item, currentDurability: Math.max(0, Math.min(maxDur, cur + delta)) };
+      });
+    }
+    if (bagId) {
+      updateBag(bagId, (b) => ({ ...b, items: applyDelta(b.items) }));
+    } else {
+      persist(applyDelta(items));
+    }
   }
 
   useEffect(() => {
@@ -1382,20 +1467,24 @@ export function InventoryPanel({
     };
   }, [isOpen]);
 
-  const editInitial =
-    modal?.mode === "edit"
-      ? {
-          name: items[modal.slotIdx].name,
-          description: items[modal.slotIdx].description,
-          weight: items[modal.slotIdx].weight,
-          isEquipment: items[modal.slotIdx].isEquipment,
-          maxDurability: items[modal.slotIdx].maxDurability ?? 5,
-          // Pre-fill custom URL if one was saved; blank means keep catalogImage
-          image: items[modal.slotIdx].image ?? "",
-          damage: items[modal.slotIdx].damage ?? "",
-          effects: items[modal.slotIdx].effects ?? [],
-        }
-      : undefined;
+  const editItem = modal?.mode === "edit"
+    ? (modal.bagId
+        ? bags.find((b) => b.id === modal.bagId)?.items[modal.slotIdx]
+        : items[modal.slotIdx])
+    : undefined;
+
+  const editInitial = editItem
+    ? {
+        name: editItem.name,
+        description: editItem.description,
+        weight: editItem.weight,
+        isEquipment: editItem.isEquipment,
+        maxDurability: editItem.maxDurability ?? 5,
+        image: editItem.image ?? "",
+        damage: editItem.damage ?? "",
+        effects: editItem.effects ?? [],
+      }
+    : undefined;
 
   return (
     <>
@@ -1475,7 +1564,7 @@ export function InventoryPanel({
                       marginTop: 3,
                     }}
                   >
-                    {items.length}/{totalSlots} slots · Físico {fisico}
+                    {items.length}/{totalSlots} slots base · Físico {fisico}{bags.length > 0 ? ` · ${bags.length} mochila${bags.length > 1 ? "s" : ""}` : ""}
                   </p>
                 </div>
                 <button
@@ -1595,42 +1684,185 @@ export function InventoryPanel({
                 )}
               </div>
 
-              {/* Slots */}
+              {/* Scrollable content */}
               <div
                 style={{
                   flex: 1,
                   minHeight: 0,
                   overflowY: "auto",
-                  padding: "1rem 1.25rem",
                   display: "flex",
                   flexDirection: "column",
-                  gap: "0.55rem",
                 }}
               >
-                {Array.from({ length: totalSlots }, (_, i) => {
-                  const item = items[i];
-                  if (item) {
+                {/* Base inventory slots */}
+                <div style={{ padding: "1rem 1.25rem", display: "flex", flexDirection: "column", gap: "0.55rem" }}>
+                  {Array.from({ length: totalSlots }, (_, i) => {
+                    const item = items[i];
+                    if (item) {
+                      return (
+                        <ItemCard
+                          key={item.id}
+                          item={item}
+                          accentColor={accentColor}
+                          onEdit={() => setModal({ mode: "edit", slotIdx: i })}
+                          onDelete={() => handleDelete(i)}
+                          onDurabilityChange={(delta) => handleDurabilityChange(i, delta)}
+                        />
+                      );
+                    }
                     return (
-                      <ItemCard
-                        key={item.id}
-                        item={item}
+                      <EmptySlot
+                        key={`empty-${i}`}
                         accentColor={accentColor}
-                        onEdit={() => setModal({ mode: "edit", slotIdx: i })}
-                        onDelete={() => handleDelete(i)}
-                        onDurabilityChange={(delta) =>
-                          handleDurabilityChange(i, delta)
-                        }
+                        onClick={() => setModal({ mode: "create", slotIdx: i })}
                       />
                     );
-                  }
-                  return (
-                    <EmptySlot
-                      key={`empty-${i}`}
-                      accentColor={accentColor}
-                      onClick={() => setModal({ mode: "create", slotIdx: i })}
-                    />
-                  );
-                })}
+                  })}
+                </div>
+
+                {/* Bag sections */}
+                {bags.map((bag) => (
+                  <div
+                    key={bag.id}
+                    style={{
+                      margin: "0 0.75rem 0.75rem",
+                      borderRadius: 8,
+                      border: "1px solid rgba(200,146,42,0.22)",
+                      background: "rgba(200,146,42,0.04)",
+                      overflow: "hidden",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {/* Bag header */}
+                    <div
+                      style={{
+                        padding: "0.6rem 0.75rem",
+                        background: "rgba(200,146,42,0.09)",
+                        borderBottom: "1px solid rgba(200,146,42,0.18)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <span style={{ fontSize: "0.9rem", lineHeight: 1, flexShrink: 0 }}>🎒</span>
+                      <input
+                        value={bag.name}
+                        onChange={(e) => renameBag(bag.id, e.target.value)}
+                        style={{
+                          flex: 1,
+                          background: "none",
+                          border: "none",
+                          outline: "none",
+                          fontFamily: "var(--font-display)",
+                          fontWeight: 700,
+                          fontSize: "0.82rem",
+                          color: "#E8B84B",
+                          minWidth: 0,
+                        }}
+                      />
+                      {/* Slot counter */}
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", flexShrink: 0 }}>
+                        <button
+                          disabled={bag.slots <= 1}
+                          onClick={() => changeBagSlots(bag.id, -1)}
+                          style={{
+                            width: 20, height: 20, borderRadius: 3,
+                            background: bag.slots > 1 ? "rgba(200,146,42,0.2)" : "rgba(255,255,255,0.03)",
+                            border: `1px solid ${bag.slots > 1 ? "rgba(200,146,42,0.5)" : "rgba(255,255,255,0.07)"}`,
+                            color: bag.slots > 1 ? "#E8B84B" : "rgba(255,255,255,0.15)",
+                            fontSize: "0.85rem", lineHeight: 1,
+                            cursor: bag.slots > 1 ? "pointer" : "not-allowed",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                          }}
+                        >−</button>
+                        <span style={{ fontFamily: "var(--font-ui)", fontSize: "0.6rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", minWidth: 40, textAlign: "center" }}>
+                          {bag.items.length}/{bag.slots} slots
+                        </span>
+                        <button
+                          onClick={() => changeBagSlots(bag.id, +1)}
+                          style={{
+                            width: 20, height: 20, borderRadius: 3,
+                            background: "rgba(200,146,42,0.2)",
+                            border: "1px solid rgba(200,146,42,0.5)",
+                            color: "#E8B84B",
+                            fontSize: "0.85rem", lineHeight: 1,
+                            cursor: "pointer",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                          }}
+                        >+</button>
+                      </div>
+                      {/* Delete bag */}
+                      <button
+                        onClick={() => deleteBag(bag.id)}
+                        title="Remover mochila"
+                        style={{
+                          background: "none", border: "none",
+                          color: "rgba(200,60,60,0.45)", fontSize: "1rem",
+                          cursor: "pointer", lineHeight: 1, flexShrink: 0, padding: "0 2px",
+                        }}
+                      >×</button>
+                    </div>
+
+                    {/* Bag item slots */}
+                    <div style={{ padding: "0.75rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                      {Array.from({ length: bag.slots }, (_, i) => {
+                        const item = bag.items[i];
+                        if (item) {
+                          return (
+                            <ItemCard
+                              key={item.id}
+                              item={item}
+                              accentColor="#E8B84B"
+                              onEdit={() => setModal({ mode: "edit", slotIdx: i, bagId: bag.id })}
+                              onDelete={() => handleDelete(i, bag.id)}
+                              onDurabilityChange={(delta) => handleDurabilityChange(i, delta, bag.id)}
+                            />
+                          );
+                        }
+                        return (
+                          <EmptySlot
+                            key={`bag-${bag.id}-empty-${i}`}
+                            accentColor="#E8B84B"
+                            onClick={() => setModal({ mode: "create", slotIdx: i, bagId: bag.id })}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+
+                {/* Add bag button */}
+                <div style={{ padding: "0 0.75rem 1rem" }}>
+                  <button
+                    onClick={addBag}
+                    style={{
+                      width: "100%",
+                      background: "rgba(200,146,42,0.06)",
+                      border: "1px dashed rgba(200,146,42,0.3)",
+                      borderRadius: 8,
+                      padding: "0.7rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "0.5rem",
+                      cursor: "pointer",
+                      transition: "background 0.15s, border-color 0.15s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "rgba(200,146,42,0.12)";
+                      e.currentTarget.style.borderColor = "rgba(200,146,42,0.55)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "rgba(200,146,42,0.06)";
+                      e.currentTarget.style.borderColor = "rgba(200,146,42,0.3)";
+                    }}
+                  >
+                    <span style={{ fontSize: "0.9rem", lineHeight: 1 }}>🎒</span>
+                    <span style={{ fontFamily: "var(--font-ui)", fontSize: "0.65rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(200,146,42,0.7)" }}>
+                      Adicionar Mochila
+                    </span>
+                  </button>
+                </div>
               </div>
             </motion.div>
           </>

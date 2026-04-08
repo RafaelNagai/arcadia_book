@@ -30,6 +30,13 @@ export const WEIGHT_LABELS: Record<WeightCategory, string> = {
   hyper_massivo: 'Hyper Massivo',
 }
 
+export interface InventoryBag {
+  id: string
+  name: string
+  slots: number
+  items: InventoryItem[]
+}
+
 export interface InventoryItem {
   id: string
   name: string

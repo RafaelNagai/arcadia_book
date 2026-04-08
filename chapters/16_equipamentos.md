@@ -113,6 +113,23 @@ Os efeitos podem ser qualquer coisa narrativamente coerente: bônus situacionais
 
 ---
 
+### Mochilas e Contêineres
+
+Por padrão, cada personagem possui **3 + Físico** slots de inventário. Mochilas e contêineres podem ampliar essa capacidade, adicionando **slots extras** além do limite base.
+
+| Item | Slots Extras | Peso | Observação |
+|---|---|---|---|
+| Mochila Improvisada | +2 | Leve (2) | Feita de pano ou couro grosseiro |
+| Mochila de Aventureiro | +4 | Médio (4) | Padrão de explorador — bolsos reforçados |
+| Mochila do Explorador | +6 | Pesado (8) | Organização profissional, divisórias internas |
+| Baú de Campanha | +8 | Massivo (32) | Transportado em veículo ou navio, não carregável |
+
+> **Regra:** apenas uma mochila pode ser equipada por vez. Os slots extras somam diretamente à capacidade do personagem enquanto a mochila estiver em uso.
+
+> **Narrativa:** Se a mochila for perdida, roubada ou destruída, os slots extras desaparecem — e qualquer item que exceda o novo limite cai ou precisa ser descartado, a critério do Mestre.
+
+---
+
 ### Criando um Item (Guia para o Mestre)
 
 > **Atenção:** Esta seção é um guia para o Mestre criar e distribuir itens. Personagens que desejam **forjar** um item devem fazê-lo durante um **Interlúdio** — ver capítulo correspondente.
