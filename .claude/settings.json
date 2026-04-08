@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"require\\('@dnd-kit/sortable'\\); console.log\\('ok'\\)\")"
+    ]
+  }
+}

@@ -1,5 +1,23 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+  useDroppable,
+  type DragEndEvent,
+  type DragStartEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import type { InventoryBag, InventoryItem, WeightCategory } from "@/data/characterTypes";
 import { WEIGHT_VALUES, WEIGHT_LABELS } from "@/data/characterTypes";
 import { loadInventory, saveInventory, loadBags, saveBags } from "@/lib/localCharacters";
@@ -793,54 +811,35 @@ function ItemCard({
   onEdit,
   onDelete,
   onDurabilityChange,
+  onZoom,
+  overlay = false,
 }: {
   item: InventoryItem;
   accentColor: string;
   onEdit: () => void;
   onDelete: () => void;
   onDurabilityChange: (delta: number) => void;
+  onZoom?: (src: string) => void;
+  /** When true, renders as DragOverlay (no sortable hooks, full opacity) */
+  overlay?: boolean;
 }) {
-  const [zoomed, setZoomed] = useState(false);
+  const sortable = useSortable({ id: item.id, disabled: overlay });
   const dur = item.currentDurability ?? item.maxDurability ?? 0;
   const maxDur = item.maxDurability ?? 0;
   const durPct = maxDur > 0 ? dur / maxDur : 0;
   const durColor =
     durPct > 0.6 ? "#6EC840" : durPct > 0.3 ? "#C8922A" : "#C05050";
-  // Custom URL overrides catalog image; catalog image is the fallback
   const displayImage = item.image || item.catalogImage || null;
 
   return (
-    <>
-      {/* Zoom overlay */}
-      {zoomed && displayImage && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 400,
-            background: "rgba(0,0,0,0.88)",
-            backdropFilter: "blur(6px)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "zoom-out",
-          }}
-          onClick={() => setZoomed(false)}
-        >
-          <img
-            src={displayImage}
-            alt={item.name}
-            style={{
-              maxWidth: "90vw",
-              maxHeight: "90vh",
-              objectFit: "contain",
-              borderRadius: 6,
-              boxShadow: "0 32px 80px rgba(0,0,0,0.8)",
-            }}
-          />
-        </div>
-      )}
-
+    <div
+      ref={sortable.setNodeRef}
+      style={{
+        transform: CSS.Transform.toString(sortable.transform),
+        transition: sortable.transition,
+        opacity: sortable.isDragging ? 0.35 : 1,
+      }}
+    >
       <div
         style={{
           background: "rgba(255,255,255,0.03)",
@@ -851,20 +850,40 @@ function ItemCard({
           display: "flex",
         }}
       >
-        {/* Left image column */}
+        {/* Drag handle */}
         <div
+          {...sortable.listeners}
+          {...sortable.attributes}
           style={{
-            width: 88,
+            width: 18,
             flexShrink: 0,
-            background: "rgba(0,0,0,0.3)",
-            overflow: "hidden",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            cursor: displayImage ? "zoom-in" : "default",
+            cursor: overlay ? "grabbing" : "grab",
+            color: "rgba(255,255,255,0.18)",
+            fontSize: "0.7rem",
+            userSelect: "none",
+            touchAction: "none",
           }}
-          onClick={() => displayImage && setZoomed(true)}
         >
+          ⠿
+        </div>
+
+      {/* Left image column */}
+      <div
+        style={{
+          width: 88,
+          flexShrink: 0,
+          background: "rgba(0,0,0,0.3)",
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: displayImage ? "zoom-in" : "default",
+        }}
+        onClick={() => displayImage && onZoom?.(displayImage)}
+      >
           {displayImage ? (
             <img
               src={displayImage}
@@ -1171,7 +1190,7 @@ function ItemCard({
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -1231,6 +1250,29 @@ function EmptySlot({
   );
 }
 
+/* ─── Droppable sortable section ───────────────────────────────── */
+
+function DroppableSection({
+  id,
+  itemIds,
+  style,
+  children,
+}: {
+  id: string;
+  itemIds: string[];
+  style?: React.CSSProperties;
+  children: React.ReactNode;
+}) {
+  const { setNodeRef } = useDroppable({ id });
+  return (
+    <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
+      <div ref={setNodeRef} style={style}>
+        {children}
+      </div>
+    </SortableContext>
+  );
+}
+
 /* ─── Main panel ────────────────────────────────────────────────── */
 
 export function InventoryPanel({
@@ -1255,6 +1297,99 @@ export function InventoryPanel({
   const [bags, setBags] = useState<InventoryBag[]>(() =>
     loadBags(characterId),
   );
+  const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+  const [activeItemId, setActiveItemId] = useState<string | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+  );
+
+  /** Returns the container ID ("base" or bag.id) that owns the given item ID. */
+  function findContainerIdOf(itemId: string): string | null {
+    if (items.find((i) => i.id === itemId)) return "base";
+    for (const bag of bags) {
+      if (bag.items.find((i) => i.id === itemId)) return bag.id;
+    }
+    return null;
+  }
+
+  function handleDragStart({ active }: DragStartEvent) {
+    setActiveItemId(String(active.id));
+  }
+
+  function handleDragEnd({ active, over }: DragEndEvent) {
+    setActiveItemId(null);
+    if (!over || active.id === over.id) return;
+
+    const activeId = String(active.id);
+    const overId = String(over.id);
+
+    const activeContainerId = findContainerIdOf(activeId);
+    // over.id can be an item ID or a container ID (droppable area)
+    let overContainerId = findContainerIdOf(overId) ?? (
+      overId === "base" || bags.find((b) => b.id === overId) ? overId : null
+    );
+
+    if (!activeContainerId || !overContainerId) return;
+
+    if (activeContainerId === overContainerId) {
+      // ── Same container: reorder ──────────────────────────────────
+      if (activeContainerId === "base") {
+        const oldIdx = items.findIndex((i) => i.id === activeId);
+        const newIdx = items.findIndex((i) => i.id === overId);
+        if (oldIdx < 0 || newIdx < 0) return;
+        persist(arrayMove(items, oldIdx, newIdx));
+      } else {
+        persistBags(bags.map((b) => {
+          if (b.id !== activeContainerId) return b;
+          const oldIdx = b.items.findIndex((i) => i.id === activeId);
+          const newIdx = b.items.findIndex((i) => i.id === overId);
+          if (oldIdx < 0 || newIdx < 0) return b;
+          return { ...b, items: arrayMove(b.items, oldIdx, newIdx) };
+        }));
+      }
+    } else {
+      // ── Cross-container: move item ───────────────────────────────
+      const srcItems = activeContainerId === "base"
+        ? items
+        : bags.find((b) => b.id === activeContainerId)!.items;
+      const dstItems = overContainerId === "base"
+        ? items
+        : bags.find((b) => b.id === overContainerId)!.items;
+
+      const movingItem = srcItems.find((i) => i.id === activeId);
+      if (!movingItem) return;
+
+      const newSrc = srcItems.filter((i) => i.id !== activeId);
+      const overIdx = dstItems.findIndex((i) => i.id === overId);
+      const newDst = [...dstItems];
+      newDst.splice(overIdx >= 0 ? overIdx : newDst.length, 0, movingItem);
+
+      const dstLimit = overContainerId === "base"
+        ? totalSlots
+        : bags.find((b) => b.id === overContainerId)!.slots;
+      if (newDst.length > dstLimit) return;
+
+      if (activeContainerId === "base") {
+        setItems(newSrc);
+        saveInventory(characterId, newSrc);
+        persistBags(bags.map((b) =>
+          b.id === overContainerId ? { ...b, items: newDst } : b,
+        ));
+      } else if (overContainerId === "base") {
+        persist(newDst);
+        persistBags(bags.map((b) =>
+          b.id === activeContainerId ? { ...b, items: newSrc } : b,
+        ));
+      } else {
+        persistBags(bags.map((b) => {
+          if (b.id === activeContainerId) return { ...b, items: newSrc };
+          if (b.id === overContainerId) return { ...b, items: newDst };
+          return b;
+        }));
+      }
+    }
+  }
 
   const [modal, setModal] = useState<
     | null
@@ -1685,6 +1820,12 @@ export function InventoryPanel({
               </div>
 
               {/* Scrollable content */}
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+              >
               <div
                 style={{
                   flex: 1,
@@ -1695,7 +1836,11 @@ export function InventoryPanel({
                 }}
               >
                 {/* Base inventory slots */}
-                <div style={{ padding: "1rem 1.25rem", display: "flex", flexDirection: "column", gap: "0.55rem" }}>
+                <DroppableSection
+                  id="base"
+                  itemIds={items.map((i) => i.id)}
+                  style={{ padding: "1rem 1.25rem", display: "flex", flexDirection: "column", gap: "0.55rem" }}
+                >
                   {Array.from({ length: totalSlots }, (_, i) => {
                     const item = items[i];
                     if (item) {
@@ -1707,6 +1852,7 @@ export function InventoryPanel({
                           onEdit={() => setModal({ mode: "edit", slotIdx: i })}
                           onDelete={() => handleDelete(i)}
                           onDurabilityChange={(delta) => handleDurabilityChange(i, delta)}
+                          onZoom={setZoomedImage}
                         />
                       );
                     }
@@ -1718,7 +1864,7 @@ export function InventoryPanel({
                       />
                     );
                   })}
-                </div>
+                </DroppableSection>
 
                 {/* Bag sections */}
                 {bags.map((bag) => (
@@ -1804,7 +1950,11 @@ export function InventoryPanel({
                     </div>
 
                     {/* Bag item slots */}
-                    <div style={{ padding: "0.75rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                    <DroppableSection
+                      id={bag.id}
+                      itemIds={bag.items.map((i) => i.id)}
+                      style={{ padding: "0.75rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}
+                    >
                       {Array.from({ length: bag.slots }, (_, i) => {
                         const item = bag.items[i];
                         if (item) {
@@ -1816,6 +1966,7 @@ export function InventoryPanel({
                               onEdit={() => setModal({ mode: "edit", slotIdx: i, bagId: bag.id })}
                               onDelete={() => handleDelete(i, bag.id)}
                               onDurabilityChange={(delta) => handleDurabilityChange(i, delta, bag.id)}
+                              onZoom={setZoomedImage}
                             />
                           );
                         }
@@ -1827,7 +1978,7 @@ export function InventoryPanel({
                           />
                         );
                       })}
-                    </div>
+                    </DroppableSection>
                   </div>
                 ))}
 
@@ -1864,6 +2015,32 @@ export function InventoryPanel({
                   </button>
                 </div>
               </div>
+
+                {/* DragOverlay — renders the ghost card while dragging */}
+                <DragOverlay dropAnimation={null}>
+                  {(() => {
+                    if (!activeItemId) return null;
+                    const activeItem =
+                      items.find((i) => i.id === activeItemId) ??
+                      bags.flatMap((b) => b.items).find((i) => i.id === activeItemId) ??
+                      null;
+                    if (!activeItem) return null;
+                    const inBag = bags.some((b) =>
+                      b.items.find((i) => i.id === activeItemId),
+                    );
+                    return (
+                      <ItemCard
+                        item={activeItem}
+                        accentColor={inBag ? "#E8B84B" : accentColor}
+                        onEdit={() => {}}
+                        onDelete={() => {}}
+                        onDurabilityChange={() => {}}
+                        overlay
+                      />
+                    );
+                  })()}
+                </DragOverlay>
+              </DndContext>
             </motion.div>
           </>
         )}
@@ -1887,6 +2064,37 @@ export function InventoryPanel({
           />
         )}
       </AnimatePresence>
+
+      {/* Image zoom overlay — rendered outside motion.div to avoid transform containment */}
+      {zoomedImage && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 500,
+            background: "rgba(0,0,0,0.88)",
+            backdropFilter: "blur(6px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "zoom-out",
+          }}
+          onClick={() => setZoomedImage(null)}
+        >
+          <img
+            src={zoomedImage}
+            alt=""
+            style={{
+              maxWidth: "90vw",
+              maxHeight: "90vh",
+              objectFit: "contain",
+              borderRadius: 6,
+              boxShadow: "0 32px 80px rgba(0,0,0,0.8)",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </>
   );
 }
