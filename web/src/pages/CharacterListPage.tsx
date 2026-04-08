@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import type { Character } from '@/data/characterTypes'
 import charactersData from '@characters'
 import { loadCustomCharacters, deleteCustomCharacter } from '@/lib/localCharacters'
@@ -161,6 +161,7 @@ function CharacterCard({ character, index }: { character: Character; index: numb
 
 export function CharacterListPage() {
   const [customChars, setCustomChars] = useState<Character[]>([])
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
   useEffect(() => {
     document.title = 'Personagens — Arcádia'
@@ -168,10 +169,14 @@ export function CharacterListPage() {
     setCustomChars(loadCustomCharacters())
   }, [])
 
-  function handleDelete(id: string) {
-    deleteCustomCharacter(id)
-    setCustomChars(prev => prev.filter(c => c.id !== id))
+  function confirmDelete() {
+    if (!pendingDeleteId) return
+    deleteCustomCharacter(pendingDeleteId)
+    setCustomChars(prev => prev.filter(c => c.id !== pendingDeleteId))
+    setPendingDeleteId(null)
   }
+
+  const pendingChar = customChars.find(c => c.id === pendingDeleteId)
 
   return (
     <motion.div
@@ -239,7 +244,7 @@ export function CharacterListPage() {
                 <div key={character.id} style={{ position: 'relative' }}>
                   <CharacterCard character={character} index={i} />
                   <button
-                    onClick={() => handleDelete(character.id)}
+                    onClick={() => setPendingDeleteId(character.id)}
                     title="Excluir personagem"
                     style={{
                       position: 'absolute', top: 8, right: 8, zIndex: 10,
@@ -272,6 +277,96 @@ export function CharacterListPage() {
           </div>
         </section>
       </div>
+
+      {/* ── Delete confirmation modal ─────────────────────── */}
+      <AnimatePresence>
+        {pendingDeleteId && pendingChar && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 200,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'rgba(0,0,0,0.72)',
+              backdropFilter: 'blur(4px)',
+            }}
+            onClick={() => setPendingDeleteId(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 8 }}
+              transition={{ duration: 0.18 }}
+              style={{
+                background: '#0A0F1E',
+                border: '1px solid rgba(200,60,60,0.35)',
+                borderRadius: 8,
+                padding: '1.75rem',
+                width: 360,
+                maxWidth: 'calc(100vw - 2rem)',
+                boxShadow: '0 24px 64px rgba(0,0,0,0.85)',
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              <p style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '1rem',
+                fontWeight: 700,
+                color: '#EEF4FC',
+                marginBottom: '0.5rem',
+              }}>
+                Excluir personagem?
+              </p>
+              <p style={{
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.8rem',
+                color: 'var(--color-text-secondary)',
+                marginBottom: '1.5rem',
+                lineHeight: 1.5,
+              }}>
+                <span style={{ color: '#EEF4FC', fontWeight: 600 }}>{pendingChar.name}</span>
+                {' '}será removido permanentemente. Esta ação não pode ser desfeita.
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={() => setPendingDeleteId(null)}
+                  style={{
+                    background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    borderRadius: 4,
+                    color: 'rgba(255,255,255,0.45)',
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.75rem',
+                    letterSpacing: '0.1em',
+                    padding: '0.45rem 1rem',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  style={{
+                    background: 'rgba(200,60,60,0.2)',
+                    border: '1px solid rgba(200,60,60,0.55)',
+                    borderRadius: 4,
+                    color: '#E07070',
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.1em',
+                    padding: '0.45rem 1rem',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Excluir
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   )
 }
