@@ -267,8 +267,8 @@ function HeroContent() {
         >
           Ler o Livro
         </Link>
-        <a
-          href="#mundo"
+        <Link
+          to="/personagens"
           className="px-8 py-3 font-ui font-semibold text-sm uppercase tracking-widest border transition-all duration-200 hover:bg-white hover:bg-opacity-5"
           style={{
             borderColor: "var(--color-arcano-dim)",
@@ -277,8 +277,8 @@ function HeroContent() {
             letterSpacing: "0.15em",
           }}
         >
-          Conhecer o Mundo
-        </a>
+          Ir para a Mesa
+        </Link>
       </motion.div>
 
       {/* Scroll indicator */}

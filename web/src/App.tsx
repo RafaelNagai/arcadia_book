@@ -9,15 +9,16 @@ import { CharacterCreatorPage } from '@/pages/CharacterCreatorPage'
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<AppShell />}>
-        <Route index element={<HomePage />} />
-        <Route path="capitulo/:slug" element={<ChapterPage />} />
-        <Route path="personagens" element={<CharacterListPage />} />
-      </Route>
-      {/* Character sheets and creator are standalone (no sidebar) for full-screen experience */}
+      {/* Standalone pages — no sidebar */}
+      <Route path="/" element={<HomePage />} />
+      <Route path="personagens" element={<CharacterListPage />} />
       <Route path="ficha/:id" element={<CharacterPage />} />
       <Route path="criar-ficha" element={<CharacterCreatorPage />} />
       <Route path="editar-ficha/:id" element={<CharacterCreatorPage />} />
+      {/* Book reader — with sidebar */}
+      <Route element={<AppShell />}>
+        <Route path="capitulo/:slug" element={<ChapterPage />} />
+      </Route>
     </Routes>
   )
 }

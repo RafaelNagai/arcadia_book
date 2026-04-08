@@ -202,6 +202,13 @@ export function CharacterListPage() {
         }} />
         <div className="relative max-w-4xl mx-auto flex items-start justify-between gap-4 flex-wrap">
           <div>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 mb-4 transition-opacity duration-200 hover:opacity-80"
+              style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none' }}
+            >
+              ← Início
+            </Link>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-3"
               style={{ color: 'var(--color-arcano-dim)', fontFamily: 'var(--font-ui)' }}>
               Fichas de Personagem
