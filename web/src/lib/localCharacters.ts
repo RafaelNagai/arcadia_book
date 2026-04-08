@@ -44,6 +44,26 @@ export function isOwnedCharacter(id: string): boolean {
 }
 
 const PE_KEY = 'arcadia_pe_checks'
+const SKILL_MOD_KEY = 'arcadia_skill_modifiers'
+
+export function loadSkillModifiers(id: string): Record<string, number> {
+  try {
+    const raw = localStorage.getItem(SKILL_MOD_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, Record<string, number>>) : {}
+    return all[id] ?? {}
+  } catch {
+    return {}
+  }
+}
+
+export function saveSkillModifiers(id: string, mods: Record<string, number>): void {
+  try {
+    const raw = localStorage.getItem(SKILL_MOD_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, Record<string, number>>) : {}
+    all[id] = mods
+    localStorage.setItem(SKILL_MOD_KEY, JSON.stringify(all))
+  } catch {}
+}
 
 export function loadPeChecks(id: string): Record<string, boolean[]> {
   try {

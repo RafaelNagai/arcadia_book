@@ -20,6 +20,8 @@ import {
   saveCurrentValues,
   loadPeChecks,
   savePeChecks,
+  loadSkillModifiers,
+  saveSkillModifiers,
 } from "@/lib/localCharacters";
 
 const PRESET_CHARACTERS = charactersData as Character[];
@@ -337,7 +339,8 @@ function HoneycombGrid({
               width: 28,
               height: 28,
               borderRadius: 4,
-              background: current > 0 ? `${accentColor}18` : "rgba(255,255,255,0.03)",
+              background:
+                current > 0 ? `${accentColor}18` : "rgba(255,255,255,0.03)",
               border: `1px solid ${current > 0 ? accentColor + "55" : "rgba(255,255,255,0.08)"}`,
               color: current > 0 ? accentColor : "rgba(255,255,255,0.18)",
               fontFamily: "var(--font-ui)",
@@ -360,7 +363,8 @@ function HoneycombGrid({
               width: 28,
               height: 28,
               borderRadius: 4,
-              background: current < total ? `${accentColor}18` : "rgba(255,255,255,0.03)",
+              background:
+                current < total ? `${accentColor}18` : "rgba(255,255,255,0.03)",
               border: `1px solid ${current < total ? accentColor + "55" : "rgba(255,255,255,0.08)"}`,
               color: current < total ? accentColor : "rgba(255,255,255,0.18)",
               fontFamily: "var(--font-ui)",
@@ -428,12 +432,20 @@ function AttributeBlock({
   character,
   peChecks,
   onPeToggle,
+  skillModifiers,
+  onModifierChange,
+  onModifierReset,
 }: {
   group: (typeof ATTR_GROUPS)[number];
   character: Character;
   peChecks: boolean[];
   onPeToggle: (idx: number) => void;
+  skillModifiers: Record<string, number>;
+  onModifierChange: (key: string, delta: number) => void;
+  onModifierReset: (key: string) => void;
 }) {
+  const [editingSkill, setEditingSkill] = useState<string | null>(null);
+
   return (
     <div
       className="rounded-sm overflow-hidden"
@@ -445,12 +457,12 @@ function AttributeBlock({
       <div
         className="px-4 py-3 flex items-center justify-between"
         style={{
-          background: `linear-gradient(90deg, ${group.color}1A 0%, transparent 100%)`,
+          background: `linear-gradient(90deg, ${group.color}AF 0%, transparent 90%)`,
           borderBottom: `1px solid ${group.color}33`,
         }}
       >
         <span
-          className="text-xs font-semibold uppercase tracking-[0.18em]"
+          className="text-sm font-semibold uppercase tracking-[0.18em]"
           style={{ color: group.color, fontFamily: "var(--font-ui)" }}
         >
           {group.label}
@@ -489,7 +501,9 @@ function AttributeBlock({
               width: 16,
               height: 16,
               borderRadius: 3,
-              background: checked ? `${group.color}33` : "rgba(255,255,255,0.06)",
+              background: checked
+                ? `${group.color}33`
+                : "rgba(255,255,255,0.06)",
               border: `1px solid ${checked ? group.color + "CC" : "rgba(200,210,230,0.35)"}`,
               color: checked ? group.color : "rgba(200,210,230,0.35)",
               fontSize: "0.55rem",
@@ -512,49 +526,158 @@ function AttributeBlock({
         {group.skills.map((skill) => {
           const val = character.skills[skill.key];
           const hasTalent = character.talents.includes(skill.key);
+          const mod = skillModifiers[skill.key] ?? 0;
+          const total = val + mod;
+          const isEditing = editingSkill === skill.key;
+          const modColor = mod > 0 ? "#6EC840" : "#D04040";
+
+          const smallBtn: React.CSSProperties = {
+            width: 20,
+            height: 20,
+            borderRadius: 3,
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.15)",
+            color: "rgba(255,255,255,0.65)",
+            fontFamily: "var(--font-ui)",
+            fontSize: "0.8rem",
+            lineHeight: 1,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 0,
+            flexShrink: 0,
+          };
+
           return (
-            <div
-              key={skill.key}
-              className="flex items-center justify-between gap-3"
-            >
-              <div className="flex items-center gap-1.5 min-w-0">
-                <span
-                  style={{
-                    fontSize: "0.6rem",
-                    lineHeight: 1,
-                    flexShrink: 0,
-                    color: hasTalent ? group.color : "rgba(255,255,255,0.38)",
-                    fontWeight: hasTalent ? 700 : 400,
-                  }}
+            <div key={skill.key}>
+              {/* Main row — always the same layout */}
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <span
+                    style={{
+                      fontSize: "0.6rem",
+                      lineHeight: 1,
+                      flexShrink: 0,
+                      color: hasTalent ? group.color : "rgba(255,255,255,0.38)",
+                      fontWeight: hasTalent ? 700 : 400,
+                    }}
+                  >
+                    {hasTalent ? "◆" : "◇"}
+                  </span>
+                  <span
+                    className="text-xs"
+                    style={{
+                      color:
+                        val > 0
+                          ? "var(--color-text-secondary)"
+                          : "var(--color-text-muted)",
+                      fontFamily: "var(--font-ui)",
+                      fontWeight: hasTalent ? 600 : 400,
+                    }}
+                  >
+                    {skill.label}
+                  </span>
+                </div>
+
+                {/* Clickable value area — toggles edit mode */}
+                <div
+                  className="flex items-center gap-1.5"
+                  style={{ cursor: "pointer", flexShrink: 0 }}
+                  onClick={() => setEditingSkill(isEditing ? null : skill.key)}
+                  title={isEditing ? "Fechar" : "Clique para modificar"}
                 >
-                  {hasTalent ? "◆" : "◇"}
-                </span>
-                <span
-                  className="text-xs"
-                  style={{
-                    color:
-                      val > 0
-                        ? "var(--color-text-secondary)"
-                        : "var(--color-text-muted)",
-                    fontFamily: "var(--font-ui)",
-                    fontWeight: hasTalent ? 600 : 400,
-                  }}
-                >
-                  {skill.label}
-                </span>
+                  {mod !== 0 && (
+                    <span
+                      style={{
+                        fontFamily: "var(--font-ui)",
+                        fontSize: "0.65rem",
+                        fontWeight: 700,
+                        color: modColor,
+                      }}
+                    >
+                      {mod > 0 ? `+${mod}` : mod}
+                    </span>
+                  )}
+                  <span
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                      fontSize: "1.1rem",
+                      color:
+                        mod !== 0
+                          ? modColor
+                          : val > 0
+                            ? "rgba(220,230,245,0.9)"
+                            : "rgba(255,255,255,0.28)",
+                      minWidth: 24,
+                      textAlign: "right",
+                      opacity: isEditing ? 0.6 : 1,
+                      transition: "opacity 0.15s",
+                    }}
+                  >
+                    {total}
+                  </span>
+                </div>
               </div>
-              <span
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 700,
-                  fontSize: "1.1rem",
-                  color: val > 0 ? group.color : "rgba(255,255,255,0.38)",
-                  minWidth: 24,
-                  textAlign: "right",
-                }}
-              >
-                {val}
-              </span>
+
+              {/* Expanded controls — appear below when editing */}
+              {isEditing && (
+                <div
+                  className="flex items-center gap-1.5 mt-1.5"
+                  style={{ paddingLeft: 12 }}
+                >
+                  <button
+                    style={smallBtn}
+                    onClick={() => onModifierChange(skill.key, -1)}
+                  >
+                    −
+                  </button>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.7rem",
+                      fontWeight: 700,
+                      minWidth: 26,
+                      textAlign: "center",
+                      color:
+                        mod > 0
+                          ? "#6EC840"
+                          : mod < 0
+                            ? "#D04040"
+                            : "rgba(255,255,255,0.3)",
+                    }}
+                  >
+                    {mod > 0 ? `+${mod}` : mod === 0 ? "·" : String(mod)}
+                  </span>
+                  <button
+                    style={smallBtn}
+                    onClick={() => onModifierChange(skill.key, +1)}
+                  >
+                    +
+                  </button>
+
+                  <div style={{ flex: 1 }} />
+
+                  <button
+                    style={{ ...smallBtn, color: "rgba(255,100,100,0.8)" }}
+                    onClick={() => {
+                      onModifierReset(skill.key);
+                      setEditingSkill(null);
+                    }}
+                    title="Remover modificador"
+                  >
+                    ×
+                  </button>
+                  <button
+                    style={{ ...smallBtn, color: "#6EC840" }}
+                    onClick={() => setEditingSkill(null)}
+                    title="Confirmar"
+                  >
+                    ✓
+                  </button>
+                </div>
+              )}
             </div>
           );
         })}
@@ -891,9 +1014,9 @@ function EditBtn({ label, onClick }: { label: string; onClick: () => void }) {
       onClick={onClick}
       style={{
         background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.1)",
+        border: "1px solid rgba(255,255,255,0.3)",
         borderRadius: 4,
-        color: "rgba(255,255,255,0.35)",
+        color: "rgba(255,255,255,0.4)",
         fontFamily: "var(--font-ui)",
         fontSize: "0.6rem",
         letterSpacing: "0.14em",
@@ -979,12 +1102,16 @@ export function CharacterPage() {
   const [peChecks, setPeChecks] = useState<Record<string, boolean[]>>(() => {
     const saved = id ? loadPeChecks(id) : {};
     return {
-      fisico:    saved.fisico    ?? Array(5).fill(false),
-      destreza:  saved.destreza  ?? Array(5).fill(false),
+      fisico: saved.fisico ?? Array(5).fill(false),
+      destreza: saved.destreza ?? Array(5).fill(false),
       intelecto: saved.intelecto ?? Array(5).fill(false),
       influencia: saved.influencia ?? Array(5).fill(false),
     };
   });
+
+  const [skillModifiers, setSkillModifiers] = useState<Record<string, number>>(
+    () => (id ? loadSkillModifiers(id) : {}),
+  );
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -1025,6 +1152,23 @@ export function CharacterPage() {
     setSlottedRunas((prev) => {
       const next = [...prev];
       next[slotIdx] = null;
+      return next;
+    });
+  }
+
+  function handleModifierChange(skillKey: string, delta: number) {
+    setSkillModifiers((prev) => {
+      const next = { ...prev, [skillKey]: (prev[skillKey] ?? 0) + delta };
+      if (id) saveSkillModifiers(id, next);
+      return next;
+    });
+  }
+
+  function handleModifierReset(skillKey: string) {
+    setSkillModifiers((prev) => {
+      const next = { ...prev };
+      delete next[skillKey];
+      if (id) saveSkillModifiers(id, next);
       return next;
     });
   }
@@ -1375,6 +1519,9 @@ export function CharacterPage() {
                 character={character}
                 peChecks={peChecks[group.attr]}
                 onPeToggle={(idx) => handlePeToggle(group.attr, idx)}
+                skillModifiers={skillModifiers}
+                onModifierChange={handleModifierChange}
+                onModifierReset={handleModifierReset}
               />
             ))}
           </div>
@@ -1548,7 +1695,7 @@ export function CharacterPage() {
                       fontFamily: "var(--font-ui)",
                       fontSize: "0.6rem",
                       letterSpacing: "0.2em",
-                      color: "rgba(180,100,220,0.65)",
+                      color: "rgba(205, 146, 234, 0.83)",
                       textTransform: "uppercase",
                       marginBottom: "0.75rem",
                     }}
@@ -1556,7 +1703,7 @@ export function CharacterPage() {
                     Runas Conhecidas
                     <span
                       style={{
-                        color: "rgba(255,255,255,0.2)",
+                        color: "rgba(255, 255, 255, 0.4)",
                         marginLeft: "0.5rem",
                         textTransform: "none",
                         letterSpacing: 0,
