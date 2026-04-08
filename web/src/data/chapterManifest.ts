@@ -27,7 +27,7 @@ export const CHAPTERS: ChapterMeta[] = [
   { id: '02_personagem',              slug: 'personagem',              title: 'Personagem',               part: 'Fundamentos',            order: 2,  subtitle: 'Quem você é nesse mundo' },
   { id: '03_evolucao_e_testes',       slug: 'evolucao-e-testes',       title: 'Evolução e Testes',        part: 'Fundamentos',            order: 3,  subtitle: 'Como o destino é testado' },
   { id: '04_combate',                 slug: 'combate',                 title: 'Combate',                  part: 'Fundamentos',            order: 4,  subtitle: 'A arte de sobreviver' },
-  { id: '16_equipamentos',            slug: 'equipamentos',            title: 'Equipamentos',             part: 'Fundamentos',            order: 5,  subtitle: 'Armas, armaduras e itens do Mar de Nuvens' },
+  { id: '16_equipamentos',            slug: 'equipamentos',            title: 'Item e Equipamento',       part: 'Fundamentos',            order: 5,  subtitle: 'Armas, armaduras e o catálogo do Mar de Nuvens' },
   { id: '05_arcanismo',               slug: 'arcanismo',               title: 'Arcanismo',                part: 'O Arcano',               order: 6,  subtitle: 'O poder tem um preço' },
   { id: '06_elementos_e_afinidades',  slug: 'elementos-e-afinidades',  title: 'Elementos e Afinidades',   part: 'O Arcano',               order: 6,  subtitle: 'Cinco forças, um destino' },
   { id: '07_condicoes_e_trauma',      slug: 'condicoes-e-trauma',      title: 'Condições e Trauma',       part: 'O Arcano',               order: 7,  subtitle: 'O que o mundo deixa em você' },

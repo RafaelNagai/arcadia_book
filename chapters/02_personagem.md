@@ -265,6 +265,56 @@ A **Performance** mede a expressão artística e a presença cênica. Músicos, 
 
 ---
 
+## Inventário
+
+Todo personagem carrega consigo um conjunto de **slots de inventário** — espaços físicos onde itens e equipamentos podem ser guardados durante as aventuras.
+
+### Capacidade de Slots
+
+| Fonte | Slots Ganhos |
+|---|---|
+| Base | 3 slots |
+| Por ponto de Físico | +1 slot |
+
+> **Exemplo:** Um personagem com Físico 3 possui 6 slots de inventário (3 base + 3 do Físico).
+
+Cada slot comporta um único item, independentemente do seu peso.
+
+### Limite de Carga
+
+O peso total que um personagem consegue carregar sem penalidade é determinado pelo atributo **Físico**:
+
+> **Limite de Carga = 15 + (Físico × 5)**
+
+| Físico | Slots | Limite de Carga |
+|---|---|---|
+| 0 | 3 | 15 |
+| 1 | 4 | 20 |
+| 2 | 5 | 25 |
+| 3 | 6 | 30 |
+| 4 | 7 | 35 |
+| 5 | 8 | 40 |
+
+### Penalidades por Sobrecarga
+
+| Condição | Penalidade |
+|---|---|
+| Peso > Limite de Carga | **Desvantagem** em todos os testes |
+| Peso > 2× Limite de Carga | **2× Desvantagem** em todos os testes |
+
+> **Desvantagem** significa rolar um dado a menos no pool. **2× Desvantagem** significa rolar dois dados a menos. Se o pool chegar a zero dados, o teste falha automaticamente.
+
+> **Exemplo:** Um personagem com Físico 2 (Limite 25) que carrega peso 32 sofre Desvantagem em todos os testes. Se carregar peso 52 ou mais, sofre 2× Desvantagem.
+
+### Itens e Equipamentos no Inventário
+
+Cada slot pode conter um **item comum** ou um **equipamento**:
+
+- **Item comum** — Possui nome, descrição e peso. Não tem contagem de durabilidade. Exemplos: poções, mapas, instrumentos, moedas.
+- **Equipamento** — Além de nome, descrição e peso, possui **Durabilidade**. A durabilidade máxima é definida na criação ou aquisição do item (consulte as tabelas de Tier no capítulo *Item e Equipamento*). Durante o jogo, pode subir ou cair conforme os eventos da sessão.
+
+---
+
 ## Tabela de Referência Rápida
 
 | Atributo | Perícia | Uso Central |

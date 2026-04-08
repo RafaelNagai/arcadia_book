@@ -5,7 +5,7 @@
  * The `owned` flag on Character will map to server-side ownership once auth exists.
  */
 
-import type { Character } from '@/data/characterTypes'
+import type { Character, InventoryItem } from '@/data/characterTypes'
 
 const STORAGE_KEY = 'arcadia_custom_characters'
 
@@ -95,6 +95,29 @@ export function saveCurrentValues(id: string, currentHp: number, currentSanidade
 
 export function generateId(): string {
   return `custom_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`
+}
+
+/* ─── Inventory ────────────────────────────────────────────────── */
+
+const INVENTORY_KEY = 'arcadia_inventory'
+
+export function loadInventory(characterId: string): InventoryItem[] {
+  try {
+    const raw = localStorage.getItem(INVENTORY_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, InventoryItem[]>) : {}
+    return all[characterId] ?? []
+  } catch {
+    return []
+  }
+}
+
+export function saveInventory(characterId: string, items: InventoryItem[]): void {
+  try {
+    const raw = localStorage.getItem(INVENTORY_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, InventoryItem[]>) : {}
+    all[characterId] = items
+    localStorage.setItem(INVENTORY_KEY, JSON.stringify(all))
+  } catch {}
 }
 
 /* ─── Derived stats ────────────────────────────────────────────── */

@@ -14,6 +14,7 @@ import {
 } from "@dnd-kit/core";
 import type { Character } from "@/data/characterTypes";
 import charactersData from "@characters";
+import { InventoryPanel } from "@/components/InventoryPanel";
 import {
   getCustomCharacter,
   isOwnedCharacter,
@@ -1113,6 +1114,8 @@ export function CharacterPage() {
     () => (id ? loadSkillModifiers(id) : {}),
   );
 
+  const [inventoryOpen, setInventoryOpen] = useState(false);
+
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
   );
@@ -1804,6 +1807,51 @@ export function CharacterPage() {
           </button>
         </div>
       </div>
+
+      {/* ── Floating backpack button ──────────────────────── */}
+      <button
+        onClick={() => setInventoryOpen(true)}
+        title="Abrir inventário"
+        style={{
+          position: "fixed",
+          bottom: 28,
+          right: 28,
+          zIndex: 80,
+          width: 52,
+          height: 52,
+          borderRadius: "50%",
+          background: `linear-gradient(135deg, ${accent.bg}, rgba(4,10,20,0.95))`,
+          border: `1px solid ${accent.text}55`,
+          boxShadow: `0 4px 24px rgba(0,0,0,0.5), 0 0 16px ${accent.glow}`,
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "1.4rem",
+          transition: "transform 0.15s, box-shadow 0.15s",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.1)";
+          e.currentTarget.style.boxShadow = `0 6px 32px rgba(0,0,0,0.6), 0 0 24px ${accent.glow}`;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.style.boxShadow = `0 4px 24px rgba(0,0,0,0.5), 0 0 16px ${accent.glow}`;
+        }}
+      >
+        🎒
+      </button>
+
+      {/* ── Inventory panel ───────────────────────────────── */}
+      {id && (
+        <InventoryPanel
+          characterId={id}
+          fisico={character.attributes.fisico}
+          accentColor={accent.text}
+          isOpen={inventoryOpen}
+          onClose={() => setInventoryOpen(false)}
+        />
+      )}
     </div>
   );
 }

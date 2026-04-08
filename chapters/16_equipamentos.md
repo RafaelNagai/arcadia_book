@@ -1,4 +1,4 @@
-# Equipamentos
+# Item e Equipamento
 
 > *"Um bom equipamento não garante a vitória — mas garante que você ainda estará de pé para tentar de novo."*
 

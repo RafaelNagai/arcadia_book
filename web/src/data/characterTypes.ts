@@ -1,3 +1,45 @@
+export type WeightCategory =
+  | 'nulo'
+  | 'super_leve'
+  | 'leve'
+  | 'medio'
+  | 'pesado'
+  | 'super_pesado'
+  | 'massivo'
+  | 'hyper_massivo'
+
+export const WEIGHT_VALUES: Record<WeightCategory, number> = {
+  nulo: 0,
+  super_leve: 1,
+  leve: 2,
+  medio: 4,
+  pesado: 8,
+  super_pesado: 16,
+  massivo: 32,
+  hyper_massivo: 64,
+}
+
+export const WEIGHT_LABELS: Record<WeightCategory, string> = {
+  nulo: 'Nulo',
+  super_leve: 'Super Leve',
+  leve: 'Leve',
+  medio: 'Médio',
+  pesado: 'Pesado',
+  super_pesado: 'Super Pesado',
+  massivo: 'Massivo',
+  hyper_massivo: 'Hyper Massivo',
+}
+
+export interface InventoryItem {
+  id: string
+  name: string
+  description: string
+  weight: WeightCategory
+  isEquipment: boolean
+  maxDurability?: number
+  currentDurability?: number
+}
+
 export interface CharacterSkills {
   // Físico
   fortitude: number
