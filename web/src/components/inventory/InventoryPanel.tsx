@@ -26,6 +26,7 @@ import { ItemModal } from "./ItemModal";
 import { EmptySlot } from "./EmptySlot";
 import { DroppableSection } from "./DroppableSection";
 import { BagSection } from "./BagSection";
+import { ImageZoomOverlay } from "@/components/ImageZoomOverlay";
 
 export function InventoryPanel({
   characterId,
@@ -794,35 +795,7 @@ export function InventoryPanel({
       </AnimatePresence>
 
       {/* Image zoom overlay — outside motion.div to avoid transform containment */}
-      {zoomedImage && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 500,
-            background: "rgba(0,0,0,0.88)",
-            backdropFilter: "blur(6px)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "zoom-out",
-          }}
-          onClick={() => setZoomedImage(null)}
-        >
-          <img
-            src={zoomedImage}
-            alt=""
-            style={{
-              maxWidth: "90vw",
-              maxHeight: "90vh",
-              objectFit: "contain",
-              borderRadius: 6,
-              boxShadow: "0 32px 80px rgba(0,0,0,0.8)",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
-      )}
+      <ImageZoomOverlay src={zoomedImage} onClose={() => setZoomedImage(null)} />
     </>
   );
 }
