@@ -38,6 +38,18 @@ export interface InventoryItem {
   isEquipment: boolean
   maxDurability?: number
   currentDurability?: number
+  /** Custom image URL entered by the user — overrides catalogImage when set */
+  image?: string | null
+  /** Original image path from the equipment catalog (set when fromCatalog is true) */
+  catalogImage?: string | null
+  /** true when this item was added from the equipment catalog */
+  fromCatalog?: boolean
+  /** Catalog display metadata (subcategory + tier shown in header) */
+  catalogSubcategory?: string
+  catalogTier?: string
+  /** Unified stats — present for both catalog and custom items */
+  damage?: string | null
+  effects?: string[]
 }
 
 export interface CharacterSkills {

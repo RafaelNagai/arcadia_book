@@ -32,6 +32,7 @@
       "@creatures": ["../creatures.json"],
       "@ships": ["../ships.json"],
       "@characters": ["../characters.json"],
+      "@equipment": ["../equipment.json"],
       "@version": ["../version.json"]
     }
   },

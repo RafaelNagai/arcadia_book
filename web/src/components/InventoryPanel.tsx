@@ -1,10 +1,44 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { InventoryItem, WeightCategory } from "@/data/characterTypes";
 import { WEIGHT_VALUES, WEIGHT_LABELS } from "@/data/characterTypes";
 import { loadInventory, saveInventory } from "@/lib/localCharacters";
+import catalogData from "@equipment";
 
-/* ─── Constants ─────────────────────────────────────────────────── */
+/* ─── Catalog types ─────────────────────────────────────────────── */
+
+interface CatalogEntry {
+  id: string;
+  name: string;
+  category: string;
+  subcategory: string;
+  tier: string;
+  damage: string | null;
+  weight: WeightCategory;
+  isEquipment: boolean;
+  maxDurability: number | null;
+  effects: string[];
+  description: string;
+  image: string | null;
+}
+
+const CATALOG: CatalogEntry[] = catalogData as CatalogEntry[];
+
+const TIER_COLOR: Record<string, string> = {
+  SS: "#E8B84B",
+  S: "#C8922A",
+  A: "#C090F0",
+  B: "#50C8E8",
+  C: "#6FC892",
+  D: "#A09880",
+  E: "#6A7080",
+};
+
+/* ─── Helpers ───────────────────────────────────────────────────── */
+
+function generateItemId() {
+  return `item_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+}
 
 const WEIGHT_OPTIONS: { value: WeightCategory; num: number }[] = [
   { value: "nulo", num: 0 },
@@ -16,10 +50,6 @@ const WEIGHT_OPTIONS: { value: WeightCategory; num: number }[] = [
   { value: "massivo", num: 32 },
   { value: "hyper_massivo", num: 64 },
 ];
-
-function generateItemId() {
-  return `item_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
-}
 
 /* ─── Shared styles ─────────────────────────────────────────────── */
 
@@ -46,19 +76,7 @@ const inputStyle: React.CSSProperties = {
   boxSizing: "border-box",
 };
 
-const cancelBtnStyle: React.CSSProperties = {
-  background: "rgba(255,255,255,0.04)",
-  border: "1px solid rgba(255,255,255,0.12)",
-  borderRadius: 4,
-  color: "rgba(255,255,255,0.45)",
-  fontFamily: "var(--font-ui)",
-  fontSize: "0.75rem",
-  letterSpacing: "0.1em",
-  padding: "0.4rem 0.9rem",
-  cursor: "pointer",
-};
-
-/* ─── Item form ─────────────────────────────────────────────────── */
+/* ─── Item form data ────────────────────────────────────────────── */
 
 interface ItemFormData {
   name: string;
@@ -66,6 +84,9 @@ interface ItemFormData {
   weight: WeightCategory;
   isEquipment: boolean;
   maxDurability: number;
+  image: string;
+  damage: string;
+  effects: string[];
 }
 
 const DEFAULT_FORM: ItemFormData = {
@@ -74,21 +95,53 @@ const DEFAULT_FORM: ItemFormData = {
   weight: "medio",
   isEquipment: false,
   maxDurability: 5,
+  image: "",
+  damage: "",
+  effects: [],
 };
+
+/** Resolve a catalog image path to a web-accessible URL. */
+function resolveCatalogImage(path: string | null | undefined): string | null {
+  if (!path) return null;
+  // Paths in equipment.json are relative to public/ — prefix with /
+  return path.startsWith("http") ? path : `/${path}`;
+}
+
+/* ─── Modal ─────────────────────────────────────────────────────── */
+
+type ModalTab = "catalog" | "custom";
 
 function ItemModal({
   initial,
+  isEdit,
   onConfirm,
+  onSelectCatalog,
   onCancel,
   accentColor,
 }: {
   initial?: ItemFormData;
+  isEdit: boolean;
   onConfirm: (data: ItemFormData) => void;
+  onSelectCatalog?: (entry: CatalogEntry) => void;
   onCancel: () => void;
   accentColor: string;
 }) {
+  const [tab, setTab] = useState<ModalTab>(isEdit ? "custom" : "catalog");
+  const [search, setSearch] = useState("");
   const [form, setForm] = useState<ItemFormData>(initial ?? DEFAULT_FORM);
   const [nameError, setNameError] = useState(false);
+
+  const filteredCatalog = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return CATALOG;
+    return CATALOG.filter(
+      (e) =>
+        e.name.toLowerCase().includes(q) ||
+        e.category.toLowerCase().includes(q) ||
+        e.subcategory.toLowerCase().includes(q) ||
+        e.tier.toLowerCase() === q,
+    );
+  }, [search]);
 
   function handleConfirm() {
     if (!form.name.trim()) {
@@ -97,6 +150,30 @@ function ItemModal({
     }
     onConfirm(form);
   }
+
+  const confirmBtnStyle: React.CSSProperties = {
+    background: accentColor + "22",
+    border: `1px solid ${accentColor}88`,
+    borderRadius: 4,
+    color: accentColor,
+    fontFamily: "var(--font-ui)",
+    fontSize: "0.75rem",
+    letterSpacing: "0.1em",
+    padding: "0.4rem 0.9rem",
+    cursor: "pointer",
+  };
+
+  const cancelBtnStyle: React.CSSProperties = {
+    background: "rgba(255,255,255,0.04)",
+    border: "1px solid rgba(255,255,255,0.12)",
+    borderRadius: 4,
+    color: "rgba(255,255,255,0.45)",
+    fontFamily: "var(--font-ui)",
+    fontSize: "0.75rem",
+    letterSpacing: "0.1em",
+    padding: "0.4rem 0.9rem",
+    cursor: "pointer",
+  };
 
   return (
     <div
@@ -121,181 +198,560 @@ function ItemModal({
           background: "#0A0F1E",
           border: "1px solid rgba(42,58,96,0.9)",
           borderRadius: 8,
-          padding: "1.5rem",
-          width: 380,
+          width: 420,
           maxWidth: "calc(100vw - 2rem)",
+          maxHeight: "85vh",
+          display: "flex",
+          flexDirection: "column",
           boxShadow: "0 24px 64px rgba(0,0,0,0.85)",
+          overflow: "hidden",
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <p
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "1rem",
-            fontWeight: 700,
-            color: "#EEF4FC",
-            marginBottom: "1.25rem",
-          }}
-        >
-          {initial ? "Editar Item" : "Novo Item"}
-        </p>
-
-        {/* Name */}
-        <label style={{ display: "block", marginBottom: "0.875rem" }}>
-          <span style={labelStyle}>Nome *</span>
-          <input
-            type="text"
-            value={form.name}
-            onChange={(e) => {
-              setNameError(false);
-              setForm((f) => ({ ...f, name: e.target.value }));
-            }}
-            placeholder="Ex: Espada do Viajante"
-            style={{
-              ...inputStyle,
-              borderColor: nameError
-                ? "rgba(200,60,60,0.7)"
-                : "rgba(255,255,255,0.12)",
-            }}
-            autoFocus
-          />
-          {nameError && (
-            <span
-              style={{
-                fontFamily: "var(--font-ui)",
-                fontSize: "0.65rem",
-                color: "#D04040",
-                marginTop: 3,
-                display: "block",
-              }}
-            >
-              O nome é obrigatório
-            </span>
-          )}
-        </label>
-
-        {/* Description */}
-        <label style={{ display: "block", marginBottom: "0.875rem" }}>
-          <span style={labelStyle}>Descrição</span>
-          <textarea
-            value={form.description}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, description: e.target.value }))
-            }
-            placeholder="Descreva o item..."
-            rows={2}
-            style={{ ...inputStyle, resize: "vertical", minHeight: 150 }}
-          />
-        </label>
-
-        {/* Weight */}
-        <label style={{ display: "block", marginBottom: "0.875rem" }}>
-          <span style={labelStyle}>Peso</span>
-          <select
-            value={form.weight}
-            onChange={(e) =>
-              setForm((f) => ({
-                ...f,
-                weight: e.target.value as WeightCategory,
-              }))
-            }
-            style={{ ...inputStyle, cursor: "pointer" }}
-          >
-            {WEIGHT_OPTIONS.map((o) => (
-              <option
-                key={o.value}
-                value={o.value}
-                style={{ background: "#0A0F1E" }}
-              >
-                {WEIGHT_LABELS[o.value]} ({o.num})
-              </option>
-            ))}
-          </select>
-        </label>
-
-        {/* isEquipment */}
-        <label
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            marginBottom: form.isEquipment ? "0.875rem" : "1.25rem",
-            cursor: "pointer",
-          }}
-        >
-          <input
-            type="checkbox"
-            checked={form.isEquipment}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, isEquipment: e.target.checked }))
-            }
-            style={{ width: 14, height: 14, accentColor }}
-          />
-          <span
-            style={{
-              fontFamily: "var(--font-ui)",
-              fontSize: "0.78rem",
-              color: "rgba(255,255,255,0.6)",
-            }}
-          >
-            Possui durabilidade (equipamento)
-          </span>
-        </label>
-
-        {/* maxDurability */}
-        {form.isEquipment && (
-          <label style={{ display: "block", marginBottom: "1.25rem" }}>
-            <span style={labelStyle}>Durabilidade Máxima</span>
-            <input
-              type="number"
-              min={1}
-              max={99}
-              value={form.maxDurability}
-              onChange={(e) =>
-                setForm((f) => ({
-                  ...f,
-                  maxDurability: Math.max(1, parseInt(e.target.value) || 1),
-                }))
-              }
-              style={{ ...inputStyle, width: 80 }}
-            />
-          </label>
-        )}
-
-        {/* Actions */}
+        {/* Modal header */}
         <div
           style={{
+            padding: "1.1rem 1.25rem 0",
+            flexShrink: 0,
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "1rem",
+              fontWeight: 700,
+              color: "#EEF4FC",
+              marginBottom: "0.9rem",
+            }}
+          >
+            {isEdit ? "Editar Item" : "Adicionar ao Inventário"}
+          </p>
+
+          {/* Tabs — only show when creating */}
+          {!isEdit && (
+            <div
+              style={{
+                display: "flex",
+                borderBottom: "1px solid rgba(255,255,255,0.08)",
+                marginBottom: 0,
+              }}
+            >
+              {(["catalog", "custom"] as ModalTab[]).map((t) => {
+                const active = tab === t;
+                return (
+                  <button
+                    key={t}
+                    onClick={() => setTab(t)}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      borderBottom: active
+                        ? `2px solid ${accentColor}`
+                        : "2px solid transparent",
+                      color: active ? accentColor : "rgba(255,255,255,0.35)",
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.65rem",
+                      letterSpacing: "0.16em",
+                      textTransform: "uppercase",
+                      padding: "0.45rem 0.75rem",
+                      cursor: "pointer",
+                      marginBottom: -1,
+                      transition: "color 0.15s, border-color 0.15s",
+                    }}
+                  >
+                    {t === "catalog" ? "Catálogo" : "Personalizado"}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Tab content */}
+        <div style={{ flex: 1, overflowY: "auto", padding: "1rem 1.25rem" }}>
+          {tab === "catalog" ? (
+            /* ── Catalog search ── */
+            <div>
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Buscar por nome, categoria ou tier (ex: A, espada...)"
+                style={{ ...inputStyle, marginBottom: "0.75rem" }}
+                autoFocus
+              />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.4rem",
+                }}
+              >
+                {filteredCatalog.length === 0 && (
+                  <p
+                    style={{
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.75rem",
+                      color: "rgba(255,255,255,0.3)",
+                      textAlign: "center",
+                      padding: "1.5rem 0",
+                    }}
+                  >
+                    Nenhum item encontrado
+                  </p>
+                )}
+                {filteredCatalog.map((entry) => {
+                  const tierColor = TIER_COLOR[entry.tier] ?? "#A09880";
+                  return (
+                    <button
+                      key={entry.id}
+                      onClick={() => onSelectCatalog?.(entry)}
+                      style={{
+                        background: "rgba(255,255,255,0.025)",
+                        border: "1px solid rgba(255,255,255,0.07)",
+                        borderRadius: 5,
+                        padding: "0.6rem 0.75rem",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        transition: "background 0.12s, border-color 0.12s",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.6rem",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = `${accentColor}12`;
+                        e.currentTarget.style.borderColor = `${accentColor}44`;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background =
+                          "rgba(255,255,255,0.025)";
+                        e.currentTarget.style.borderColor =
+                          "rgba(255,255,255,0.07)";
+                      }}
+                    >
+                      {/* Thumbnail */}
+                      <div
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 4,
+                          overflow: "hidden",
+                          background: "rgba(0,0,0,0.3)",
+                          flexShrink: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {resolveCatalogImage(entry.image) ? (
+                          <img
+                            src={resolveCatalogImage(entry.image)!}
+                            alt={entry.name}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                              objectPosition: "center",
+                            }}
+                          />
+                        ) : (
+                          <span
+                            style={{
+                              fontSize: "1.1rem",
+                              lineHeight: 1,
+                              opacity: 0.25,
+                              userSelect: "none",
+                            }}
+                          >
+                            ?
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.4rem",
+                            marginBottom: 2,
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontFamily: "var(--font-display)",
+                              fontSize: "0.82rem",
+                              fontWeight: 700,
+                              color: "#EEF4FC",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {entry.name}
+                          </span>
+                          <span
+                            style={{
+                              fontFamily: "var(--font-ui)",
+                              fontSize: "0.55rem",
+                              fontWeight: 700,
+                              letterSpacing: "0.1em",
+                              color: tierColor,
+                              background: `${tierColor}18`,
+                              border: `1px solid ${tierColor}44`,
+                              borderRadius: 3,
+                              padding: "1px 4px",
+                              flexShrink: 0,
+                            }}
+                          >
+                            {entry.tier}
+                          </span>
+                        </div>
+                        <p
+                          style={{
+                            fontFamily: "var(--font-ui)",
+                            fontSize: "0.6rem",
+                            color: "rgba(255,255,255,0.3)",
+                            letterSpacing: "0.05em",
+                          }}
+                        >
+                          {entry.subcategory} · {WEIGHT_LABELS[entry.weight]} (
+                          {WEIGHT_VALUES[entry.weight]})
+                          {entry.isEquipment && entry.maxDurability != null
+                            ? ` · Dur. ${entry.maxDurability}`
+                            : ""}
+                        </p>
+                      </div>
+                      <span
+                        style={{
+                          fontSize: "0.65rem",
+                          color: `${accentColor}88`,
+                          flexShrink: 0,
+                        }}
+                      >
+                        →
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            /* ── Custom / edit form ── */
+            <div>
+              {false && !isEdit && (
+                <div
+                  style={{
+                    background: `${accentColor}12`,
+                    border: `1px solid ${accentColor}33`,
+                    borderRadius: 4,
+                    padding: "0.5rem 0.7rem",
+                    marginBottom: "0.875rem",
+                    fontFamily: "var(--font-ui)",
+                    fontSize: "0.65rem",
+                    color: accentColor,
+                    letterSpacing: "0.05em",
+                  }}
+                >
+                  Preenchido com dados do catálogo — edite à vontade antes de
+                  confirmar.
+                </div>
+              )}
+
+              {/* Name */}
+              <label style={{ display: "block", marginBottom: "0.875rem" }}>
+                <span style={labelStyle}>Nome *</span>
+                <input
+                  type="text"
+                  value={form.name}
+                  onChange={(e) => {
+                    setNameError(false);
+                    setForm((f) => ({ ...f, name: e.target.value }));
+                  }}
+                  placeholder="Ex: Espada do Viajante"
+                  style={{
+                    ...inputStyle,
+                    borderColor: nameError
+                      ? "rgba(200,60,60,0.7)"
+                      : "rgba(255,255,255,0.12)",
+                  }}
+                  autoFocus={isEdit}
+                />
+                {nameError && (
+                  <span
+                    style={{
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.65rem",
+                      color: "#D04040",
+                      marginTop: 3,
+                      display: "block",
+                    }}
+                  >
+                    O nome é obrigatório
+                  </span>
+                )}
+              </label>
+
+              {/* Description */}
+              <label style={{ display: "block", marginBottom: "0.875rem" }}>
+                <span style={labelStyle}>Descrição</span>
+                <textarea
+                  value={form.description}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, description: e.target.value }))
+                  }
+                  placeholder="Descreva o item..."
+                  rows={2}
+                  style={{ ...inputStyle, resize: "vertical", minHeight: 60 }}
+                />
+              </label>
+
+              {/* Damage */}
+              <label style={{ display: "block", marginBottom: "0.875rem" }}>
+                <span style={labelStyle}>Damage</span>
+                <input
+                  type="text"
+                  value={form.damage}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, damage: e.target.value }))
+                  }
+                  placeholder="Ex: 2D6, 1D8+2..."
+                  style={inputStyle}
+                />
+              </label>
+
+              {/* Effects */}
+              <div style={{ marginBottom: "0.875rem" }}>
+                <span style={labelStyle}>Efeitos</span>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.35rem",
+                  }}
+                >
+                  {form.effects.map((effect, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        gap: "0.4rem",
+                        alignItems: "center",
+                      }}
+                    >
+                      <input
+                        type="text"
+                        value={effect}
+                        onChange={(e) =>
+                          setForm((f) => {
+                            const next = [...f.effects];
+                            next[i] = e.target.value;
+                            return { ...f, effects: next };
+                          })
+                        }
+                        placeholder={`Efeito ${i + 1}`}
+                        style={{ ...inputStyle, flex: 1 }}
+                      />
+                      <button
+                        onClick={() =>
+                          setForm((f) => ({
+                            ...f,
+                            effects: f.effects.filter((_, idx) => idx !== i),
+                          }))
+                        }
+                        style={{
+                          background: "none",
+                          border: "1px solid rgba(200,60,60,0.3)",
+                          borderRadius: 4,
+                          color: "rgba(200,60,60,0.6)",
+                          fontFamily: "var(--font-ui)",
+                          fontSize: "0.85rem",
+                          width: 28,
+                          height: 28,
+                          cursor: "pointer",
+                          flexShrink: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    onClick={() =>
+                      setForm((f) => ({ ...f, effects: [...f.effects, ""] }))
+                    }
+                    style={{
+                      background: `${accentColor}0D`,
+                      border: `1px dashed ${accentColor}44`,
+                      borderRadius: 4,
+                      color: accentColor,
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.65rem",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      padding: "0.35rem 0.6rem",
+                      cursor: "pointer",
+                      textAlign: "left",
+                    }}
+                  >
+                    + Adicionar efeito
+                  </button>
+                </div>
+              </div>
+
+              {/* Weight */}
+              <label style={{ display: "block", marginBottom: "0.875rem" }}>
+                <span style={labelStyle}>Peso</span>
+                <select
+                  value={form.weight}
+                  onChange={(e) =>
+                    setForm((f) => ({
+                      ...f,
+                      weight: e.target.value as WeightCategory,
+                    }))
+                  }
+                  style={{ ...inputStyle, cursor: "pointer" }}
+                >
+                  {WEIGHT_OPTIONS.map((o) => (
+                    <option
+                      key={o.value}
+                      value={o.value}
+                      style={{ background: "#0A0F1E" }}
+                    >
+                      {WEIGHT_LABELS[o.value]} ({o.num})
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              {/* isEquipment */}
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  marginBottom: "0.875rem",
+                  cursor: "pointer",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={form.isEquipment}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, isEquipment: e.target.checked }))
+                  }
+                  style={{ width: 14, height: 14, accentColor }}
+                />
+                <span
+                  style={{
+                    fontFamily: "var(--font-ui)",
+                    fontSize: "0.78rem",
+                    color: "rgba(255,255,255,0.6)",
+                  }}
+                >
+                  Possui durabilidade (equipamento)
+                </span>
+              </label>
+
+              {/* maxDurability */}
+              {form.isEquipment && (
+                <label style={{ display: "block", marginBottom: "0.875rem" }}>
+                  <span style={labelStyle}>Durabilidade Máxima</span>
+                  <input
+                    type="number"
+                    min={1}
+                    max={99}
+                    value={form.maxDurability}
+                    onChange={(e) =>
+                      setForm((f) => ({
+                        ...f,
+                        maxDurability: Math.max(
+                          1,
+                          parseInt(e.target.value) || 1,
+                        ),
+                      }))
+                    }
+                    style={{ ...inputStyle, width: 80 }}
+                  />
+                </label>
+              )}
+
+              {/* Image URL */}
+              <label style={{ display: "block", marginBottom: "1.25rem" }}>
+                <span style={labelStyle}>URL da imagem</span>
+                <input
+                  type="url"
+                  value={form.image}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, image: e.target.value }))
+                  }
+                  placeholder={
+                    isEdit && initial && !initial.image
+                      ? "Deixe em branco para manter a imagem original"
+                      : "https://..."
+                  }
+                  style={inputStyle}
+                />
+                {form.image && (
+                  <div
+                    style={{
+                      marginTop: "0.5rem",
+                      borderRadius: 4,
+                      overflow: "hidden",
+                      height: 80,
+                      background: "rgba(0,0,0,0.3)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                    }}
+                  >
+                    <img
+                      src={form.image}
+                      alt="preview"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        objectPosition: "center",
+                      }}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display =
+                          "none";
+                      }}
+                    />
+                  </div>
+                )}
+              </label>
+            </div>
+          )}
+        </div>
+
+        {/* Footer actions */}
+        <div
+          style={{
+            padding: "0.875rem 1.25rem",
+            borderTop: "1px solid rgba(255,255,255,0.07)",
             display: "flex",
             gap: "0.5rem",
             justifyContent: "flex-end",
+            flexShrink: 0,
           }}
         >
           <button onClick={onCancel} style={cancelBtnStyle}>
             Cancelar
           </button>
-          <button
-            onClick={handleConfirm}
-            style={{
-              background: accentColor + "22",
-              border: `1px solid ${accentColor}88`,
-              borderRadius: 4,
-              color: accentColor,
-              fontFamily: "var(--font-ui)",
-              fontSize: "0.75rem",
-              letterSpacing: "0.1em",
-              padding: "0.4rem 0.9rem",
-              cursor: "pointer",
-            }}
-          >
-            {initial ? "Salvar" : "Adicionar"}
-          </button>
+          {tab === "custom" || isEdit ? (
+            <button onClick={handleConfirm} style={confirmBtnStyle}>
+              {isEdit ? "Salvar" : "Adicionar"}
+            </button>
+          ) : null}
         </div>
       </motion.div>
     </div>
   );
 }
 
-/* ─── Slot card ─────────────────────────────────────────────────── */
+/* ─── Weight badge ──────────────────────────────────────────────── */
 
 function WeightBadge({ weight }: { weight: WeightCategory }) {
   const val = WEIGHT_VALUES[weight];
@@ -329,6 +785,8 @@ function WeightBadge({ weight }: { weight: WeightCategory }) {
   );
 }
 
+/* ─── Item card ─────────────────────────────────────────────────── */
+
 function ItemCard({
   item,
   accentColor,
@@ -342,201 +800,382 @@ function ItemCard({
   onDelete: () => void;
   onDurabilityChange: (delta: number) => void;
 }) {
+  const [zoomed, setZoomed] = useState(false);
   const dur = item.currentDurability ?? item.maxDurability ?? 0;
   const maxDur = item.maxDurability ?? 0;
   const durPct = maxDur > 0 ? dur / maxDur : 0;
   const durColor =
     durPct > 0.6 ? "#6EC840" : durPct > 0.3 ? "#C8922A" : "#C05050";
+  // Custom URL overrides catalog image; catalog image is the fallback
+  const displayImage = item.image || item.catalogImage || null;
 
   return (
-    <div
-      style={{
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.09)",
-        borderRadius: 5,
-        padding: "0.7rem 0.75rem",
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.4rem",
-      }}
-    >
-      {/* Header row */}
-      <div style={{ display: "flex", alignItems: "flex-start", gap: "0.4rem" }}>
-        <p
+    <>
+      {/* Zoom overlay */}
+      {zoomed && displayImage && (
+        <div
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "0.85rem",
-            fontWeight: 700,
-            color: "#EEF4FC",
-            flex: 1,
-            lineHeight: 1.2,
+            position: "fixed",
+            inset: 0,
+            zIndex: 400,
+            background: "rgba(0,0,0,0.88)",
+            backdropFilter: "blur(6px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "zoom-out",
           }}
+          onClick={() => setZoomed(false)}
         >
-          {item.name}
-        </p>
-        <button
-          onClick={onEdit}
-          title="Editar item"
-          style={{
-            background: "none",
-            border: "none",
-            color: "rgba(255,255,255,0.25)",
-            fontSize: "0.75rem",
-            cursor: "pointer",
-            padding: "0 2px",
-            lineHeight: 1,
-            flexShrink: 0,
-          }}
-        >
-          ✎
-        </button>
-        <button
-          onClick={onDelete}
-          title="Remover item"
-          style={{
-            background: "none",
-            border: "none",
-            color: "rgba(200,60,60,0.45)",
-            fontSize: "0.8rem",
-            cursor: "pointer",
-            padding: "0 2px",
-            lineHeight: 1,
-            flexShrink: 0,
-          }}
-        >
-          ×
-        </button>
-      </div>
-
-      {/* Weight badge */}
-      <div>
-        <WeightBadge weight={item.weight} />
-      </div>
-
-      {/* Description */}
-      {item.description && (
-        <p
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "0.9rem",
-            color: "rgba(200, 220, 240, 0.85)",
-            fontStyle: "normal",
-            lineHeight: 1.35,
-          }}
-        >
-          {item.description}
-        </p>
-      )}
-
-      {/* Durability */}
-      {item.isEquipment && (
-        <div style={{ marginTop: 2 }}>
-          {/* Bar */}
-          <div
+          <img
+            src={displayImage}
+            alt={item.name}
             style={{
-              height: 3,
-              borderRadius: 2,
-              background: "rgba(255,255,255,0.07)",
-              marginBottom: "0.4rem",
-              overflow: "hidden",
+              maxWidth: "90vw",
+              maxHeight: "90vh",
+              objectFit: "contain",
+              borderRadius: 6,
+              boxShadow: "0 32px 80px rgba(0,0,0,0.8)",
             }}
-          >
-            <div
-              style={{
-                height: "100%",
-                width: `${durPct * 100}%`,
-                background: durColor,
-                borderRadius: 2,
-                transition: "width 0.2s, background 0.2s",
-              }}
-            />
-          </div>
-          {/* Controls */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            <span
-              style={{
-                fontFamily: "var(--font-ui)",
-                fontSize: "0.55rem",
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                color: "rgba(255,255,255,0.3)",
-                flex: 1,
-              }}
-            >
-              Durabilidade
-            </span>
-            <button
-              disabled={dur <= 0}
-              onClick={() => onDurabilityChange(-1)}
-              style={{
-                width: 22,
-                height: 22,
-                borderRadius: 3,
-                background:
-                  dur > 0 ? `${accentColor}18` : "rgba(255,255,255,0.03)",
-                border: `1px solid ${dur > 0 ? accentColor + "55" : "rgba(255,255,255,0.07)"}`,
-                color: dur > 0 ? accentColor : "rgba(255,255,255,0.15)",
-                fontFamily: "var(--font-ui)",
-                fontSize: "0.9rem",
-                lineHeight: 1,
-                cursor: dur > 0 ? "pointer" : "not-allowed",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              −
-            </button>
-            <span
-              style={{
-                fontFamily: "var(--font-display)",
-                fontWeight: 700,
-                fontSize: "0.9rem",
-                color: durColor,
-                minWidth: 28,
-                textAlign: "center",
-              }}
-            >
-              {dur}
-              <span
-                style={{
-                  fontFamily: "var(--font-ui)",
-                  fontSize: "0.6rem",
-                  color: "rgba(255,255,255,0.25)",
-                  fontWeight: 400,
-                }}
-              >
-                /{maxDur}
-              </span>
-            </span>
-            <button
-              disabled={dur >= maxDur}
-              onClick={() => onDurabilityChange(+1)}
-              style={{
-                width: 22,
-                height: 22,
-                borderRadius: 3,
-                background:
-                  dur < maxDur ? `${accentColor}18` : "rgba(255,255,255,0.03)",
-                border: `1px solid ${dur < maxDur ? accentColor + "55" : "rgba(255,255,255,0.07)"}`,
-                color: dur < maxDur ? accentColor : "rgba(255,255,255,0.15)",
-                fontFamily: "var(--font-ui)",
-                fontSize: "0.9rem",
-                lineHeight: 1,
-                cursor: dur < maxDur ? "pointer" : "not-allowed",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              +
-            </button>
-          </div>
+          />
         </div>
       )}
-    </div>
+
+      <div
+        style={{
+          background: "rgba(255,255,255,0.03)",
+          border: "1px solid rgba(255,255,255,0.09)",
+          borderRadius: 5,
+          overflow: "hidden",
+          flexShrink: 0,
+          display: "flex",
+        }}
+      >
+        {/* Left image column */}
+        <div
+          style={{
+            width: 88,
+            flexShrink: 0,
+            background: "rgba(0,0,0,0.3)",
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: displayImage ? "zoom-in" : "default",
+          }}
+          onClick={() => displayImage && setZoomed(true)}
+        >
+          {displayImage ? (
+            <img
+              src={displayImage}
+              alt={item.name}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center",
+              }}
+            />
+          ) : (
+            <span
+              style={{ fontSize: "1.4rem", opacity: 0.15, userSelect: "none" }}
+            >
+              ?
+            </span>
+          )}
+        </div>
+
+        <div
+          style={{
+            flex: 1,
+            minWidth: 0,
+            padding: "0.7rem 0.75rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.4rem",
+          }}
+        >
+          {/* Header row */}
+          <div
+            style={{ display: "flex", alignItems: "flex-start", gap: "0.4rem" }}
+          >
+            <p
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                color: "#EEF4FC",
+                flex: 1,
+                lineHeight: 1.2,
+              }}
+            >
+              {item.name}
+            </p>
+            <button
+              onClick={onEdit}
+              title="Editar item"
+              style={{
+                background: "none",
+                border: "none",
+                color: "rgba(255,255,255,0.25)",
+                fontSize: "0.75rem",
+                cursor: "pointer",
+                padding: "0 2px",
+                lineHeight: 1,
+                flexShrink: 0,
+              }}
+            >
+              ✎
+            </button>
+            <button
+              onClick={onDelete}
+              title="Remover item"
+              style={{
+                background: "none",
+                border: "none",
+                color: "rgba(200,60,60,0.45)",
+                fontSize: "0.8rem",
+                cursor: "pointer",
+                padding: "0 2px",
+                lineHeight: 1,
+                flexShrink: 0,
+              }}
+            >
+              ×
+            </button>
+          </div>
+
+          {/* Weight badge */}
+          <div>
+            <WeightBadge weight={item.weight} />
+          </div>
+
+          {/* Description */}
+          {item.fromCatalog ? (
+            <div
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "0.8rem",
+                color: "rgba(200, 220, 240, 0.8)",
+                lineHeight: 1.4,
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.2rem",
+              }}
+            >
+              {/* Header line: subcategory[tier]: description */}
+              <p>
+                <span style={{ color: "rgba(255,255,255,0.45)" }}>
+                  {item.catalogSubcategory}
+                  {item.catalogTier && (
+                    <span
+                      style={{
+                        color: TIER_COLOR[item.catalogTier] ?? "#A09880",
+                      }}
+                    >
+                      [{item.catalogTier}]
+                    </span>
+                  )}
+                  {item.description ? ": " : ""}
+                </span>
+                {item.description}
+              </p>
+              {/* Damage */}
+              {item.damage && (
+                <p>
+                  <span
+                    style={{
+                      color: "rgba(255,255,255,0.35)",
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.65rem",
+                      letterSpacing: "0.1em",
+                    }}
+                  >
+                    Damage:{" "}
+                  </span>
+                  <span
+                    style={{
+                      color: "#E8803A",
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {item.damage}
+                  </span>
+                </p>
+              )}
+              {/* Effects */}
+              {item.effects &&
+                item.effects.length > 0 &&
+                item.effects.map((effect, i) => (
+                  <p key={i} style={{ color: "rgba(192,144,240,0.85)" }}>
+                    • {effect}
+                  </p>
+                ))}
+            </div>
+          ) : item.description ||
+            item.damage ||
+            (item.effects && item.effects.length > 0) ? (
+            <div
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "0.8rem",
+                color: "rgba(200, 220, 240, 0.8)",
+                lineHeight: 1.4,
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.2rem",
+              }}
+            >
+              {item.description && <p>{item.description}</p>}
+              {item.damage && (
+                <p>
+                  <span
+                    style={{
+                      color: "rgba(255,255,255,0.35)",
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.65rem",
+                      letterSpacing: "0.1em",
+                    }}
+                  >
+                    Damage:{" "}
+                  </span>
+                  <span
+                    style={{
+                      color: "#E8803A",
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {item.damage}
+                  </span>
+                </p>
+              )}
+              {item.effects &&
+                item.effects.map((effect, i) => (
+                  <p key={i} style={{ color: "rgba(192,144,240,0.85)" }}>
+                    • {effect}
+                  </p>
+                ))}
+            </div>
+          ) : null}
+
+          {/* Durability */}
+          {item.isEquipment && (
+            <div style={{ marginTop: 2 }}>
+              <div
+                style={{
+                  height: 3,
+                  borderRadius: 2,
+                  background: "rgba(255,255,255,0.07)",
+                  marginBottom: "0.4rem",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    height: "100%",
+                    width: `${durPct * 100}%`,
+                    background: durColor,
+                    borderRadius: 2,
+                    transition: "width 0.2s, background 0.2s",
+                  }}
+                />
+              </div>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-ui)",
+                    fontSize: "0.55rem",
+                    letterSpacing: "0.15em",
+                    textTransform: "uppercase",
+                    color: "rgba(255,255,255,0.3)",
+                    flex: 1,
+                  }}
+                >
+                  Durabilidade
+                </span>
+                <button
+                  disabled={dur <= 0}
+                  onClick={() => onDurabilityChange(-1)}
+                  style={{
+                    width: 22,
+                    height: 22,
+                    borderRadius: 3,
+                    background:
+                      dur > 0 ? `${accentColor}18` : "rgba(255,255,255,0.03)",
+                    border: `1px solid ${dur > 0 ? accentColor + "55" : "rgba(255,255,255,0.07)"}`,
+                    color: dur > 0 ? accentColor : "rgba(255,255,255,0.15)",
+                    fontFamily: "var(--font-ui)",
+                    fontSize: "0.9rem",
+                    lineHeight: 1,
+                    cursor: dur > 0 ? "pointer" : "not-allowed",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  −
+                </button>
+                <span
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 700,
+                    fontSize: "0.9rem",
+                    color: durColor,
+                    minWidth: 28,
+                    textAlign: "center",
+                  }}
+                >
+                  {dur}
+                  <span
+                    style={{
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.6rem",
+                      color: "rgba(255,255,255,0.25)",
+                      fontWeight: 400,
+                    }}
+                  >
+                    /{maxDur}
+                  </span>
+                </span>
+                <button
+                  disabled={dur >= maxDur}
+                  onClick={() => onDurabilityChange(+1)}
+                  style={{
+                    width: 22,
+                    height: 22,
+                    borderRadius: 3,
+                    background:
+                      dur < maxDur
+                        ? `${accentColor}18`
+                        : "rgba(255,255,255,0.03)",
+                    border: `1px solid ${dur < maxDur ? accentColor + "55" : "rgba(255,255,255,0.07)"}`,
+                    color:
+                      dur < maxDur ? accentColor : "rgba(255,255,255,0.15)",
+                    fontFamily: "var(--font-ui)",
+                    fontSize: "0.9rem",
+                    lineHeight: 1,
+                    cursor: dur < maxDur ? "pointer" : "not-allowed",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
   );
 }
+
+/* ─── Empty slot ────────────────────────────────────────────────── */
 
 function EmptySlot({
   onClick,
@@ -561,6 +1200,7 @@ function EmptySlot({
         transition: "background 0.15s, border-color 0.15s",
         width: "100%",
         textAlign: "center",
+        flexShrink: 0,
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.background = `${accentColor}0A`;
@@ -572,11 +1212,7 @@ function EmptySlot({
       }}
     >
       <span
-        style={{
-          fontSize: "1rem",
-          color: `${accentColor}66`,
-          lineHeight: 1,
-        }}
+        style={{ fontSize: "1rem", color: `${accentColor}66`, lineHeight: 1 }}
       >
         +
       </span>
@@ -617,7 +1253,6 @@ export function InventoryPanel({
     loadInventory(characterId),
   );
 
-  // modal state: null = closed, 'create' = new item, slotIdx = edit slot item
   const [modal, setModal] = useState<
     | null
     | { mode: "create"; slotIdx: number }
@@ -644,6 +1279,32 @@ export function InventoryPanel({
     saveInventory(characterId, next);
   }
 
+  function handleCatalogSelect(entry: CatalogEntry) {
+    if (modal?.mode !== "create") return;
+    const slotIdx = modal.slotIdx;
+    const newItem: InventoryItem = {
+      id: generateItemId(),
+      name: entry.name,
+      description: entry.description,
+      weight: entry.weight,
+      isEquipment: entry.isEquipment,
+      maxDurability: entry.isEquipment ? (entry.maxDurability ?? 5) : undefined,
+      currentDurability: entry.isEquipment
+        ? (entry.maxDurability ?? 5)
+        : undefined,
+      catalogImage: resolveCatalogImage(entry.image),
+      fromCatalog: true,
+      catalogSubcategory: entry.subcategory,
+      catalogTier: entry.tier,
+      damage: entry.damage ?? null,
+      effects: entry.effects,
+    };
+    const next = [...items];
+    next.splice(slotIdx, 0, newItem);
+    persist(next.slice(0, totalSlots));
+    setModal(null);
+  }
+
   function handleCreateConfirm(data: ItemFormData) {
     if (modal?.mode !== "create") return;
     const slotIdx = modal.slotIdx;
@@ -655,11 +1316,11 @@ export function InventoryPanel({
       isEquipment: data.isEquipment,
       maxDurability: data.isEquipment ? data.maxDurability : undefined,
       currentDurability: data.isEquipment ? data.maxDurability : undefined,
+      image: data.image.trim() || undefined,
+      damage: data.damage.trim() || null,
+      effects: data.effects.filter((e) => e.trim()),
     };
-    // Insert at slotIdx position (fill the specific slot)
     const next = [...items];
-    // Remove any existing item at that slot position if somehow set
-    // items are stored in order by slot; just splice at slotIdx
     next.splice(slotIdx, 0, newItem);
     persist(next.slice(0, totalSlots));
     setModal(null);
@@ -669,6 +1330,7 @@ export function InventoryPanel({
     if (modal?.mode !== "edit") return;
     const slotIdx = modal.slotIdx;
     const existing = items[slotIdx];
+    const customUrl = data.image.trim();
     const updated: InventoryItem = {
       ...existing,
       name: data.name.trim(),
@@ -682,6 +1344,10 @@ export function InventoryPanel({
             data.maxDurability,
           )
         : undefined,
+      // If URL provided → use it; if blank → clear custom image (catalogImage still used as fallback)
+      image: customUrl || undefined,
+      damage: data.damage.trim() || null,
+      effects: data.effects.filter((e) => e.trim()),
     };
     const next = [...items];
     next[slotIdx] = updated;
@@ -690,24 +1356,33 @@ export function InventoryPanel({
   }
 
   function handleDelete(slotIdx: number) {
-    const next = items.filter((_, i) => i !== slotIdx);
-    persist(next);
+    persist(items.filter((_, i) => i !== slotIdx));
   }
 
   function handleDurabilityChange(slotIdx: number, delta: number) {
-    const next = items.map((item, i) => {
-      if (i !== slotIdx || !item.isEquipment) return item;
-      const maxDur = item.maxDurability ?? 0;
-      const cur = item.currentDurability ?? maxDur;
-      return {
-        ...item,
-        currentDurability: Math.max(0, Math.min(maxDur, cur + delta)),
-      };
-    });
-    persist(next);
+    persist(
+      items.map((item, i) => {
+        if (i !== slotIdx || !item.isEquipment) return item;
+        const maxDur = item.maxDurability ?? 0;
+        const cur = item.currentDurability ?? maxDur;
+        return {
+          ...item,
+          currentDurability: Math.max(0, Math.min(maxDur, cur + delta)),
+        };
+      }),
+    );
   }
 
-  const modalInitial =
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  const editInitial =
     modal?.mode === "edit"
       ? {
           name: items[modal.slotIdx].name,
@@ -715,6 +1390,10 @@ export function InventoryPanel({
           weight: items[modal.slotIdx].weight,
           isEquipment: items[modal.slotIdx].isEquipment,
           maxDurability: items[modal.slotIdx].maxDurability ?? 5,
+          // Pre-fill custom URL if one was saved; blank means keep catalogImage
+          image: items[modal.slotIdx].image ?? "",
+          damage: items[modal.slotIdx].damage ?? "",
+          effects: items[modal.slotIdx].effects ?? [],
         }
       : undefined;
 
@@ -752,7 +1431,7 @@ export function InventoryPanel({
                 top: 0,
                 right: 0,
                 bottom: 0,
-                width: 460,
+                width: 520,
                 maxWidth: "100vw",
                 zIndex: 100,
                 background: "linear-gradient(180deg, #0A0F1E 0%, #080C18 100%)",
@@ -821,7 +1500,7 @@ export function InventoryPanel({
                 </button>
               </div>
 
-              {/* Weight summary */}
+              {/* Weight bar */}
               <div
                 style={{
                   padding: "0.9rem 1.25rem",
@@ -853,7 +1532,7 @@ export function InventoryPanel({
                       fontFamily: "var(--font-display)",
                       fontWeight: 700,
                       fontSize: "0.9rem",
-                      color: overEncumbered ? "#C05050" : weightColor,
+                      color: weightColor,
                       transition: "color 0.2s",
                     }}
                   >
@@ -882,7 +1561,7 @@ export function InventoryPanel({
                     style={{
                       height: "100%",
                       width: `${Math.min(1, weightPct) * 100}%`,
-                      background: overEncumbered ? "#C05050" : weightColor,
+                      background: weightColor,
                       borderRadius: 2,
                       transition: "width 0.25s, background 0.25s",
                     }}
@@ -916,10 +1595,11 @@ export function InventoryPanel({
                 )}
               </div>
 
-              {/* Slots list */}
+              {/* Slots */}
               <div
                 style={{
                   flex: 1,
+                  minHeight: 0,
                   overflowY: "auto",
                   padding: "1rem 1.25rem",
                   display: "flex",
@@ -957,14 +1637,18 @@ export function InventoryPanel({
         )}
       </AnimatePresence>
 
-      {/* Modals */}
+      {/* Modal */}
       <AnimatePresence>
         {modal !== null && (
           <ItemModal
             key="item-modal"
-            initial={modalInitial}
+            isEdit={modal.mode === "edit"}
+            initial={editInitial}
             onConfirm={
               modal.mode === "create" ? handleCreateConfirm : handleEditConfirm
+            }
+            onSelectCatalog={
+              modal.mode === "create" ? handleCatalogSelect : undefined
             }
             onCancel={() => setModal(null)}
             accentColor={accentColor}

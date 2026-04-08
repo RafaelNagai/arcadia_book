@@ -11,6 +11,7 @@ export default defineConfig({
       '@creatures': resolve(__dirname, '../creatures.json'),
       '@ships': resolve(__dirname, '../ships.json'),
       '@characters': resolve(__dirname, '../characters.json'),
+      '@equipment': resolve(__dirname, '../equipment.json'),
       '@version': resolve(__dirname, '../version.json'),
       '@': resolve(__dirname, './src'),
     },
