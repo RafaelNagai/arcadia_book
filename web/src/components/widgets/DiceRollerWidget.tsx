@@ -290,6 +290,11 @@ export const DIE_SPEC: Record<DieType, DieSpec> = {
 
 export const ALL_DIE_TYPES = [4, 6, 8, 10, 12, 20] as DieType[]
 
+export interface DiceRollRequest {
+  dieType: DieType
+  count:   number
+}
+
 /* ════════════════════════════════════════════════════════════════
    MATERIAL CACHE — built once at module level, shared across renders
    ════════════════════════════════════════════════════════════════ */
@@ -377,7 +382,7 @@ function detectTopFace(
    PHYSICS CONSTANTS — all tuning lives here
    ════════════════════════════════════════════════════════════════ */
 
-const PHYSICS = {
+export const PHYSICS = {
   gravity:        -24,
   restitution:    0.02,
   friction:       0.95,
@@ -399,7 +404,7 @@ const PHYSICS = {
    CAMERA SETUP
    ════════════════════════════════════════════════════════════════ */
 
-function CameraSetup() {
+export function CameraSetup() {
   const { camera } = useThree()
   useEffect(() => {
     camera.lookAt(0, 0, 0)
@@ -543,32 +548,45 @@ function Arena() {
    ════════════════════════════════════════════════════════════════ */
 
 interface DiceSceneProps {
-  dieType:      DieType
-  count:        number
+  dice:         DiceRollRequest[]
   onAllSettled: (results: number[]) => void
 }
 
-function DiceScene({ dieType, count, onAllSettled }: DiceSceneProps) {
+export function DiceScene({ dice, onAllSettled }: DiceSceneProps) {
   const results      = useRef<Record<number, number>>({})
   const settledCount = useRef(0)
+
+  // Flatten dice array → [{dieType, globalIndex}]
+  const flatDice = useMemo(() => {
+    const out: { dieType: DieType; globalIndex: number }[] = []
+    for (const req of dice) {
+      for (let i = 0; i < req.count; i++) {
+        out.push({ dieType: req.dieType, globalIndex: out.length })
+      }
+    }
+    return out
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dice])
+
+  const totalCount = flatDice.length
 
   const handleSettled = useCallback((idx: number, val: number) => {
     results.current[idx] = val
     settledCount.current++
-    if (settledCount.current >= count) {
-      const vals = Array.from({ length: count }, (_, i) => results.current[i] ?? 1)
+    if (settledCount.current >= totalCount) {
+      const vals = Array.from({ length: totalCount }, (_, i) => results.current[i] ?? 1)
       onAllSettled(vals)
     }
-  }, [count, onAllSettled])
+  }, [totalCount, onAllSettled])
 
   const spawnPositions = useMemo(() =>
-    Array.from({ length: count }, () => [
+    Array.from({ length: totalCount }, () => [
       (Math.random() - 0.5) * PHYSICS.spawnXHalf * 2,
       PHYSICS.spawnYMin + Math.random() * (PHYSICS.spawnYMax - PHYSICS.spawnYMin),
       (Math.random() - 0.5) * PHYSICS.spawnZHalf * 2,
     ] as [number, number, number]),
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  [count, dieType],
+  [totalCount],
   )
 
   return (
@@ -587,12 +605,12 @@ function DiceScene({ dieType, count, onAllSettled }: DiceSceneProps) {
 
       <Arena />
 
-      {spawnPositions.map((pos, i) => (
+      {flatDice.map(({ dieType, globalIndex }, i) => (
         <PhysicsDie
-          key={i}
-          index={i}
+          key={globalIndex}
+          index={globalIndex}
           dieType={dieType}
-          spawnPos={pos}
+          spawnPos={spawnPositions[i]}
           onSettled={handleSettled}
         />
       ))}
@@ -604,19 +622,25 @@ function DiceScene({ dieType, count, onAllSettled }: DiceSceneProps) {
    DICE OVERLAY — fullscreen portal
    ════════════════════════════════════════════════════════════════ */
 
-type Phase = 'rolling' | 'ready' | 'summed'
+type DicePhase = 'rolling' | 'ready'
 
-interface DiceOverlayProps {
-  dieType: DieType
-  count:   number
+export interface DiceOverlayProps {
+  dice:    DiceRollRequest[]
   onClose: () => void
 }
 
-function DiceOverlay({ dieType, count, onClose }: DiceOverlayProps) {
-  const [phase,   setPhase]   = useState<Phase>('rolling')
+export function DiceOverlay({ dice, onClose }: DiceOverlayProps) {
+  const [phase,   setPhase]   = useState<DicePhase>('rolling')
   const [results, setResults] = useState<number[]>([])
-  const spec = DIE_SPEC[dieType]
-  const sum  = results.reduce((s, v) => s + v, 0)
+
+  // Flat list of die types, parallel to results[]
+  const flatDieTypes = useMemo(() => {
+    const out: DieType[] = []
+    for (const req of dice) {
+      for (let i = 0; i < req.count; i++) out.push(req.dieType)
+    }
+    return out
+  }, [dice])
 
   useEffect(() => {
     const fn = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
@@ -630,9 +654,7 @@ function DiceOverlay({ dieType, count, onClose }: DiceOverlayProps) {
   }, [])
 
   const handleClick = useCallback(() => {
-    if (phase !== 'ready') return
-    setPhase('summed')
-    setTimeout(onClose, 2700)
+    if (phase === 'ready') onClose()
   }, [phase, onClose])
 
   return createPortal(
@@ -658,7 +680,7 @@ function DiceOverlay({ dieType, count, onClose }: DiceOverlayProps) {
         <CameraSetup />
         <Suspense fallback={null}>
           <Physics gravity={[0, PHYSICS.gravity, 0]}>
-            <DiceScene dieType={dieType} count={count} onAllSettled={handleAllSettled} />
+            <DiceScene dice={dice} onAllSettled={handleAllSettled} />
           </Physics>
         </Suspense>
       </Canvas>
@@ -682,7 +704,7 @@ function DiceOverlay({ dieType, count, onClose }: DiceOverlayProps) {
         )}
       </AnimatePresence>
 
-      {/* Results + click-to-sum hint */}
+      {/* Results + click-to-exit hint */}
       <AnimatePresence>
         {phase === 'ready' && (
           <motion.div
@@ -697,32 +719,35 @@ function DiceOverlay({ dieType, count, onClose }: DiceOverlayProps) {
             }}
           >
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
-              {results.map((v, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: i * 0.07, type: 'spring', stiffness: 300 }}
-                  style={{
-                    width: 40, height: 40, borderRadius: 8,
-                    border: `1.5px solid ${spec.colorCss}`,
-                    background: 'rgba(8,12,24,0.90)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontFamily: 'Cinzel, serif', fontSize: 18, fontWeight: 700,
-                    color: spec.colorCss,
-                    boxShadow: `0 0 14px ${spec.colorCss}44`,
-                  }}
-                >
-                  {v}
-                </motion.div>
-              ))}
+              {results.map((v, i) => {
+                const dieColor = DIE_SPEC[flatDieTypes[i] ?? dice[0].dieType].colorCss
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: i * 0.07, type: 'spring', stiffness: 300 }}
+                    style={{
+                      width: 40, height: 40, borderRadius: 8,
+                      border: `1.5px solid ${dieColor}`,
+                      background: 'rgba(8,12,24,0.90)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontFamily: 'Cinzel, serif', fontSize: 18, fontWeight: 700,
+                      color: dieColor,
+                      boxShadow: `0 0 14px ${dieColor}44`,
+                    }}
+                  >
+                    {v}
+                  </motion.div>
+                )
+              })}
             </div>
             <p style={{
               fontFamily: 'Cinzel, serif', fontSize: 12, letterSpacing: '0.26em',
               color: 'var(--color-arcano-glow)',
               textShadow: '0 0 28px rgba(232,184,75,0.9)',
             }}>
-              CLIQUE PARA SOMAR
+              CLIQUE PARA SAIR
             </p>
           </motion.div>
         )}
@@ -736,57 +761,6 @@ function DiceOverlay({ dieType, count, onClose }: DiceOverlayProps) {
       }}>
         ESC para fechar
       </p>
-
-      {/* Sum result */}
-      <AnimatePresence>
-        {phase === 'summed' && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.06 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            style={{
-              position: 'absolute', top: '50%', left: '50%',
-              transform: 'translate(-50%,-50%)',
-              textAlign: 'center', pointerEvents: 'none', zIndex: 2,
-            }}
-          >
-            <div style={{
-              background: 'rgba(4,6,14,0.97)',
-              border: '2px solid var(--color-arcano)',
-              borderRadius: 18, padding: '36px 80px',
-              boxShadow: '0 0 70px rgba(200,146,42,0.60), 0 0 160px rgba(200,146,42,0.18)',
-            }}>
-              <p style={{
-                fontFamily: 'Cinzel, serif', fontSize: 11, letterSpacing: '0.36em',
-                color: 'var(--color-text-muted)', marginBottom: 12,
-              }}>
-                RESULTADO
-              </p>
-              <p style={{
-                fontFamily: 'Cinzel, serif', fontSize: 96, fontWeight: 700, lineHeight: 1,
-                color: 'var(--color-arcano-glow)', textShadow: '0 0 55px rgba(232,184,75,1)',
-              }}>
-                {sum}
-              </p>
-              {count > 1 && (
-                <p style={{
-                  fontFamily: 'Inter, sans-serif', fontSize: 14, marginTop: 16,
-                  color: 'var(--color-text-secondary)', letterSpacing: '0.04em',
-                }}>
-                  {results.join(' + ')}
-                </p>
-              )}
-              <p style={{
-                fontFamily: 'Inter, sans-serif', fontSize: 12, marginTop: 8,
-                color: 'var(--color-text-muted)',
-              }}>
-                {count} {spec.label}{count !== 1 ? 's' : ''}
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </motion.div>,
     document.body,
   )
@@ -913,8 +887,7 @@ export function DiceRollerWidget() {
         {open && (
           <DiceOverlay
             key={overlayKey}
-            dieType={dieType}
-            count={count}
+            dice={[{ dieType, count }]}
             onClose={() => setOpen(false)}
           />
         )}

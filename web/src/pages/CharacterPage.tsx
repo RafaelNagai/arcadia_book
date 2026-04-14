@@ -20,6 +20,9 @@ import { StatsSection } from "@/components/character/StatsSection"
 import { SkillsSection } from "@/components/character/SkillsSection"
 import { ArcanoSection } from "@/components/character/ArcanoSection"
 import { Tag, SectionLabel } from "@/components/character/CharacterUI"
+import { FloatingDiceButton } from "@/components/character/FloatingDiceButton"
+import { SkillTestOverlay } from "@/components/character/SkillTestOverlay"
+import type { SkillTestData } from "@/components/character/SkillTestOverlay"
 
 const PRESET_CHARACTERS = charactersData as Character[]
 
@@ -56,7 +59,8 @@ export function CharacterPage() {
     () => (id ? loadSkillModifiers(id) : {}),
   )
 
-  const [inventoryOpen, setInventoryOpen] = useState(false)
+  const [inventoryOpen,  setInventoryOpen]  = useState(false)
+  const [skillTest,      setSkillTest]      = useState<SkillTestData | null>(null)
 
   const { scrollY } = useScroll()
   const backOpacity = useTransform(scrollY, [0, 150], [1, 0.35])
@@ -239,6 +243,7 @@ export function CharacterPage() {
           onModifierReset={handleModifierReset}
           onEditAttrs={owned ? () => goEdit(2) : undefined}
           onEditSkills={owned ? () => goEdit(3) : undefined}
+          onSkillTest={setSkillTest}
         />
 
         <ArcanoSection
@@ -343,6 +348,17 @@ export function CharacterPage() {
       >
         🎒
       </button>
+
+      {/* ── Floating dice button ─────────────────────────── */}
+      <FloatingDiceButton accentColor={accent.text} />
+
+      {/* ── Skill test overlay ───────────────────────────── */}
+      {skillTest && (
+        <SkillTestOverlay
+          {...skillTest}
+          onClose={() => setSkillTest(null)}
+        />
+      )}
 
       {/* ── Inventory panel ───────────────────────────────── */}
       {id && (

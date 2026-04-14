@@ -6,14 +6,12 @@ import { BestiaryWidget } from '@/components/widgets/BestiaryWidget'
 import { ShipWidget } from '@/components/widgets/ShipWidget'
 import { CharacterExamplesWidget } from '@/components/widgets/CharacterExamplesWidget'
 import { EquipmentWidget } from '@/components/widgets/EquipmentWidget'
-import { DiceRollerWidget } from '@/components/widgets/DiceRollerWidget'
 
 // Mapa de slug → componente interativo
 // Para adicionar um widget a um capítulo, basta incluir aqui.
 export const CHAPTER_WIDGETS: Record<string, ReactNode> = {
   'personagem':            <CharacterExamplesWidget />,
   'combate':               <CombatWidget />,
-  'evolucao-e-testes':     <DiceRollerWidget />,
   'condicoes-e-trauma':    <TraumaWidget />,
   'elementos-e-afinidades':<AfinidadeWidget />,
   'bestiario':             <BestiaryWidget />,

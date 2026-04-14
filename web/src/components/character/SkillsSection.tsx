@@ -1,6 +1,7 @@
 import type { Character } from "@/data/characterTypes"
 import { ATTR_GROUPS, AttributeBlock } from "./AttributeBlock"
 import { SectionLabel } from "./CharacterUI"
+import type { SkillTestData } from "./SkillTestOverlay"
 
 export function SkillsSection({
   character,
@@ -12,6 +13,7 @@ export function SkillsSection({
   onModifierReset,
   onEditAttrs,
   onEditSkills,
+  onSkillTest,
 }: {
   character: Character
   accentText: string
@@ -22,6 +24,7 @@ export function SkillsSection({
   onModifierReset: (skillKey: string) => void
   onEditAttrs?: () => void
   onEditSkills?: () => void
+  onSkillTest?: (data: SkillTestData) => void
 }) {
   const edits =
     onEditAttrs || onEditSkills
@@ -47,6 +50,7 @@ export function SkillsSection({
             skillModifiers={skillModifiers}
             onModifierChange={onModifierChange}
             onModifierReset={onModifierReset}
+            onSkillTest={onSkillTest}
           />
         ))}
       </div>

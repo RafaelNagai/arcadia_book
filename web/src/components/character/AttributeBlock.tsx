@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Character } from "@/data/characterTypes";
+import type { SkillTestData } from "./SkillTestOverlay";
 
 export const ATTR_GROUPS = [
   {
@@ -56,6 +57,7 @@ export function AttributeBlock({
   skillModifiers,
   onModifierChange,
   onModifierReset,
+  onSkillTest,
 }: {
   group: (typeof ATTR_GROUPS)[number];
   character: Character;
@@ -64,6 +66,7 @@ export function AttributeBlock({
   skillModifiers: Record<string, number>;
   onModifierChange: (key: string, delta: number) => void;
   onModifierReset: (key: string) => void;
+  onSkillTest?: (data: SkillTestData) => void;
 }) {
   const [editingSkill, setEditingSkill] = useState<string | null>(null);
 
@@ -188,11 +191,30 @@ export function AttributeBlock({
                   </span>
                   <span
                     className="text-xs"
+                    onClick={onSkillTest ? () => onSkillTest({
+                      skillLabel:  skill.label,
+                      skillValue:  val,
+                      modifier:    mod,
+                      hasTalent,
+                      defaultAttr: group.attr,
+                      attrColor:   group.color,
+                      attributes:  character.attributes,
+                    }) : undefined}
+                    title={onSkillTest ? `Rolar teste de ${skill.label}` : undefined}
                     style={{
                       color: val > 0 ? "var(--color-text-secondary)" : "var(--color-text-muted)",
                       fontFamily: "var(--font-ui)",
                       fontWeight: hasTalent ? 600 : 400,
+                      cursor: onSkillTest ? "pointer" : "default",
+                      borderBottom: onSkillTest ? `1px dotted ${group.color}55` : "none",
+                      transition: "color 0.12s",
                     }}
+                    onMouseEnter={onSkillTest ? (e) => {
+                      (e.currentTarget as HTMLElement).style.color = group.color
+                    } : undefined}
+                    onMouseLeave={onSkillTest ? (e) => {
+                      (e.currentTarget as HTMLElement).style.color = val > 0 ? "var(--color-text-secondary)" : "var(--color-text-muted)"
+                    } : undefined}
                   >
                     {skill.label}
                   </span>
