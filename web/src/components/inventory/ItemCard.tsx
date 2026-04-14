@@ -4,6 +4,92 @@ import type { InventoryItem } from "@/data/characterTypes";
 import { WeightBadge } from "./WeightBadge";
 import { TIER_COLOR } from "./types";
 
+function ItemDescriptionBlock({
+  item,
+  onRollDamage,
+}: {
+  item: InventoryItem;
+  onRollDamage?: (s: string) => void;
+}) {
+  if (
+    !item.fromCatalog &&
+    !item.description &&
+    !item.damage &&
+    !(item.effects && item.effects.length > 0)
+  ) {
+    return null;
+  }
+
+  return (
+    <div
+      style={{
+        fontFamily: "var(--font-body)",
+        fontSize: "0.8rem",
+        color: "rgba(200, 220, 240, 0.8)",
+        lineHeight: 1.4,
+        display: "flex",
+        flexDirection: "column",
+        gap: "0.2rem",
+      }}
+    >
+      {item.fromCatalog ? (
+        <p>
+          <span style={{ color: "rgba(255,255,255,0.45)" }}>
+            {item.catalogSubcategory}
+            {item.catalogTier && (
+              <span
+                style={{
+                  color: TIER_COLOR[item.catalogTier] ?? "#A09880",
+                }}
+              >
+                [{item.catalogTier}]
+              </span>
+            )}
+            {item.description ? ": " : ""}
+          </span>
+          {item.description}
+        </p>
+      ) : (
+        item.description && <p>{item.description}</p>
+      )}
+      {item.damage && (
+        <p>
+          <span
+            style={{
+              color: "rgba(255,255,255,0.35)",
+              fontFamily: "var(--font-ui)",
+              fontSize: "0.65rem",
+              letterSpacing: "0.1em",
+            }}
+          >
+            Damage:{" "}
+          </span>
+          <span
+            onClick={() => item.damage && onRollDamage?.(item.damage)}
+            style={{
+              color: "#E8803A",
+              fontFamily: "var(--font-display)",
+              fontWeight: 700,
+              cursor: onRollDamage ? "pointer" : "default",
+              textDecoration: onRollDamage ? "underline dotted" : "none",
+              textUnderlineOffset: 3,
+            }}
+          >
+            {item.damage}
+          </span>
+        </p>
+      )}
+      {item.effects &&
+        item.effects.length > 0 &&
+        item.effects.map((effect, i) => (
+          <p key={i} style={{ color: "rgba(192,144,240,0.85)" }}>
+            • {effect}
+          </p>
+        ))}
+    </div>
+  );
+}
+
 export function ItemCard({
   item,
   accentColor,
@@ -11,6 +97,7 @@ export function ItemCard({
   onDelete,
   onDurabilityChange,
   onZoom,
+  onRollDamage,
   overlay = false,
 }: {
   item: InventoryItem;
@@ -19,6 +106,7 @@ export function ItemCard({
   onDelete: () => void;
   onDurabilityChange: (delta: number) => void;
   onZoom?: (src: string) => void;
+  onRollDamage?: (damageStr: string) => void;
   /** When true, renders as DragOverlay (no sortable hooks, full opacity) */
   overlay?: boolean;
 }) {
@@ -170,111 +258,7 @@ export function ItemCard({
           </div>
 
           {/* Description */}
-          {item.fromCatalog ? (
-            <div
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "0.8rem",
-                color: "rgba(200, 220, 240, 0.8)",
-                lineHeight: 1.4,
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.2rem",
-              }}
-            >
-              <p>
-                <span style={{ color: "rgba(255,255,255,0.45)" }}>
-                  {item.catalogSubcategory}
-                  {item.catalogTier && (
-                    <span
-                      style={{
-                        color: TIER_COLOR[item.catalogTier] ?? "#A09880",
-                      }}
-                    >
-                      [{item.catalogTier}]
-                    </span>
-                  )}
-                  {item.description ? ": " : ""}
-                </span>
-                {item.description}
-              </p>
-              {item.damage && (
-                <p>
-                  <span
-                    style={{
-                      color: "rgba(255,255,255,0.35)",
-                      fontFamily: "var(--font-ui)",
-                      fontSize: "0.65rem",
-                      letterSpacing: "0.1em",
-                    }}
-                  >
-                    Damage:{" "}
-                  </span>
-                  <span
-                    style={{
-                      color: "#E8803A",
-                      fontFamily: "var(--font-display)",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {item.damage}
-                  </span>
-                </p>
-              )}
-              {item.effects &&
-                item.effects.length > 0 &&
-                item.effects.map((effect, i) => (
-                  <p key={i} style={{ color: "rgba(192,144,240,0.85)" }}>
-                    • {effect}
-                  </p>
-                ))}
-            </div>
-          ) : item.description ||
-            item.damage ||
-            (item.effects && item.effects.length > 0) ? (
-            <div
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "0.8rem",
-                color: "rgba(200, 220, 240, 0.8)",
-                lineHeight: 1.4,
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.2rem",
-              }}
-            >
-              {item.description && <p>{item.description}</p>}
-              {item.damage && (
-                <p>
-                  <span
-                    style={{
-                      color: "rgba(255,255,255,0.35)",
-                      fontFamily: "var(--font-ui)",
-                      fontSize: "0.65rem",
-                      letterSpacing: "0.1em",
-                    }}
-                  >
-                    Damage:{" "}
-                  </span>
-                  <span
-                    style={{
-                      color: "#E8803A",
-                      fontFamily: "var(--font-display)",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {item.damage}
-                  </span>
-                </p>
-              )}
-              {item.effects &&
-                item.effects.map((effect, i) => (
-                  <p key={i} style={{ color: "rgba(192,144,240,0.85)" }}>
-                    • {effect}
-                  </p>
-                ))}
-            </div>
-          ) : null}
+          <ItemDescriptionBlock item={item} onRollDamage={onRollDamage} />
 
           {/* Durability */}
           {item.isEquipment && (

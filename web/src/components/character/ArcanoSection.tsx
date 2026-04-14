@@ -1,3 +1,4 @@
+import { useState } from "react"
 import {
   DndContext,
   DragOverlay,
@@ -12,6 +13,7 @@ import { ELEMENT_DATA } from "./types"
 import type { Accent } from "./types"
 import { SectionLabel } from "./CharacterUI"
 import { DraggableRuna, EntropiaDisplay } from "./EntropiaDisplay"
+import { ArcaneTestOverlay } from "./ArcaneTestOverlay"
 
 export function ArcanoSection({
   character,
@@ -34,6 +36,8 @@ export function ArcanoSection({
   onRemoveRuna: (slotIdx: number) => void
   onEdit?: () => void
 }) {
+  const [arcaneTest, setArcaneTest] = useState(false)
+
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
   )
@@ -157,6 +161,26 @@ export function ArcanoSection({
           </div>
         </div>
 
+        {/* Arcane roll button */}
+        <button
+          onClick={() => setArcaneTest(true)}
+          style={{
+            background: accent.bg,
+            border: `1px solid ${accent.text}44`,
+            borderRadius: 4,
+            padding: "0.5rem 1rem",
+            fontFamily: "var(--font-ui)",
+            fontSize: "0.65rem",
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: accent.text,
+            cursor: "pointer",
+            width: "100%",
+          }}
+        >
+          🎲 Rolar Arcano
+        </button>
+
         {/* Entropia + Runas */}
         <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd}>
           <div
@@ -241,6 +265,16 @@ export function ArcanoSection({
           </DragOverlay>
         </DndContext>
       </div>
+
+      {arcaneTest && (
+        <ArcaneTestOverlay
+          afinidade={character.afinidade}
+          antitese={character.antitese}
+          entropia={character.entropia}
+          slottedRunas={slottedRunas}
+          onClose={() => setArcaneTest(false)}
+        />
+      )}
     </section>
   )
 }

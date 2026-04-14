@@ -100,19 +100,19 @@ Sem Runas, o Arcano é instável. A magia pode até funcionar, mas com muito mai
 ### Como Funcionam
 Ao conjurar, o jogador seleciona Runas conhecidas que sejam **narrativamente coerentes** com a intenção declarada. Uma Runa incoerente não soma bônus — e o Mestre pode determinar que atrapalha a conjuração.
 
-Cada Runa aplicada adiciona um bônus crescente ao teste arcano, com base na ordem do slot:
+Cada Runa aplicada adiciona **+2** fixo ao teste arcano, independente da ordem do slot:
 
-| Slot | Bônus |
+| Runas encaixadas | Bônus total |
 |---|---|
-| 1ª Runa | +2 |
-| 2ª Runa | +4 |
-| 3ª Runa | +6 |
-| 4ª Runa | +8 |
-| 5ª Runa | +10 |
+| 1 runa | +2 |
+| 2 runas | +4 |
+| 3 runas | +6 |
+| 4 runas | +8 |
+| 5 runas | +10 |
 
 O número de Runas que o personagem pode aplicar por conjuração é limitado pelos seus **Slots de Entropia** atuais.
 
-> *Exemplo: Kain conhece as Runas FOGO, DISPARAR e EXPLODIR. Com Entropia 2 (2 slots disponíveis), ele escolhe FOGO + EXPLODIR para conjurar uma esfera incendiária. Bônus total: +2 (slot 1) + +4 (slot 2) = **+6** ao teste arcano.*
+> *Exemplo: Kain conhece as Runas FOGO, DISPARAR e EXPLODIR. Com Entropia 2 (2 slots disponíveis), ele escolhe FOGO + EXPLODIR para conjurar uma esfera incendiária. Bônus total: +2 (1ª runa) + +2 (2ª runa) = **+4** ao teste arcano.*
 
 ### Como Aprender Runas
 As Runas são aprendidas durante o jogo — encontradas em artefatos, ensinadas por mestres arcanos, descobertas em ruínas. O Mestre controla o acesso a Runas novas como parte da progressão narrativa.

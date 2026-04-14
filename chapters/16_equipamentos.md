@@ -57,6 +57,22 @@ A arma define a **quantidade de dados**. O projétil define o **tipo de dado**. 
 | Cajado | +5 | +4 | +3 | +2 | +2 | +1 | +1 |
 | Livro | +5 | +4 | +3 | +2 | +2 | +1 | +1 |
 
+### Notação de Dano
+
+Todo pool de dados de uma arma é expresso em notação compacta na ficha do item:
+
+| Notação | Significado |
+|---|---|
+| `4D6` | Rola 4 dados de 6 faces |
+| `4D6 + 4` | Rola 4D6; adiciona +4 ao resultado do **dado mais alto** |
+| `4D6 + 4 + 2` | Rola 4D6; +4 ao mais alto, +2 ao segundo mais alto |
+| `4D6 + (2)` | Rola 4D6; adiciona +2 a **todos os dados** |
+| `4D6 - 1` | Rola 4D6; subtrai 1 do dado mais alto |
+
+**Bônus posicionais** (sem parênteses) aplicam-se em ordem de grandeza: o primeiro bônus vai ao dado com maior resultado, o segundo ao segundo maior, e assim por diante.
+
+**Bônus globais** (com parênteses) aplicam-se igualmente a todos os dados do pool.
+
 ---
 
 ### Tabelas de DA e Durabilidade por Tier

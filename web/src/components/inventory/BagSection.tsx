@@ -15,6 +15,7 @@ export function BagSection({
   onDelete,
   onDurabilityChange,
   onZoom,
+  onRollDamage,
 }: {
   bag: InventoryBag;
   onRename: (name: string) => void;
@@ -25,6 +26,7 @@ export function BagSection({
   onDelete: (slotIdx: number) => void;
   onDurabilityChange: (slotIdx: number, delta: number) => void;
   onZoom: (src: string) => void;
+  onRollDamage?: (damageStr: string) => void;
 }) {
   return (
     <div
@@ -162,6 +164,7 @@ export function BagSection({
                 onDelete={() => onDelete(i)}
                 onDurabilityChange={(delta) => onDurabilityChange(i, delta)}
                 onZoom={onZoom}
+                onRollDamage={onRollDamage}
               />
             );
           }

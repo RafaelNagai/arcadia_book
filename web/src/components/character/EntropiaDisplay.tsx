@@ -1,6 +1,6 @@
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 
-export const RUNA_BONUSES = [2, 4, 6, 8, 10];
+export const RUNA_BONUSES = [2, 2, 2, 2, 2];
 
 export function DraggableRuna({
   runa,
@@ -22,7 +22,9 @@ export function DraggableRuna({
       className="inline-flex items-center gap-1 px-3 py-1 rounded-sm text-xs font-semibold uppercase tracking-wider"
       style={{
         color: isSlotted ? "#C878F0" : "#B060D0",
-        background: isSlotted ? "rgba(160,60,220,0.2)" : "rgba(128,40,160,0.15)",
+        background: isSlotted
+          ? "rgba(160,60,220,0.2)"
+          : "rgba(128,40,160,0.15)",
         border: `1px solid ${isSlotted ? "rgba(180,80,240,0.5)" : "rgba(176,96,208,0.27)"}`,
         fontFamily: "var(--font-ui)",
         opacity: isDraggingThis ? 0.3 : isSlotted ? 0.55 : 1,
@@ -93,7 +95,11 @@ function DroppableSlot({
               : "none",
         transform: isHovered ? "scale(1.04)" : "scale(1)",
         transition: "all 0.15s ease",
-        cursor: withinEntropia ? (slotted ? "pointer" : "default") : "not-allowed",
+        cursor: withinEntropia
+          ? slotted
+            ? "pointer"
+            : "default"
+          : "not-allowed",
         opacity: withinEntropia ? 1 : 0.3,
       }}
       onClick={() => {
@@ -106,7 +112,9 @@ function DroppableSlot({
           fontFamily: "var(--font-ui)",
           fontSize: "0.5rem",
           letterSpacing: "0.1em",
-          color: withinEntropia ? "rgba(180,100,220,0.6)" : "rgba(255,255,255,0.1)",
+          color: withinEntropia
+            ? "rgba(180,100,220,0.6)"
+            : "rgba(255,255,255,0.1)",
           textTransform: "uppercase",
         }}
       >
@@ -195,11 +203,17 @@ export function EntropiaDisplay({
         <div className="flex items-center gap-3">
           <p
             className="text-xs font-semibold uppercase tracking-[0.2em]"
-            style={{ color: "rgba(180,100,220,0.85)", fontFamily: "var(--font-ui)" }}
+            style={{
+              color: "rgba(180,100,220,0.85)",
+              fontFamily: "var(--font-ui)",
+            }}
           >
             Entropia
           </p>
-          <span className="font-display font-bold text-3xl" style={{ color: "#EEF4FC" }}>
+          <span
+            className="font-display font-bold text-3xl"
+            style={{ color: "#EEF4FC" }}
+          >
             {value}
           </span>
           <span
@@ -259,7 +273,10 @@ export function EntropiaDisplay({
       {value === 0 && (
         <p
           className="mt-3 text-xs"
-          style={{ color: "rgba(255,255,255,0.50)", fontFamily: "var(--font-ui)" }}
+          style={{
+            color: "rgba(255,255,255,0.50)",
+            fontFamily: "var(--font-ui)",
+          }}
         >
           Sem slots de entropia ativos
         </p>
@@ -269,7 +286,10 @@ export function EntropiaDisplay({
         slottedRunas.slice(0, value).every((r) => r === null) && (
           <p
             className="mt-3 text-xs"
-            style={{ color: "rgba(200,150,240,0.75)", fontFamily: "var(--font-ui)" }}
+            style={{
+              color: "rgba(200,150,240,0.75)",
+              fontFamily: "var(--font-ui)",
+            }}
           >
             Arraste runas para os slots para ativar os bônus
           </p>

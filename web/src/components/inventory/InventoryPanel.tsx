@@ -34,12 +34,14 @@ export function InventoryPanel({
   accentColor,
   isOpen,
   onClose,
+  onRollDamage,
 }: {
   characterId: string;
   fisico: number;
   accentColor: string;
   isOpen: boolean;
   onClose: () => void;
+  onRollDamage?: (damageStr: string) => void;
 }) {
   const totalSlots = 3 + fisico;
   const maxWeight = 15 + fisico * 5;
@@ -72,6 +74,13 @@ export function InventoryPanel({
       : weightPct < 0.7
         ? "#6EC840"
         : "#C8922A";
+
+  /* ── Damage roll ──────────────────────────────────────────────── */
+
+  function handleRollDamage(damageStr: string) {
+    onClose();
+    onRollDamage?.(damageStr);
+  }
 
   /* ── Persistence helpers ──────────────────────────────────────── */
 
@@ -658,6 +667,7 @@ export function InventoryPanel({
                               handleDurabilityChange(i, delta)
                             }
                             onZoom={setZoomedImage}
+                            onRollDamage={handleRollDamage}
                           />
                         );
                       }
@@ -692,6 +702,7 @@ export function InventoryPanel({
                         handleDurabilityChange(slotIdx, delta, bag.id)
                       }
                       onZoom={setZoomedImage}
+                      onRollDamage={handleRollDamage}
                     />
                   ))}
 

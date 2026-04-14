@@ -23,6 +23,7 @@ import { Tag, SectionLabel } from "@/components/character/CharacterUI"
 import { FloatingDiceButton } from "@/components/character/FloatingDiceButton"
 import { SkillTestOverlay } from "@/components/character/SkillTestOverlay"
 import type { SkillTestData } from "@/components/character/SkillTestOverlay"
+import { DamageRollOverlay } from "@/components/character/DamageRollOverlay"
 
 const PRESET_CHARACTERS = charactersData as Character[]
 
@@ -59,8 +60,9 @@ export function CharacterPage() {
     () => (id ? loadSkillModifiers(id) : {}),
   )
 
-  const [inventoryOpen,  setInventoryOpen]  = useState(false)
-  const [skillTest,      setSkillTest]      = useState<SkillTestData | null>(null)
+  const [inventoryOpen,     setInventoryOpen]     = useState(false)
+  const [skillTest,         setSkillTest]         = useState<SkillTestData | null>(null)
+  const [pendingDamageRoll, setPendingDamageRoll] = useState<string | null>(null)
 
   const { scrollY } = useScroll()
   const backOpacity = useTransform(scrollY, [0, 150], [1, 0.35])
@@ -360,6 +362,14 @@ export function CharacterPage() {
         />
       )}
 
+      {/* ── Damage roll overlay ───────────────────────────── */}
+      {pendingDamageRoll && (
+        <DamageRollOverlay
+          damageStr={pendingDamageRoll}
+          onClose={() => setPendingDamageRoll(null)}
+        />
+      )}
+
       {/* ── Inventory panel ───────────────────────────────── */}
       {id && (
         <InventoryPanel
@@ -368,6 +378,7 @@ export function CharacterPage() {
           accentColor={accent.text}
           isOpen={inventoryOpen}
           onClose={() => setInventoryOpen(false)}
+          onRollDamage={setPendingDamageRoll}
         />
       )}
     </div>
