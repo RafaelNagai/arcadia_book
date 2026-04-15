@@ -13,6 +13,8 @@ import {
   savePeChecks,
   loadSkillModifiers,
   saveSkillModifiers,
+  loadDefenseModifiers,
+  saveDefenseModifiers,
 } from "@/lib/localCharacters"
 import { getAccent } from "@/components/character/types"
 import { CharacterHero } from "@/components/character/CharacterHero"
@@ -60,6 +62,16 @@ export function CharacterPage() {
 
   const [skillModifiers, setSkillModifiers] = useState<Record<string, number>>(
     () => (id ? loadSkillModifiers(id) : {}),
+  )
+
+  const [daBase, setDaBase] = useState<number>(
+    () => (id ? loadDefenseModifiers(id).daBase : 1),
+  )
+  const [daBonus, setDaBonus] = useState<number>(
+    () => (id ? loadDefenseModifiers(id).daBonus : 0),
+  )
+  const [dpBonus, setDpBonus] = useState<number>(
+    () => (id ? loadDefenseModifiers(id).dpBonus : 0),
   )
 
   const [inventoryOpen,     setInventoryOpen]     = useState(false)
@@ -121,6 +133,42 @@ export function CharacterPage() {
       if (id) saveSkillModifiers(id, next)
       return next
     })
+  }
+
+  /* ── Defense modifiers ───────────────────────────────────────── */
+
+  function handleDaBaseChange(delta: number) {
+    setDaBase((prev) => {
+      const next = Math.max(0, prev + delta)
+      if (id) saveDefenseModifiers(id, { daBase: next, daBonus, dpBonus })
+      return next
+    })
+  }
+
+  function handleDaChange(delta: number) {
+    setDaBonus((prev) => {
+      const next = prev + delta
+      if (id) saveDefenseModifiers(id, { daBase, daBonus: next, dpBonus })
+      return next
+    })
+  }
+
+  function handleDaReset() {
+    setDaBonus(0)
+    if (id) saveDefenseModifiers(id, { daBase, daBonus: 0, dpBonus })
+  }
+
+  function handleDpChange(delta: number) {
+    setDpBonus((prev) => {
+      const next = prev + delta
+      if (id) saveDefenseModifiers(id, { daBase, daBonus, dpBonus: next })
+      return next
+    })
+  }
+
+  function handleDpReset() {
+    setDpBonus(0)
+    if (id) saveDefenseModifiers(id, { daBase, daBonus, dpBonus: 0 })
   }
 
   /* ── PE checkboxes ────────────────────────────────────────────── */
@@ -235,6 +283,14 @@ export function CharacterPage() {
           owned={owned}
           onHpClick={handleHpClick}
           onSanidadeClick={handleSanidadeClick}
+          daBase={daBase}
+          daBonus={daBonus}
+          dpBonus={dpBonus}
+          onDaBaseChange={handleDaBaseChange}
+          onDaChange={handleDaChange}
+          onDaReset={handleDaReset}
+          onDpChange={handleDpChange}
+          onDpReset={handleDpReset}
           onEdit={owned ? () => goEdit(1) : undefined}
         />
 

@@ -166,6 +166,37 @@ export function saveBags(characterId: string, bags: InventoryBag[]): void {
   } catch {}
 }
 
+/* ─── Defense modifiers (DA / DP bonuses) ─────────────────────── */
+
+const DEFENSE_MOD_KEY = 'arcadia_defense_modifiers'
+
+export interface DefenseModifiers {
+  daBase: number   // valor base da DA (default 1, ajustado por armadura)
+  daBonus: number  // bônus temporário adicionado ao clicar
+  dpBonus: number  // bônus temporário adicionado ao clicar
+}
+
+const DEFAULT_DEFENSE: DefenseModifiers = { daBase: 1, daBonus: 0, dpBonus: 0 }
+
+export function loadDefenseModifiers(id: string): DefenseModifiers {
+  try {
+    const raw = localStorage.getItem(DEFENSE_MOD_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, DefenseModifiers>) : {}
+    return { ...DEFAULT_DEFENSE, ...(all[id] ?? {}) }
+  } catch {
+    return { ...DEFAULT_DEFENSE }
+  }
+}
+
+export function saveDefenseModifiers(id: string, mods: DefenseModifiers): void {
+  try {
+    const raw = localStorage.getItem(DEFENSE_MOD_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, DefenseModifiers>) : {}
+    all[id] = mods
+    localStorage.setItem(DEFENSE_MOD_KEY, JSON.stringify(all))
+  } catch {}
+}
+
 /* ─── Derived stats ────────────────────────────────────────────── */
 
 const HP_BONUS:    number[] = [0, 4, 4, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]

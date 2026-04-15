@@ -1,6 +1,7 @@
 import type { Character } from "@/data/characterTypes"
 import { HoneycombGrid } from "./HoneycombGrid"
 import { SectionLabel } from "./CharacterUI"
+import { DefenseStats } from "./DefenseStats"
 
 export function StatsSection({
   character,
@@ -10,6 +11,14 @@ export function StatsSection({
   owned,
   onHpClick,
   onSanidadeClick,
+  daBase,
+  daBonus,
+  dpBonus,
+  onDaBaseChange,
+  onDaChange,
+  onDaReset,
+  onDpChange,
+  onDpReset,
   onEdit,
 }: {
   character: Character
@@ -19,6 +28,14 @@ export function StatsSection({
   owned: boolean
   onHpClick: (idx: number) => void
   onSanidadeClick: (idx: number) => void
+  daBase: number
+  daBonus: number
+  dpBonus: number
+  onDaBaseChange: (delta: number) => void
+  onDaChange: (delta: number) => void
+  onDaReset: () => void
+  onDpChange: (delta: number) => void
+  onDpReset: () => void
   onEdit?: () => void
 }) {
   return (
@@ -29,7 +46,7 @@ export function StatsSection({
       >
         Vitalidade
       </SectionLabel>
-      <div className="flex flex-wrap gap-12">
+      <div className="flex flex-wrap gap-12 items-start">
         <HoneycombGrid
           total={character.hp}
           current={currentHp}
@@ -47,6 +64,16 @@ export function StatsSection({
           label="Sanidade"
           accentColor="#D04040"
           onCellClick={owned ? onSanidadeClick : undefined}
+        />
+        <DefenseStats
+          daBase={daBase}
+          daBonus={daBonus}
+          dpBonus={dpBonus}
+          onDaBaseChange={onDaBaseChange}
+          onDaChange={onDaChange}
+          onDaReset={onDaReset}
+          onDpChange={onDpChange}
+          onDpReset={onDpReset}
         />
       </div>
     </section>
