@@ -1,6 +1,32 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import type { ReactNode } from 'react'
 import { STEPS } from './types'
+
+/* ─── Image compression ─────────────────────────────────────────── */
+
+const IMAGE_MAX_FILE_BYTES = 5 * 1024 * 1024  // 5 MB original
+const IMAGE_MAX_DIM        = 512               // px (largest side)
+const IMAGE_JPEG_QUALITY   = 0.75
+
+function compressImageFile(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const objectUrl = URL.createObjectURL(file)
+    const img = new Image()
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl)
+      const scale = Math.min(1, IMAGE_MAX_DIM / Math.max(img.width, img.height))
+      const w = Math.round(img.width  * scale)
+      const h = Math.round(img.height * scale)
+      const canvas = document.createElement('canvas')
+      canvas.width  = w
+      canvas.height = h
+      canvas.getContext('2d')!.drawImage(img, 0, 0, w, h)
+      resolve(canvas.toDataURL('image/jpeg', IMAGE_JPEG_QUALITY))
+    }
+    img.onerror = () => { URL.revokeObjectURL(objectUrl); reject(new Error('Falha ao carregar imagem')) }
+    img.src = objectUrl
+  })
+}
 
 /* ─── Shared input style ────────────────────────────────────────── */
 
@@ -181,5 +207,159 @@ export function SectionDivider({ label }: { label: string }) {
     <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '1rem', marginTop: '1rem' }}>
       {label}
     </p>
+  )
+}
+
+/* ─── ImageUpload ───────────────────────────────────────────────── */
+
+type ImageUploadMode = 'upload' | 'url'
+
+export function ImageUpload({ value, onChange }: {
+  value: string | null
+  onChange: (v: string | null) => void
+}) {
+  const [mode, setMode]   = useState<ImageUploadMode>('upload')
+  const [urlInput, setUrlInput] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  async function handleFile(file: File) {
+    setError(null)
+    if (!file.type.startsWith('image/')) { setError('Apenas imagens são aceitas.'); return }
+    if (file.size > IMAGE_MAX_FILE_BYTES) { setError('Arquivo muito grande. Máximo: 5 MB.'); return }
+    setLoading(true)
+    try {
+      onChange(await compressImageFile(file))
+      setUrlInput('')
+    } catch {
+      setError('Falha ao processar imagem.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (file) handleFile(file)
+    e.target.value = ''
+  }
+
+  function handleDrop(e: React.DragEvent<HTMLLabelElement>) {
+    e.preventDefault()
+    const file = e.dataTransfer.files?.[0]
+    if (file) handleFile(file)
+  }
+
+  function handleUrlCommit() {
+    const url = urlInput.trim()
+    if (!url) return
+    onChange(url)
+    setError(null)
+  }
+
+  function handleRemove() {
+    onChange(null)
+    setUrlInput('')
+    setError(null)
+  }
+
+  const tabBtn = (active: boolean): React.CSSProperties => ({
+    flex: 1, padding: '0.35rem 0', borderRadius: 4,
+    background: active ? 'rgba(200,146,42,0.15)' : 'transparent',
+    border: `1px solid ${active ? 'rgba(200,146,42,0.35)' : 'rgba(255,255,255,0.08)'}`,
+    color: active ? 'var(--color-arcano-glow)' : 'var(--color-text-muted)',
+    cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: '0.65rem',
+    letterSpacing: '0.1em', textTransform: 'uppercase' as const, transition: 'all 0.15s',
+  })
+
+  return (
+    <div className="space-y-3">
+      {/* preview */}
+      {value && (
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <img
+            src={value} alt="Personagem"
+            style={{ display: 'block', width: 96, height: 96, objectFit: 'cover', borderRadius: 6, border: '1px solid rgba(255,255,255,0.12)' }}
+          />
+          <button onClick={handleRemove} title="Remover imagem" style={{
+            position: 'absolute', top: -8, right: -8,
+            width: 22, height: 22, borderRadius: '50%',
+            background: 'rgba(10,15,30,0.95)', border: '1px solid rgba(255,255,255,0.2)',
+            color: 'rgba(255,255,255,0.6)', cursor: 'pointer',
+            fontFamily: 'var(--font-ui)', fontSize: '0.8rem', lineHeight: 1,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>×</button>
+        </div>
+      )}
+
+      {/* mode tabs */}
+      <div className="flex gap-1.5">
+        <button style={tabBtn(mode === 'upload')} onClick={() => { setMode('upload'); setError(null) }}>Arquivo</button>
+        <button style={tabBtn(mode === 'url')}    onClick={() => { setMode('url');    setError(null) }}>URL</button>
+      </div>
+
+      {/* upload zone */}
+      {mode === 'upload' && (
+        <label
+          onDragOver={e => e.preventDefault()}
+          onDrop={handleDrop}
+          style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            gap: '0.4rem', height: 88, borderRadius: 6,
+            border: `1px dashed ${loading ? 'rgba(200,146,42,0.4)' : 'rgba(255,255,255,0.12)'}`,
+            background: 'rgba(255,255,255,0.02)',
+            cursor: loading ? 'wait' : 'pointer',
+            color: 'rgba(255,255,255,0.3)',
+            fontFamily: 'var(--font-ui)', fontSize: '0.65rem',
+            letterSpacing: '0.1em', textAlign: 'center',
+            transition: 'border-color 0.15s, background 0.15s',
+          }}
+          onMouseEnter={e => { if (!loading) { e.currentTarget.style.borderColor = 'rgba(200,146,42,0.4)'; e.currentTarget.style.background = 'rgba(200,146,42,0.04)' } }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = loading ? 'rgba(200,146,42,0.4)' : 'rgba(255,255,255,0.12)'; e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
+        >
+          <input ref={fileInputRef} type="file" accept="image/*" onChange={handleInputChange} style={{ display: 'none' }} />
+          {loading
+            ? <span style={{ fontSize: '0.75rem', opacity: 0.5 }}>Processando…</span>
+            : (
+              <>
+                <span style={{ fontSize: '1.4rem', opacity: 0.35 }}>↑</span>
+                <span>Clique ou arraste uma imagem</span>
+                <span style={{ opacity: 0.5 }}>JPG, PNG, WebP · máx. 5 MB</span>
+              </>
+            )
+          }
+        </label>
+      )}
+
+      {/* url input */}
+      {mode === 'url' && (
+        <div className="flex gap-2">
+          <input
+            type="url" value={urlInput} onChange={e => setUrlInput(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleUrlCommit() } }}
+            placeholder="https://…"
+            style={{ ...baseInputStyle, flex: 1, fontSize: '0.8rem' }}
+            onFocus={e => { e.target.style.borderColor = 'var(--color-arcano)' }}
+            onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.1)' }}
+          />
+          <button onClick={handleUrlCommit} disabled={!urlInput.trim()} style={{
+            padding: '0.6rem 0.75rem', borderRadius: 4,
+            background: urlInput.trim() ? 'rgba(200,146,42,0.15)' : 'rgba(255,255,255,0.03)',
+            border: `1px solid ${urlInput.trim() ? 'rgba(200,146,42,0.3)' : 'rgba(255,255,255,0.08)'}`,
+            color: urlInput.trim() ? 'var(--color-arcano-glow)' : 'rgba(255,255,255,0.2)',
+            cursor: urlInput.trim() ? 'pointer' : 'not-allowed',
+            fontFamily: 'var(--font-ui)', fontSize: '0.75rem', whiteSpace: 'nowrap',
+            transition: 'all 0.15s',
+          }}>
+            Aplicar
+          </button>
+        </div>
+      )}
+
+      {error && (
+        <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: '#E06060' }}>{error}</p>
+      )}
+    </div>
   )
 }

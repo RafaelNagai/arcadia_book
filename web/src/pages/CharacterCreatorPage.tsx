@@ -37,6 +37,7 @@ export function CharacterCreatorPage() {
   const [runas,      setRunas]      = useState<string[]>(existing?.runas      ?? [])
   const [antecedentes, setAntecedentes] = useState<string[]>(existing?.antecedentes ?? [])
   const [traumas,    setTraumas]    = useState<string[]>(existing?.traumas    ?? [])
+  const [image,      setImage]      = useState<string | null>(existing?.image ?? null)
 
   const totalLevel = Object.values(skills).reduce((a, b) => a + b, 0)
 
@@ -80,7 +81,7 @@ export function CharacterCreatorPage() {
       race:    race.trim()    || 'Desconhecida',
       concept: concept.trim(),
       quote:   quote.trim(),
-      image:   existing?.image ?? null,
+      image,
       level:   totalLevel,
       attributes: attrs,
       skills,
@@ -133,6 +134,8 @@ export function CharacterCreatorPage() {
             {step === 1 && (
               <Step1Identity
                 data={{ name, race, concept, quote }}
+                image={image}
+                onImageChange={setImage}
                 onChange={(k, v) => {
                   if (k === 'name')    setName(v)
                   else if (k === 'race')    setRace(v)

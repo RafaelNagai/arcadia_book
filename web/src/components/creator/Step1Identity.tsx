@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { RACES } from './types'
-import { Field, TextInput } from './CreatorUI'
+import { Field, TextInput, ImageUpload } from './CreatorUI'
 
-export function Step1Identity({ data, onChange }: {
+export function Step1Identity({ data, image, onImageChange, onChange }: {
   data: { name: string; race: string; concept: string; quote: string }
+  image: string | null
+  onImageChange: (v: string | null) => void
   onChange: (k: string, v: string) => void
 }) {
   const isExistingCustom = !RACES.slice(0, -1).includes(data.race) && data.race !== ''
@@ -12,6 +14,10 @@ export function Step1Identity({ data, onChange }: {
 
   return (
     <div className="space-y-5">
+      <Field label="Imagem do Personagem" hint="Opcional · arquivo local ou URL externa">
+        <ImageUpload value={image} onChange={onImageChange} />
+      </Field>
+
       <Field label="Nome do Personagem">
         <TextInput value={data.name} onChange={v => onChange('name', v)} placeholder="Ex: Kalista" />
       </Field>
