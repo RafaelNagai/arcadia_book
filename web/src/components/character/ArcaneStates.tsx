@@ -22,6 +22,8 @@ export function detectSpecialState(chosen: number[]): SpecialState {
   const anyTwelve = chosen.some((v) => v === 12);
   const allOne = chosen.every((v) => v === 1);
   const anyOne = chosen.some((v) => v === 1);
+  // 12 e 1 nos dados escolhidos se anulam — nenhum estado especial
+  if (anyTwelve && anyOne) return null;
   if (allTwelve) return "milagre";
   if (allOne) return "desastre";
   if (anyTwelve) return "critico";
@@ -143,8 +145,8 @@ export const STATE_META: Record<
     glow: "rgba(255,48,64,0.8)",
   },
   falha_critica: {
-    label: "ATENÇÃO",
-    sub: "1 natural nos dados · Possível Falha Crítica",
+    label: "FALHA CRÍTICA",
+    sub: "1 natural nos dados · Bônus não são somados",
     color: "#ff8060",
     glow: "rgba(255,128,96,0.7)",
   },
