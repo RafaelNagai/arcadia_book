@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useDiceLog } from '@/lib/diceLog'
@@ -373,6 +374,15 @@ function LogEntry({ entry }: { entry: DiceLogEntry }) {
 
 export function DiceLogSidebar() {
   const { entries, clearLog, isLogOpen, setLogOpen } = useDiceLog()
+
+  useEffect(() => {
+    if (isLogOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [isLogOpen])
 
   return createPortal(
     <AnimatePresence>

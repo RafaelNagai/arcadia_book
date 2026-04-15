@@ -8,10 +8,10 @@ export const ATTR_GROUPS = [
     label: "Físico",
     color: "#C04040",
     skills: [
-      { key: "fortitude"  as const, label: "Fortitude"  },
-      { key: "vontade"    as const, label: "Vontade"    },
-      { key: "atletismo"  as const, label: "Atletismo"  },
-      { key: "combate"    as const, label: "Combate"    },
+      { key: "fortitude" as const, label: "Fortitude" },
+      { key: "vontade" as const, label: "Vontade" },
+      { key: "atletismo" as const, label: "Atletismo" },
+      { key: "combate" as const, label: "Combate" },
     ],
   },
   {
@@ -20,9 +20,9 @@ export const ATTR_GROUPS = [
     color: "#20A080",
     skills: [
       { key: "furtividade" as const, label: "Furtividade" },
-      { key: "precisao"    as const, label: "Precisão"    },
-      { key: "acrobacia"   as const, label: "Acrobacia"   },
-      { key: "reflexo"     as const, label: "Reflexo"     },
+      { key: "precisao" as const, label: "Precisão" },
+      { key: "acrobacia" as const, label: "Acrobacia" },
+      { key: "reflexo" as const, label: "Reflexo" },
     ],
   },
   {
@@ -30,8 +30,8 @@ export const ATTR_GROUPS = [
     label: "Intelecto",
     color: "#4080C0",
     skills: [
-      { key: "percepcao"    as const, label: "Percepção"    },
-      { key: "intuicao"     as const, label: "Intuição"     },
+      { key: "percepcao" as const, label: "Percepção" },
+      { key: "intuicao" as const, label: "Intuição" },
       { key: "investigacao" as const, label: "Investigação" },
       { key: "conhecimento" as const, label: "Conhecimento" },
     ],
@@ -41,9 +41,9 @@ export const ATTR_GROUPS = [
     label: "Influência",
     color: "#A060C0",
     skills: [
-      { key: "empatia"    as const, label: "Empatia"    },
-      { key: "dominacao"  as const, label: "Dominação"  },
-      { key: "persuasao"  as const, label: "Persuasão"  },
+      { key: "empatia" as const, label: "Empatia" },
+      { key: "dominacao" as const, label: "Dominação" },
+      { key: "persuasao" as const, label: "Persuasão" },
       { key: "performance" as const, label: "Performance" },
     ],
   },
@@ -87,7 +87,7 @@ export function AttributeBlock({
         }}
       >
         <span
-          className="text-sm font-semibold uppercase tracking-[0.18em]"
+          className="text-xs font-semibold uppercase tracking-[0.18em] sm:text-base"
           style={{ color: group.color, fontFamily: "var(--font-ui)" }}
         >
           {group.label}
@@ -102,7 +102,7 @@ export function AttributeBlock({
 
       {/* PE checkboxes */}
       <div
-        className="px-4 py-2 flex items-center gap-2"
+        className="px-4 py-2 flex items-center gap-1.5 sm:gap-3"
         style={{ borderBottom: `1px solid ${group.color}22` }}
       >
         <span
@@ -112,7 +112,6 @@ export function AttributeBlock({
             letterSpacing: "0.18em",
             textTransform: "uppercase",
             color: "rgba(200,210,230,0.7)",
-            marginRight: 2,
           }}
         >
           PE
@@ -126,7 +125,9 @@ export function AttributeBlock({
               width: 16,
               height: 16,
               borderRadius: 3,
-              background: checked ? `${group.color}33` : "rgba(255,255,255,0.06)",
+              background: checked
+                ? `${group.color}33`
+                : "rgba(255,255,255,0.06)",
               border: `1px solid ${checked ? group.color + "CC" : "rgba(200,210,230,0.35)"}`,
               color: checked ? group.color : "rgba(200,210,230,0.35)",
               fontSize: "0.55rem",
@@ -190,31 +191,55 @@ export function AttributeBlock({
                     {hasTalent ? "◆" : "◇"}
                   </span>
                   <span
-                    className="text-xs"
-                    onClick={onSkillTest ? () => onSkillTest({
-                      skillLabel:  skill.label,
-                      skillValue:  val,
-                      modifier:    mod,
-                      hasTalent,
-                      defaultAttr: group.attr,
-                      attrColor:   group.color,
-                      attributes:  character.attributes,
-                    }) : undefined}
-                    title={onSkillTest ? `Rolar teste de ${skill.label}` : undefined}
+                    className="text-[0.6rem] sm:text-xs"
+                    onClick={
+                      onSkillTest
+                        ? () =>
+                            onSkillTest({
+                              skillLabel: skill.label,
+                              skillValue: val,
+                              modifier: mod,
+                              hasTalent,
+                              defaultAttr: group.attr,
+                              attrColor: group.color,
+                              attributes: character.attributes,
+                            })
+                        : undefined
+                    }
+                    title={
+                      onSkillTest ? `Rolar teste de ${skill.label}` : undefined
+                    }
                     style={{
-                      color: val > 0 ? "var(--color-text-secondary)" : "var(--color-text-muted)",
+                      color:
+                        val > 0
+                          ? "var(--color-text-secondary)"
+                          : "var(--color-text-muted)",
                       fontFamily: "var(--font-ui)",
                       fontWeight: hasTalent ? 600 : 400,
                       cursor: onSkillTest ? "pointer" : "default",
-                      borderBottom: onSkillTest ? `1px dotted ${group.color}55` : "none",
+                      borderBottom: onSkillTest
+                        ? `1px dotted ${group.color}55`
+                        : "none",
                       transition: "color 0.12s",
                     }}
-                    onMouseEnter={onSkillTest ? (e) => {
-                      (e.currentTarget as HTMLElement).style.color = group.color
-                    } : undefined}
-                    onMouseLeave={onSkillTest ? (e) => {
-                      (e.currentTarget as HTMLElement).style.color = val > 0 ? "var(--color-text-secondary)" : "var(--color-text-muted)"
-                    } : undefined}
+                    onMouseEnter={
+                      onSkillTest
+                        ? (e) => {
+                            (e.currentTarget as HTMLElement).style.color =
+                              group.color;
+                          }
+                        : undefined
+                    }
+                    onMouseLeave={
+                      onSkillTest
+                        ? (e) => {
+                            (e.currentTarget as HTMLElement).style.color =
+                              val > 0
+                                ? "var(--color-text-secondary)"
+                                : "var(--color-text-muted)";
+                          }
+                        : undefined
+                    }
                   >
                     {skill.label}
                   </span>
@@ -267,7 +292,10 @@ export function AttributeBlock({
                   className="flex items-center gap-1.5 mt-1.5"
                   style={{ paddingLeft: 12 }}
                 >
-                  <button style={smallBtn} onClick={() => onModifierChange(skill.key, -1)}>
+                  <button
+                    style={smallBtn}
+                    onClick={() => onModifierChange(skill.key, -1)}
+                  >
                     −
                   </button>
                   <span
@@ -287,7 +315,10 @@ export function AttributeBlock({
                   >
                     {mod > 0 ? `+${mod}` : mod === 0 ? "·" : String(mod)}
                   </span>
-                  <button style={smallBtn} onClick={() => onModifierChange(skill.key, +1)}>
+                  <button
+                    style={smallBtn}
+                    onClick={() => onModifierChange(skill.key, +1)}
+                  >
                     +
                   </button>
 
