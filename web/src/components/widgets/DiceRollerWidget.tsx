@@ -185,27 +185,71 @@ function buildPolyGeo(geo: THREE.BufferGeometry, faceCount: number): THREE.Buffe
   return geo
 }
 
-/** Pentagonal bipyramid — 10 triangular faces, non-indexed */
+/** Pentagonal trapezohedron — the true D10 shape (12 vertices, 10 kite faces) */
 function makeD10Geo(): THREE.BufferGeometry {
-  const n = 5, r = 0.48, h = 0.62
-  const top = new THREE.Vector3(0, h, 0)
-  const bot = new THREE.Vector3(0, -h, 0)
-  const ring = Array.from({ length: n }, (_, i) => {
+  const n      = 5
+  const h_pole =  0.62  // height of top/bottom poles
+  const h_up   =  0.20  // height of upper equatorial ring
+  const h_dn   = -0.20  // height of lower equatorial ring
+  const r      =  0.52  // radius of both equatorial rings
+
+  const T = new THREE.Vector3(0, h_pole, 0)
+  const B = new THREE.Vector3(0, -h_pole, 0)
+
+  const U = Array.from({ length: n }, (_, i) => {
     const a = (i / n) * Math.PI * 2
-    return new THREE.Vector3(Math.cos(a) * r, 0, Math.sin(a) * r)
+    return new THREE.Vector3(Math.cos(a) * r, h_up, Math.sin(a) * r)
   })
+  const L = Array.from({ length: n }, (_, i) => {
+    const a = (i / n) * Math.PI * 2 + Math.PI / n
+    return new THREE.Vector3(Math.cos(a) * r, h_dn, Math.sin(a) * r)
+  })
+
   const verts: number[] = []
-  const push = (a: THREE.Vector3, b: THREE.Vector3, c: THREE.Vector3) =>
-    verts.push(a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z)
+  const norms: number[] = []
+
+  // Compute a single flat normal for the kite face (average of its 2 triangle normals).
+  // All 6 buffer vertices of the kite receive this same normal — no diagonal seam.
+  const kiteFaceNormal = (
+    a1: THREE.Vector3, b1: THREE.Vector3, c1: THREE.Vector3,
+    a2: THREE.Vector3, b2: THREE.Vector3, c2: THREE.Vector3,
+  ): THREE.Vector3 => {
+    const triNormal = (a: THREE.Vector3, b: THREE.Vector3, c: THREE.Vector3) => {
+      const n = new THREE.Vector3()
+        .crossVectors(
+          new THREE.Vector3().subVectors(b, a),
+          new THREE.Vector3().subVectors(c, a),
+        ).normalize()
+      // Centroid trick — flip if pointing inward
+      if (n.dot(new THREE.Vector3().addVectors(a, b).add(c).divideScalar(3)) < 0) n.negate()
+      return n
+    }
+    return new THREE.Vector3().addVectors(triNormal(a1, b1, c1), triNormal(a2, b2, c2)).normalize()
+  }
+
+  const pushFace = (
+    a1: THREE.Vector3, b1: THREE.Vector3, c1: THREE.Vector3,
+    a2: THREE.Vector3, b2: THREE.Vector3, c2: THREE.Vector3,
+  ) => {
+    const fn = kiteFaceNormal(a1, b1, c1, a2, b2, c2)
+    for (const v of [a1, b1, c1, a2, b2, c2]) {
+      verts.push(v.x, v.y, v.z)
+      norms.push(fn.x, fn.y, fn.z)
+    }
+  }
+
   for (let i = 0; i < n; i++) {
     const j = (i + 1) % n
-    push(top, ring[j], ring[i])   // upper 5
-    push(bot, ring[i], ring[j])   // lower 5
+    // Upper kite face {T, U[i], L[i], U[j]}
+    pushFace(T, L[i], U[i],  T, U[j], L[i])
+    // Lower kite face {B, L[i], U[j], L[j]}
+    pushFace(B, L[i], U[j],  B, U[j], L[j])
   }
+
   const geo = new THREE.BufferGeometry()
   geo.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3))
-  geo.computeVertexNormals()
-  return buildPolyGeo(geo, 10)   // fixes UVs + adds groups
+  geo.setAttribute('normal',   new THREE.Float32BufferAttribute(norms, 3))
+  return buildPolyGeo(geo, 10)
 }
 
 /* ════════════════════════════════════════════════════════════════

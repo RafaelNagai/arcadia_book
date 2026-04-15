@@ -9,7 +9,9 @@
       "Bash(grep -r \"ConvexHullArgs\\\\|ConvexHullCollider\" node_modules/@react-three/rapier/dist/*.d.ts)",
       "Bash(curl -s \"http://localhost:5174/src/pages/CharacterPage.tsx\" -o /dev/null -w \"%{http_code}\")",
       "Bash(curl -s \"http://localhost:5174/src/lib/diceLog.ts\" -o /dev/null -w \" %{http_code}\")",
-      "Bash(curl -s \"http://localhost:5174/src/components/character/DiceLogSidebar.tsx\" -o /dev/null -w \" %{http_code}\")"
+      "Bash(curl -s \"http://localhost:5174/src/components/character/DiceLogSidebar.tsx\" -o /dev/null -w \" %{http_code}\")",
+      "Bash(cat)",
+      "Read(//tmp/**)"
     ]
   }
 }
