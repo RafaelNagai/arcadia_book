@@ -6,7 +6,10 @@
       "Bash(wc -l /Users/naga/Documents/arcadia/book/web/src/data/*.ts /Users/naga/Documents/arcadia/book/web/src/data/*.tsx /Users/naga/Documents/arcadia/book/web/src/hooks/*.ts /Users/naga/Documents/arcadia/book/web/src/lib/*.ts)",
       "Bash(wc -l /Users/naga/Documents/arcadia/book/web/src/pages/*.tsx)",
       "Bash(npm ls:*)",
-      "Bash(grep -r \"ConvexHullArgs\\\\|ConvexHullCollider\" node_modules/@react-three/rapier/dist/*.d.ts)"
+      "Bash(grep -r \"ConvexHullArgs\\\\|ConvexHullCollider\" node_modules/@react-three/rapier/dist/*.d.ts)",
+      "Bash(curl -s \"http://localhost:5174/src/pages/CharacterPage.tsx\" -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s \"http://localhost:5174/src/lib/diceLog.ts\" -o /dev/null -w \" %{http_code}\")",
+      "Bash(curl -s \"http://localhost:5174/src/components/character/DiceLogSidebar.tsx\" -o /dev/null -w \" %{http_code}\")"
     ]
   }
 }

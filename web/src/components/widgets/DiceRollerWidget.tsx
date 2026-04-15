@@ -625,11 +625,12 @@ export function DiceScene({ dice, onAllSettled }: DiceSceneProps) {
 type DicePhase = 'rolling' | 'ready'
 
 export interface DiceOverlayProps {
-  dice:    DiceRollRequest[]
-  onClose: () => void
+  dice:     DiceRollRequest[]
+  onClose:  () => void
+  onResult?: (results: number[]) => void
 }
 
-export function DiceOverlay({ dice, onClose }: DiceOverlayProps) {
+export function DiceOverlay({ dice, onClose, onResult }: DiceOverlayProps) {
   const [phase,   setPhase]   = useState<DicePhase>('rolling')
   const [results, setResults] = useState<number[]>([])
 
@@ -651,7 +652,8 @@ export function DiceOverlay({ dice, onClose }: DiceOverlayProps) {
   const handleAllSettled = useCallback((vals: number[]) => {
     setResults(vals)
     setPhase('ready')
-  }, [])
+    onResult?.(vals)
+  }, [onResult])
 
   const handleClick = useCallback(() => {
     if (phase === 'ready') onClose()

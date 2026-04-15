@@ -9,7 +9,7 @@ function ItemDescriptionBlock({
   onRollDamage,
 }: {
   item: InventoryItem;
-  onRollDamage?: (s: string) => void;
+  onRollDamage?: (damageStr: string, name: string) => void;
 }) {
   if (
     !item.fromCatalog &&
@@ -65,7 +65,7 @@ function ItemDescriptionBlock({
             Damage:{" "}
           </span>
           <span
-            onClick={() => item.damage && onRollDamage?.(item.damage)}
+            onClick={() => item.damage && onRollDamage?.(item.damage, item.name)}
             style={{
               color: "#E8803A",
               fontFamily: "var(--font-display)",
@@ -106,7 +106,7 @@ export function ItemCard({
   onDelete: () => void;
   onDurabilityChange: (delta: number) => void;
   onZoom?: (src: string) => void;
-  onRollDamage?: (damageStr: string) => void;
+  onRollDamage?: (damageStr: string, name: string) => void;
   /** When true, renders as DragOverlay (no sortable hooks, full opacity) */
   overlay?: boolean;
 }) {

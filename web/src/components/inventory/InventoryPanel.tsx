@@ -41,7 +41,7 @@ export function InventoryPanel({
   accentColor: string;
   isOpen: boolean;
   onClose: () => void;
-  onRollDamage?: (damageStr: string) => void;
+  onRollDamage?: (damageStr: string, equipmentName: string) => void;
 }) {
   const totalSlots = 3 + fisico;
   const maxWeight = 15 + fisico * 5;
@@ -77,9 +77,9 @@ export function InventoryPanel({
 
   /* ── Damage roll ──────────────────────────────────────────────── */
 
-  function handleRollDamage(damageStr: string) {
+  function handleRollDamage(damageStr: string, equipmentName: string) {
     onClose();
-    onRollDamage?.(damageStr);
+    onRollDamage?.(damageStr, equipmentName);
   }
 
   /* ── Persistence helpers ──────────────────────────────────────── */

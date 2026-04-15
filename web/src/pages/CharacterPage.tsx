@@ -24,6 +24,8 @@ import { FloatingDiceButton } from "@/components/character/FloatingDiceButton"
 import { SkillTestOverlay } from "@/components/character/SkillTestOverlay"
 import type { SkillTestData } from "@/components/character/SkillTestOverlay"
 import { DamageRollOverlay } from "@/components/character/DamageRollOverlay"
+import { DiceLogProvider } from "@/lib/diceLog"
+import { DiceLogSidebar } from "@/components/character/DiceLogSidebar"
 
 const PRESET_CHARACTERS = charactersData as Character[]
 
@@ -62,7 +64,7 @@ export function CharacterPage() {
 
   const [inventoryOpen,     setInventoryOpen]     = useState(false)
   const [skillTest,         setSkillTest]         = useState<SkillTestData | null>(null)
-  const [pendingDamageRoll, setPendingDamageRoll] = useState<string | null>(null)
+  const [pendingDamageRoll, setPendingDamageRoll] = useState<{ damageStr: string; equipmentName: string } | null>(null)
 
   const { scrollY } = useScroll()
   const backOpacity = useTransform(scrollY, [0, 150], [1, 0.35])
@@ -189,6 +191,7 @@ export function CharacterPage() {
   const antAccent = getAccent(character.antitese)
 
   return (
+    <DiceLogProvider characterId={id}>
     <div style={{ background: "var(--color-abyss)", minHeight: "100vh" }}>
 
       {/* ── Fixed back button ─────────────────────────────── */}
@@ -365,7 +368,8 @@ export function CharacterPage() {
       {/* ── Damage roll overlay ───────────────────────────── */}
       {pendingDamageRoll && (
         <DamageRollOverlay
-          damageStr={pendingDamageRoll}
+          damageStr={pendingDamageRoll.damageStr}
+          equipmentName={pendingDamageRoll.equipmentName}
           onClose={() => setPendingDamageRoll(null)}
         />
       )}
@@ -378,9 +382,15 @@ export function CharacterPage() {
           accentColor={accent.text}
           isOpen={inventoryOpen}
           onClose={() => setInventoryOpen(false)}
-          onRollDamage={setPendingDamageRoll}
+          onRollDamage={(damageStr, equipmentName) =>
+            setPendingDamageRoll({ damageStr, equipmentName })
+          }
         />
       )}
+
+      {/* ── Dice log sidebar ─────────────────────────────── */}
+      <DiceLogSidebar />
     </div>
+    </DiceLogProvider>
   )
 }

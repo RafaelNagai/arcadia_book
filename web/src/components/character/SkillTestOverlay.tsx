@@ -17,6 +17,7 @@ import {
   STATE_META,
   SpecialBanner,
 } from './ArcaneStates'
+import { useDiceLog } from '@/lib/diceLog'
 
 /* ────────────────────────────────────────────────────────────────
    Types
@@ -51,6 +52,7 @@ export function SkillTestOverlay({
   skillLabel, skillValue, modifier, hasTalent,
   defaultAttr, attrColor, attributes, onClose,
 }: SkillTestOverlayProps) {
+  const { addEntry } = useDiceLog()
   const defaultDice = hasTalent ? 3 : 2
   const [phase,        setPhase]       = useState<'config' | 'rolling' | 'settled'>('config')
   const [diceCount,    setDiceCount]   = useState(defaultDice)
@@ -105,7 +107,27 @@ export function SkillTestOverlay({
   const handleAllSettled = useCallback((vals: number[]) => {
     setResults(vals)
     setPhase('settled')
-  }, [])
+    // Compute log data from vals directly (state hasn't propagated yet)
+    const usedN       = Math.min(2, vals.length)
+    const chosenIdx   = getChosenIndices(vals, usedN)
+    const chosenVals  = vals.filter((_, i) => chosenIdx.has(i))
+    const ss          = detectSpecialState(chosenVals)
+    const dSum        = chosenVals.reduce((a, b) => a + b, 0)
+    const finalRes    = dSum + attrValue + skillTotal
+    addEntry({
+      type: 'skill',
+      skillLabel,
+      skillValue,
+      modifier,
+      attrLabel: selectedAttr,
+      attrValue,
+      results: vals,
+      chosenIndices: [...chosenIdx],
+      diceSum: dSum,
+      finalResult: finalRes,
+      specialState: ss,
+    })
+  }, [addEntry, attrValue, skillTotal, skillLabel, skillValue, modifier, selectedAttr])
 
   const resultColor = useMemo(() => {
     if (!specialState) return 'var(--color-arcano-glow)'

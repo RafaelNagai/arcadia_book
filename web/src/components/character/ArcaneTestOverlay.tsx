@@ -6,6 +6,7 @@ import {
   useRef,
   Suspense,
 } from "react";
+import { useDiceLog } from "@/lib/diceLog";
 import { createPortal } from "react-dom";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
@@ -55,6 +56,7 @@ export function ArcaneTestOverlay({
   slottedRunas,
   onClose,
 }: ArcaneTestOverlayProps) {
+  const { addEntry } = useDiceLog();
   const [phase, setPhase] = useState<Phase>("config");
   const [selectedElement, setSelectedElement] = useState<string>(afinidade);
   const [diceCount, setDiceCount] = useState(2);
@@ -134,7 +136,28 @@ export function ArcaneTestOverlay({
   const handleAllSettled = useCallback((vals: number[]) => {
     setResults(vals);
     setPhase("settled");
-  }, []);
+    // Compute log data directly from vals (state hasn't propagated yet)
+    const usedN      = Math.min(2, vals.length);
+    const chosenIdx  = getChosenIndices(vals, usedN);
+    const chosenVals = vals.filter((_, i) => chosenIdx.has(i));
+    const ss         = detectSpecialState(chosenVals);
+    const dSum       = chosenVals.reduce((a, b) => a + b, 0);
+    addEntry({
+      type: "arcano",
+      selectedElement,
+      afinidade,
+      antitese,
+      elementBonus,
+      runaBonus,
+      totalBonus,
+      slottedRunasNames: slottedRunas.filter((r): r is string => r !== null),
+      results: vals,
+      chosenIndices: [...chosenIdx],
+      diceSum: dSum,
+      finalResult: dSum + totalBonus,
+      specialState: ss,
+    });
+  }, [addEntry, selectedElement, afinidade, antitese, elementBonus, runaBonus, totalBonus, slottedRunas]);
 
   return createPortal(
     <AnimatePresence>

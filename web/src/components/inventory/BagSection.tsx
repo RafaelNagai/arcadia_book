@@ -26,7 +26,7 @@ export function BagSection({
   onDelete: (slotIdx: number) => void;
   onDurabilityChange: (slotIdx: number, delta: number) => void;
   onZoom: (src: string) => void;
-  onRollDamage?: (damageStr: string) => void;
+  onRollDamage?: (damageStr: string, name: string) => void;
 }) {
   return (
     <div

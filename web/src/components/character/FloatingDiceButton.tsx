@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DiceOverlay, ALL_DIE_TYPES, DIE_SPEC } from '@/components/widgets/DiceRollerWidget'
 import type { DieType, DiceRollRequest } from '@/components/widgets/DiceRollerWidget'
+import { useDiceLog } from '@/lib/diceLog'
 
 interface FloatingDiceButtonProps {
   accentColor: string
@@ -10,12 +11,17 @@ interface FloatingDiceButtonProps {
 const MAX_TOTAL = 20
 
 export function FloatingDiceButton({ accentColor }: FloatingDiceButtonProps) {
+  const { addEntry, setLogOpen } = useDiceLog()
+
   const [expanded,    setExpanded]    = useState(false)
   const [selections,  setSelections]  = useState<Record<DieType, number>>(
     () => Object.fromEntries(ALL_DIE_TYPES.map(t => [t, 0])) as Record<DieType, number>
   )
   const [overlayOpen, setOverlayOpen] = useState(false)
   const [overlayKey,  setOverlayKey]  = useState(0)
+
+  // Snapshot of selections captured at roll time, so onResult closure sees correct values
+  const selectionsSnap = useRef<Record<DieType, number>>(selections)
 
   const totalSelected = ALL_DIE_TYPES.reduce((s, t) => s + selections[t], 0)
 
@@ -46,10 +52,20 @@ export function FloatingDiceButton({ accentColor }: FloatingDiceButtonProps) {
 
   const handleRoll = useCallback(() => {
     if (totalSelected === 0) return
+    selectionsSnap.current = { ...selections }
     setOverlayKey(k => k + 1)
     setOverlayOpen(true)
     setExpanded(false)
-  }, [totalSelected])
+  }, [totalSelected, selections])
+
+  const handleFreeResult = useCallback((results: number[]) => {
+    addEntry({
+      type: 'free',
+      selections: selectionsSnap.current,
+      results,
+      total: results.reduce((a, b) => a + b, 0),
+    })
+  }, [addEntry])
 
   return (
     <>
@@ -77,6 +93,34 @@ export function FloatingDiceButton({ accentColor }: FloatingDiceButtonProps) {
               boxShadow: '0 8px 40px rgba(0,0,0,0.65)',
             }}
           >
+            {/* History button */}
+            <button
+              onClick={() => { setLogOpen(true); setExpanded(false) }}
+              style={{
+                width: '100%',
+                padding: '6px 0',
+                borderRadius: 6,
+                border: '1px solid var(--color-border)',
+                background: 'transparent',
+                color: 'var(--color-text-secondary)',
+                fontFamily: 'var(--font-ui)',
+                fontWeight: 600,
+                fontSize: 11,
+                letterSpacing: '0.14em',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 5,
+                transition: 'all 0.12s',
+              }}
+            >
+              <span>📜</span> HISTÓRICO
+            </button>
+
+            {/* Divider */}
+            <div style={{ height: 1, background: 'var(--color-border)', margin: '0' }} />
+
             {/* Die selectors */}
             {ALL_DIE_TYPES.map(t => {
               const spec   = DIE_SPEC[t]
@@ -232,6 +276,7 @@ export function FloatingDiceButton({ accentColor }: FloatingDiceButtonProps) {
             key={overlayKey}
             dice={diceRequests}
             onClose={() => setOverlayOpen(false)}
+            onResult={handleFreeResult}
           />
         )}
       </AnimatePresence>

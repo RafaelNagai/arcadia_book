@@ -8,6 +8,7 @@ import {
 } from '@/components/widgets/DiceRollerWidget'
 import type { DiceRollRequest, DieType } from '@/components/widgets/DiceRollerWidget'
 import { parseDamage, computeModifiers } from '@/lib/parseDamage'
+import { useDiceLog } from '@/lib/diceLog'
 
 /* ────────────────────────────────────────────────────────────────
    Props
@@ -15,6 +16,7 @@ import { parseDamage, computeModifiers } from '@/lib/parseDamage'
 
 interface DamageRollOverlayProps {
   damageStr: string
+  equipmentName: string
   onClose: () => void
 }
 
@@ -154,7 +156,8 @@ function DieChip({
    Main overlay
    ──────────────────────────────────────────────────────────────── */
 
-export function DamageRollOverlay({ damageStr, onClose }: DamageRollOverlayProps) {
+export function DamageRollOverlay({ damageStr, equipmentName, onClose }: DamageRollOverlayProps) {
+  const { addEntry } = useDiceLog()
   const parsed = useMemo(() => parseDamage(damageStr), [damageStr])
   const [phase,     setPhase]     = useState<Phase>('rolling')
   const [results,   setResults]   = useState<number[]>([])
@@ -197,7 +200,21 @@ export function DamageRollOverlay({ damageStr, onClose }: DamageRollOverlayProps
     if (parsed && parsed.bonuses.length > 0) {
       setTimeout(() => setShowBonus(true), 600)
     }
-  }, [parsed])
+    // Log the damage roll
+    const flatTypes = parsed
+      ? parsed.dice.flatMap(d => Array<number>(d.dieCount).fill(d.dieType))
+      : []
+    const mods = parsed ? computeModifiers(vals, parsed.bonuses) : []
+    addEntry({
+      type: 'damage',
+      damageStr,
+      equipmentName,
+      results: vals,
+      flatDieTypes: flatTypes,
+      modifiers: mods,
+      total: vals.reduce((sum, v, i) => sum + v + (mods[i] ?? 0), 0),
+    })
+  }, [parsed, addEntry, damageStr, equipmentName])
 
   const formulaLabel = useMemo(() => {
     if (!parsed) return ''
