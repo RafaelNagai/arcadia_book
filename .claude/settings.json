@@ -11,7 +11,9 @@
       "Bash(curl -s \"http://localhost:5174/src/lib/diceLog.ts\" -o /dev/null -w \" %{http_code}\")",
       "Bash(curl -s \"http://localhost:5174/src/components/character/DiceLogSidebar.tsx\" -o /dev/null -w \" %{http_code}\")",
       "Bash(cat)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Read(//Users/naga/Documents/arcadia/**)",
+      "Bash(npx prisma *)"
     ]
   }
 }

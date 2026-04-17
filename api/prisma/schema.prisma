@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Character {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId          String   @map("user_id") @db.Uuid
+  name            String
+  race            String   @default("")
+  concept         String   @default("")
+  quote           String   @default("")
+  imageUrl        String?  @map("image_url")
+  level           Int      @default(0)
+  attributes      Json     @default("{\"fisico\":1,\"destreza\":1,\"intelecto\":1,\"influencia\":1}")
+  skills          Json     @default("{}")
+  talents         String[]
+  hp              Int      @default(15)
+  sanidade        Int      @default(15)
+  currentHp       Int?     @map("current_hp")
+  currentSanidade Int?     @map("current_sanidade")
+  afinidade       String   @default("")
+  antitese        String   @default("")
+  entropia        Int      @default(0)
+  runas           String[]
+  traumas         String[]
+  antecedentes    String[]
+  historia        String?
+  isPublic        Boolean  @default(false) @map("is_public")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  inventoryBags  InventoryBag[]
+  inventoryItems InventoryItem[]
+  states         CharacterState[]
+
+  @@map("characters")
+}
+
+model InventoryBag {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  characterId String   @map("character_id") @db.Uuid
+  name        String
+  slots       Int      @default(4)
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  character Character      @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  items     InventoryItem[]
+
+  @@map("inventory_bags")
+}
+
+model InventoryItem {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  characterId        String   @map("character_id") @db.Uuid
+  bagId              String?  @map("bag_id") @db.Uuid
+  name               String
+  description        String   @default("")
+  weight             String   @default("nulo")
+  isEquipment        Boolean  @default(false) @map("is_equipment")
+  maxDurability      Int?     @map("max_durability")
+  currentDurability  Int?     @map("current_durability")
+  imageUrl           String?  @map("image_url")
+  catalogImage       String?  @map("catalog_image")
+  fromCatalog        Boolean  @default(false) @map("from_catalog")
+  catalogSubcategory String?  @map("catalog_subcategory")
+  catalogTier        String?  @map("catalog_tier")
+  damage             String?
+  effects            String[]
+  sortOrder          Int      @default(0) @map("sort_order")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  character Character     @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  bag       InventoryBag? @relation(fields: [bagId], references: [id], onDelete: SetNull)
+
+  @@map("inventory_items")
+}
+
+model CharacterState {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  characterId      String   @map("character_id") @db.Uuid
+  userId           String   @map("user_id") @db.Uuid
+  peChecks         Json     @default("{}") @map("pe_checks")
+  skillModifiers   Json     @default("{}") @map("skill_modifiers")
+  defenseModifiers Json     @default("{\"daBase\":1,\"daBonus\":0,\"dpBonus\":0}") @map("defense_modifiers")
+  diceLog          Json     @default("[]") @map("dice_log")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  @@unique([characterId, userId])
+  @@map("character_state")
+}
