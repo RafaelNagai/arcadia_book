@@ -129,7 +129,7 @@ web/src/
 --color-arcano-glow:    #E8B84B
 --color-arcano-dim:     (variante mais escura do dourado)
 --color-text-primary:   #E8E0D0
---color-text-secondary: #A09880
+--color-text-secondary: #d9cfb2
 --color-text-muted:     (ainda mais escuro)
 --color-text-accent:    #C8922A
 ```

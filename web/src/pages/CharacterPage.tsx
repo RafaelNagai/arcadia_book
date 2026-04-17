@@ -1,10 +1,15 @@
-import { useParams, useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
-import type { DragStartEvent, DragEndEvent } from "@dnd-kit/core"
-import type { Character } from "@/data/characterTypes"
-import charactersData from "@characters"
-import { InventoryPanel } from "@/components/inventory/InventoryPanel"
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+} from "framer-motion";
+import type { DragStartEvent, DragEndEvent } from "@dnd-kit/core";
+import type { Character } from "@/data/characterTypes";
+import charactersData from "@characters";
+import { InventoryPanel } from "@/components/inventory/InventoryPanel";
 import {
   getCustomCharacter,
   isOwnedCharacter,
@@ -15,191 +20,195 @@ import {
   saveSkillModifiers,
   loadDefenseModifiers,
   saveDefenseModifiers,
-} from "@/lib/localCharacters"
-import { getAccent } from "@/components/character/types"
-import { CharacterHero } from "@/components/character/CharacterHero"
-import { StatsSection } from "@/components/character/StatsSection"
-import { SkillsSection } from "@/components/character/SkillsSection"
-import { ArcanoSection } from "@/components/character/ArcanoSection"
-import { Tag, SectionLabel } from "@/components/character/CharacterUI"
-import { FloatingDiceButton } from "@/components/character/FloatingDiceButton"
-import { SkillTestOverlay } from "@/components/character/SkillTestOverlay"
-import type { SkillTestData } from "@/components/character/SkillTestOverlay"
-import { DamageRollOverlay } from "@/components/character/DamageRollOverlay"
-import { DiceLogProvider } from "@/lib/diceLog"
-import { DiceLogSidebar } from "@/components/character/DiceLogSidebar"
+} from "@/lib/localCharacters";
+import { getAccent } from "@/components/character/types";
+import { CharacterHero } from "@/components/character/CharacterHero";
+import { StatsSection } from "@/components/character/StatsSection";
+import { SkillsSection } from "@/components/character/SkillsSection";
+import { ArcanoSection } from "@/components/character/ArcanoSection";
+import { Tag, SectionLabel } from "@/components/character/CharacterUI";
+import { FloatingDiceButton } from "@/components/character/FloatingDiceButton";
+import { SkillTestOverlay } from "@/components/character/SkillTestOverlay";
+import type { SkillTestData } from "@/components/character/SkillTestOverlay";
+import { DamageRollOverlay } from "@/components/character/DamageRollOverlay";
+import { DiceLogProvider } from "@/lib/diceLog";
+import { DiceLogSidebar } from "@/components/character/DiceLogSidebar";
 
-const PRESET_CHARACTERS = charactersData as Character[]
+const PRESET_CHARACTERS = charactersData as Character[];
 
 export function CharacterPage() {
-  const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const character = id
     ? (PRESET_CHARACTERS.find((c) => c.id === id) ?? getCustomCharacter(id))
-    : undefined
-  const owned = id ? isOwnedCharacter(id) : false
+    : undefined;
+  const owned = id ? isOwnedCharacter(id) : false;
 
   const [currentHp, setCurrentHp] = useState<number>(() =>
     character ? (character.currentHp ?? character.hp) : 0,
-  )
+  );
   const [currentSanidade, setCurrentSanidade] = useState<number>(() =>
     character ? (character.currentSanidade ?? character.sanidade) : 0,
-  )
+  );
   const [slottedRunas, setSlottedRunas] = useState<(string | null)[]>(
     Array(5).fill(null),
-  )
-  const [draggingRuna, setDraggingRuna] = useState<string | null>(null)
+  );
+  const [draggingRuna, setDraggingRuna] = useState<string | null>(null);
 
   const [peChecks, setPeChecks] = useState<Record<string, boolean[]>>(() => {
-    const saved = id ? loadPeChecks(id) : {}
+    const saved = id ? loadPeChecks(id) : {};
     return {
-      fisico:     saved.fisico     ?? Array(5).fill(false),
-      destreza:   saved.destreza   ?? Array(5).fill(false),
-      intelecto:  saved.intelecto  ?? Array(5).fill(false),
+      fisico: saved.fisico ?? Array(5).fill(false),
+      destreza: saved.destreza ?? Array(5).fill(false),
+      intelecto: saved.intelecto ?? Array(5).fill(false),
       influencia: saved.influencia ?? Array(5).fill(false),
-    }
-  })
+    };
+  });
 
   const [skillModifiers, setSkillModifiers] = useState<Record<string, number>>(
     () => (id ? loadSkillModifiers(id) : {}),
-  )
+  );
 
-  const [daBase, setDaBase] = useState<number>(
-    () => (id ? loadDefenseModifiers(id).daBase : 1),
-  )
-  const [daBonus, setDaBonus] = useState<number>(
-    () => (id ? loadDefenseModifiers(id).daBonus : 0),
-  )
-  const [dpBonus, setDpBonus] = useState<number>(
-    () => (id ? loadDefenseModifiers(id).dpBonus : 0),
-  )
+  const [daBase, setDaBase] = useState<number>(() =>
+    id ? loadDefenseModifiers(id).daBase : 1,
+  );
+  const [daBonus, setDaBonus] = useState<number>(() =>
+    id ? loadDefenseModifiers(id).daBonus : 0,
+  );
+  const [dpBonus, setDpBonus] = useState<number>(() =>
+    id ? loadDefenseModifiers(id).dpBonus : 0,
+  );
 
-  const [inventoryOpen,     setInventoryOpen]     = useState(false)
-  const [skillTest,         setSkillTest]         = useState<SkillTestData | null>(null)
-  const [pendingDamageRoll, setPendingDamageRoll] = useState<{ damageStr: string; equipmentName: string } | null>(null)
+  const [historiaExpanded, setHistoriaExpanded] = useState(false);
+  const [inventoryOpen, setInventoryOpen] = useState(false);
+  const [skillTest, setSkillTest] = useState<SkillTestData | null>(null);
+  const [pendingDamageRoll, setPendingDamageRoll] = useState<{
+    damageStr: string;
+    equipmentName: string;
+  } | null>(null);
 
-  const { scrollY } = useScroll()
-  const backOpacity = useTransform(scrollY, [0, 150], [1, 0.35])
+  const { scrollY } = useScroll();
+  const backOpacity = useTransform(scrollY, [0, 150], [1, 0.35]);
 
   useEffect(() => {
-    document.title = character ? `${character.name} — Arcádia` : "Arcádia"
-    window.scrollTo({ top: 0 })
-  }, [id])
+    document.title = character ? `${character.name} — Arcádia` : "Arcádia";
+    window.scrollTo({ top: 0 });
+  }, [id]);
 
   /* ── Runa DnD ─────────────────────────────────────────────────── */
 
   function handleDragStart(event: DragStartEvent) {
-    setDraggingRuna(String(event.active.id).replace("runa-", ""))
+    setDraggingRuna(String(event.active.id).replace("runa-", ""));
   }
 
   function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event
-    setDraggingRuna(null)
-    if (!over || !character) return
-    const runaName = String(active.id).replace("runa-", "")
-    const slotIdx  = parseInt(String(over.id).replace("slot-", ""), 10)
-    if (isNaN(slotIdx) || slotIdx >= character.entropia) return
+    const { active, over } = event;
+    setDraggingRuna(null);
+    if (!over || !character) return;
+    const runaName = String(active.id).replace("runa-", "");
+    const slotIdx = parseInt(String(over.id).replace("slot-", ""), 10);
+    if (isNaN(slotIdx) || slotIdx >= character.entropia) return;
     setSlottedRunas((prev) => {
-      const next = [...prev]
-      const prevSlot = next.indexOf(runaName)
-      if (prevSlot !== -1) next[prevSlot] = null
-      next[slotIdx] = runaName
-      return next
-    })
+      const next = [...prev];
+      const prevSlot = next.indexOf(runaName);
+      if (prevSlot !== -1) next[prevSlot] = null;
+      next[slotIdx] = runaName;
+      return next;
+    });
   }
 
   function handleRemoveRuna(slotIdx: number) {
     setSlottedRunas((prev) => {
-      const next = [...prev]
-      next[slotIdx] = null
-      return next
-    })
+      const next = [...prev];
+      next[slotIdx] = null;
+      return next;
+    });
   }
 
   /* ── Skill modifiers ──────────────────────────────────────────── */
 
   function handleModifierChange(skillKey: string, delta: number) {
     setSkillModifiers((prev) => {
-      const next = { ...prev, [skillKey]: (prev[skillKey] ?? 0) + delta }
-      if (id) saveSkillModifiers(id, next)
-      return next
-    })
+      const next = { ...prev, [skillKey]: (prev[skillKey] ?? 0) + delta };
+      if (id) saveSkillModifiers(id, next);
+      return next;
+    });
   }
 
   function handleModifierReset(skillKey: string) {
     setSkillModifiers((prev) => {
-      const next = { ...prev }
-      delete next[skillKey]
-      if (id) saveSkillModifiers(id, next)
-      return next
-    })
+      const next = { ...prev };
+      delete next[skillKey];
+      if (id) saveSkillModifiers(id, next);
+      return next;
+    });
   }
 
   /* ── Defense modifiers ───────────────────────────────────────── */
 
   function handleDaBaseChange(delta: number) {
     setDaBase((prev) => {
-      const next = Math.max(0, prev + delta)
-      if (id) saveDefenseModifiers(id, { daBase: next, daBonus, dpBonus })
-      return next
-    })
+      const next = Math.max(0, prev + delta);
+      if (id) saveDefenseModifiers(id, { daBase: next, daBonus, dpBonus });
+      return next;
+    });
   }
 
   function handleDaChange(delta: number) {
     setDaBonus((prev) => {
-      const next = prev + delta
-      if (id) saveDefenseModifiers(id, { daBase, daBonus: next, dpBonus })
-      return next
-    })
+      const next = prev + delta;
+      if (id) saveDefenseModifiers(id, { daBase, daBonus: next, dpBonus });
+      return next;
+    });
   }
 
   function handleDaReset() {
-    setDaBonus(0)
-    if (id) saveDefenseModifiers(id, { daBase, daBonus: 0, dpBonus })
+    setDaBonus(0);
+    if (id) saveDefenseModifiers(id, { daBase, daBonus: 0, dpBonus });
   }
 
   function handleDpChange(delta: number) {
     setDpBonus((prev) => {
-      const next = prev + delta
-      if (id) saveDefenseModifiers(id, { daBase, daBonus, dpBonus: next })
-      return next
-    })
+      const next = prev + delta;
+      if (id) saveDefenseModifiers(id, { daBase, daBonus, dpBonus: next });
+      return next;
+    });
   }
 
   function handleDpReset() {
-    setDpBonus(0)
-    if (id) saveDefenseModifiers(id, { daBase, daBonus, dpBonus: 0 })
+    setDpBonus(0);
+    if (id) saveDefenseModifiers(id, { daBase, daBonus, dpBonus: 0 });
   }
 
   /* ── PE checkboxes ────────────────────────────────────────────── */
 
   function handlePeToggle(attr: string, idx: number) {
     setPeChecks((prev) => {
-      const next = { ...prev, [attr]: [...prev[attr]] }
-      next[attr][idx] = !next[attr][idx]
-      if (id) savePeChecks(id, next)
-      return next
-    })
+      const next = { ...prev, [attr]: [...prev[attr]] };
+      next[attr][idx] = !next[attr][idx];
+      if (id) savePeChecks(id, next);
+      return next;
+    });
   }
 
   /* ── HP / Sanidade clicks ─────────────────────────────────────── */
 
   function handleHpClick(idx: number) {
-    if (!owned || !id) return
-    const next = idx < currentHp ? idx : idx + 1
-    setCurrentHp(next)
-    saveCurrentValues(id, next, currentSanidade)
+    if (!owned || !id) return;
+    const next = idx < currentHp ? idx : idx + 1;
+    setCurrentHp(next);
+    saveCurrentValues(id, next, currentSanidade);
   }
 
   function handleSanidadeClick(idx: number) {
-    if (!owned || !id) return
-    const next = idx < currentSanidade ? idx : idx + 1
-    setCurrentSanidade(next)
-    saveCurrentValues(id, currentHp, next)
+    if (!owned || !id) return;
+    const next = idx < currentSanidade ? idx : idx + 1;
+    setCurrentSanidade(next);
+    saveCurrentValues(id, currentHp, next);
   }
 
   function goEdit(step: number) {
-    navigate(`/editar-ficha/${id}?step=${step}`)
+    navigate(`/editar-ficha/${id}?step=${step}`);
   }
 
   /* ── Not found ────────────────────────────────────────────────── */
@@ -232,221 +241,321 @@ export function CharacterPage() {
           </button>
         </div>
       </div>
-    )
+    );
   }
 
-  const accent    = getAccent(character.afinidade)
-  const antAccent = getAccent(character.antitese)
+  const accent = getAccent(character.afinidade);
+  const antAccent = getAccent(character.antitese);
 
   return (
     <DiceLogProvider characterId={id}>
-    <div style={{ background: "var(--color-abyss)", minHeight: "100vh" }}>
-
-      {/* ── Fixed back button ─────────────────────────────── */}
-      <motion.div
-        style={{
-          opacity: backOpacity,
-          position: "fixed",
-          top: 16,
-          left: 16,
-          zIndex: 50,
-        }}
-      >
-        <button
-          onClick={() => navigate("/personagens")}
-          className="flex items-center gap-2 px-3 py-2 rounded-sm text-xs font-semibold uppercase tracking-wider"
+      <div style={{ background: "var(--color-abyss)", minHeight: "100vh" }}>
+        {/* ── Fixed back button ─────────────────────────────── */}
+        <motion.div
           style={{
-            background: "rgba(4,10,20,0.75)",
-            border: "1px solid rgba(255,255,255,0.13)",
-            backdropFilter: "blur(8px)",
-            WebkitBackdropFilter: "blur(8px)",
-            color: "rgba(255,255,255,0.65)",
-            fontFamily: "var(--font-ui)",
-            cursor: "pointer",
-            letterSpacing: "0.12em",
+            opacity: backOpacity,
+            position: "fixed",
+            top: 16,
+            left: 16,
+            zIndex: 50,
           }}
         >
-          ← Voltar
-        </button>
-      </motion.div>
+          <button
+            onClick={() => navigate("/personagens")}
+            className="flex items-center gap-2 px-3 py-2 rounded-sm text-xs font-semibold uppercase tracking-wider"
+            style={{
+              background: "rgba(4,10,20,0.75)",
+              border: "1px solid rgba(255,255,255,0.13)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              color: "rgba(255,255,255,0.65)",
+              fontFamily: "var(--font-ui)",
+              cursor: "pointer",
+              letterSpacing: "0.12em",
+            }}
+          >
+            ← Voltar
+          </button>
+        </motion.div>
 
-      <CharacterHero character={character} accent={accent} scrollY={scrollY} />
-
-      {/* ── SHEET ─────────────────────────────────────────── */}
-      <div className="max-w-4xl mx-auto px-6 py-16 space-y-12">
-
-        <StatsSection
-          character={character}
-          accentText={accent.text}
-          currentHp={currentHp}
-          currentSanidade={currentSanidade}
-          owned={owned}
-          onHpClick={handleHpClick}
-          onSanidadeClick={handleSanidadeClick}
-          daBase={daBase}
-          daBonus={daBonus}
-          dpBonus={dpBonus}
-          onDaBaseChange={handleDaBaseChange}
-          onDaChange={handleDaChange}
-          onDaReset={handleDaReset}
-          onDpChange={handleDpChange}
-          onDpReset={handleDpReset}
-          onEdit={owned ? () => goEdit(1) : undefined}
-        />
-
-        <SkillsSection
-          character={character}
-          accentText={accent.text}
-          peChecks={peChecks}
-          skillModifiers={skillModifiers}
-          onPeToggle={handlePeToggle}
-          onModifierChange={handleModifierChange}
-          onModifierReset={handleModifierReset}
-          onEditAttrs={owned ? () => goEdit(2) : undefined}
-          onEditSkills={owned ? () => goEdit(3) : undefined}
-          onSkillTest={setSkillTest}
-        />
-
-        <ArcanoSection
+        <CharacterHero
           character={character}
           accent={accent}
-          antAccent={antAccent}
-          slottedRunas={slottedRunas}
-          draggingRuna={draggingRuna}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onRemoveRuna={handleRemoveRuna}
-          onEdit={owned ? () => goEdit(4) : undefined}
+          scrollY={scrollY}
         />
 
-        {/* Antecedentes */}
-        <section>
-          <SectionLabel
-            accent={accent.text}
-            onEdit={owned ? () => goEdit(5) : undefined}
-          >
-            Antecedentes
-          </SectionLabel>
-          <div className="flex flex-wrap gap-2">
-            {character.antecedentes.map((ant) => (
-              <Tag key={ant} color="#80A8C8" bg="rgba(32,96,160,0.12)">
-                {ant}
-              </Tag>
-            ))}
-          </div>
-        </section>
+        {/* ── SHEET ─────────────────────────────────────────── */}
+        <div className="max-w-4xl mx-auto px-6 py-16 space-y-12">
+          <StatsSection
+            character={character}
+            accentText={accent.text}
+            currentHp={currentHp}
+            currentSanidade={currentSanidade}
+            owned={owned}
+            onHpClick={handleHpClick}
+            onSanidadeClick={handleSanidadeClick}
+            daBase={daBase}
+            daBonus={daBonus}
+            dpBonus={dpBonus}
+            onDaBaseChange={handleDaBaseChange}
+            onDaChange={handleDaChange}
+            onDaReset={handleDaReset}
+            onDpChange={handleDpChange}
+            onDpReset={handleDpReset}
+            onEdit={owned ? () => goEdit(1) : undefined}
+          />
 
-        {/* Traumas */}
-        {character.traumas.length > 0 && (
+          <SkillsSection
+            character={character}
+            accentText={accent.text}
+            peChecks={peChecks}
+            skillModifiers={skillModifiers}
+            onPeToggle={handlePeToggle}
+            onModifierChange={handleModifierChange}
+            onModifierReset={handleModifierReset}
+            onEditAttrs={owned ? () => goEdit(2) : undefined}
+            onEditSkills={owned ? () => goEdit(3) : undefined}
+            onSkillTest={setSkillTest}
+          />
+
+          <ArcanoSection
+            character={character}
+            accent={accent}
+            antAccent={antAccent}
+            slottedRunas={slottedRunas}
+            draggingRuna={draggingRuna}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            onRemoveRuna={handleRemoveRuna}
+            onEdit={owned ? () => goEdit(4) : undefined}
+          />
+
+          {/* Antecedentes */}
           <section>
             <SectionLabel
               accent={accent.text}
               onEdit={owned ? () => goEdit(5) : undefined}
             >
-              Traumas
+              Antecedentes
             </SectionLabel>
             <div className="flex flex-wrap gap-2">
-              {character.traumas.map((trauma) => (
-                <Tag key={trauma} color="#C05050" bg="rgba(160,32,32,0.15)">
-                  {trauma}
+              {character.antecedentes.map((ant) => (
+                <Tag key={ant} color="#80A8C8" bg="rgba(32,96,160,0.12)">
+                  {ant}
                 </Tag>
               ))}
             </div>
           </section>
+
+          {/* Traumas */}
+          {character.traumas.length > 0 && (
+            <section>
+              <SectionLabel
+                accent={accent.text}
+                onEdit={owned ? () => goEdit(5) : undefined}
+              >
+                Traumas
+              </SectionLabel>
+              <div className="flex flex-wrap gap-2">
+                {character.traumas.map((trauma) => (
+                  <Tag key={trauma} color="#C05050" bg="rgba(160,32,32,0.15)">
+                    {trauma}
+                  </Tag>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* História */}
+          {(character.historia || owned) && (
+            <section>
+              <div
+                className="flex items-center gap-3 mb-4 cursor-pointer select-none"
+                onClick={() => setHistoriaExpanded((v) => !v)}
+              >
+                <div
+                  style={{
+                    width: 3,
+                    height: 16,
+                    background: accent.text,
+                    borderRadius: 2,
+                    flexShrink: 0,
+                  }}
+                />
+                <motion.span
+                  animate={{ rotate: historiaExpanded ? 90 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    color: "rgba(255,255,255,0.3)",
+                    fontFamily: "var(--font-ui)",
+                    fontSize: "0.75rem",
+                    display: "inline-block",
+                    flexShrink: 0,
+                  }}
+                >
+                  ▶
+                </motion.span>
+                <p
+                  className="text-xs font-semibold uppercase tracking-[0.22em]"
+                  style={{ color: accent.text, fontFamily: "var(--font-ui)" }}
+                >
+                  História
+                </p>
+                {owned && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      goEdit(6);
+                    }}
+                    style={{
+                      background: "rgba(255,255,255,0.04)",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      borderRadius: 4,
+                      color: "rgba(255,255,255,0.4)",
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.6rem",
+                      letterSpacing: "0.14em",
+                      textTransform: "uppercase",
+                      cursor: "pointer",
+                      padding: "0.25rem 0.6rem",
+                    }}
+                  >
+                    ✎
+                  </button>
+                )}
+              </div>
+
+              <AnimatePresence initial={false}>
+                {historiaExpanded && (
+                  <motion.div
+                    key="historia-body"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    style={{ overflow: "hidden" }}
+                  >
+                    <div className="mb-4">
+                      {character.historia ? (
+                        <p
+                          style={{
+                            fontFamily: "var(--font-body)",
+                            fontSize: "0.95rem",
+                            lineHeight: 1.8,
+                            color: "var(--color-text-secondary)",
+                            whiteSpace: "pre-wrap",
+                          }}
+                        >
+                          {character.historia}
+                        </p>
+                      ) : (
+                        <p
+                          style={{
+                            fontFamily: "var(--font-body)",
+                            fontSize: "0.85rem",
+                            color: "var(--color-text-muted)",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          Nenhuma história escrita ainda.
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </section>
+          )}
+
+          <div
+            className="pt-6 border-t"
+            style={{ borderColor: "var(--color-border)" }}
+          >
+            <button
+              onClick={() => navigate("/personagens")}
+              style={{
+                color: "var(--color-text-muted)",
+                fontFamily: "var(--font-ui)",
+                fontSize: "0.75rem",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                letterSpacing: "0.05em",
+              }}
+            >
+              ← Voltar
+            </button>
+          </div>
+        </div>
+
+        {/* ── Floating backpack button ──────────────────────── */}
+        <button
+          onClick={() => setInventoryOpen(true)}
+          title="Abrir inventário"
+          style={{
+            position: "fixed",
+            bottom: 28,
+            right: 28,
+            zIndex: 80,
+            width: 52,
+            height: 52,
+            borderRadius: "50%",
+            background: `linear-gradient(135deg, ${accent.bg}, rgba(4,10,20,0.95))`,
+            border: `1px solid ${accent.text}55`,
+            boxShadow: `0 4px 24px rgba(0,0,0,0.5), 0 0 16px ${accent.glow}`,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "1.4rem",
+            transition: "transform 0.15s, box-shadow 0.15s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.1)";
+            e.currentTarget.style.boxShadow = `0 6px 32px rgba(0,0,0,0.6), 0 0 24px ${accent.glow}`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.boxShadow = `0 4px 24px rgba(0,0,0,0.5), 0 0 16px ${accent.glow}`;
+          }}
+        >
+          🎒
+        </button>
+
+        {/* ── Floating dice button ─────────────────────────── */}
+        <FloatingDiceButton accentColor={accent.text} />
+
+        {/* ── Skill test overlay ───────────────────────────── */}
+        {skillTest && (
+          <SkillTestOverlay {...skillTest} onClose={() => setSkillTest(null)} />
         )}
 
-        <div
-          className="pt-6 border-t"
-          style={{ borderColor: "var(--color-border)" }}
-        >
-          <button
-            onClick={() => navigate("/personagens")}
-            style={{
-              color: "var(--color-text-muted)",
-              fontFamily: "var(--font-ui)",
-              fontSize: "0.75rem",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              letterSpacing: "0.05em",
-            }}
-          >
-            ← Voltar
-          </button>
-        </div>
+        {/* ── Damage roll overlay ───────────────────────────── */}
+        {pendingDamageRoll && (
+          <DamageRollOverlay
+            damageStr={pendingDamageRoll.damageStr}
+            equipmentName={pendingDamageRoll.equipmentName}
+            onClose={() => setPendingDamageRoll(null)}
+          />
+        )}
+
+        {/* ── Inventory panel ───────────────────────────────── */}
+        {id && (
+          <InventoryPanel
+            characterId={id}
+            fisico={character.attributes.fisico}
+            accentColor={accent.text}
+            isOpen={inventoryOpen}
+            onClose={() => setInventoryOpen(false)}
+            onRollDamage={(damageStr, equipmentName) =>
+              setPendingDamageRoll({ damageStr, equipmentName })
+            }
+          />
+        )}
+
+        {/* ── Dice log sidebar ─────────────────────────────── */}
+        <DiceLogSidebar />
       </div>
-
-      {/* ── Floating backpack button ──────────────────────── */}
-      <button
-        onClick={() => setInventoryOpen(true)}
-        title="Abrir inventário"
-        style={{
-          position: "fixed",
-          bottom: 28,
-          right: 28,
-          zIndex: 80,
-          width: 52,
-          height: 52,
-          borderRadius: "50%",
-          background: `linear-gradient(135deg, ${accent.bg}, rgba(4,10,20,0.95))`,
-          border: `1px solid ${accent.text}55`,
-          boxShadow: `0 4px 24px rgba(0,0,0,0.5), 0 0 16px ${accent.glow}`,
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "1.4rem",
-          transition: "transform 0.15s, box-shadow 0.15s",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "scale(1.1)"
-          e.currentTarget.style.boxShadow = `0 6px 32px rgba(0,0,0,0.6), 0 0 24px ${accent.glow}`
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = "scale(1)"
-          e.currentTarget.style.boxShadow = `0 4px 24px rgba(0,0,0,0.5), 0 0 16px ${accent.glow}`
-        }}
-      >
-        🎒
-      </button>
-
-      {/* ── Floating dice button ─────────────────────────── */}
-      <FloatingDiceButton accentColor={accent.text} />
-
-      {/* ── Skill test overlay ───────────────────────────── */}
-      {skillTest && (
-        <SkillTestOverlay
-          {...skillTest}
-          onClose={() => setSkillTest(null)}
-        />
-      )}
-
-      {/* ── Damage roll overlay ───────────────────────────── */}
-      {pendingDamageRoll && (
-        <DamageRollOverlay
-          damageStr={pendingDamageRoll.damageStr}
-          equipmentName={pendingDamageRoll.equipmentName}
-          onClose={() => setPendingDamageRoll(null)}
-        />
-      )}
-
-      {/* ── Inventory panel ───────────────────────────────── */}
-      {id && (
-        <InventoryPanel
-          characterId={id}
-          fisico={character.attributes.fisico}
-          accentColor={accent.text}
-          isOpen={inventoryOpen}
-          onClose={() => setInventoryOpen(false)}
-          onRollDamage={(damageStr, equipmentName) =>
-            setPendingDamageRoll({ damageStr, equipmentName })
-          }
-        />
-      )}
-
-      {/* ── Dice log sidebar ─────────────────────────────── */}
-      <DiceLogSidebar />
-    </div>
     </DiceLogProvider>
-  )
+  );
 }

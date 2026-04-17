@@ -259,7 +259,7 @@ function HeroContent() {
           to="/capitulo/introducao"
           className="px-8 py-3 font-ui font-semibold text-sm uppercase tracking-widest transition-all duration-200 hover:brightness-110"
           style={{
-            background: "var(--color-arcano)",
+            background: "var(--color-arcano-glow)",
             color: "#04060C",
             borderRadius: 2,
             letterSpacing: "0.15em",
@@ -271,8 +271,8 @@ function HeroContent() {
           to="/personagens"
           className="px-8 py-3 font-ui font-semibold text-sm uppercase tracking-widest border transition-all duration-200 hover:bg-white hover:bg-opacity-5"
           style={{
-            borderColor: "var(--color-arcano-dim)",
-            color: "var(--color-text-secondary)",
+            borderColor: "var(--color-text-primary)",
+            color: "var(--color-text-primary)",
             borderRadius: 2,
             letterSpacing: "0.15em",
           }}
@@ -283,7 +283,7 @@ function HeroContent() {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-glow-pulse"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
@@ -291,7 +291,7 @@ function HeroContent() {
         <span
           className="text-xs uppercase tracking-widest"
           style={{
-            color: "var(--color-text-muted)",
+            color: "var(--color-text-primary)",
             fontFamily: "var(--font-ui)",
           }}
         >
@@ -302,7 +302,7 @@ function HeroContent() {
           height="20"
           viewBox="0 0 20 20"
           fill="none"
-          style={{ color: "var(--color-arcano-dim)" }}
+          style={{ color: "var(--color-text-primary)" }}
         >
           <path
             d="M10 4v12M4 10l6 6 6-6"

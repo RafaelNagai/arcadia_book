@@ -114,4 +114,5 @@ export interface Character {
   runas: string[]
   traumas: string[]
   antecedentes: string[]
+  historia?: string
 }

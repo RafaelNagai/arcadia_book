@@ -10,6 +10,7 @@ import { Step2Attrs }    from '@/components/creator/Step2Attrs'
 import { Step3Skills }   from '@/components/creator/Step3Skills'
 import { Step4Arcano }   from '@/components/creator/Step4Arcano'
 import { Step5History }  from '@/components/creator/Step5History'
+import { Step6Historia } from '@/components/creator/Step6Historia'
 
 export function CharacterCreatorPage() {
   const navigate = useNavigate()
@@ -18,7 +19,7 @@ export function CharacterCreatorPage() {
 
   const existing   = editId ? getCustomCharacter(editId) : undefined
   const isEditing  = !!existing
-  const initialStep   = Math.min(5, Math.max(1, Number(searchParams.get('step')) || 1))
+  const initialStep   = Math.min(6, Math.max(1, Number(searchParams.get('step')) || 1))
   const isSectionEdit = isEditing && searchParams.has('step')
 
   const [step,      setStep]      = useState(initialStep)
@@ -37,6 +38,7 @@ export function CharacterCreatorPage() {
   const [runas,      setRunas]      = useState<string[]>(existing?.runas      ?? [])
   const [antecedentes, setAntecedentes] = useState<string[]>(existing?.antecedentes ?? [])
   const [traumas,    setTraumas]    = useState<string[]>(existing?.traumas    ?? [])
+  const [historia,   setHistoria]   = useState(existing?.historia   ?? '')
   const [image,      setImage]      = useState<string | null>(existing?.image ?? null)
 
   const totalLevel = Object.values(skills).reduce((a, b) => a + b, 0)
@@ -97,6 +99,7 @@ export function CharacterCreatorPage() {
       runas,
       traumas,
       antecedentes,
+      historia: historia.trim() || undefined,
     }
     saveCustomCharacter(character)
     navigate(`/ficha/${character.id}`)
@@ -175,6 +178,9 @@ export function CharacterCreatorPage() {
                 }}
               />
             )}
+            {step === 6 && (
+              <Step6Historia historia={historia} onChange={setHistoria} />
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -213,7 +219,7 @@ export function CharacterCreatorPage() {
             </button>
           ) : (
             <div className="flex gap-3">
-              <button onClick={() => { setDirection(-1); setStep(4) }}
+              <button onClick={() => { setDirection(-1); setStep(5) }}
                 style={{ flex: '0 0 auto', padding: '0.75rem 1rem', borderRadius: 4, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.8rem' }}>
                 ← Revisar
               </button>

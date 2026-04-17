@@ -85,6 +85,7 @@ export const STEPS = [
   { id: 3, label: 'Perícias'   },
   { id: 4, label: 'Arcano'     },
   { id: 5, label: 'Histórico'  },
+  { id: 6, label: 'História'   },
 ]
 
 /* ─── Trauma data ───────────────────────────────────────────────── */
