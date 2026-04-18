@@ -39,4 +39,12 @@ export class UploadService {
     const { error } = await this.db.storage.from(env.SUPABASE_STORAGE_BUCKET).remove([path])
     if (error) throw new ValidationError(`Erro ao deletar imagem: ${error.message}`)
   }
+
+  async deleteCharacterFolder(userId: string, characterId: string): Promise<void> {
+    const folder = `${userId}/${characterId}`
+    const { data } = await this.db.storage.from(env.SUPABASE_STORAGE_BUCKET).list(folder)
+    if (!data || data.length === 0) return
+    const paths = data.map(f => `${folder}/${f.name}`)
+    await this.db.storage.from(env.SUPABASE_STORAGE_BUCKET).remove(paths)
+  }
 }

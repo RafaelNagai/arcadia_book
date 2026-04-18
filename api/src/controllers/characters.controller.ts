@@ -10,7 +10,7 @@ import {
 import { UUIDParamSchema } from '../schemas/shared.schema.js'
 
 export async function charactersController(fastify: FastifyInstance) {
-  const svc = new CharactersService(fastify.prisma)
+  const svc = new CharactersService(fastify.prisma, fastify.supabase)
 
   fastify.get('/', async (req, reply) => {
     await fastify.authenticate(req)

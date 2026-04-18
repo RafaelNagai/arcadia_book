@@ -1,7 +1,9 @@
 import type { PrismaClient, Character } from '../generated/prisma/client.js'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { ForbiddenError, NotFoundError } from '../middleware/error-handler.js'
 import { CharactersRepository } from '../repositories/characters.repository.js'
 import { CampaignsRepository } from '../repositories/campaigns.repository.js'
+import { UploadService } from './upload.service.js'
 import type { CreateCharacterInput } from '../schemas/character.schema.js'
 
 const SNAKE_TO_CAMEL: Record<string, string> = {
@@ -20,10 +22,12 @@ function snakeToCamelPatch(input: Record<string, unknown>): Record<string, unkno
 export class CharactersService {
   private readonly repo: CharactersRepository
   private readonly campaignRepo: CampaignsRepository
+  private readonly uploadSvc: UploadService
 
-  constructor(db: PrismaClient) {
+  constructor(db: PrismaClient, supabase: SupabaseClient) {
     this.repo = new CharactersRepository(db)
     this.campaignRepo = new CampaignsRepository(db)
+    this.uploadSvc = new UploadService(supabase)
   }
 
   async listPublic(requestingUserId?: string) {
@@ -92,8 +96,9 @@ export class CharactersService {
   }
 
   async delete(id: string, userId: string): Promise<void> {
-    await this.assertOwner(id, userId)
+    const char = await this.assertOwner(id, userId)
     await this.repo.delete(id)
+    await this.uploadSvc.deleteCharacterFolder(char.userId, id).catch(() => {})
   }
 
   private async assertOwner(id: string, userId: string): Promise<Character> {
