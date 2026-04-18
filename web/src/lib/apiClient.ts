@@ -16,7 +16,7 @@ async function getToken(): Promise<string | null> {
 async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const token = await getToken()
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
+    ...(init.body != null ? { 'Content-Type': 'application/json' } : {}),
     ...(init.headers as Record<string, string>),
   }
   if (token) headers['Authorization'] = `Bearer ${token}`

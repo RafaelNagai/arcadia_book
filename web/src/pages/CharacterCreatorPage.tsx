@@ -3,6 +3,9 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Character, CharacterSkills, CharacterAttributes } from '@/data/characterTypes'
 import { saveCustomCharacter, generateId, getCustomCharacter, calcHP, calcSanidade } from '@/lib/localCharacters'
+import { useAuth } from '@/lib/authContext'
+import { api } from '@/lib/apiClient'
+import { isApiCharacterId, mapApiToCharacter, mapCharacterToApi } from '@/lib/apiAdapter'
 import { STEPS, EMPTY_SKILLS, EMPTY_ATTRS } from '@/components/creator/types'
 import { StepHeader } from '@/components/creator/CreatorUI'
 import { Step1Identity } from '@/components/creator/Step1Identity'
@@ -12,18 +15,57 @@ import { Step4Arcano }   from '@/components/creator/Step4Arcano'
 import { Step5History }  from '@/components/creator/Step5History'
 import { Step6Historia } from '@/components/creator/Step6Historia'
 
+function dataUrlToFile(dataUrl: string, filename: string): File {
+  const [header, data] = dataUrl.split(',')
+  const mime = header.match(/:(.*?);/)?.[1] ?? 'image/png'
+  const ext = mime.split('/')[1] ?? 'png'
+  const binary = atob(data)
+  const arr = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i++) arr[i] = binary.charCodeAt(i)
+  return new File([arr], `${filename}.${ext}`, { type: mime })
+}
+
 export function CharacterCreatorPage() {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const { id: editId } = useParams<{ id?: string }>()
   const [searchParams] = useSearchParams()
 
-  const existing   = editId ? getCustomCharacter(editId) : undefined
+  const localExisting = editId && !isApiCharacterId(editId) ? getCustomCharacter(editId) : undefined
+  const [apiExisting, setApiExisting] = useState<Character | undefined>(undefined)
+  const [apiLoading, setApiLoading] = useState(editId ? isApiCharacterId(editId) : false)
+
+  useEffect(() => {
+    if (!editId || !isApiCharacterId(editId)) return
+    api.characters.get(editId).then(res => {
+      const char = mapApiToCharacter((res as { character: Record<string, unknown> }).character)
+      setApiExisting(char)
+      setName(char.name)
+      setRace(char.race)
+      setConcept(char.concept)
+      setQuote(char.quote)
+      setAttrs(char.attributes)
+      setSkills(char.skills)
+      setTalents(char.talents)
+      setAfinidade(char.afinidade)
+      setAntitese(char.antitese)
+      setEntropia(char.entropia)
+      setRunas(char.runas)
+      setAntecedentes(char.antecedentes)
+      setTraumas(char.traumas)
+      setHistoria(char.historia ?? '')
+      setImage(char.image)
+    }).finally(() => setApiLoading(false))
+  }, [editId])
+
+  const existing   = apiExisting ?? localExisting
   const isEditing  = !!existing
   const initialStep   = Math.min(6, Math.max(1, Number(searchParams.get('step')) || 1))
   const isSectionEdit = isEditing && searchParams.has('step')
 
   const [step,      setStep]      = useState(initialStep)
   const [direction, setDirection] = useState(1)
+  const [saving,    setSaving]    = useState(false)
 
   const [name,     setName]     = useState(existing?.name     ?? '')
   const [race,     setRace]     = useState(existing?.race     ?? '')
@@ -74,7 +116,9 @@ export function CharacterCreatorPage() {
 
   /* ── Save ─────────────────────────────────────────────────────── */
 
-  function handleSave() {
+  async function handleSave() {
+    if (saving) return
+    setSaving(true)
     const newHp  = calcHP(attrs.fisico)
     const newSan = calcSanidade(attrs.intelecto, attrs.influencia)
     const character: Character = {
@@ -101,8 +145,36 @@ export function CharacterCreatorPage() {
       antecedentes,
       historia: historia.trim() || undefined,
     }
-    saveCustomCharacter(character)
-    navigate(`/ficha/${character.id}`)
+
+    if (user) {
+      const isDataUrl = typeof image === 'string' && image.startsWith('data:')
+      // Send null for imageUrl if it's a data URL — we'll upload after getting the ID
+      const payload = mapCharacterToApi({ ...character, image: isDataUrl ? null : image })
+
+      let charId: string
+      if (isEditing && existing && isApiCharacterId(existing.id)) {
+        const res = await api.characters.update(existing.id, payload)
+        charId = ((res as { character: { id: string } }).character).id
+      } else {
+        const res = await api.characters.create(payload)
+        charId = ((res as { character: { id: string } }).character).id
+      }
+
+      if (isDataUrl && image) {
+        try {
+          const file = dataUrlToFile(image, 'portrait')
+          const { url } = await api.upload.characterImage(charId, file)
+          await api.characters.update(charId, { image_url: url })
+        } catch {
+          // Upload failed — character exists but without image, proceed anyway
+        }
+      }
+
+      navigate(`/ficha/${charId}`)
+    } else {
+      saveCustomCharacter(character)
+      navigate(`/ficha/${character.id}`)
+    }
   }
 
   function canProceed(): boolean {
@@ -112,6 +184,16 @@ export function CharacterCreatorPage() {
   }
 
   /* ── Render ───────────────────────────────────────────────────── */
+
+  if (apiLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--color-abyss)' }}>
+        <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.85rem' }}>
+          Carregando personagem…
+        </p>
+      </div>
+    )
+  }
 
   const slideVariants = {
     enter:  (d: number) => ({ x: d > 0 ?  48 : -48, opacity: 0 }),
@@ -200,9 +282,9 @@ export function CharacterCreatorPage() {
                 style={{ flex: '0 0 auto', padding: '0.75rem 1rem', borderRadius: 4, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.8rem' }}>
                 Cancelar
               </button>
-              <button onClick={handleSave} disabled={!canProceed()}
-                style={{ flex: 1, padding: '0.75rem', borderRadius: 4, border: 'none', background: canProceed() ? 'var(--color-arcano)' : 'rgba(255,255,255,0.05)', cursor: canProceed() ? 'pointer' : 'not-allowed', color: canProceed() ? '#0A0A0A' : 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-ui)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-                Salvar
+              <button onClick={handleSave} disabled={!canProceed() || saving}
+                style={{ flex: 1, padding: '0.75rem', borderRadius: 4, border: 'none', background: canProceed() && !saving ? 'var(--color-arcano)' : 'rgba(255,255,255,0.05)', cursor: canProceed() && !saving ? 'pointer' : 'not-allowed', color: canProceed() && !saving ? '#0A0A0A' : 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-ui)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                {saving ? 'Salvando…' : 'Salvar'}
               </button>
             </div>
           ) : step < STEPS.length ? (
@@ -223,9 +305,9 @@ export function CharacterCreatorPage() {
                 style={{ flex: '0 0 auto', padding: '0.75rem 1rem', borderRadius: 4, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.8rem' }}>
                 ← Revisar
               </button>
-              <button onClick={handleSave}
-                style={{ flex: 1, padding: '0.75rem', borderRadius: 4, border: 'none', background: 'var(--color-arcano)', cursor: 'pointer', color: '#0A0A0A', fontFamily: 'var(--font-ui)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-                Finalizar e ver ficha
+              <button onClick={handleSave} disabled={saving}
+                style={{ flex: 1, padding: '0.75rem', borderRadius: 4, border: 'none', background: saving ? 'rgba(255,255,255,0.05)' : 'var(--color-arcano)', cursor: saving ? 'not-allowed' : 'pointer', color: saving ? 'rgba(255,255,255,0.2)' : '#0A0A0A', fontFamily: 'var(--font-ui)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                {saving ? 'Salvando…' : 'Finalizar e ver ficha'}
               </button>
             </div>
           )}

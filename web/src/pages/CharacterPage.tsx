@@ -21,6 +21,9 @@ import {
   loadDefenseModifiers,
   saveDefenseModifiers,
 } from "@/lib/localCharacters";
+import { useAuth } from "@/lib/authContext";
+import { api } from "@/lib/apiClient";
+import { isApiCharacterId, mapApiToCharacter } from "@/lib/apiAdapter";
 import { getAccent } from "@/components/character/types";
 import { CharacterHero } from "@/components/character/CharacterHero";
 import { StatsSection } from "@/components/character/StatsSection";
@@ -35,49 +38,88 @@ import { DiceLogProvider } from "@/lib/diceLog";
 import { DiceLogSidebar } from "@/components/character/DiceLogSidebar";
 
 const PRESET_CHARACTERS = charactersData as Character[];
+const EMPTY_PE = {
+  fisico: Array(5).fill(false) as boolean[],
+  destreza: Array(5).fill(false) as boolean[],
+  intelecto: Array(5).fill(false) as boolean[],
+  influencia: Array(5).fill(false) as boolean[],
+};
 
 export function CharacterPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const character = id
-    ? (PRESET_CHARACTERS.find((c) => c.id === id) ?? getCustomCharacter(id))
-    : undefined;
-  const owned = id ? isOwnedCharacter(id) : false;
+  const { user } = useAuth();
 
-  const [currentHp, setCurrentHp] = useState<number>(() =>
-    character ? (character.currentHp ?? character.hp) : 0,
-  );
-  const [currentSanidade, setCurrentSanidade] = useState<number>(() =>
-    character ? (character.currentSanidade ?? character.sanidade) : 0,
-  );
-  const [slottedRunas, setSlottedRunas] = useState<(string | null)[]>(
-    Array(5).fill(null),
-  );
+  const [character, setCharacter] = useState<Character | undefined>(undefined);
+  const [owned, setOwned] = useState(false);
+  const [charLoaded, setCharLoaded] = useState(false);
+
+  const [currentHp, setCurrentHp] = useState(0);
+  const [currentSanidade, setCurrentSanidade] = useState(0);
+  const [slottedRunas, setSlottedRunas] = useState<(string | null)[]>(Array(5).fill(null));
   const [draggingRuna, setDraggingRuna] = useState<string | null>(null);
+  const [peChecks, setPeChecks] = useState<Record<string, boolean[]>>(EMPTY_PE);
+  const [skillModifiers, setSkillModifiers] = useState<Record<string, number>>({});
+  const [daBase, setDaBase] = useState(1);
+  const [daBonus, setDaBonus] = useState(0);
+  const [dpBonus, setDpBonus] = useState(0);
 
-  const [peChecks, setPeChecks] = useState<Record<string, boolean[]>>(() => {
-    const saved = id ? loadPeChecks(id) : {};
-    return {
-      fisico: saved.fisico ?? Array(5).fill(false),
-      destreza: saved.destreza ?? Array(5).fill(false),
-      intelecto: saved.intelecto ?? Array(5).fill(false),
-      influencia: saved.influencia ?? Array(5).fill(false),
-    };
-  });
+  const isApiChar = id ? isApiCharacterId(id) : false;
 
-  const [skillModifiers, setSkillModifiers] = useState<Record<string, number>>(
-    () => (id ? loadSkillModifiers(id) : {}),
-  );
+  useEffect(() => {
+    if (!id) { setCharLoaded(true); return; }
 
-  const [daBase, setDaBase] = useState<number>(() =>
-    id ? loadDefenseModifiers(id).daBase : 1,
-  );
-  const [daBonus, setDaBonus] = useState<number>(() =>
-    id ? loadDefenseModifiers(id).daBonus : 0,
-  );
-  const [dpBonus, setDpBonus] = useState<number>(() =>
-    id ? loadDefenseModifiers(id).dpBonus : 0,
-  );
+    if (isApiCharacterId(id)) {
+      Promise.all([
+        api.characters.get(id),
+        api.state.get(id).catch(() => ({ state: null })),
+      ]).then(([charRes, stateRes]) => {
+        const raw = (charRes as { character: Record<string, unknown> }).character;
+        const char = mapApiToCharacter(raw);
+        setCharacter(char);
+        setOwned(user?.id != null && raw.userId === user.id);
+        setCurrentHp(char.currentHp ?? char.hp);
+        setCurrentSanidade(char.currentSanidade ?? char.sanidade);
+        const s = ((stateRes as { state: Record<string, unknown> | null }).state) ?? {};
+        const pe = (s.peChecks as Record<string, boolean[]>) ?? {};
+        setPeChecks({
+          fisico:    pe.fisico    ?? Array(5).fill(false),
+          destreza:  pe.destreza  ?? Array(5).fill(false),
+          intelecto: pe.intelecto ?? Array(5).fill(false),
+          influencia: pe.influencia ?? Array(5).fill(false),
+        });
+        setSkillModifiers((s.skillModifiers as Record<string, number>) ?? {});
+        const dm = (s.defenseModifiers as { daBase?: number; daBonus?: number; dpBonus?: number }) ?? {};
+        setDaBase(dm.daBase ?? 1);
+        setDaBonus(dm.daBonus ?? 0);
+        setDpBonus(dm.dpBonus ?? 0);
+      }).catch(() => {
+        /* character not found or forbidden — leave undefined */
+      }).finally(() => setCharLoaded(true));
+    } else {
+      const char = PRESET_CHARACTERS.find((c) => c.id === id) ?? getCustomCharacter(id);
+      setCharacter(char);
+      setOwned(isOwnedCharacter(id));
+      if (char) {
+        setCurrentHp(char.currentHp ?? char.hp);
+        setCurrentSanidade(char.currentSanidade ?? char.sanidade);
+        const saved = loadPeChecks(id);
+        setPeChecks({
+          fisico:    saved.fisico    ?? Array(5).fill(false),
+          destreza:  saved.destreza  ?? Array(5).fill(false),
+          intelecto: saved.intelecto ?? Array(5).fill(false),
+          influencia: saved.influencia ?? Array(5).fill(false),
+        });
+        setSkillModifiers(loadSkillModifiers(id));
+        const dm = loadDefenseModifiers(id);
+        setDaBase(dm.daBase);
+        setDaBonus(dm.daBonus);
+        setDpBonus(dm.dpBonus);
+      }
+      setCharLoaded(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, user?.id]);
 
   const [historiaExpanded, setHistoriaExpanded] = useState(false);
   const [inventoryOpen, setInventoryOpen] = useState(false);
@@ -130,7 +172,10 @@ export function CharacterPage() {
   function handleModifierChange(skillKey: string, delta: number) {
     setSkillModifiers((prev) => {
       const next = { ...prev, [skillKey]: (prev[skillKey] ?? 0) + delta };
-      if (id) saveSkillModifiers(id, next);
+      if (id) {
+        if (isApiChar) void api.state.updateSkillModifiers(id, next);
+        else saveSkillModifiers(id, next);
+      }
       return next;
     });
   }
@@ -139,7 +184,10 @@ export function CharacterPage() {
     setSkillModifiers((prev) => {
       const next = { ...prev };
       delete next[skillKey];
-      if (id) saveSkillModifiers(id, next);
+      if (id) {
+        if (isApiChar) void api.state.updateSkillModifiers(id, next);
+        else saveSkillModifiers(id, next);
+      }
       return next;
     });
   }
@@ -149,7 +197,10 @@ export function CharacterPage() {
   function handleDaBaseChange(delta: number) {
     setDaBase((prev) => {
       const next = Math.max(0, prev + delta);
-      if (id) saveDefenseModifiers(id, { daBase: next, daBonus, dpBonus });
+      if (id) {
+        if (isApiChar) void api.state.updateDefenseModifiers(id, { daBase: next, daBonus, dpBonus });
+        else saveDefenseModifiers(id, { daBase: next, daBonus, dpBonus });
+      }
       return next;
     });
   }
@@ -157,27 +208,39 @@ export function CharacterPage() {
   function handleDaChange(delta: number) {
     setDaBonus((prev) => {
       const next = prev + delta;
-      if (id) saveDefenseModifiers(id, { daBase, daBonus: next, dpBonus });
+      if (id) {
+        if (isApiChar) void api.state.updateDefenseModifiers(id, { daBase, daBonus: next, dpBonus });
+        else saveDefenseModifiers(id, { daBase, daBonus: next, dpBonus });
+      }
       return next;
     });
   }
 
   function handleDaReset() {
     setDaBonus(0);
-    if (id) saveDefenseModifiers(id, { daBase, daBonus: 0, dpBonus });
+    if (id) {
+      if (isApiChar) void api.state.updateDefenseModifiers(id, { daBase, daBonus: 0, dpBonus });
+      else saveDefenseModifiers(id, { daBase, daBonus: 0, dpBonus });
+    }
   }
 
   function handleDpChange(delta: number) {
     setDpBonus((prev) => {
       const next = prev + delta;
-      if (id) saveDefenseModifiers(id, { daBase, daBonus, dpBonus: next });
+      if (id) {
+        if (isApiChar) void api.state.updateDefenseModifiers(id, { daBase, daBonus, dpBonus: next });
+        else saveDefenseModifiers(id, { daBase, daBonus, dpBonus: next });
+      }
       return next;
     });
   }
 
   function handleDpReset() {
     setDpBonus(0);
-    if (id) saveDefenseModifiers(id, { daBase, daBonus, dpBonus: 0 });
+    if (id) {
+      if (isApiChar) void api.state.updateDefenseModifiers(id, { daBase, daBonus, dpBonus: 0 });
+      else saveDefenseModifiers(id, { daBase, daBonus, dpBonus: 0 });
+    }
   }
 
   /* ── PE checkboxes ────────────────────────────────────────────── */
@@ -186,7 +249,10 @@ export function CharacterPage() {
     setPeChecks((prev) => {
       const next = { ...prev, [attr]: [...prev[attr]] };
       next[attr][idx] = !next[attr][idx];
-      if (id) savePeChecks(id, next);
+      if (id) {
+        if (isApiChar) void api.state.updatePeChecks(id, next);
+        else savePeChecks(id, next);
+      }
       return next;
     });
   }
@@ -197,21 +263,36 @@ export function CharacterPage() {
     if (!owned || !id) return;
     const next = idx < currentHp ? idx : idx + 1;
     setCurrentHp(next);
-    saveCurrentValues(id, next, currentSanidade);
+    if (isApiChar) void api.characters.updateCurrentValues(id, { current_hp: next, current_sanidade: currentSanidade });
+    else saveCurrentValues(id, next, currentSanidade);
   }
 
   function handleSanidadeClick(idx: number) {
     if (!owned || !id) return;
     const next = idx < currentSanidade ? idx : idx + 1;
     setCurrentSanidade(next);
-    saveCurrentValues(id, currentHp, next);
+    if (isApiChar) void api.characters.updateCurrentValues(id, { current_hp: currentHp, current_sanidade: next });
+    else saveCurrentValues(id, currentHp, next);
   }
 
   function goEdit(step: number) {
     navigate(`/editar-ficha/${id}?step=${step}`);
   }
 
-  /* ── Not found ────────────────────────────────────────────────── */
+  /* ── Loading / Not found ─────────────────────────────────────── */
+
+  if (!charLoaded) {
+    return (
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: "var(--color-abyss)" }}
+      >
+        <p style={{ color: "var(--color-text-muted)", fontFamily: "var(--font-ui)", fontSize: "0.85rem" }}>
+          Carregando…
+        </p>
+      </div>
+    );
+  }
 
   if (!character) {
     return (

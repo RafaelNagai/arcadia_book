@@ -3,6 +3,19 @@ import { ForbiddenError, NotFoundError } from '../middleware/error-handler.js'
 import { CharactersRepository } from '../repositories/characters.repository.js'
 import type { CreateCharacterInput } from '../schemas/character.schema.js'
 
+const SNAKE_TO_CAMEL: Record<string, string> = {
+  image_url: 'imageUrl',
+  is_public: 'isPublic',
+  current_hp: 'currentHp',
+  current_sanidade: 'currentSanidade',
+}
+
+function snakeToCamelPatch(input: Record<string, unknown>): Record<string, unknown> {
+  return Object.fromEntries(
+    Object.entries(input).map(([k, v]) => [SNAKE_TO_CAMEL[k] ?? k, v]),
+  )
+}
+
 export class CharactersService {
   private readonly repo: CharactersRepository
 
@@ -29,7 +42,7 @@ export class CharactersService {
 
   async update(id: string, userId: string, input: Record<string, unknown>): Promise<Character> {
     await this.assertOwner(id, userId)
-    return this.repo.update(id, input)
+    return this.repo.update(id, snakeToCamelPatch(input))
   }
 
   async updateCurrentValues(

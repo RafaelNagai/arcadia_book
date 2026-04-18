@@ -7,11 +7,21 @@ export class StateRepository {
   constructor(private readonly db: PrismaClient) {}
 
   async findOrCreate(characterId: string, userId: string): Promise<CharacterState> {
-    return this.db.characterState.upsert({
+    const existing = await this.db.characterState.findUnique({
       where: { characterId_userId: { characterId, userId } },
-      create: { characterId, userId },
-      update: {},
     })
+    if (existing) return existing
+    try {
+      return await this.db.characterState.create({ data: { characterId, userId } })
+    } catch (err: unknown) {
+      // P2002 = unique violation — race condition with pgBouncer, record was just created
+      if ((err as { code?: string }).code === 'P2002') {
+        return this.db.characterState.findUniqueOrThrow({
+          where: { characterId_userId: { characterId, userId } },
+        })
+      }
+      throw err
+    }
   }
 
   updatePeChecks(

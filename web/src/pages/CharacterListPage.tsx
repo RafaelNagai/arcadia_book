@@ -1,9 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Character } from '@/data/characterTypes'
 import charactersData from '@characters'
-import { loadCustomCharacters, deleteCustomCharacter } from '@/lib/localCharacters'
+import { deleteCustomCharacter } from '@/lib/localCharacters'
+import { useAuth } from '@/lib/authContext'
+import { api } from '@/lib/apiClient'
+import { mapApiToCharacter, isApiCharacterId } from '@/lib/apiAdapter'
 
 const PRESET_CHARACTERS = charactersData as Character[]
 
@@ -160,19 +163,40 @@ function CharacterCard({ character, index }: { character: Character; index: numb
 }
 
 export function CharacterListPage() {
+  const navigate = useNavigate()
+  const { user, signOut } = useAuth()
   const [customChars, setCustomChars] = useState<Character[]>([])
+  const [loadingChars, setLoadingChars] = useState(false)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
   useEffect(() => {
     document.title = 'Personagens — Arcádia'
     window.scrollTo({ top: 0 })
-    setCustomChars(loadCustomCharacters())
-  }, [])
+    if (!user) {
+      setCustomChars([])
+      return
+    }
+    setLoadingChars(true)
+    api.characters.list()
+      .then(res => {
+        const chars = (res as { characters: unknown[] }).characters.map(
+          c => mapApiToCharacter(c as Record<string, unknown>),
+        )
+        setCustomChars(chars)
+      })
+      .catch(() => setCustomChars([]))
+      .finally(() => setLoadingChars(false))
+  }, [user])
 
-  function confirmDelete() {
+  async function confirmDelete() {
     if (!pendingDeleteId) return
-    deleteCustomCharacter(pendingDeleteId)
-    setCustomChars(prev => prev.filter(c => c.id !== pendingDeleteId))
+    if (isApiCharacterId(pendingDeleteId)) {
+      await api.characters.delete(pendingDeleteId)
+      setCustomChars(prev => prev.filter(c => c.id !== pendingDeleteId))
+    } else {
+      deleteCustomCharacter(pendingDeleteId)
+      setCustomChars(prev => prev.filter(c => c.id !== pendingDeleteId))
+    }
     setPendingDeleteId(null)
   }
 
@@ -185,6 +209,7 @@ export function CharacterListPage() {
       transition={{ duration: 0.3 }}
       className="min-h-screen"
       style={{ background: 'var(--color-abyss)' }}>
+      <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}`}</style>
 
       {/* Header */}
       <div
@@ -220,32 +245,92 @@ export function CharacterListPage() {
               Aventureiros prontos para o Mar de Nuvens — ou crie o seu próprio.
             </p>
           </div>
-          <Link
-            to="/criar-ficha"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-              padding: '0.6rem 1.1rem', borderRadius: 4,
-              background: 'var(--color-arcano)', border: 'none',
-              color: '#0A0A0A', fontFamily: 'var(--font-ui)',
-              fontSize: '0.75rem', fontWeight: 700,
-              letterSpacing: '0.15em', textTransform: 'uppercase',
-              textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0,
-            }}
-          >
-            + Criar Personagem
-          </Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
+            {user ? (
+              <button
+                onClick={() => { void signOut().then(() => navigate('/personagens')) }}
+                style={{
+                  padding: '0.55rem 0.9rem', borderRadius: 4,
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)',
+                  fontSize: '0.72rem', letterSpacing: '0.1em',
+                  cursor: 'pointer', whiteSpace: 'nowrap',
+                }}
+              >
+                Sair
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                style={{
+                  padding: '0.55rem 0.9rem', borderRadius: 4,
+                  background: 'rgba(200,146,42,0.12)',
+                  border: '1px solid rgba(200,146,42,0.3)',
+                  color: 'var(--color-arcano)', fontFamily: 'var(--font-ui)',
+                  fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em',
+                  textTransform: 'uppercase', textDecoration: 'none',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Entrar
+              </Link>
+            )}
+            <button
+              onClick={() => navigate(user ? '/criar-ficha' : '/login')}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.6rem 1.1rem', borderRadius: 4,
+                background: 'var(--color-arcano)', border: 'none',
+                color: '#0A0A0A', fontFamily: 'var(--font-ui)',
+                fontSize: '0.75rem', fontWeight: 700,
+                letterSpacing: '0.15em', textTransform: 'uppercase',
+                cursor: 'pointer', whiteSpace: 'nowrap',
+              }}
+            >
+              + Criar Personagem
+            </button>
+          </div>
         </div>
       </div>
 
       <div className="max-w-4xl mx-auto px-6 py-12 space-y-12">
 
         {/* Custom characters */}
-        {customChars.length > 0 && (
+        {(user || loadingChars) && (
           <section>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-5"
               style={{ color: 'var(--color-arcano-dim)', fontFamily: 'var(--font-ui)' }}>
               Seus Personagens
             </p>
+            {loadingChars ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} style={{
+                    borderRadius: 2,
+                    background: 'rgba(10,15,30,0.8)',
+                    border: '1px solid rgba(255,255,255,0.05)',
+                    overflow: 'hidden',
+                  }}>
+                    <div style={{ height: 220, background: 'rgba(255,255,255,0.04)', animation: 'pulse 1.5s ease-in-out infinite' }} />
+                    <div style={{ padding: '1.25rem' }}>
+                      <div style={{ height: 10, width: '40%', borderRadius: 4, background: 'rgba(255,255,255,0.06)', marginBottom: '0.75rem', animation: 'pulse 1.5s ease-in-out infinite' }} />
+                      <div style={{ height: 18, width: '70%', borderRadius: 4, background: 'rgba(255,255,255,0.08)', marginBottom: '0.5rem', animation: 'pulse 1.5s ease-in-out infinite' }} />
+                      <div style={{ height: 12, width: '55%', borderRadius: 4, background: 'rgba(255,255,255,0.05)', animation: 'pulse 1.5s ease-in-out infinite' }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : customChars.length === 0 ? (
+              <div style={{
+                padding: '2.5rem', textAlign: 'center',
+                border: '1px dashed rgba(255,255,255,0.08)', borderRadius: 4,
+              }}>
+                <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.82rem' }}>
+                  Nenhum personagem criado ainda.
+                </p>
+              </div>
+            ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {customChars.map((character, i) => (
                 <div key={character.id} style={{ position: 'relative' }}>
@@ -268,6 +353,7 @@ export function CharacterListPage() {
                 </div>
               ))}
             </div>
+            )}
           </section>
         )}
 
