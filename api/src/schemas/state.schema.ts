@@ -16,14 +16,13 @@ export const DefenseModifiersSchema = z.object({
   }),
 })
 
-export const DiceLogEntrySchema = z.object({
-  id: z.string(),
-  skill: z.string(),
-  roll: z.array(z.number()),
-  total: z.number(),
-  result: z.enum(['critico', 'acerto', 'falha', 'falha_critica']),
-  timestamp: z.number(),
-})
+export const DiceLogEntrySchema = z
+  .object({
+    id: z.string(),
+    timestamp: z.number(),
+    type: z.enum(['skill', 'arcano', 'damage', 'free']),
+  })
+  .passthrough()
 
 export const AppendDiceLogSchema = z.object({
   entry: DiceLogEntrySchema,

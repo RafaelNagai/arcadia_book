@@ -149,6 +149,25 @@ function CharacterCard({ character, index }: { character: Character; index: numb
               </div>
             )}
 
+            {/* Campaign badge */}
+            {character.campaign && (
+              <div className="flex items-center gap-1.5 mt-2">
+                <span style={{
+                  display: 'inline-block', fontSize: '0.58rem', fontFamily: 'var(--font-ui)',
+                  fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
+                  color: character.campaign.role === 'npc' ? '#C090F0' : '#50C8E8',
+                  background: character.campaign.role === 'npc' ? 'rgba(192,144,240,0.12)' : 'rgba(80,200,232,0.12)',
+                  border: `1px solid ${character.campaign.role === 'npc' ? 'rgba(192,144,240,0.3)' : 'rgba(80,200,232,0.3)'}`,
+                  borderRadius: 3, padding: '0.1rem 0.4rem',
+                }}>
+                  {character.campaign.role === 'npc' ? 'NPC' : 'Jogador'}
+                </span>
+                <span className="text-xs" style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {character.campaign.title}
+                </span>
+              </div>
+            )}
+
             {/* CTA */}
             <div className="mt-4 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider transition-opacity group-hover:opacity-100 opacity-50"
               style={{ color: accent.text, fontFamily: 'var(--font-ui)' }}>
@@ -245,52 +264,20 @@ export function CharacterListPage() {
               Aventureiros prontos para o Mar de Nuvens — ou crie o seu próprio.
             </p>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
-            {user ? (
-              <button
-                onClick={() => { void signOut().then(() => navigate('/personagens')) }}
-                style={{
-                  padding: '0.55rem 0.9rem', borderRadius: 4,
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)',
-                  fontSize: '0.72rem', letterSpacing: '0.1em',
-                  cursor: 'pointer', whiteSpace: 'nowrap',
-                }}
-              >
-                Sair
-              </button>
-            ) : (
-              <Link
-                to="/login"
-                style={{
-                  padding: '0.55rem 0.9rem', borderRadius: 4,
-                  background: 'rgba(200,146,42,0.12)',
-                  border: '1px solid rgba(200,146,42,0.3)',
-                  color: 'var(--color-arcano)', fontFamily: 'var(--font-ui)',
-                  fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em',
-                  textTransform: 'uppercase', textDecoration: 'none',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                Entrar
-              </Link>
-            )}
-            <button
-              onClick={() => navigate(user ? '/criar-ficha' : '/login')}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                padding: '0.6rem 1.1rem', borderRadius: 4,
-                background: 'var(--color-arcano)', border: 'none',
-                color: '#0A0A0A', fontFamily: 'var(--font-ui)',
-                fontSize: '0.75rem', fontWeight: 700,
-                letterSpacing: '0.15em', textTransform: 'uppercase',
-                cursor: 'pointer', whiteSpace: 'nowrap',
-              }}
-            >
-              + Criar Personagem
-            </button>
-          </div>
+          <button
+            onClick={() => navigate(user ? '/criar-ficha' : '/login')}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+              padding: '0.6rem 1.1rem', borderRadius: 4,
+              background: 'var(--color-arcano)', border: 'none',
+              color: '#0A0A0A', fontFamily: 'var(--font-ui)',
+              fontSize: '0.75rem', fontWeight: 700,
+              letterSpacing: '0.15em', textTransform: 'uppercase',
+              cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
+            }}
+          >
+            + Criar Personagem
+          </button>
         </div>
       </div>
 

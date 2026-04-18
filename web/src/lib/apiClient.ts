@@ -171,6 +171,40 @@ export const api = {
       apiFetch(`/characters/${characterId}/state/dice-log`, { method: 'DELETE' }),
   },
 
+  // ── Campaigns ───────────────────────────────────────────────────────────────
+
+  campaigns: {
+    list: () => apiFetch<{ campaigns: unknown[] }>('/campaigns'),
+
+    get: (id: string) => apiFetch<{ campaign: unknown }>(`/campaigns/${id}`),
+
+    create: (data: { title: string; description?: string; image_url?: string | null }) =>
+      apiFetch<{ campaign: unknown }>('/campaigns', { method: 'POST', body: JSON.stringify(data) }),
+
+    update: (id: string, data: { title?: string; description?: string; image_url?: string | null }) =>
+      apiFetch<{ campaign: unknown }>(`/campaigns/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+
+    delete: (id: string) => apiFetch(`/campaigns/${id}`, { method: 'DELETE' }),
+
+    regenerateInviteCode: (id: string) =>
+      apiFetch<{ inviteCode: string }>(`/campaigns/${id}/invite-code`, { method: 'POST' }),
+
+    join: (code: string, characterId: string) =>
+      apiFetch('/campaigns/join', { method: 'POST', body: JSON.stringify({ code, character_id: characterId }) }),
+
+    leave: (campaignId: string, charId: string) =>
+      apiFetch(`/campaigns/${campaignId}/characters/${charId}`, { method: 'DELETE' }),
+
+    addNpc: (campaignId: string, characterId: string) =>
+      apiFetch(`/campaigns/${campaignId}/npcs`, { method: 'POST', body: JSON.stringify({ character_id: characterId }) }),
+
+    removeNpc: (campaignId: string, charId: string) =>
+      apiFetch(`/campaigns/${campaignId}/npcs/${charId}`, { method: 'DELETE' }),
+
+    getMembership: (characterId: string) =>
+      apiFetch<{ membership: unknown }>(`/campaigns/character/${characterId}/membership`),
+  },
+
   // ── Upload ──────────────────────────────────────────────────────────────────
 
   upload: {

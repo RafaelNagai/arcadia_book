@@ -1,6 +1,7 @@
 import type { PrismaClient, InventoryBag, InventoryItem } from '../generated/prisma/client.js'
 import { ForbiddenError, NotFoundError } from '../middleware/error-handler.js'
 import { CharactersRepository } from '../repositories/characters.repository.js'
+import { CampaignsRepository } from '../repositories/campaigns.repository.js'
 import { InventoryRepository } from '../repositories/inventory.repository.js'
 import type {
   CreateBagInput,
@@ -11,10 +12,12 @@ import type {
 
 export class InventoryService {
   private readonly charRepo: CharactersRepository
+  private readonly campaignRepo: CampaignsRepository
   private readonly repo: InventoryRepository
 
   constructor(db: PrismaClient) {
     this.charRepo = new CharactersRepository(db)
+    this.campaignRepo = new CampaignsRepository(db)
     this.repo = new InventoryRepository(db)
   }
 
@@ -94,12 +97,26 @@ export class InventoryService {
   private async assertAccess(characterId: string, userId?: string): Promise<void> {
     const char = await this.charRepo.findById(characterId)
     if (!char) throw new NotFoundError('Personagem não encontrado')
-    if (!char.isPublic && char.userId !== userId) throw new ForbiddenError()
+    if (char.isPublic || char.userId === userId) return
+    if (userId) {
+      const membership = await this.campaignRepo.findMembership(characterId)
+      if (membership) {
+        const campaign = await this.campaignRepo.findById(membership.campaignId)
+        if (campaign?.gmUserId === userId) return
+      }
+    }
+    throw new ForbiddenError()
   }
 
   private async assertOwner(characterId: string, userId: string): Promise<void> {
     const char = await this.charRepo.findById(characterId)
     if (!char) throw new NotFoundError('Personagem não encontrado')
-    if (char.userId !== userId) throw new ForbiddenError()
+    if (char.userId === userId) return
+    const membership = await this.campaignRepo.findMembership(characterId)
+    if (membership) {
+      const campaign = await this.campaignRepo.findById(membership.campaignId)
+      if (campaign?.gmUserId === userId) return
+    }
+    throw new ForbiddenError()
   }
 }

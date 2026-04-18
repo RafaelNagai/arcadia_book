@@ -4,6 +4,7 @@ import { charactersController } from '../controllers/characters.controller.js'
 import { inventoryController } from '../controllers/inventory.controller.js'
 import { stateController } from '../controllers/state.controller.js'
 import { uploadController } from '../controllers/upload.controller.js'
+import { campaignsController } from '../controllers/campaigns.controller.js'
 
 export async function registerRoutes(fastify: FastifyInstance) {
   fastify.register(authController, { prefix: '/api/v1/auth' })
@@ -16,4 +17,5 @@ export async function registerRoutes(fastify: FastifyInstance) {
     { prefix: '/api/v1/characters' },
   )
   fastify.register(uploadController, { prefix: '/api/v1/upload' })
+  fastify.register(campaignsController, { prefix: '/api/v1/campaigns' })
 }

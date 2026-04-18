@@ -19,6 +19,14 @@ import {
   loadBags,
   saveBags,
 } from "@/lib/localCharacters";
+import {
+  isApiCharacterId,
+  buildInventoryFromApi,
+  mapApiItemToInventoryItem,
+  type ApiRawItem,
+  type ApiRawBag,
+} from "@/lib/apiAdapter";
+import { api } from "@/lib/apiClient";
 import { generateItemId, resolveCatalogImage } from "./types";
 import type { CatalogEntry, ItemFormData } from "./types";
 import { ItemCard } from "./ItemCard";
@@ -35,6 +43,8 @@ export function InventoryPanel({
   isOpen,
   onClose,
   onRollDamage,
+  canEdit,
+  inventorySnapshot,
 }: {
   characterId: string;
   fisico: number;
@@ -42,22 +52,46 @@ export function InventoryPanel({
   isOpen: boolean;
   onClose: () => void;
   onRollDamage?: (damageStr: string, equipmentName: string) => void;
+  canEdit?: boolean;
+  inventorySnapshot?: { bags: InventoryBag[]; items: InventoryItem[] } | null;
 }) {
   const totalSlots = 3 + fisico;
   const maxWeight = 15 + fisico * 5;
+  const isApiChar = isApiCharacterId(characterId);
 
-  const [items, setItems] = useState<InventoryItem[]>(() =>
-    loadInventory(characterId),
-  );
-  const [bags, setBags] = useState<InventoryBag[]>(() =>
-    loadBags(characterId),
-  );
+  const [items, setItems] = useState<InventoryItem[]>([]);
+  const [bags, setBags] = useState<InventoryBag[]>([]);
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
   const [activeItemId, setActiveItemId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
   );
+
+  // Load initial inventory
+  useEffect(() => {
+    if (!characterId) return;
+    if (isApiChar) {
+      api.inventory.get(characterId)
+        .then(res => {
+          const { bags: rawBags, items: rawItems } = res as { bags: ApiRawBag[]; items: ApiRawItem[] };
+          const built = buildInventoryFromApi(rawBags, rawItems);
+          setItems(built.items);
+          setBags(built.bags);
+        })
+        .catch(() => {});
+    } else {
+      setItems(loadInventory(characterId));
+      setBags(loadBags(characterId));
+    }
+  }, [characterId]);
+
+  // Apply realtime snapshot from parent
+  useEffect(() => {
+    if (!inventorySnapshot) return;
+    setItems(inventorySnapshot.items);
+    setBags(inventorySnapshot.bags);
+  }, [inventorySnapshot]);
 
   const allItems = [...items, ...bags.flatMap((b) => b.items)];
   const currentWeight = allItems.reduce(
@@ -82,47 +116,74 @@ export function InventoryPanel({
     onRollDamage?.(damageStr, equipmentName);
   }
 
-  /* ── Persistence helpers ──────────────────────────────────────── */
+  /* ── Persistence helpers (localStorage chars only) ────────────── */
 
-  function persist(next: InventoryItem[]) {
-    setItems(next);
-    saveInventory(characterId, next);
-  }
-
-  function persistBags(next: InventoryBag[]) {
+  function persistBagsLocal(next: InventoryBag[]) {
     setBags(next);
-    saveBags(characterId, next);
+    if (!isApiChar) saveBags(characterId, next);
   }
 
-  function updateBag(bagId: string, fn: (bag: InventoryBag) => InventoryBag) {
-    persistBags(bags.map((b) => (b.id === bagId ? fn(b) : b)));
+  /* ── API reorder helper ────────────────────────────────────────── */
+
+  function buildReorderPayload(
+    baseItems: InventoryItem[],
+    updatedBags: InventoryBag[],
+  ): Array<{ id: string; sort_order: number; bag_id: string | null }> {
+    return [
+      ...baseItems.map((item, idx) => ({ id: item.id, sort_order: idx, bag_id: null })),
+      ...updatedBags.flatMap(bag =>
+        bag.items.map((item, idx) => ({ id: item.id, sort_order: idx, bag_id: bag.id })),
+      ),
+    ];
   }
 
   /* ── Bag management ───────────────────────────────────────────── */
 
-  function addBag() {
-    const newBag: InventoryBag = {
-      id: `bag_${Date.now()}`,
-      name: "Mochila",
-      slots: 4,
-      items: [],
-    };
-    persistBags([...bags, newBag]);
+  async function addBag() {
+    if (!canEdit) return;
+    if (isApiChar) {
+      try {
+        const res = await api.inventory.createBag(characterId, { name: "Mochila", slots: 4 }) as { bag: ApiRawBag };
+        const newBag: InventoryBag = { id: res.bag.id, name: res.bag.name, slots: res.bag.slots, items: [] };
+        setBags(prev => [...prev, newBag]);
+      } catch { /* ignore */ }
+    } else {
+      const newBag: InventoryBag = { id: `bag_${Date.now()}`, name: "Mochila", slots: 4, items: [] };
+      persistBagsLocal([...bags, newBag]);
+    }
   }
 
   function deleteBag(bagId: string) {
-    persistBags(bags.filter((b) => b.id !== bagId));
+    if (!canEdit) return;
+    setBags(prev => prev.filter((b) => b.id !== bagId));
+    if (isApiChar) {
+      void api.inventory.deleteBag(characterId, bagId);
+    } else {
+      saveBags(characterId, bags.filter(b => b.id !== bagId));
+    }
   }
 
   function renameBag(bagId: string, name: string) {
-    updateBag(bagId, (b) => ({ ...b, name }));
+    if (!canEdit) return;
+    const next = bags.map(b => b.id === bagId ? { ...b, name } : b);
+    setBags(next);
+    if (isApiChar) {
+      void api.inventory.updateBag(characterId, bagId, { name });
+    } else {
+      saveBags(characterId, next);
+    }
   }
 
   function changeBagSlots(bagId: string, delta: number) {
-    updateBag(bagId, (b) => ({
-      ...b,
-      slots: Math.max(1, b.slots + delta),
-    }));
+    if (!canEdit) return;
+    const next = bags.map(b => b.id === bagId ? { ...b, slots: Math.max(1, b.slots + delta) } : b);
+    setBags(next);
+    const bag = next.find(b => b.id === bagId);
+    if (isApiChar && bag) {
+      void api.inventory.updateBag(characterId, bagId, { slots: bag.slots });
+    } else if (!isApiChar) {
+      saveBags(characterId, next);
+    }
   }
 
   /* ── Drag and drop ────────────────────────────────────────────── */
@@ -141,7 +202,7 @@ export function InventoryPanel({
 
   function handleDragEnd({ active, over }: DragEndEvent) {
     setActiveItemId(null);
-    if (!over || active.id === over.id) return;
+    if (!over || active.id === over.id || !canEdit) return;
 
     const activeId = String(active.id);
     const overId = String(over.id);
@@ -153,26 +214,29 @@ export function InventoryPanel({
 
     if (!activeContainerId || !overContainerId) return;
 
+    let newItems = items;
+    let newBags = bags;
+
     if (activeContainerId === overContainerId) {
-      // Same container: reorder
       if (activeContainerId === "base") {
         const oldIdx = items.findIndex((i) => i.id === activeId);
         const newIdx = items.findIndex((i) => i.id === overId);
         if (oldIdx < 0 || newIdx < 0) return;
-        persist(arrayMove(items, oldIdx, newIdx));
+        newItems = arrayMove(items, oldIdx, newIdx);
+        setItems(newItems);
+        if (!isApiChar) saveInventory(characterId, newItems);
       } else {
-        persistBags(
-          bags.map((b) => {
-            if (b.id !== activeContainerId) return b;
-            const oldIdx = b.items.findIndex((i) => i.id === activeId);
-            const newIdx = b.items.findIndex((i) => i.id === overId);
-            if (oldIdx < 0 || newIdx < 0) return b;
-            return { ...b, items: arrayMove(b.items, oldIdx, newIdx) };
-          }),
-        );
+        newBags = bags.map((b) => {
+          if (b.id !== activeContainerId) return b;
+          const oldIdx = b.items.findIndex((i) => i.id === activeId);
+          const newIdx = b.items.findIndex((i) => i.id === overId);
+          if (oldIdx < 0 || newIdx < 0) return b;
+          return { ...b, items: arrayMove(b.items, oldIdx, newIdx) };
+        });
+        setBags(newBags);
+        if (!isApiChar) saveBags(characterId, newBags);
       }
     } else {
-      // Cross-container: move item
       const srcItems =
         activeContainerId === "base"
           ? items
@@ -197,29 +261,28 @@ export function InventoryPanel({
       if (newDst.length > dstLimit) return;
 
       if (activeContainerId === "base") {
-        setItems(newSrc);
-        saveInventory(characterId, newSrc);
-        persistBags(
-          bags.map((b) =>
-            b.id === overContainerId ? { ...b, items: newDst } : b,
-          ),
-        );
+        newItems = newSrc;
+        newBags = bags.map((b) => b.id === overContainerId ? { ...b, items: newDst } : b);
       } else if (overContainerId === "base") {
-        persist(newDst);
-        persistBags(
-          bags.map((b) =>
-            b.id === activeContainerId ? { ...b, items: newSrc } : b,
-          ),
-        );
+        newItems = newDst;
+        newBags = bags.map((b) => b.id === activeContainerId ? { ...b, items: newSrc } : b);
       } else {
-        persistBags(
-          bags.map((b) => {
-            if (b.id === activeContainerId) return { ...b, items: newSrc };
-            if (b.id === overContainerId) return { ...b, items: newDst };
-            return b;
-          }),
-        );
+        newBags = bags.map((b) => {
+          if (b.id === activeContainerId) return { ...b, items: newSrc };
+          if (b.id === overContainerId) return { ...b, items: newDst };
+          return b;
+        });
       }
+      setItems(newItems);
+      setBags(newBags);
+      if (!isApiChar) {
+        saveInventory(characterId, newItems);
+        saveBags(characterId, newBags);
+      }
+    }
+
+    if (isApiChar) {
+      void api.inventory.reorderItems(characterId, buildReorderPayload(newItems, newBags));
     }
   }
 
@@ -227,15 +290,14 @@ export function InventoryPanel({
 
   const [modal, setModal] = useState<
     | null
-    | { mode: "create"; slotIdx: number; bagId?: string }
-    | { mode: "edit"; slotIdx: number; bagId?: string }
+    | { mode: "create"; bagId?: string }
+    | { mode: "edit"; itemId: string; bagId?: string }
   >(null);
 
   /* ── Item CRUD ────────────────────────────────────────────────── */
 
-  function buildItem(data: ItemFormData): InventoryItem {
+  function buildItemFromForm(data: ItemFormData): Omit<InventoryItem, "id"> {
     return {
-      id: generateItemId(),
       name: data.name.trim(),
       description: data.description.trim(),
       weight: data.weight,
@@ -248,19 +310,19 @@ export function InventoryPanel({
     };
   }
 
-  function handleCatalogSelect(entry: CatalogEntry) {
-    if (modal?.mode !== "create") return;
-    const { slotIdx, bagId } = modal;
+  async function handleCatalogSelect(entry: CatalogEntry) {
+    if (modal?.mode !== "create" || !canEdit) return;
+    const { bagId } = modal;
+
+    const tempId = generateItemId();
     const newItem: InventoryItem = {
-      id: generateItemId(),
+      id: tempId,
       name: entry.name,
       description: entry.description,
       weight: entry.weight,
       isEquipment: entry.isEquipment,
       maxDurability: entry.isEquipment ? (entry.maxDurability ?? 5) : undefined,
-      currentDurability: entry.isEquipment
-        ? (entry.maxDurability ?? 5)
-        : undefined,
+      currentDurability: entry.isEquipment ? (entry.maxDurability ?? 5) : undefined,
       catalogImage: resolveCatalogImage(entry.image),
       fromCatalog: true,
       catalogSubcategory: entry.subcategory,
@@ -268,124 +330,211 @@ export function InventoryPanel({
       damage: entry.damage ?? null,
       effects: entry.effects,
     };
+
     if (bagId) {
-      updateBag(bagId, (b) => {
-        const next = [...b.items];
-        next.splice(slotIdx, 0, newItem);
-        return { ...b, items: next.slice(0, b.slots) };
-      });
+      setBags(prev => prev.map(b => b.id === bagId ? { ...b, items: [...b.items, newItem] } : b));
     } else {
-      const next = [...items];
-      next.splice(slotIdx, 0, newItem);
-      persist(next.slice(0, totalSlots));
+      setItems(prev => [...prev, newItem]);
     }
     setModal(null);
+
+    if (isApiChar) {
+      try {
+        const res = await api.inventory.createItem(characterId, {
+          bag_id: bagId ?? null,
+          name: entry.name,
+          description: entry.description,
+          weight: entry.weight,
+          is_equipment: entry.isEquipment,
+          max_durability: entry.isEquipment ? (entry.maxDurability ?? 5) : null,
+          current_durability: entry.isEquipment ? (entry.maxDurability ?? 5) : null,
+          catalog_image: resolveCatalogImage(entry.image) ?? null,
+          from_catalog: true,
+          catalog_subcategory: entry.subcategory ?? null,
+          catalog_tier: entry.tier ?? null,
+          damage: entry.damage ?? null,
+          effects: entry.effects,
+          sort_order: bagId
+            ? (bags.find(b => b.id === bagId)?.items.length ?? 0)
+            : items.length,
+        }) as { item: ApiRawItem };
+        const createdItem = mapApiItemToInventoryItem(res.item);
+        if (bagId) {
+          setBags(prev => prev.map(b => b.id === bagId
+            ? { ...b, items: b.items.map(i => i.id === tempId ? createdItem : i) }
+            : b,
+          ));
+        } else {
+          setItems(prev => prev.map(i => i.id === tempId ? createdItem : i));
+        }
+      } catch {
+        // Revert optimistic update
+        if (bagId) {
+          setBags(prev => prev.map(b => b.id === bagId ? { ...b, items: b.items.filter(i => i.id !== tempId) } : b));
+        } else {
+          setItems(prev => prev.filter(i => i.id !== tempId));
+        }
+      }
+    } else {
+      if (bagId) {
+        saveBags(characterId, bags.map(b => b.id === bagId ? { ...b, items: [...b.items, newItem] } : b));
+      } else {
+        saveInventory(characterId, [...items, newItem]);
+      }
+    }
   }
 
-  function handleCreateConfirm(data: ItemFormData) {
-    if (modal?.mode !== "create") return;
-    const { slotIdx, bagId } = modal;
-    const newItem = buildItem(data);
+  async function handleCreateConfirm(data: ItemFormData) {
+    if (modal?.mode !== "create" || !canEdit) return;
+    const { bagId } = modal;
+    const tempId = generateItemId();
+    const newItem: InventoryItem = { id: tempId, ...buildItemFromForm(data) };
+
     if (bagId) {
-      updateBag(bagId, (b) => {
-        const next = [...b.items];
-        next.splice(slotIdx, 0, newItem);
-        return { ...b, items: next.slice(0, b.slots) };
-      });
+      setBags(prev => prev.map(b => b.id === bagId ? { ...b, items: [...b.items, newItem] } : b));
     } else {
-      const next = [...items];
-      next.splice(slotIdx, 0, newItem);
-      persist(next.slice(0, totalSlots));
+      setItems(prev => [...prev, newItem]);
     }
     setModal(null);
-  }
 
-  function handleEditConfirm(data: ItemFormData) {
-    if (modal?.mode !== "edit") return;
-    const { slotIdx, bagId } = modal;
-    if (bagId) {
-      updateBag(bagId, (b) => {
-        const existing = b.items[slotIdx];
-        const customUrl = data.image.trim();
-        const updated: InventoryItem = {
-          ...existing,
+    if (isApiChar) {
+      try {
+        const res = await api.inventory.createItem(characterId, {
+          bag_id: bagId ?? null,
           name: data.name.trim(),
           description: data.description.trim(),
           weight: data.weight,
-          isEquipment: data.isEquipment,
-          maxDurability: data.isEquipment ? data.maxDurability : undefined,
-          currentDurability: data.isEquipment
-            ? Math.min(
-                existing.currentDurability ?? data.maxDurability,
-                data.maxDurability,
-              )
-            : undefined,
-          image: customUrl || undefined,
+          is_equipment: data.isEquipment,
+          max_durability: data.isEquipment ? data.maxDurability : null,
+          current_durability: data.isEquipment ? data.maxDurability : null,
+          image_url: data.image.trim() || null,
           damage: data.damage.trim() || null,
-          effects: data.effects.filter((e) => e.trim()),
-        };
-        const next = [...b.items];
-        next[slotIdx] = updated;
-        return { ...b, items: next };
-      });
+          effects: data.effects.filter(e => e.trim()),
+          sort_order: bagId
+            ? (bags.find(b => b.id === bagId)?.items.length ?? 0)
+            : items.length,
+        }) as { item: ApiRawItem };
+        const createdItem = mapApiItemToInventoryItem(res.item);
+        if (bagId) {
+          setBags(prev => prev.map(b => b.id === bagId
+            ? { ...b, items: b.items.map(i => i.id === tempId ? createdItem : i) }
+            : b,
+          ));
+        } else {
+          setItems(prev => prev.map(i => i.id === tempId ? createdItem : i));
+        }
+      } catch {
+        if (bagId) {
+          setBags(prev => prev.map(b => b.id === bagId ? { ...b, items: b.items.filter(i => i.id !== tempId) } : b));
+        } else {
+          setItems(prev => prev.filter(i => i.id !== tempId));
+        }
+      }
     } else {
-      const existing = items[slotIdx];
-      const customUrl = data.image.trim();
-      const updated: InventoryItem = {
-        ...existing,
+      if (bagId) {
+        saveBags(characterId, bags.map(b => b.id === bagId ? { ...b, items: [...b.items, newItem] } : b));
+      } else {
+        saveInventory(characterId, [...items, newItem]);
+      }
+    }
+  }
+
+  function handleEditConfirm(data: ItemFormData) {
+    if (modal?.mode !== "edit" || !canEdit) return;
+    const { itemId, bagId } = modal;
+
+    const existing = [...items, ...bags.flatMap(b => b.items)].find(i => i.id === itemId);
+    const newCurrentDurability = data.isEquipment
+      ? Math.min(existing?.currentDurability ?? data.maxDurability, data.maxDurability)
+      : undefined;
+
+    const updatedFields: Partial<InventoryItem> = {
+      name: data.name.trim(),
+      description: data.description.trim(),
+      weight: data.weight,
+      isEquipment: data.isEquipment,
+      maxDurability: data.isEquipment ? data.maxDurability : undefined,
+      currentDurability: newCurrentDurability,
+      image: data.image.trim() || undefined,
+      damage: data.damage.trim() || null,
+      effects: data.effects.filter(e => e.trim()),
+    };
+
+    function applyUpdate(list: InventoryItem[]) {
+      return list.map(i => i.id === itemId ? { ...i, ...updatedFields } : i);
+    }
+
+    if (bagId) {
+      setBags(prev => prev.map(b => b.id === bagId ? { ...b, items: applyUpdate(b.items) } : b));
+    } else {
+      setItems(applyUpdate);
+    }
+    setModal(null);
+
+    if (isApiChar) {
+      void api.inventory.updateItem(characterId, itemId, {
         name: data.name.trim(),
         description: data.description.trim(),
         weight: data.weight,
-        isEquipment: data.isEquipment,
-        maxDurability: data.isEquipment ? data.maxDurability : undefined,
-        currentDurability: data.isEquipment
-          ? Math.min(
-              existing.currentDurability ?? data.maxDurability,
-              data.maxDurability,
-            )
-          : undefined,
-        image: customUrl || undefined,
+        is_equipment: data.isEquipment,
+        max_durability: data.isEquipment ? data.maxDurability : null,
+        current_durability: newCurrentDurability ?? null,
+        image_url: data.image.trim() || null,
         damage: data.damage.trim() || null,
-        effects: data.effects.filter((e) => e.trim()),
-      };
-      const next = [...items];
-      next[slotIdx] = updated;
-      persist(next);
-    }
-    setModal(null);
-  }
-
-  function handleDelete(slotIdx: number, bagId?: string) {
-    if (bagId) {
-      updateBag(bagId, (b) => ({
-        ...b,
-        items: b.items.filter((_, i) => i !== slotIdx),
-      }));
+        effects: data.effects.filter(e => e.trim()),
+      });
     } else {
-      persist(items.filter((_, i) => i !== slotIdx));
+      if (bagId) {
+        saveBags(characterId, bags.map(b => b.id === bagId ? { ...b, items: applyUpdate(b.items) } : b));
+      } else {
+        saveInventory(characterId, applyUpdate(items));
+      }
     }
   }
 
-  function handleDurabilityChange(
-    slotIdx: number,
-    delta: number,
-    bagId?: string,
-  ) {
+  function handleDelete(itemId: string, bagId?: string) {
+    if (!canEdit) return;
+    if (bagId) {
+      const next = bags.map(b => b.id === bagId ? { ...b, items: b.items.filter(i => i.id !== itemId) } : b);
+      setBags(next);
+      if (!isApiChar) saveBags(characterId, next);
+    } else {
+      const next = items.filter(i => i.id !== itemId);
+      setItems(next);
+      if (!isApiChar) saveInventory(characterId, next);
+    }
+    if (isApiChar) {
+      void api.inventory.deleteItem(characterId, itemId);
+    }
+  }
+
+  function handleDurabilityChange(itemId: string, delta: number, bagId?: string) {
     function applyDelta(list: InventoryItem[]) {
-      return list.map((item, i) => {
-        if (i !== slotIdx || !item.isEquipment) return item;
+      return list.map(item => {
+        if (item.id !== itemId || !item.isEquipment) return item;
         const maxDur = item.maxDurability ?? 0;
         const cur = item.currentDurability ?? maxDur;
-        return {
-          ...item,
-          currentDurability: Math.max(0, Math.min(maxDur, cur + delta)),
-        };
+        return { ...item, currentDurability: Math.max(0, Math.min(maxDur, cur + delta)) };
       });
     }
+
+    let updatedItem: InventoryItem | undefined;
     if (bagId) {
-      updateBag(bagId, (b) => ({ ...b, items: applyDelta(b.items) }));
+      const next = bags.map(b => b.id === bagId ? { ...b, items: applyDelta(b.items) } : b);
+      setBags(next);
+      updatedItem = next.find(b => b.id === bagId)?.items.find(i => i.id === itemId);
+      if (!isApiChar) saveBags(characterId, next);
     } else {
-      persist(applyDelta(items));
+      const next = applyDelta(items);
+      setItems(next);
+      updatedItem = next.find(i => i.id === itemId);
+      if (!isApiChar) saveInventory(characterId, next);
+    }
+
+    if (isApiChar && updatedItem?.currentDurability !== undefined) {
+      void api.inventory.updateItem(characterId, itemId, {
+        current_durability: updatedItem.currentDurability,
+      });
     }
   }
 
@@ -404,9 +553,7 @@ export function InventoryPanel({
 
   const editItem =
     modal?.mode === "edit"
-      ? modal.bagId
-        ? bags.find((b) => b.id === modal.bagId)?.items[modal.slotIdx]
-        : items[modal.slotIdx]
+      ? [...items, ...bags.flatMap(b => b.items)].find(i => i.id === modal.itemId)
       : undefined;
 
   const editInitial = editItem
@@ -661,10 +808,10 @@ export function InventoryPanel({
                             key={item.id}
                             item={item}
                             accentColor={accentColor}
-                            onEdit={() => setModal({ mode: "edit", slotIdx: i })}
-                            onDelete={() => handleDelete(i)}
+                            onEdit={canEdit ? () => setModal({ mode: "edit", itemId: item.id }) : undefined}
+                            onDelete={canEdit ? () => handleDelete(item.id) : undefined}
                             onDurabilityChange={(delta) =>
-                              handleDurabilityChange(i, delta)
+                              handleDurabilityChange(item.id, delta)
                             }
                             onZoom={setZoomedImage}
                             onRollDamage={handleRollDamage}
@@ -675,9 +822,7 @@ export function InventoryPanel({
                         <EmptySlot
                           key={`empty-${i}`}
                           accentColor={accentColor}
-                          onClick={() =>
-                            setModal({ mode: "create", slotIdx: i })
-                          }
+                          onClick={canEdit ? () => setModal({ mode: "create" }) : undefined}
                         />
                       );
                     })}
@@ -688,18 +833,14 @@ export function InventoryPanel({
                     <BagSection
                       key={bag.id}
                       bag={bag}
-                      onRename={(name) => renameBag(bag.id, name)}
-                      onChangeSlots={(delta) => changeBagSlots(bag.id, delta)}
-                      onDeleteBag={() => deleteBag(bag.id)}
-                      onOpenModal={(slotIdx) =>
-                        setModal({ mode: "create", slotIdx, bagId: bag.id })
-                      }
-                      onEdit={(slotIdx) =>
-                        setModal({ mode: "edit", slotIdx, bagId: bag.id })
-                      }
-                      onDelete={(slotIdx) => handleDelete(slotIdx, bag.id)}
-                      onDurabilityChange={(slotIdx, delta) =>
-                        handleDurabilityChange(slotIdx, delta, bag.id)
+                      onRename={canEdit ? (name) => renameBag(bag.id, name) : undefined}
+                      onChangeSlots={canEdit ? (delta) => changeBagSlots(bag.id, delta) : undefined}
+                      onDeleteBag={canEdit ? () => deleteBag(bag.id) : undefined}
+                      onOpenModal={canEdit ? () => setModal({ mode: "create", bagId: bag.id }) : undefined}
+                      onEdit={canEdit ? (itemId) => setModal({ mode: "edit", itemId, bagId: bag.id }) : undefined}
+                      onDelete={canEdit ? (itemId) => handleDelete(itemId, bag.id) : undefined}
+                      onDurabilityChange={(itemId, delta) =>
+                        handleDurabilityChange(itemId, delta, bag.id)
                       }
                       onZoom={setZoomedImage}
                       onRollDamage={handleRollDamage}
@@ -707,51 +848,53 @@ export function InventoryPanel({
                   ))}
 
                   {/* Add bag button */}
-                  <div style={{ padding: "0 0.75rem 1rem" }}>
-                    <button
-                      onClick={addBag}
-                      style={{
-                        width: "100%",
-                        background: "rgba(200,146,42,0.06)",
-                        border: "1px dashed rgba(200,146,42,0.3)",
-                        borderRadius: 8,
-                        padding: "0.7rem",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "0.5rem",
-                        cursor: "pointer",
-                        transition: "background 0.15s, border-color 0.15s",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background =
-                          "rgba(200,146,42,0.12)";
-                        e.currentTarget.style.borderColor =
-                          "rgba(200,146,42,0.55)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background =
-                          "rgba(200,146,42,0.06)";
-                        e.currentTarget.style.borderColor =
-                          "rgba(200,146,42,0.3)";
-                      }}
-                    >
-                      <span style={{ fontSize: "0.9rem", lineHeight: 1 }}>
-                        🎒
-                      </span>
-                      <span
+                  {canEdit && (
+                    <div style={{ padding: "0 0.75rem 1rem" }}>
+                      <button
+                        onClick={addBag}
                         style={{
-                          fontFamily: "var(--font-ui)",
-                          fontSize: "0.65rem",
-                          letterSpacing: "0.14em",
-                          textTransform: "uppercase",
-                          color: "rgba(200,146,42,0.7)",
+                          width: "100%",
+                          background: "rgba(200,146,42,0.06)",
+                          border: "1px dashed rgba(200,146,42,0.3)",
+                          borderRadius: 8,
+                          padding: "0.7rem",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "0.5rem",
+                          cursor: "pointer",
+                          transition: "background 0.15s, border-color 0.15s",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background =
+                            "rgba(200,146,42,0.12)";
+                          e.currentTarget.style.borderColor =
+                            "rgba(200,146,42,0.55)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background =
+                            "rgba(200,146,42,0.06)";
+                          e.currentTarget.style.borderColor =
+                            "rgba(200,146,42,0.3)";
                         }}
                       >
-                        Adicionar Mochila
-                      </span>
-                    </button>
-                  </div>
+                        <span style={{ fontSize: "0.9rem", lineHeight: 1 }}>
+                          🎒
+                        </span>
+                        <span
+                          style={{
+                            fontFamily: "var(--font-ui)",
+                            fontSize: "0.65rem",
+                            letterSpacing: "0.14em",
+                            textTransform: "uppercase",
+                            color: "rgba(200,146,42,0.7)",
+                          }}
+                        >
+                          Adicionar Mochila
+                        </span>
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {/* DragOverlay — ghost card while dragging */}

@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useCallback } from 'react'
-import type { ReactNode } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect } from 'react'
+import type { MutableRefObject, ReactNode } from 'react'
 import { createElement } from 'react'
 
 /* ────────────────────────────────────────────────────────────────
@@ -106,14 +106,29 @@ function saveLog(characterId: string, entries: DiceLogEntry[]) {
 export function DiceLogProvider({
   children,
   characterId,
+  initialEntries,
+  persistEntry,
+  persistClear,
+  setterRef,
 }: {
   children: ReactNode
   characterId?: string
+  initialEntries?: DiceLogEntry[]
+  persistEntry?: (entry: DiceLogEntry) => void
+  persistClear?: () => void
+  setterRef?: MutableRefObject<((entries: DiceLogEntry[]) => void) | null>
 }) {
   const [entries, setEntries] = useState<DiceLogEntry[]>(() =>
-    characterId ? loadLog(characterId) : [],
+    initialEntries !== undefined ? initialEntries : (characterId ? loadLog(characterId) : []),
   )
   const [isLogOpen, setLogOpen] = useState(false)
+
+  // Expose setter so CharacterPage can inject realtime updates
+  useEffect(() => {
+    if (!setterRef) return
+    setterRef.current = setEntries
+    return () => { setterRef.current = null }
+  }, [setterRef])
 
   const addEntry = useCallback((entry: NewDiceLogEntry) => {
     const full = {
@@ -123,15 +138,20 @@ export function DiceLogProvider({
     } as DiceLogEntry
     setEntries(prev => {
       const next = [full, ...prev]
-      if (characterId) saveLog(characterId, next)
+      if (!persistEntry && characterId) saveLog(characterId, next)
       return next
     })
-  }, [characterId])
+    if (persistEntry) persistEntry(full)
+  }, [characterId, persistEntry])
 
   const clearLog = useCallback(() => {
     setEntries([])
-    if (characterId) saveLog(characterId, [])
-  }, [characterId])
+    if (persistClear) {
+      persistClear()
+    } else if (characterId) {
+      saveLog(characterId, [])
+    }
+  }, [characterId, persistClear])
 
   return createElement(
     DiceLogContext.Provider,

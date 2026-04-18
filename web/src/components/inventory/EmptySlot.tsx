@@ -2,12 +2,13 @@ export function EmptySlot({
   onClick,
   accentColor,
 }: {
-  onClick: () => void;
+  onClick?: () => void;
   accentColor: string;
 }) {
   return (
     <button
       onClick={onClick}
+      disabled={!onClick}
       style={{
         background: "rgba(255,255,255,0.015)",
         border: "1px dashed rgba(255,255,255,0.1)",

@@ -115,4 +115,5 @@ export interface Character {
   traumas: string[]
   antecedentes: string[]
   historia?: string
+  campaign?: { id: string; title: string; role: 'player' | 'npc' } | null
 }

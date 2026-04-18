@@ -1,6 +1,7 @@
 import type { PrismaClient, Character } from '../generated/prisma/client.js'
 import { ForbiddenError, NotFoundError } from '../middleware/error-handler.js'
 import { CharactersRepository } from '../repositories/characters.repository.js'
+import { CampaignsRepository } from '../repositories/campaigns.repository.js'
 import type { CreateCharacterInput } from '../schemas/character.schema.js'
 
 const SNAKE_TO_CAMEL: Record<string, string> = {
@@ -18,19 +19,34 @@ function snakeToCamelPatch(input: Record<string, unknown>): Record<string, unkno
 
 export class CharactersService {
   private readonly repo: CharactersRepository
+  private readonly campaignRepo: CampaignsRepository
 
   constructor(db: PrismaClient) {
     this.repo = new CharactersRepository(db)
+    this.campaignRepo = new CampaignsRepository(db)
   }
 
-  async list(userId: string): Promise<Character[]> {
-    return this.repo.findByUserId(userId)
+  async list(userId: string) {
+    const chars = await this.repo.findByUserId(userId)
+    return chars.map(c => ({
+      ...c,
+      campaign: c.campaignCharacter
+        ? { id: c.campaignCharacter.campaign.id, title: c.campaignCharacter.campaign.title, role: c.campaignCharacter.role }
+        : null,
+    }))
   }
 
   async get(id: string, requestingUserId?: string): Promise<Character> {
     const char = await this.repo.findById(id)
     if (!char) throw new NotFoundError('Personagem não encontrado')
     if (!char.isPublic && char.userId !== requestingUserId) {
+      if (requestingUserId) {
+        const membership = await this.campaignRepo.findMembership(id)
+        if (membership) {
+          const campaign = await this.campaignRepo.findById(membership.campaignId)
+          if (campaign?.gmUserId === requestingUserId) return char
+        }
+      }
       throw new ForbiddenError('Este personagem é privado')
     }
     return char
@@ -71,7 +87,15 @@ export class CharactersService {
   private async assertOwner(id: string, userId: string): Promise<Character> {
     const char = await this.repo.findById(id)
     if (!char) throw new NotFoundError('Personagem não encontrado')
-    if (char.userId !== userId) throw new ForbiddenError()
+    if (char.userId !== userId) {
+      // Allow campaign GM to edit characters in their campaign
+      const membership = await this.campaignRepo.findMembership(id)
+      if (membership) {
+        const campaign = await this.campaignRepo.findById(membership.campaignId)
+        if (campaign?.gmUserId === userId) return char
+      }
+      throw new ForbiddenError()
+    }
     return char
   }
 }

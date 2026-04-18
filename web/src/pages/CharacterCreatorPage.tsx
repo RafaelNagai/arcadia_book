@@ -63,9 +63,12 @@ export function CharacterCreatorPage() {
   const initialStep   = Math.min(6, Math.max(1, Number(searchParams.get('step')) || 1))
   const isSectionEdit = isEditing && searchParams.has('step')
 
+  const campaignId = searchParams.get('campaignId') ?? null
+
   const [step,      setStep]      = useState(initialStep)
   const [direction, setDirection] = useState(1)
   const [saving,    setSaving]    = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
 
   const [name,     setName]     = useState(existing?.name     ?? '')
   const [race,     setRace]     = useState(existing?.race     ?? '')
@@ -119,61 +122,71 @@ export function CharacterCreatorPage() {
   async function handleSave() {
     if (saving) return
     setSaving(true)
-    const newHp  = calcHP(attrs.fisico)
-    const newSan = calcSanidade(attrs.intelecto, attrs.influencia)
-    const character: Character = {
-      id:      isEditing ? existing!.id : generateId(),
-      name:    name.trim()    || 'Sem Nome',
-      race:    race.trim()    || 'Desconhecida',
-      concept: concept.trim(),
-      quote:   quote.trim(),
-      image,
-      level:   totalLevel,
-      attributes: attrs,
-      skills,
-      talents,
-      hp:       newHp,
-      sanidade: newSan,
-      currentHp:       existing ? Math.min(existing.currentHp ?? existing.hp, newHp) : undefined,
-      currentSanidade: existing ? Math.min(existing.currentSanidade ?? existing.sanidade, newSan) : undefined,
-      owned:      true,
-      afinidade:  afinidade  || 'Energia',
-      antitese:   antitese   || 'Anomalia',
-      entropia,
-      runas,
-      traumas,
-      antecedentes,
-      historia: historia.trim() || undefined,
-    }
-
-    if (user) {
-      const isDataUrl = typeof image === 'string' && image.startsWith('data:')
-      // Send null for imageUrl if it's a data URL — we'll upload after getting the ID
-      const payload = mapCharacterToApi({ ...character, image: isDataUrl ? null : image })
-
-      let charId: string
-      if (isEditing && existing && isApiCharacterId(existing.id)) {
-        const res = await api.characters.update(existing.id, payload)
-        charId = ((res as { character: { id: string } }).character).id
-      } else {
-        const res = await api.characters.create(payload)
-        charId = ((res as { character: { id: string } }).character).id
+    setSaveError(null)
+    try {
+      const newHp  = calcHP(attrs.fisico)
+      const newSan = calcSanidade(attrs.intelecto, attrs.influencia)
+      const character: Character = {
+        id:      isEditing ? existing!.id : generateId(),
+        name:    name.trim()    || 'Sem Nome',
+        race:    race.trim()    || 'Desconhecida',
+        concept: concept.trim(),
+        quote:   quote.trim(),
+        image,
+        level:   totalLevel,
+        attributes: attrs,
+        skills,
+        talents,
+        hp:       newHp,
+        sanidade: newSan,
+        currentHp:       existing ? Math.min(existing.currentHp ?? existing.hp, newHp) : undefined,
+        currentSanidade: existing ? Math.min(existing.currentSanidade ?? existing.sanidade, newSan) : undefined,
+        owned:      true,
+        afinidade:  afinidade  || 'Energia',
+        antitese:   antitese   || 'Anomalia',
+        entropia,
+        runas,
+        traumas,
+        antecedentes,
+        historia: historia.trim() || undefined,
       }
 
-      if (isDataUrl && image) {
-        try {
-          const file = dataUrlToFile(image, 'portrait')
-          const { url } = await api.upload.characterImage(charId, file)
-          await api.characters.update(charId, { image_url: url })
-        } catch {
-          // Upload failed — character exists but without image, proceed anyway
+      if (user) {
+        const isDataUrl = typeof image === 'string' && image.startsWith('data:')
+        const payload = mapCharacterToApi({ ...character, image: isDataUrl ? null : image })
+
+        let charId: string
+        if (isEditing && existing && isApiCharacterId(existing.id)) {
+          const res = await api.characters.update(existing.id, payload)
+          charId = ((res as { character: { id: string } }).character).id
+        } else {
+          const res = await api.characters.create(payload)
+          charId = ((res as { character: { id: string } }).character).id
         }
-      }
 
-      navigate(`/ficha/${charId}`)
-    } else {
-      saveCustomCharacter(character)
-      navigate(`/ficha/${character.id}`)
+        if (isDataUrl && image) {
+          try {
+            const file = dataUrlToFile(image, 'portrait')
+            const { url } = await api.upload.characterImage(charId, file)
+            await api.characters.update(charId, { image_url: url })
+          } catch {
+            // Upload failed — character exists but without image, proceed anyway
+          }
+        }
+
+        if (campaignId && !isEditing) {
+          try { await api.campaigns.addNpc(campaignId, charId) } catch { /* ignore */ }
+          navigate(`/campanha/${campaignId}`)
+        } else {
+          navigate(`/ficha/${charId}`)
+        }
+      } else {
+        saveCustomCharacter(character)
+        navigate(`/ficha/${character.id}`)
+      }
+    } catch (err) {
+      setSaveError((err as Error).message)
+      setSaving(false)
     }
   }
 
@@ -276,6 +289,15 @@ export function CharacterCreatorPage() {
         padding: '0.875rem 1.5rem',
       }}>
         <div style={{ maxWidth: 680, margin: '0 auto' }}>
+          {saveError && (
+            <p style={{
+              fontFamily: 'var(--font-ui)', fontSize: '0.75rem', color: '#E07070',
+              background: 'rgba(200,60,60,0.1)', border: '1px solid rgba(200,60,60,0.25)',
+              borderRadius: 4, padding: '0.5rem 0.75rem', marginBottom: '0.75rem',
+            }}>
+              {saveError}
+            </p>
+          )}
           {isSectionEdit ? (
             <div className="flex gap-3">
               <button onClick={goBack}

@@ -18,13 +18,13 @@ export function BagSection({
   onRollDamage,
 }: {
   bag: InventoryBag;
-  onRename: (name: string) => void;
-  onChangeSlots: (delta: number) => void;
-  onDeleteBag: () => void;
-  onOpenModal: (slotIdx: number) => void;
-  onEdit: (slotIdx: number) => void;
-  onDelete: (slotIdx: number) => void;
-  onDurabilityChange: (slotIdx: number, delta: number) => void;
+  onRename?: (name: string) => void;
+  onChangeSlots?: (delta: number) => void;
+  onDeleteBag?: () => void;
+  onOpenModal?: () => void;
+  onEdit?: (itemId: string) => void;
+  onDelete?: (itemId: string) => void;
+  onDurabilityChange: (itemId: string, delta: number) => void;
   onZoom: (src: string) => void;
   onRollDamage?: (damageStr: string, name: string) => void;
 }) {
@@ -53,7 +53,8 @@ export function BagSection({
         <span style={{ fontSize: "0.9rem", lineHeight: 1, flexShrink: 0 }}>🎒</span>
         <input
           value={bag.name}
-          onChange={(e) => onRename(e.target.value)}
+          onChange={(e) => onRename?.(e.target.value)}
+          readOnly={!onRename}
           style={{
             flex: 1,
             background: "none",
@@ -68,77 +69,95 @@ export function BagSection({
         />
 
         {/* Slot counter */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", flexShrink: 0 }}>
-          <button
-            disabled={bag.slots <= 1}
-            onClick={() => onChangeSlots(-1)}
-            style={{
-              width: 20,
-              height: 20,
-              borderRadius: 3,
-              background: bag.slots > 1 ? "rgba(200,146,42,0.2)" : "rgba(255,255,255,0.03)",
-              border: `1px solid ${bag.slots > 1 ? "rgba(200,146,42,0.5)" : "rgba(255,255,255,0.07)"}`,
-              color: bag.slots > 1 ? BAG_ACCENT : "rgba(255,255,255,0.15)",
-              fontSize: "0.85rem",
-              lineHeight: 1,
-              cursor: bag.slots > 1 ? "pointer" : "not-allowed",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            −
-          </button>
+        {onChangeSlots && (
+          <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", flexShrink: 0 }}>
+            <button
+              disabled={bag.slots <= 1}
+              onClick={() => onChangeSlots(-1)}
+              style={{
+                width: 20,
+                height: 20,
+                borderRadius: 3,
+                background: bag.slots > 1 ? "rgba(200,146,42,0.2)" : "rgba(255,255,255,0.03)",
+                border: `1px solid ${bag.slots > 1 ? "rgba(200,146,42,0.5)" : "rgba(255,255,255,0.07)"}`,
+                color: bag.slots > 1 ? BAG_ACCENT : "rgba(255,255,255,0.15)",
+                fontSize: "0.85rem",
+                lineHeight: 1,
+                cursor: bag.slots > 1 ? "pointer" : "not-allowed",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              −
+            </button>
+            <span
+              style={{
+                fontFamily: "var(--font-ui)",
+                fontSize: "0.6rem",
+                color: "rgba(255,255,255,0.4)",
+                letterSpacing: "0.1em",
+                minWidth: 40,
+                textAlign: "center",
+              }}
+            >
+              {bag.items.length}/{bag.slots} slots
+            </span>
+            <button
+              onClick={() => onChangeSlots(+1)}
+              style={{
+                width: 20,
+                height: 20,
+                borderRadius: 3,
+                background: "rgba(200,146,42,0.2)",
+                border: "1px solid rgba(200,146,42,0.5)",
+                color: BAG_ACCENT,
+                fontSize: "0.85rem",
+                lineHeight: 1,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              +
+            </button>
+          </div>
+        )}
+
+        {!onChangeSlots && (
           <span
             style={{
               fontFamily: "var(--font-ui)",
               fontSize: "0.6rem",
               color: "rgba(255,255,255,0.4)",
               letterSpacing: "0.1em",
-              minWidth: 40,
-              textAlign: "center",
+              flexShrink: 0,
             }}
           >
             {bag.items.length}/{bag.slots} slots
           </span>
-          <button
-            onClick={() => onChangeSlots(+1)}
-            style={{
-              width: 20,
-              height: 20,
-              borderRadius: 3,
-              background: "rgba(200,146,42,0.2)",
-              border: "1px solid rgba(200,146,42,0.5)",
-              color: BAG_ACCENT,
-              fontSize: "0.85rem",
-              lineHeight: 1,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            +
-          </button>
-        </div>
+        )}
 
         {/* Delete bag */}
-        <button
-          onClick={onDeleteBag}
-          title="Remover mochila"
-          style={{
-            background: "none",
-            border: "none",
-            color: "rgba(200,60,60,0.45)",
-            fontSize: "1rem",
-            cursor: "pointer",
-            lineHeight: 1,
-            flexShrink: 0,
-            padding: "0 2px",
-          }}
-        >
-          ×
-        </button>
+        {onDeleteBag && (
+          <button
+            onClick={onDeleteBag}
+            title="Remover mochila"
+            style={{
+              background: "none",
+              border: "none",
+              color: "rgba(200,60,60,0.45)",
+              fontSize: "1rem",
+              cursor: "pointer",
+              lineHeight: 1,
+              flexShrink: 0,
+              padding: "0 2px",
+            }}
+          >
+            ×
+          </button>
+        )}
       </div>
 
       {/* Bag item slots */}
@@ -160,9 +179,9 @@ export function BagSection({
                 key={item.id}
                 item={item}
                 accentColor={BAG_ACCENT}
-                onEdit={() => onEdit(i)}
-                onDelete={() => onDelete(i)}
-                onDurabilityChange={(delta) => onDurabilityChange(i, delta)}
+                onEdit={onEdit ? () => onEdit(item.id) : undefined}
+                onDelete={onDelete ? () => onDelete(item.id) : undefined}
+                onDurabilityChange={(delta) => onDurabilityChange(item.id, delta)}
                 onZoom={onZoom}
                 onRollDamage={onRollDamage}
               />
@@ -172,7 +191,7 @@ export function BagSection({
             <EmptySlot
               key={`bag-${bag.id}-empty-${i}`}
               accentColor={BAG_ACCENT}
-              onClick={() => onOpenModal(i)}
+              onClick={onOpenModal}
             />
           );
         })}

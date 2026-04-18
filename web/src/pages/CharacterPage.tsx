@@ -1,5 +1,5 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useScroll,
@@ -23,7 +23,13 @@ import {
 } from "@/lib/localCharacters";
 import { useAuth } from "@/lib/authContext";
 import { api } from "@/lib/apiClient";
-import { isApiCharacterId, mapApiToCharacter } from "@/lib/apiAdapter";
+import {
+  isApiCharacterId,
+  mapApiToCharacter,
+  buildInventoryFromApi,
+  type ApiRawBag,
+  type ApiRawItem,
+} from "@/lib/apiAdapter";
 import { getAccent } from "@/components/character/types";
 import { CharacterHero } from "@/components/character/CharacterHero";
 import { StatsSection } from "@/components/character/StatsSection";
@@ -35,7 +41,9 @@ import { SkillTestOverlay } from "@/components/character/SkillTestOverlay";
 import type { SkillTestData } from "@/components/character/SkillTestOverlay";
 import { DamageRollOverlay } from "@/components/character/DamageRollOverlay";
 import { DiceLogProvider } from "@/lib/diceLog";
+import type { DiceLogEntry } from "@/lib/diceLog";
 import { DiceLogSidebar } from "@/components/character/DiceLogSidebar";
+import { useCharacterRealtime } from "@/hooks/useCharacterRealtime";
 
 const PRESET_CHARACTERS = charactersData as Character[];
 const EMPTY_PE = {
@@ -48,11 +56,18 @@ const EMPTY_PE = {
 export function CharacterPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const fromCampaignId: string | null =
+    (location.state as { fromCampaignId?: string } | null)?.fromCampaignId ??
+    new URLSearchParams(location.search).get('campaignId');
   const { user } = useAuth();
 
   const [character, setCharacter] = useState<Character | undefined>(undefined);
   const [owned, setOwned] = useState(false);
   const [charLoaded, setCharLoaded] = useState(false);
+  const [initialDiceLog, setInitialDiceLog] = useState<DiceLogEntry[] | undefined>(undefined);
+  const [inventorySnapshot, setInventorySnapshot] = useState<{ bags: ApiRawBag[]; items: ApiRawItem[] } | null>(null);
+  const diceLogSetterRef = useRef<((entries: DiceLogEntry[]) => void) | null>(null);
 
   const [currentHp, setCurrentHp] = useState(0);
   const [currentSanidade, setCurrentSanidade] = useState(0);
@@ -93,6 +108,7 @@ export function CharacterPage() {
         setDaBase(dm.daBase ?? 1);
         setDaBonus(dm.daBonus ?? 0);
         setDpBonus(dm.dpBonus ?? 0);
+        setInitialDiceLog((s.diceLog as DiceLogEntry[]) ?? []);
       }).catch(() => {
         /* character not found or forbidden — leave undefined */
       }).finally(() => setCharLoaded(true));
@@ -121,8 +137,84 @@ export function CharacterPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, user?.id]);
 
+  useEffect(() => {
+    if (initialDiceLog !== undefined && diceLogSetterRef.current) {
+      diceLogSetterRef.current(initialDiceLog);
+    }
+  }, [initialDiceLog]);
+
   const [historiaExpanded, setHistoriaExpanded] = useState(false);
   const [inventoryOpen, setInventoryOpen] = useState(false);
+
+  const [isGmOfCampaign, setIsGmOfCampaign] = useState(false);
+  const canEdit = owned || isGmOfCampaign;
+
+  // If navigated from a campaign, check if user is GM (to show edit buttons)
+  useEffect(() => {
+    if (!fromCampaignId || !user || !charLoaded) return;
+    api.campaigns.get(fromCampaignId)
+      .then(res => {
+        const c = (res as { campaign: { isGm: boolean } }).campaign;
+        setIsGmOfCampaign(c.isGm);
+      })
+      .catch(() => {});
+  }, [fromCampaignId, user, charLoaded]);
+
+  // Realtime sync — only for API characters
+  const builtInventorySnapshot = inventorySnapshot
+    ? buildInventoryFromApi(inventorySnapshot.bags, inventorySnapshot.items)
+    : null;
+
+  useCharacterRealtime(isApiChar ? id : undefined, {
+    onCharacterUpdate: (data) => {
+      // Realtime payload is snake_case from DB — update display values directly
+      if ('current_hp' in data && data.current_hp != null)
+        setCurrentHp(data.current_hp as number)
+      if ('current_sanidade' in data && data.current_sanidade != null)
+        setCurrentSanidade(data.current_sanidade as number)
+      // Re-fetch full character for other field changes
+      if (id) {
+        api.characters.get(id)
+          .then(res => {
+            const raw = (res as { character: Record<string, unknown> }).character
+            setCharacter(mapApiToCharacter(raw))
+          })
+          .catch(() => {})
+      }
+    },
+    onStateUpdate: (data) => {
+      if (data.pe_checks) {
+        const pe = data.pe_checks;
+        setPeChecks({
+          fisico:     pe.fisico     ?? Array(5).fill(false),
+          destreza:   pe.destreza   ?? Array(5).fill(false),
+          intelecto:  pe.intelecto  ?? Array(5).fill(false),
+          influencia: pe.influencia ?? Array(5).fill(false),
+        });
+      }
+      if (data.skill_modifiers) setSkillModifiers(data.skill_modifiers);
+      if (data.defense_modifiers) {
+        setDaBase(data.defense_modifiers.daBase);
+        setDaBonus(data.defense_modifiers.daBonus);
+        setDpBonus(data.defense_modifiers.dpBonus);
+      }
+      if (data.dice_log) diceLogSetterRef.current?.(data.dice_log);
+    },
+    onInventoryChange: async () => {
+      if (!id) return;
+      try {
+        const res = await api.inventory.get(id) as { bags: ApiRawBag[]; items: ApiRawItem[] };
+        setInventorySnapshot({ bags: res.bags, items: res.items });
+      } catch { /* ignore */ }
+    },
+  });
+
+  // Campaign membership
+  interface CampaignMembership { id: string; campaignId: string; campaign: { id: string; title: string } }
+  const [membership, setMembership] = useState<CampaignMembership | null | undefined>(undefined)
+  const [joinCode, setJoinCode] = useState('')
+  const [joiningCampaign, setJoiningCampaign] = useState(false)
+  const [joinError, setJoinError] = useState<string | null>(null)
   const [skillTest, setSkillTest] = useState<SkillTestData | null>(null);
   const [pendingDamageRoll, setPendingDamageRoll] = useState<{
     damageStr: string;
@@ -260,7 +352,7 @@ export function CharacterPage() {
   /* ── HP / Sanidade clicks ─────────────────────────────────────── */
 
   function handleHpClick(idx: number) {
-    if (!owned || !id) return;
+    if (!canEdit || !id) return;
     const next = idx < currentHp ? idx : idx + 1;
     setCurrentHp(next);
     if (isApiChar) void api.characters.updateCurrentValues(id, { current_hp: next, current_sanidade: currentSanidade });
@@ -268,7 +360,7 @@ export function CharacterPage() {
   }
 
   function handleSanidadeClick(idx: number) {
-    if (!owned || !id) return;
+    if (!canEdit || !id) return;
     const next = idx < currentSanidade ? idx : idx + 1;
     setCurrentSanidade(next);
     if (isApiChar) void api.characters.updateCurrentValues(id, { current_hp: currentHp, current_sanidade: next });
@@ -277,6 +369,36 @@ export function CharacterPage() {
 
   function goEdit(step: number) {
     navigate(`/editar-ficha/${id}?step=${step}`);
+  }
+
+  // Load campaign membership for owned API chars
+  useEffect(() => {
+    if (!id || !isApiChar || !owned) { setMembership(null); return; }
+    api.campaigns.getMembership(id)
+      .then(res => setMembership((res as { membership: CampaignMembership | null }).membership))
+      .catch(() => setMembership(null))
+  }, [id, isApiChar, owned]);
+
+  async function handleJoinCampaign() {
+    if (!id || !joinCode.trim()) return;
+    setJoiningCampaign(true);
+    setJoinError(null);
+    try {
+      await api.campaigns.join(joinCode.trim().toUpperCase(), id);
+      const res = await api.campaigns.getMembership(id);
+      setMembership((res as { membership: CampaignMembership | null }).membership);
+      setJoinCode('');
+    } catch (err) {
+      setJoinError((err as Error).message);
+    } finally {
+      setJoiningCampaign(false);
+    }
+  }
+
+  async function handleLeaveCampaign() {
+    if (!id || !membership) return;
+    await api.campaigns.leave(membership.campaignId, id);
+    setMembership(null);
   }
 
   /* ── Loading / Not found ─────────────────────────────────────── */
@@ -308,7 +430,7 @@ export function CharacterPage() {
             Personagem não encontrado
           </p>
           <button
-            onClick={() => navigate("/personagens")}
+            onClick={() => fromCampaignId ? navigate(`/campanha/${fromCampaignId}`) : navigate("/personagens")}
             style={{
               color: "var(--color-arcano-glow)",
               background: "none",
@@ -329,7 +451,13 @@ export function CharacterPage() {
   const antAccent = getAccent(character.antitese);
 
   return (
-    <DiceLogProvider characterId={id}>
+    <DiceLogProvider
+      characterId={id}
+      initialEntries={isApiChar ? (initialDiceLog ?? []) : undefined}
+      persistEntry={isApiChar && !!user && !!id ? (entry) => void api.state.appendDiceLog(id, entry) : undefined}
+      persistClear={isApiChar && !!user && !!id ? () => void api.state.clearDiceLog(id) : undefined}
+      setterRef={isApiChar ? diceLogSetterRef : undefined}
+    >
       <div style={{ background: "var(--color-abyss)", minHeight: "100vh" }}>
         {/* ── Fixed back button ─────────────────────────────── */}
         <motion.div
@@ -342,7 +470,7 @@ export function CharacterPage() {
           }}
         >
           <button
-            onClick={() => navigate("/personagens")}
+            onClick={() => fromCampaignId ? navigate(`/campanha/${fromCampaignId}`) : navigate("/personagens")}
             className="flex items-center gap-2 px-3 py-2 rounded-sm text-xs font-semibold uppercase tracking-wider"
             style={{
               background: "rgba(4,10,20,0.75)",
@@ -372,7 +500,7 @@ export function CharacterPage() {
             accentText={accent.text}
             currentHp={currentHp}
             currentSanidade={currentSanidade}
-            owned={owned}
+            owned={canEdit}
             onHpClick={handleHpClick}
             onSanidadeClick={handleSanidadeClick}
             daBase={daBase}
@@ -383,7 +511,7 @@ export function CharacterPage() {
             onDaReset={handleDaReset}
             onDpChange={handleDpChange}
             onDpReset={handleDpReset}
-            onEdit={owned ? () => goEdit(1) : undefined}
+            onEdit={canEdit ? () => goEdit(1) : undefined}
           />
 
           <SkillsSection
@@ -394,8 +522,8 @@ export function CharacterPage() {
             onPeToggle={handlePeToggle}
             onModifierChange={handleModifierChange}
             onModifierReset={handleModifierReset}
-            onEditAttrs={owned ? () => goEdit(2) : undefined}
-            onEditSkills={owned ? () => goEdit(3) : undefined}
+            onEditAttrs={canEdit ? () => goEdit(2) : undefined}
+            onEditSkills={canEdit ? () => goEdit(3) : undefined}
             onSkillTest={setSkillTest}
           />
 
@@ -408,14 +536,14 @@ export function CharacterPage() {
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             onRemoveRuna={handleRemoveRuna}
-            onEdit={owned ? () => goEdit(4) : undefined}
+            onEdit={canEdit ? () => goEdit(4) : undefined}
           />
 
           {/* Antecedentes */}
           <section>
             <SectionLabel
               accent={accent.text}
-              onEdit={owned ? () => goEdit(5) : undefined}
+              onEdit={canEdit ? () => goEdit(5) : undefined}
             >
               Antecedentes
             </SectionLabel>
@@ -433,7 +561,7 @@ export function CharacterPage() {
             <section>
               <SectionLabel
                 accent={accent.text}
-                onEdit={owned ? () => goEdit(5) : undefined}
+                onEdit={canEdit ? () => goEdit(5) : undefined}
               >
                 Traumas
               </SectionLabel>
@@ -448,7 +576,7 @@ export function CharacterPage() {
           )}
 
           {/* História */}
-          {(character.historia || owned) && (
+          {(character.historia || canEdit) && (
             <section>
               <div
                 className="flex items-center gap-3 mb-4 cursor-pointer select-none"
@@ -482,7 +610,7 @@ export function CharacterPage() {
                 >
                   História
                 </p>
-                {owned && (
+                {canEdit && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -545,6 +673,89 @@ export function CharacterPage() {
                   </motion.div>
                 )}
               </AnimatePresence>
+            </section>
+          )}
+
+          {/* ── Campanha ─────────────────────────────────────── */}
+          {owned && isApiChar && membership !== undefined && (
+            <section>
+              <SectionLabel accent={accent.text}>Campanha</SectionLabel>
+              {membership ? (
+                <div style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  padding: "0.75rem 1rem",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 4, gap: "0.75rem", flexWrap: "wrap",
+                }}>
+                  <div>
+                    <p style={{ fontFamily: "var(--font-ui)", fontSize: "0.7rem", color: "var(--color-text-muted)", marginBottom: "0.2rem", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                      Vinculado a
+                    </p>
+                    <button
+                      onClick={() => navigate(`/campanha/${membership.campaignId}`)}
+                      style={{ fontFamily: "var(--font-display)", fontSize: "1rem", fontWeight: 700, color: accent.text, background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                    >
+                      {membership.campaign.title}
+                    </button>
+                  </div>
+                  <button
+                    onClick={handleLeaveCampaign}
+                    style={{
+                      padding: "0.4rem 0.85rem", borderRadius: 4,
+                      background: "rgba(200,60,60,0.1)",
+                      border: "1px solid rgba(200,60,60,0.3)",
+                      color: "#E07070", fontFamily: "var(--font-ui)",
+                      fontSize: "0.72rem", cursor: "pointer",
+                    }}
+                  >
+                    Sair da campanha
+                  </button>
+                </div>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                  <p style={{ fontFamily: "var(--font-ui)", fontSize: "0.8rem", color: "var(--color-text-muted)" }}>
+                    Este personagem não está em nenhuma campanha.
+                  </p>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    <input
+                      value={joinCode}
+                      onChange={e => setJoinCode(e.target.value.toUpperCase())}
+                      placeholder="Código de convite"
+                      maxLength={10}
+                      style={{
+                        flex: 1, padding: "0.55rem 0.75rem",
+                        background: "rgba(255,255,255,0.04)",
+                        border: "1px solid rgba(255,255,255,0.12)",
+                        borderRadius: 4, color: "var(--color-text-primary)",
+                        fontFamily: "var(--font-display)", fontSize: "0.95rem",
+                        letterSpacing: "0.2em", textTransform: "uppercase",
+                        outline: "none",
+                      }}
+                      onKeyDown={e => e.key === "Enter" && handleJoinCampaign()}
+                    />
+                    <button
+                      onClick={handleJoinCampaign}
+                      disabled={joiningCampaign || !joinCode.trim()}
+                      style={{
+                        padding: "0.55rem 1rem", borderRadius: 4, border: "none",
+                        background: joinCode.trim() && !joiningCampaign ? accent.text : "rgba(255,255,255,0.05)",
+                        color: joinCode.trim() && !joiningCampaign ? "#0A0A0A" : "rgba(255,255,255,0.2)",
+                        fontFamily: "var(--font-ui)", fontSize: "0.75rem", fontWeight: 700,
+                        letterSpacing: "0.1em", textTransform: "uppercase",
+                        cursor: joinCode.trim() && !joiningCampaign ? "pointer" : "not-allowed",
+                      }}
+                    >
+                      {joiningCampaign ? "…" : "Entrar"}
+                    </button>
+                  </div>
+                  {joinError && (
+                    <p style={{ fontFamily: "var(--font-ui)", fontSize: "0.75rem", color: "#E07070" }}>
+                      {joinError}
+                    </p>
+                  )}
+                </div>
+              )}
             </section>
           )}
 
@@ -631,6 +842,8 @@ export function CharacterPage() {
             onRollDamage={(damageStr, equipmentName) =>
               setPendingDamageRoll({ damageStr, equipmentName })
             }
+            canEdit={canEdit}
+            inventorySnapshot={builtInventorySnapshot}
           />
         )}
 

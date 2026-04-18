@@ -8,10 +8,18 @@ export class CharactersRepository {
     return this.db.character.findUnique({ where: { id } })
   }
 
-  findByUserId(userId: string): Promise<Character[]> {
+  findByUserId(userId: string) {
     return this.db.character.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
+      include: {
+        campaignCharacter: {
+          select: {
+            role: true,
+            campaign: { select: { id: true, title: true } },
+          },
+        },
+      },
     })
   }
 

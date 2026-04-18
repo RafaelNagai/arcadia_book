@@ -102,8 +102,8 @@ export function ItemCard({
 }: {
   item: InventoryItem;
   accentColor: string;
-  onEdit: () => void;
-  onDelete: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
   onDurabilityChange: (delta: number) => void;
   onZoom?: (src: string) => void;
   onRollDamage?: (damageStr: string, name: string) => void;
@@ -218,38 +218,42 @@ export function ItemCard({
             >
               {item.name}
             </p>
-            <button
-              onClick={onEdit}
-              title="Editar item"
-              style={{
-                background: "none",
-                border: "none",
-                color: "rgba(255,255,255,0.25)",
-                fontSize: "0.75rem",
-                cursor: "pointer",
-                padding: "0 2px",
-                lineHeight: 1,
-                flexShrink: 0,
-              }}
-            >
-              ✎
-            </button>
-            <button
-              onClick={onDelete}
-              title="Remover item"
-              style={{
-                background: "none",
-                border: "none",
-                color: "rgba(200,60,60,0.45)",
-                fontSize: "0.8rem",
-                cursor: "pointer",
-                padding: "0 2px",
-                lineHeight: 1,
-                flexShrink: 0,
-              }}
-            >
-              ×
-            </button>
+            {onEdit && (
+              <button
+                onClick={onEdit}
+                title="Editar item"
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "rgba(255,255,255,0.25)",
+                  fontSize: "0.75rem",
+                  cursor: "pointer",
+                  padding: "0 2px",
+                  lineHeight: 1,
+                  flexShrink: 0,
+                }}
+              >
+                ✎
+              </button>
+            )}
+            {onDelete && (
+              <button
+                onClick={onDelete}
+                title="Remover item"
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "rgba(200,60,60,0.45)",
+                  fontSize: "0.8rem",
+                  cursor: "pointer",
+                  padding: "0 2px",
+                  lineHeight: 1,
+                  flexShrink: 0,
+                }}
+              >
+                ×
+              </button>
+            )}
           </div>
 
           {/* Weight badge */}

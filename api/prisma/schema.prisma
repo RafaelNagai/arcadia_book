@@ -34,9 +34,10 @@ model Character {
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
-  inventoryBags  InventoryBag[]
-  inventoryItems InventoryItem[]
-  states         CharacterState[]
+  inventoryBags     InventoryBag[]
+  inventoryItems    InventoryItem[]
+  states            CharacterState[]
+  campaignCharacter CampaignCharacter?
 
   @@map("characters")
 }
@@ -81,6 +82,34 @@ model InventoryItem {
   bag       InventoryBag? @relation(fields: [bagId], references: [id], onDelete: SetNull)
 
   @@map("inventory_items")
+}
+
+model Campaign {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  gmUserId    String   @map("gm_user_id") @db.Uuid
+  title       String
+  description String   @default("")
+  imageUrl    String?  @map("image_url")
+  inviteCode  String   @unique @map("invite_code")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  characters CampaignCharacter[]
+
+  @@map("campaigns")
+}
+
+model CampaignCharacter {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  campaignId  String   @map("campaign_id") @db.Uuid
+  characterId String   @unique @map("character_id") @db.Uuid
+  role        String   @default("player")
+  joinedAt    DateTime @default(now()) @map("joined_at")
+
+  campaign  Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  @@map("campaign_characters")
 }
 
 model CharacterState {
