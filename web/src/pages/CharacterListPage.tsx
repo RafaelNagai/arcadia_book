@@ -183,7 +183,7 @@ function CharacterCard({ character, index }: { character: Character; index: numb
 
 export function CharacterListPage() {
   const navigate = useNavigate()
-  const { user, signOut } = useAuth()
+  const { user } = useAuth()
   const [customChars, setCustomChars] = useState<Character[]>([])
   const [publicChars, setPublicChars] = useState<Character[]>([])
   const [loadingChars, setLoadingChars] = useState(false)

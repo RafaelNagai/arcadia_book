@@ -198,7 +198,7 @@ export function DefenseStats({
               <button
                 style={{ ...smallBtn, color: "rgba(255,100,100,0.8)" }}
                 onClick={() => {
-                  onDaReset()
+                  onDaReset?.()
                   setEditing(null)
                 }}
                 title="Remover bônus"
@@ -299,7 +299,7 @@ export function DefenseStats({
               <button
                 style={{ ...smallBtn, color: "rgba(255,100,100,0.8)" }}
                 onClick={() => {
-                  onDpReset()
+                  onDpReset?.()
                   setEditing(null)
                 }}
                 title="Remover bônus"

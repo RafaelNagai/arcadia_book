@@ -327,7 +327,7 @@ export function AttributeBlock({
                   <button
                     style={{ ...smallBtn, color: "rgba(255,100,100,0.8)" }}
                     onClick={() => {
-                      onModifierReset(skill.key);
+                      onModifierReset?.(skill.key);
                       setEditingSkill(null);
                     }}
                     title="Remover modificador"
