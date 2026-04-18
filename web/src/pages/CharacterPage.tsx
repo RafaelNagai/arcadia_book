@@ -67,6 +67,8 @@ export function CharacterPage() {
   const [charLoaded, setCharLoaded] = useState(false);
   const [initialDiceLog, setInitialDiceLog] = useState<DiceLogEntry[] | undefined>(undefined);
   const [inventorySnapshot, setInventorySnapshot] = useState<{ bags: ApiRawBag[]; items: ApiRawItem[] } | null>(null);
+  const [isPublic, setIsPublic] = useState(false);
+  const [historiaExpanded, setHistoriaExpanded] = useState(false);
   const diceLogSetterRef = useRef<((entries: DiceLogEntry[]) => void) | null>(null);
 
   const [currentHp, setCurrentHp] = useState(0);
@@ -109,6 +111,9 @@ export function CharacterPage() {
         setDaBonus(dm.daBonus ?? 0);
         setDpBonus(dm.dpBonus ?? 0);
         setInitialDiceLog((s.diceLog as DiceLogEntry[]) ?? []);
+        const pub = (raw.isPublic as boolean) ?? false;
+        setIsPublic(pub);
+        if (pub && raw.userId !== user?.id) setHistoriaExpanded(true);
       }).catch(() => {
         /* character not found or forbidden — leave undefined */
       }).finally(() => setCharLoaded(true));
@@ -143,7 +148,6 @@ export function CharacterPage() {
     }
   }, [initialDiceLog]);
 
-  const [historiaExpanded, setHistoriaExpanded] = useState(false);
   const [inventoryOpen, setInventoryOpen] = useState(false);
 
   const [isGmOfCampaign, setIsGmOfCampaign] = useState(false);
@@ -401,6 +405,17 @@ export function CharacterPage() {
     setMembership(null);
   }
 
+  async function handleToggleVisibility() {
+    if (!id) return;
+    const next = !isPublic;
+    setIsPublic(next);
+    try {
+      await api.characters.setVisibility(id, next);
+    } catch {
+      setIsPublic(!next);
+    }
+  }
+
   /* ── Loading / Not found ─────────────────────────────────────── */
 
   if (!charLoaded) {
@@ -506,11 +521,11 @@ export function CharacterPage() {
             daBase={daBase}
             daBonus={daBonus}
             dpBonus={dpBonus}
-            onDaBaseChange={handleDaBaseChange}
-            onDaChange={handleDaChange}
-            onDaReset={handleDaReset}
-            onDpChange={handleDpChange}
-            onDpReset={handleDpReset}
+            onDaBaseChange={canEdit ? handleDaBaseChange : undefined}
+            onDaChange={canEdit ? handleDaChange : undefined}
+            onDaReset={canEdit ? handleDaReset : undefined}
+            onDpChange={canEdit ? handleDpChange : undefined}
+            onDpReset={canEdit ? handleDpReset : undefined}
             onEdit={canEdit ? () => goEdit(1) : undefined}
           />
 
@@ -519,9 +534,9 @@ export function CharacterPage() {
             accentText={accent.text}
             peChecks={peChecks}
             skillModifiers={skillModifiers}
-            onPeToggle={handlePeToggle}
-            onModifierChange={handleModifierChange}
-            onModifierReset={handleModifierReset}
+            onPeToggle={canEdit ? handlePeToggle : undefined}
+            onModifierChange={canEdit ? handleModifierChange : undefined}
+            onModifierReset={canEdit ? handleModifierReset : undefined}
             onEditAttrs={canEdit ? () => goEdit(2) : undefined}
             onEditSkills={canEdit ? () => goEdit(3) : undefined}
             onSkillTest={setSkillTest}
@@ -673,6 +688,44 @@ export function CharacterPage() {
                   </motion.div>
                 )}
               </AnimatePresence>
+            </section>
+          )}
+
+          {/* ── Visibilidade ─────────────────────────────────── */}
+          {owned && isApiChar && (
+            <section>
+              <SectionLabel accent={accent.text}>Visibilidade</SectionLabel>
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '0.75rem 1rem',
+                background: 'rgba(255,255,255,0.03)',
+                border: `1px solid ${isPublic ? 'rgba(110,200,64,0.25)' : 'rgba(255,255,255,0.08)'}`,
+                borderRadius: 4, gap: '0.75rem', flexWrap: 'wrap',
+              }}>
+                <div>
+                  <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8rem', fontWeight: 600, color: isPublic ? '#6EC840' : 'var(--color-text-secondary)', marginBottom: '0.15rem' }}>
+                    {isPublic ? 'Ficha pública' : 'Ficha privada'}
+                  </p>
+                  <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.7rem', color: 'var(--color-text-muted)', lineHeight: 1.4 }}>
+                    {isPublic
+                      ? 'Visível para todos. Somente você e o mestre podem editar.'
+                      : 'Visível apenas para você e o mestre da campanha.'}
+                  </p>
+                </div>
+                <button
+                  onClick={handleToggleVisibility}
+                  style={{
+                    padding: '0.4rem 0.85rem', borderRadius: 4,
+                    background: isPublic ? 'rgba(200,60,60,0.1)' : 'rgba(110,200,64,0.1)',
+                    border: `1px solid ${isPublic ? 'rgba(200,60,60,0.3)' : 'rgba(110,200,64,0.3)'}`,
+                    color: isPublic ? '#E07070' : '#6EC840',
+                    fontFamily: 'var(--font-ui)', fontSize: '0.72rem', fontWeight: 700,
+                    letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer', whiteSpace: 'nowrap',
+                  }}
+                >
+                  {isPublic ? 'Tornar privada' : 'Tornar pública'}
+                </button>
+              </div>
             </section>
           )}
 

@@ -19,9 +19,9 @@ export function SkillsSection({
   accentText: string
   peChecks: Record<string, boolean[]>
   skillModifiers: Record<string, number>
-  onPeToggle: (attr: string, idx: number) => void
-  onModifierChange: (skillKey: string, delta: number) => void
-  onModifierReset: (skillKey: string) => void
+  onPeToggle?: (attr: string, idx: number) => void
+  onModifierChange?: (skillKey: string, delta: number) => void
+  onModifierReset?: (skillKey: string) => void
   onEditAttrs?: () => void
   onEditSkills?: () => void
   onSkillTest?: (data: SkillTestData) => void
@@ -46,7 +46,7 @@ export function SkillsSection({
             group={group}
             character={character}
             peChecks={peChecks[group.attr]}
-            onPeToggle={(idx) => onPeToggle(group.attr, idx)}
+            onPeToggle={onPeToggle ? (idx) => onPeToggle(group.attr, idx) : undefined}
             skillModifiers={skillModifiers}
             onModifierChange={onModifierChange}
             onModifierReset={onModifierReset}

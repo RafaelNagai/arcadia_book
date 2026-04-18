@@ -59,6 +59,8 @@ export const api = {
   characters: {
     list: () => apiFetch<{ characters: unknown[] }>('/characters'),
 
+    listPublic: () => apiFetch<{ characters: unknown[] }>('/characters/public'),
+
     get: (id: string) => apiFetch<{ character: unknown }>(`/characters/${id}`),
 
     create: (data: unknown) =>

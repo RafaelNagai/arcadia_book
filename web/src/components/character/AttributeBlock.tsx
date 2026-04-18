@@ -62,10 +62,10 @@ export function AttributeBlock({
   group: (typeof ATTR_GROUPS)[number];
   character: Character;
   peChecks: boolean[];
-  onPeToggle: (idx: number) => void;
+  onPeToggle?: (idx: number) => void;
   skillModifiers: Record<string, number>;
-  onModifierChange: (key: string, delta: number) => void;
-  onModifierReset: (key: string) => void;
+  onModifierChange?: (key: string, delta: number) => void;
+  onModifierReset?: (key: string) => void;
   onSkillTest?: (data: SkillTestData) => void;
 }) {
   const [editingSkill, setEditingSkill] = useState<string | null>(null);
@@ -119,8 +119,8 @@ export function AttributeBlock({
         {peChecks.map((checked, i) => (
           <button
             key={i}
-            onClick={() => onPeToggle(i)}
-            title={checked ? `Desmarcar PE ${i + 1}` : `Marcar PE ${i + 1}`}
+            onClick={onPeToggle ? () => onPeToggle(i) : undefined}
+            title={onPeToggle ? (checked ? `Desmarcar PE ${i + 1}` : `Marcar PE ${i + 1}`) : undefined}
             style={{
               width: 16,
               height: 16,
@@ -132,7 +132,7 @@ export function AttributeBlock({
               color: checked ? group.color : "rgba(200,210,230,0.35)",
               fontSize: "0.55rem",
               lineHeight: 1,
-              cursor: "pointer",
+              cursor: onPeToggle ? "pointer" : "default",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -248,9 +248,9 @@ export function AttributeBlock({
                 {/* Clickable value — toggles edit */}
                 <div
                   className="flex items-center gap-1.5"
-                  style={{ cursor: "pointer", flexShrink: 0 }}
-                  onClick={() => setEditingSkill(isEditing ? null : skill.key)}
-                  title={isEditing ? "Fechar" : "Clique para modificar"}
+                  style={{ cursor: onModifierChange ? "pointer" : "default", flexShrink: 0 }}
+                  onClick={onModifierChange ? () => setEditingSkill(isEditing ? null : skill.key) : undefined}
+                  title={onModifierChange ? (isEditing ? "Fechar" : "Clique para modificar") : undefined}
                 >
                   {mod !== 0 && (
                     <span
@@ -287,7 +287,7 @@ export function AttributeBlock({
               </div>
 
               {/* Expanded controls */}
-              {isEditing && (
+              {isEditing && onModifierChange && (
                 <div
                   className="flex items-center gap-1.5 mt-1.5"
                   style={{ paddingLeft: 12 }}

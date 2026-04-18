@@ -8,6 +8,21 @@ export class CharactersRepository {
     return this.db.character.findUnique({ where: { id } })
   }
 
+  findPublic(excludeUserId?: string) {
+    return this.db.character.findMany({
+      where: {
+        isPublic: true,
+        ...(excludeUserId ? { userId: { not: excludeUserId } } : {}),
+      },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        campaignCharacter: {
+          select: { role: true, campaign: { select: { id: true, title: true } } },
+        },
+      },
+    })
+  }
+
   findByUserId(userId: string) {
     return this.db.character.findMany({
       where: { userId },

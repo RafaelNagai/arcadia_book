@@ -26,6 +26,16 @@ export class CharactersService {
     this.campaignRepo = new CampaignsRepository(db)
   }
 
+  async listPublic(requestingUserId?: string) {
+    const chars = await this.repo.findPublic(requestingUserId)
+    return chars.map(c => ({
+      ...c,
+      campaign: c.campaignCharacter
+        ? { id: c.campaignCharacter.campaign.id, title: c.campaignCharacter.campaign.title, role: c.campaignCharacter.role }
+        : null,
+    }))
+  }
+
   async list(userId: string) {
     const chars = await this.repo.findByUserId(userId)
     return chars.map(c => ({
@@ -75,7 +85,9 @@ export class CharactersService {
   }
 
   async setVisibility(id: string, userId: string, isPublic: boolean): Promise<Character> {
-    await this.assertOwner(id, userId)
+    const char = await this.repo.findById(id)
+    if (!char) throw new NotFoundError('Personagem não encontrado')
+    if (char.userId !== userId) throw new ForbiddenError()
     return this.repo.update(id, { isPublic })
   }
 

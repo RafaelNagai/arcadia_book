@@ -185,26 +185,37 @@ export function CharacterListPage() {
   const navigate = useNavigate()
   const { user, signOut } = useAuth()
   const [customChars, setCustomChars] = useState<Character[]>([])
+  const [publicChars, setPublicChars] = useState<Character[]>([])
   const [loadingChars, setLoadingChars] = useState(false)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
   useEffect(() => {
     document.title = 'Personagens — Arcádia'
     window.scrollTo({ top: 0 })
-    if (!user) {
+
+    if (user) {
+      setLoadingChars(true)
+      api.characters.list()
+        .then(res => {
+          const chars = (res as { characters: unknown[] }).characters.map(
+            c => mapApiToCharacter(c as Record<string, unknown>),
+          )
+          setCustomChars(chars)
+        })
+        .catch(() => setCustomChars([]))
+        .finally(() => setLoadingChars(false))
+    } else {
       setCustomChars([])
-      return
     }
-    setLoadingChars(true)
-    api.characters.list()
+
+    api.characters.listPublic()
       .then(res => {
         const chars = (res as { characters: unknown[] }).characters.map(
           c => mapApiToCharacter(c as Record<string, unknown>),
         )
-        setCustomChars(chars)
+        setPublicChars(chars)
       })
-      .catch(() => setCustomChars([]))
-      .finally(() => setLoadingChars(false))
+      .catch(() => setPublicChars([]))
   }, [user])
 
   async function confirmDelete() {
@@ -341,6 +352,21 @@ export function CharacterListPage() {
               ))}
             </div>
             )}
+          </section>
+        )}
+
+        {/* Public characters from other users */}
+        {publicChars.length > 0 && (
+          <section>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-5"
+              style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}>
+              Fichas Públicas
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {publicChars.map((character, i) => (
+                <CharacterCard key={character.id} character={character} index={i} />
+              ))}
+            </div>
           </section>
         )}
 

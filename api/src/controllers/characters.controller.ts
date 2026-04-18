@@ -18,6 +18,17 @@ export async function charactersController(fastify: FastifyInstance) {
     return reply.send({ characters: chars })
   })
 
+  fastify.get('/public', async (req, reply) => {
+    const token = (req.headers.authorization ?? '').slice(7)
+    let userId: string | undefined
+    if (token) {
+      const { data } = await fastify.supabase.auth.getUser(token)
+      userId = data.user?.id
+    }
+    const chars = await svc.listPublic(userId)
+    return reply.send({ characters: chars })
+  })
+
   fastify.post('/', async (req, reply) => {
     await fastify.authenticate(req)
     const input = CreateCharacterSchema.parse(req.body)

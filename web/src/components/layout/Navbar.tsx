@@ -38,16 +38,12 @@ export function Navbar() {
         gap: '1.5rem',
       }}>
         {/* Logo */}
-        <Link to="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
-          <span style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '0.9rem',
-            fontWeight: 700,
-            color: 'var(--color-arcano)',
-            letterSpacing: '0.15em',
-          }}>
-            ARCÁDIA
-          </span>
+        <Link to="/" style={{ textDecoration: 'none', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+          <img
+            src="/assets/images/logo.png"
+            alt="Arcádia"
+            style={{ height: 32, width: 'auto', display: 'block' }}
+          />
         </Link>
 
         {/* Desktop nav links */}
@@ -131,7 +127,7 @@ export function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="sm:hidden"
+          className="flex flex-col sm:hidden"
           onClick={() => setMenuOpen(v => !v)}
           style={{
             marginLeft: 'auto',
@@ -140,8 +136,6 @@ export function Navbar() {
             cursor: 'pointer',
             color: 'var(--color-text-secondary)',
             padding: '0.25rem',
-            display: 'flex',
-            flexDirection: 'column',
             gap: 5,
           }}
         >

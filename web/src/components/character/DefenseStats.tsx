@@ -73,11 +73,11 @@ export function DefenseStats({
   daBase: number
   daBonus: number
   dpBonus: number
-  onDaBaseChange: (delta: number) => void
-  onDaChange: (delta: number) => void
-  onDaReset: () => void
-  onDpChange: (delta: number) => void
-  onDpReset: () => void
+  onDaBaseChange?: (delta: number) => void
+  onDaChange?: (delta: number) => void
+  onDaReset?: () => void
+  onDpChange?: (delta: number) => void
+  onDpReset?: () => void
 }) {
   const [editing, setEditing] = useState<"da" | "dp" | null>(null)
 
@@ -94,19 +94,23 @@ export function DefenseStats({
         >
           Defesa
         </p>
-        <button
-          disabled={daBase === 0}
-          onClick={() => daBase > 0 && onDaBaseChange(-1)}
-          style={actionBtn(DA_COLOR, daBase === 0)}
-        >
-          −
-        </button>
-        <button
-          onClick={() => onDaBaseChange(+1)}
-          style={actionBtn(DA_COLOR, false)}
-        >
-          +
-        </button>
+        {onDaBaseChange && (
+          <>
+            <button
+              disabled={daBase === 0}
+              onClick={() => daBase > 0 && onDaBaseChange(-1)}
+              style={actionBtn(DA_COLOR, daBase === 0)}
+            >
+              −
+            </button>
+            <button
+              onClick={() => onDaBaseChange(+1)}
+              style={actionBtn(DA_COLOR, false)}
+            >
+              +
+            </button>
+          </>
+        )}
       </div>
 
       {/* ── DA + DP ── */}
@@ -129,9 +133,9 @@ export function DefenseStats({
 
           <div
             className="flex items-baseline gap-1.5"
-            onClick={() => setEditing(editing === "da" ? null : "da")}
-            title={editing === "da" ? "Fechar" : "Clique para adicionar bônus"}
-            style={{ cursor: "pointer" }}
+            onClick={onDaChange ? () => setEditing(editing === "da" ? null : "da") : undefined}
+            title={onDaChange ? (editing === "da" ? "Fechar" : "Clique para adicionar bônus") : undefined}
+            style={{ cursor: onDaChange ? "pointer" : "default" }}
           >
             {daBonus !== 0 && (
               <span
@@ -162,7 +166,7 @@ export function DefenseStats({
             </span>
           </div>
 
-          {editing === "da" && (
+          {editing === "da" && onDaChange && (
             <div className="flex items-center gap-1.5 mt-2">
               <button
                 style={{ ...smallBtn, opacity: da === 0 ? 0.3 : 1 }}
@@ -230,9 +234,9 @@ export function DefenseStats({
 
           <div
             className="flex items-baseline gap-1.5"
-            onClick={() => setEditing(editing === "dp" ? null : "dp")}
-            title={editing === "dp" ? "Fechar" : "Clique para adicionar bônus"}
-            style={{ cursor: "pointer" }}
+            onClick={onDpChange ? () => setEditing(editing === "dp" ? null : "dp") : undefined}
+            title={onDpChange ? (editing === "dp" ? "Fechar" : "Clique para adicionar bônus") : undefined}
+            style={{ cursor: onDpChange ? "pointer" : "default" }}
           >
             {dpBonus !== 0 && (
               <span
@@ -263,7 +267,7 @@ export function DefenseStats({
             </span>
           </div>
 
-          {editing === "dp" && (
+          {editing === "dp" && onDpChange && (
             <div className="flex items-center gap-1.5 mt-2">
               <button
                 style={{ ...smallBtn, opacity: dp === 0 ? 0.3 : 1 }}

@@ -31,11 +31,11 @@ export function StatsSection({
   daBase: number
   daBonus: number
   dpBonus: number
-  onDaBaseChange: (delta: number) => void
-  onDaChange: (delta: number) => void
-  onDaReset: () => void
-  onDpChange: (delta: number) => void
-  onDpReset: () => void
+  onDaBaseChange?: (delta: number) => void
+  onDaChange?: (delta: number) => void
+  onDaReset?: () => void
+  onDpChange?: (delta: number) => void
+  onDpReset?: () => void
   onEdit?: () => void
 }) {
   return (
@@ -69,11 +69,11 @@ export function StatsSection({
           daBase={daBase}
           daBonus={daBonus}
           dpBonus={dpBonus}
-          onDaBaseChange={onDaBaseChange}
-          onDaChange={onDaChange}
-          onDaReset={onDaReset}
-          onDpChange={onDpChange}
-          onDpReset={onDpReset}
+          onDaBaseChange={owned ? onDaBaseChange : undefined}
+          onDaChange={owned ? onDaChange : undefined}
+          onDaReset={owned ? onDaReset : undefined}
+          onDpChange={owned ? onDpChange : undefined}
+          onDpReset={owned ? onDpReset : undefined}
         />
       </div>
     </section>
