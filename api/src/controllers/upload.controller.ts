@@ -37,4 +37,25 @@ export async function uploadController(fastify: FastifyInstance) {
     await svc.deleteCharacterImage(path)
     return reply.status(204).send()
   })
+
+  fastify.post('/map-layer', async (req, reply) => {
+    await fastify.authenticate(req)
+
+    const data = await req.file()
+    if (!data) throw new ValidationError('Nenhum arquivo enviado')
+
+    const mapId = (data.fields.mapId as { value: string } | undefined)?.value
+    if (!mapId) throw new ValidationError('mapId é obrigatório')
+
+    const buffer = await data.toBuffer()
+    const url = await svc.uploadMapLayerImage(
+      req.user!.id,
+      mapId,
+      buffer,
+      data.mimetype,
+      data.filename,
+    )
+
+    return reply.status(201).send({ url })
+  })
 }

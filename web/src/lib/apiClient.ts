@@ -208,6 +208,98 @@ export const api = {
       apiFetch<{ membership: unknown }>(`/campaigns/character/${characterId}/membership`),
   },
 
+  // ── Maps ────────────────────────────────────────────────────────────────────
+
+  maps: {
+    list: (campaignId: string) =>
+      apiFetch<{ maps: unknown[] }>(`/campaigns/${campaignId}/maps`),
+
+    getActive: (campaignId: string) =>
+      apiFetch<{ map: unknown }>(`/campaigns/${campaignId}/maps/active`),
+
+    create: (campaignId: string, data: {
+      title: string
+      grid_enabled?: boolean
+      grid_size?: number
+      vision_unified?: boolean
+      default_vision_radius?: number
+    }) =>
+      apiFetch<{ map: unknown }>(`/campaigns/${campaignId}/maps`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+
+    update: (mapId: string, data: {
+      title?: string
+      grid_enabled?: boolean
+      grid_size?: number
+      vision_unified?: boolean
+      default_vision_radius?: number
+    }) =>
+      apiFetch<{ map: unknown }>(`/maps/${mapId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+
+    delete: (campaignId: string, mapId: string) =>
+      apiFetch(`/campaigns/${campaignId}/maps/${mapId}`, { method: 'DELETE' }),
+
+    activate: (campaignId: string, mapId: string) =>
+      apiFetch<{ map: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/activate`, { method: 'PATCH' }),
+
+    deactivate: (campaignId: string, mapId: string) =>
+      apiFetch<{ map: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/deactivate`, { method: 'PATCH' }),
+
+    createLayer: (campaignId: string, mapId: string, data: { name: string; order_index: number; image_url: string }) =>
+      apiFetch<{ layer: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/layers`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+
+    updateLayer: (campaignId: string, mapId: string, layerId: string, data: { name?: string; order_index?: number }) =>
+      apiFetch<{ layer: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+
+    deleteLayer: (campaignId: string, mapId: string, layerId: string) =>
+      apiFetch(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}`, { method: 'DELETE' }),
+
+    activateLayer: (campaignId: string, mapId: string, layerId: string) =>
+      apiFetch<{ layer: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/activate`, { method: 'PATCH' }),
+
+    listTokens: (campaignId: string, mapId: string) =>
+      apiFetch<{ tokens: unknown[] }>(`/campaigns/${campaignId}/maps/${mapId}/tokens`),
+
+    createToken: (campaignId: string, mapId: string, data: {
+      layer_id: string
+      character_id: string
+      x?: number
+      y?: number
+      vision_radius?: number | null
+      is_visible?: boolean
+    }) =>
+      apiFetch<{ token: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/tokens`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+
+    updateToken: (campaignId: string, mapId: string, tokenId: string, data: {
+      layer_id?: string
+      x?: number
+      y?: number
+      vision_radius?: number | null
+      is_visible?: boolean
+    }) =>
+      apiFetch<{ token: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/tokens/${tokenId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      }),
+
+    deleteToken: (campaignId: string, mapId: string, tokenId: string) =>
+      apiFetch(`/campaigns/${campaignId}/maps/${mapId}/tokens/${tokenId}`, { method: 'DELETE' }),
+  },
+
   // ── Upload ──────────────────────────────────────────────────────────────────
 
   upload: {
@@ -235,5 +327,24 @@ export const api = {
         method: 'DELETE',
         body: JSON.stringify({ path }),
       }),
+
+    mapLayerImage: async (mapId: string, file: File): Promise<{ url: string }> => {
+      const token = await getToken()
+      const form = new FormData()
+      form.append('file', file)
+      form.append('mapId', mapId)
+
+      const headers: Record<string, string> = {}
+      if (token) headers['Authorization'] = `Bearer ${token}`
+
+      const res = await fetch(`${API_BASE}/upload/map-layer`, {
+        method: 'POST',
+        headers,
+        body: form,
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json?.error?.message ?? 'Erro no upload')
+      return json as { url: string }
+    },
   },
 }

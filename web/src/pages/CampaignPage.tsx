@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/authContext'
 import { api } from '@/lib/apiClient'
 import { getAccent } from '@/components/character/types'
 import type { CampaignChar, CampaignDetail } from '@/data/campaignTypes'
+import { MapTab } from '@/components/map/MapTab'
 
 // ── CharMiniCard ─────────────────────────────────────────────────────────────
 
@@ -252,11 +253,13 @@ function SelectNpcModal({ campaignId, existingNpcIds, onClose, onAdd, chars, cha
 
 // ── CampaignSidebar ───────────────────────────────────────────────────────────
 
+type CampaignView = 'players' | 'npcs' | 'mapa'
+
 interface CampaignSidebarProps {
   campaign: CampaignDetail
-  view: 'players' | 'npcs'
+  view: CampaignView
   isGm: boolean
-  onChangeView: (v: 'players' | 'npcs') => void
+  onChangeView: (v: CampaignView) => void
   onRegenerateCode: () => void
   onRequestDelete: () => void
   onClose?: () => void
@@ -273,12 +276,12 @@ function CampaignSidebar({ campaign, view, isGm, onChangeView, onRegenerateCode,
     setTimeout(() => setCopied(false), 2000)
   }
 
-  function handleNavClick(v: 'players' | 'npcs') {
+  function handleNavClick(v: CampaignView) {
     onChangeView(v)
     onClose?.()
   }
 
-  const navItem = (v: 'players' | 'npcs', label: string, count: number) => (
+  const navItem = (v: CampaignView, label: string, count?: number) => (
     <button
       key={v}
       onClick={() => handleNavClick(v)}
@@ -293,14 +296,16 @@ function CampaignSidebar({ campaign, view, isGm, onChangeView, onRegenerateCode,
       }}
     >
       {label}
-      <span style={{
-        fontSize: '0.65rem', fontFamily: 'var(--font-ui)', fontWeight: 600,
-        color: view === v ? 'var(--color-arcano)' : 'rgba(255,255,255,0.2)',
-        background: view === v ? 'rgba(200,146,42,0.15)' : 'rgba(255,255,255,0.05)',
-        padding: '0.1rem 0.45rem', borderRadius: 99,
-      }}>
-        {count}
-      </span>
+      {count !== undefined && (
+        <span style={{
+          fontSize: '0.65rem', fontFamily: 'var(--font-ui)', fontWeight: 600,
+          color: view === v ? 'var(--color-arcano)' : 'rgba(255,255,255,0.2)',
+          background: view === v ? 'rgba(200,146,42,0.15)' : 'rgba(255,255,255,0.05)',
+          padding: '0.1rem 0.45rem', borderRadius: 99,
+        }}>
+          {count}
+        </span>
+      )}
     </button>
   )
 
@@ -337,6 +342,7 @@ function CampaignSidebar({ campaign, view, isGm, onChangeView, onRegenerateCode,
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
           {navItem('players', 'Personagens', campaign.players.length)}
           {isGm && navItem('npcs', 'NPCs', campaign.npcs.length)}
+          {navItem('mapa', 'Mapa')}
         </div>
       </div>
 
@@ -409,7 +415,7 @@ export function CampaignPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const { user } = useAuth()
 
-  const view = (searchParams.get('view') as 'players' | 'npcs') ?? 'players'
+  const view = (searchParams.get('view') as CampaignView) ?? 'players'
 
   const [campaign, setCampaign] = useState<CampaignDetail | null>(null)
   const [loading, setLoading] = useState(true)
@@ -482,7 +488,7 @@ export function CampaignPage() {
     }
   }
 
-  function setView(v: 'players' | 'npcs') {
+  function setView(v: CampaignView) {
     setSearchParams({ view: v })
   }
 
@@ -509,7 +515,8 @@ export function CampaignPage() {
   }
 
   const isGm = campaign.isGm
-  const currentList = view === 'players' ? campaign.players : campaign.npcs
+  const listView = view === 'mapa' ? 'players' : view
+  const currentList = listView === 'players' ? campaign.players : campaign.npcs
 
   return (
     <div style={{ background: 'var(--color-abyss)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -592,7 +599,10 @@ export function CampaignPage() {
         </AnimatePresence>
 
         {/* Main content */}
-        <div style={{ flex: 1, padding: '2rem 1.5rem', overflowY: 'auto' }}>
+        {view === 'mapa' ? (
+          <MapTab campaign={campaign} />
+        ) : null}
+        <div style={{ flex: 1, padding: '2rem 1.5rem', overflowY: 'auto', display: view === 'mapa' ? 'none' : undefined }}>
           <div style={{ maxWidth: 900, margin: '0 auto' }}>
 
             {/* Page header */}
@@ -600,15 +610,15 @@ export function CampaignPage() {
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.22em]"
                   style={{ color: 'var(--color-arcano-dim)', fontFamily: 'var(--font-ui)', marginBottom: '0.25rem' }}>
-                  {view === 'players' ? 'Jogadores' : 'NPCs'}
+                  {listView === 'players' ? 'Jogadores' : 'NPCs'}
                 </p>
                 <h2 className="font-display font-bold text-2xl" style={{ color: '#EEF4FC' }}>
-                  {view === 'players'
+                  {listView === 'players'
                     ? `${campaign.players.length} personagem${campaign.players.length !== 1 ? 's' : ''}`
                     : `${campaign.npcs.length} NPC${campaign.npcs.length !== 1 ? 's' : ''}`}
                 </h2>
               </div>
-              {isGm && view === 'npcs' && (
+              {isGm && listView === 'npcs' && (
                 <button onClick={openNpcModal}
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
@@ -629,11 +639,11 @@ export function CampaignPage() {
                 border: '1px dashed rgba(255,255,255,0.08)', borderRadius: 4,
               }}>
                 <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '0.75rem' }}>
-                  {view === 'players'
+                  {listView === 'players'
                     ? 'Nenhum jogador ainda. Compartilhe o código de convite.'
                     : 'Nenhum NPC adicionado ainda.'}
                 </p>
-                {isGm && view === 'npcs' && (
+                {isGm && listView === 'npcs' && (
                   <button onClick={openNpcModal}
                     style={{
                       padding: '0.5rem 1.25rem', borderRadius: 4,
@@ -653,9 +663,9 @@ export function CampaignPage() {
                     char={char}
                     isGm={isGm}
                     campaignId={id!}
-                    view={view}
+                    view={listView}
                     canViewSheet={char.isPublic || char.userId === user?.id || isGm}
-                    onRemove={isGm ? () => handleRemove(char.id, view) : undefined}
+                    onRemove={isGm ? () => handleRemove(char.id, listView) : undefined}
                   />
                 ))}
               </div>
