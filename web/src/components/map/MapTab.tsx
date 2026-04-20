@@ -1,11 +1,16 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { api } from '@/lib/apiClient'
+import { useAuth } from '@/lib/authContext'
+import { useMapRealtime, useCampaignMapChannel } from '@/hooks/useMapRealtime'
+import type { MapBroadcastEvent } from '@/hooks/useMapRealtime'
 import type { CampaignDetail } from '@/data/campaignTypes'
 import type { GameMap, MapToken, MapTool } from '@/lib/mapTypes'
 import { MapCanvas } from './MapCanvas'
 import { MapToolbar } from './MapToolbar'
 import { MapLayerPanel } from './MapLayerPanel'
 import { MapTokenPanel } from './MapTokenPanel'
+
+const TOKEN_DRAG_THROTTLE_MS = 50
 
 interface MapTabProps {
   campaign: CampaignDetail
@@ -94,6 +99,7 @@ function CreateMapModal({ campaignId, onCreated, onClose }: {
 // ── MapTab ────────────────────────────────────────────────────────────────────
 
 export function MapTab({ campaign }: MapTabProps) {
+  const { user } = useAuth()
   const [map, setMap] = useState<GameMap | null>(null)
   const [tokens, setTokens] = useState<MapToken[]>([])
   const [loading, setLoading] = useState(true)
@@ -103,11 +109,18 @@ export function MapTab({ campaign }: MapTabProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerSize, setContainerSize] = useState({ w: 0, h: 0 })
 
+  // Throttle state for TOKEN_MOVE broadcasts during drag
+  const lastDragBroadcastRef = useRef(0)
+
   const allChars = [...campaign.players, ...campaign.npcs]
 
   // Measure canvas container
   useEffect(() => {
     if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    if (rect.width > 0 && rect.height > 0) {
+      setContainerSize({ w: rect.width, h: rect.height })
+    }
     const obs = new ResizeObserver(entries => {
       const e = entries[0]
       if (e) setContainerSize({ w: e.contentRect.width, h: e.contentRect.height })
@@ -116,7 +129,7 @@ export function MapTab({ campaign }: MapTabProps) {
     return () => obs.disconnect()
   }, [])
 
-  // Load active map + tokens
+  // Load active map + tokens on mount
   useEffect(() => {
     setLoading(true)
     api.maps.getActive(campaign.id)
@@ -129,14 +142,71 @@ export function MapTab({ campaign }: MapTabProps) {
       .finally(() => setLoading(false))
   }, [campaign.id])
 
+  // ── Realtime: map-level events (token moves, layer changes) ─────────────────
+  const broadcastMap = useMapRealtime(map?.id, {
+    selfId: user?.id,
+    onTokenMove: useCallback((tokenId, x, y) => {
+      setTokens(prev => prev.map(t => t.id === tokenId ? { ...t, x, y } : t))
+    }, []),
+
+    onTokenAdd: useCallback((token: MapToken) => {
+      setTokens(prev => prev.some(t => t.id === token.id) ? prev : [...prev, token])
+    }, []),
+
+    onTokenRemove: useCallback((tokenId: string) => {
+      setTokens(prev => prev.filter(t => t.id !== tokenId))
+    }, []),
+
+    onLayerChange: useCallback((_layerId, layers) => {
+      setMap(prev => prev ? { ...prev, layers } : prev)
+    }, []),
+  })
+
+  // ── Realtime: campaign-level events (map activated / deactivated) ───────────
+  const broadcastCampaign = useCampaignMapChannel(campaign.id, {
+    onMapActivated: useCallback((newMap: GameMap) => {
+      setMap(newMap)
+      setTokens(newMap.tokens ?? [])
+    }, []),
+
+    onMapDeactivated: useCallback(() => {
+      setMap(null)
+      setTokens([])
+    }, []),
+  })
+
+  // ── Token drag: throttled broadcast (no DB write) ───────────────────────────
+  const handleTokenDrag = useCallback((tokenId: string, x: number, y: number) => {
+    const now = Date.now()
+    if (now - lastDragBroadcastRef.current < TOKEN_DRAG_THROTTLE_MS) return
+    lastDragBroadcastRef.current = now
+    broadcastMap({ type: 'TOKEN_MOVE', tokenId, x, y, senderId: user?.id })
+  }, [broadcastMap, user?.id])
+
+  // ── Token drag end: update state + DB + broadcast final position ────────────
   const handleTokenMove = useCallback(async (tokenId: string, x: number, y: number) => {
     setTokens(prev => prev.map(t => t.id === tokenId ? { ...t, x, y } : t))
+    broadcastMap({ type: 'TOKEN_MOVE', tokenId, x, y, senderId: user?.id })
     try {
       await api.maps.updateToken(campaign.id, map!.id, tokenId, { x, y })
     } catch {
       // revert handled by next full load
     }
-  }, [campaign.id, map])
+  }, [campaign.id, map, broadcastMap])
+
+  // ── Handlers passed to panels so they can broadcast after mutations ─────────
+  const handleMapBroadcast = useCallback((event: MapBroadcastEvent) => {
+    broadcastMap({ ...event, senderId: user?.id })
+  }, [broadcastMap, user?.id])
+
+  // ── CreateMapModal callback: activate + broadcast to campaign channel ────────
+  const handleMapCreated = useCallback(async (newMap: GameMap) => {
+    setMap(newMap)
+    setShowCreateModal(false)
+    // Load tokens (empty for a new map)
+    setTokens([])
+    broadcastCampaign({ type: 'MAP_ACTIVATED', map: newMap })
+  }, [broadcastCampaign])
 
   const activeLayer = map?.layers.find(l => l.isActive) ?? null
 
@@ -175,7 +245,7 @@ export function MapTab({ campaign }: MapTabProps) {
         {showCreateModal && (
           <CreateMapModal
             campaignId={campaign.id}
-            onCreated={m => { setMap(m); setShowCreateModal(false) }}
+            onCreated={handleMapCreated}
             onClose={() => setShowCreateModal(false)}
           />
         )}
@@ -206,7 +276,8 @@ export function MapTab({ campaign }: MapTabProps) {
               <MapLayerPanel
                 campaignId={campaign.id}
                 map={map}
-                onMapChange={m => { setMap(m) }}
+                onMapChange={setMap}
+                onBroadcast={handleMapBroadcast}
               />
               <div style={{ height: 1, background: 'var(--color-border)' }} />
               <MapTokenPanel
@@ -215,6 +286,7 @@ export function MapTab({ campaign }: MapTabProps) {
                 tokens={tokens}
                 allChars={allChars}
                 onTokensChange={setTokens}
+                onBroadcast={handleMapBroadcast}
               />
             </div>
 
@@ -251,6 +323,7 @@ export function MapTab({ campaign }: MapTabProps) {
                     campaignId={campaign.id}
                     map={map}
                     onMapChange={m => { setMap(m); setPanelOpen(false) }}
+                    onBroadcast={handleMapBroadcast}
                   />
                   <div style={{ height: 1, background: 'var(--color-border)' }} />
                   <MapTokenPanel
@@ -259,6 +332,7 @@ export function MapTab({ campaign }: MapTabProps) {
                     tokens={tokens}
                     allChars={allChars}
                     onTokensChange={t => { setTokens(t); setPanelOpen(false) }}
+                    onBroadcast={handleMapBroadcast}
                   />
                 </div>
               </div>
@@ -277,6 +351,7 @@ export function MapTab({ campaign }: MapTabProps) {
               isGm={campaign.isGm}
               containerWidth={containerSize.w}
               containerHeight={containerSize.h}
+              onTokenDrag={handleTokenDrag}
               onTokenMove={handleTokenMove}
             />
           ) : (
@@ -309,7 +384,7 @@ export function MapTab({ campaign }: MapTabProps) {
       {showCreateModal && (
         <CreateMapModal
           campaignId={campaign.id}
-          onCreated={m => { setMap(m); setShowCreateModal(false) }}
+          onCreated={handleMapCreated}
           onClose={() => setShowCreateModal(false)}
         />
       )}

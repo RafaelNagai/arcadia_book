@@ -44,8 +44,13 @@ export async function uploadController(fastify: FastifyInstance) {
     const data = await req.file()
     if (!data) throw new ValidationError('Nenhum arquivo enviado')
 
-    const mapId = (data.fields.mapId as { value: string } | undefined)?.value
-    if (!mapId) throw new ValidationError('mapId é obrigatório')
+    const mapIdField = data.fields.mapId as any
+    const mapId = mapIdField?.value
+
+    // Validação
+    if (typeof mapId !== 'string' || mapId.trim() === '') {
+      throw new ValidationError('mapId é obrigatório e deve ser um texto')
+    }
 
     const buffer = await data.toBuffer()
     const url = await svc.uploadMapLayerImage(

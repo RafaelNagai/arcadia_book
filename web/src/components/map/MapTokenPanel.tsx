@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { api } from '@/lib/apiClient'
 import { getAccent } from '@/components/character/types'
+import type { MapBroadcastEvent } from '@/hooks/useMapRealtime'
 import type { CampaignChar } from '@/data/campaignTypes'
 import type { GameMap, MapToken } from '@/lib/mapTypes'
 
@@ -10,6 +11,7 @@ interface MapTokenPanelProps {
   tokens: MapToken[]
   allChars: CampaignChar[]
   onTokensChange: (tokens: MapToken[]) => void
+  onBroadcast: (event: MapBroadcastEvent) => void
 }
 
 export function MapTokenPanel({
@@ -18,6 +20,7 @@ export function MapTokenPanel({
   tokens,
   allChars,
   onTokensChange,
+  onBroadcast,
 }: MapTokenPanelProps) {
   const [adding, setAdding] = useState<string | null>(null)
   const [removing, setRemoving] = useState<string | null>(null)
@@ -35,7 +38,9 @@ export function MapTokenPanel({
         x: 100,
         y: 100,
       })
-      onTokensChange([...tokens, res.token as MapToken])
+      const newToken = res.token as MapToken
+      onTokensChange([...tokens, newToken])
+      onBroadcast({ type: 'TOKEN_ADD', token: newToken })
     } catch (err) {
       alert((err as Error).message)
     } finally {
@@ -48,6 +53,7 @@ export function MapTokenPanel({
     try {
       await api.maps.deleteToken(campaignId, map.id, token.id)
       onTokensChange(tokens.filter(t => t.id !== token.id))
+      onBroadcast({ type: 'TOKEN_REMOVE', tokenId: token.id })
     } catch (err) {
       alert((err as Error).message)
     } finally {

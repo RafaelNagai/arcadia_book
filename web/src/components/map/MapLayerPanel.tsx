@@ -1,14 +1,16 @@
 import { useRef, useState } from 'react'
 import { api } from '@/lib/apiClient'
+import type { MapBroadcastEvent } from '@/hooks/useMapRealtime'
 import type { GameMap, MapLayer } from '@/lib/mapTypes'
 
 interface MapLayerPanelProps {
   campaignId: string
   map: GameMap
   onMapChange: (map: GameMap) => void
+  onBroadcast: (event: MapBroadcastEvent) => void
 }
 
-export function MapLayerPanel({ campaignId, map, onMapChange }: MapLayerPanelProps) {
+export function MapLayerPanel({ campaignId, map, onMapChange, onBroadcast }: MapLayerPanelProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
   const [activating, setActivating] = useState<string | null>(null)
@@ -38,10 +40,9 @@ export function MapLayerPanel({ campaignId, map, onMapChange }: MapLayerPanelPro
     setActivating(layerId)
     try {
       await api.maps.activateLayer(campaignId, map.id, layerId)
-      onMapChange({
-        ...map,
-        layers: map.layers.map(l => ({ ...l, isActive: l.id === layerId })),
-      })
+      const updatedLayers = map.layers.map(l => ({ ...l, isActive: l.id === layerId }))
+      onMapChange({ ...map, layers: updatedLayers })
+      onBroadcast({ type: 'LAYER_CHANGE', layerId, layers: updatedLayers })
     } catch (err) {
       alert((err as Error).message)
     } finally {

@@ -1,9 +1,54 @@
 # PRD — Mapa Interativo de Campanha (Arcádia)
 
-> **Status:** Rascunho  
-> **Versão:** 1.0  
+> **Status:** Em desenvolvimento — Fases 1 e 2 concluídas  
+> **Versão:** 1.2  
 > **Data:** 2026-04-20  
 > **Escopo:** Feature de mapa tático com fog of war para campanhas do sistema Arcádia
+
+## Status de Implementação
+
+| Fase | Status | Entregável |
+|---|---|---|
+| **Fase 1 — Fundação** | ✅ Concluída | Mapa estático, layers, tokens, drag |
+| **Fase 2 — Realtime** | ✅ Concluída | Sincronização ao vivo via Supabase Broadcast |
+| **Fase 3 — Fog Básico** | 🔜 Próxima | Visão circular sem paredes |
+| **Fase 4 — Line of Sight** | ⏳ Pendente | Ray casting com paredes |
+| **Fase 5 — Polimentos** | ⏳ Pendente | Grid, mobile, múltiplos mapas |
+
+---
+
+## Como Testar (Fases 1 e 2)
+
+### Pré-requisitos
+```bash
+# Terminal 1 — Backend
+cd /Users/naga/Documents/arcadia/book/api
+npm run dev   # http://localhost:3001
+
+# Terminal 2 — Frontend
+cd /Users/naga/Documents/arcadia/book/web
+npm run dev   # http://localhost:5173
+```
+
+### Fluxo do Mestre
+1. Abrir uma campanha → clicar aba **Mapa** na sidebar
+2. Clicar **"+ Criar mapa"** → digitar nome → confirmar
+3. No painel lateral (Layers) → clicar **"+ Adicionar layer"** → selecionar imagem (JPG/PNG/WebP, máx 20MB)
+4. Clicar **"Ativar"** na layer → imagem aparece no canvas
+5. No painel (Tokens) → clicar **"+"** ao lado de um personagem/NPC para colocá-lo no mapa
+6. Selecionar ferramenta **"Mover token"** (toolbar) → arrastar tokens
+
+### Fluxo do Jogador (outra aba/browser)
+1. Logar com uma conta de jogador membro da campanha
+2. Abrir a campanha → aba **Mapa**
+3. Ver o mapa com os tokens em posição real-time
+4. Quando mestre mover tokens → atualização imediata (< 300ms)
+5. Quando mestre trocar layer ativa → imagem troca automaticamente
+
+### O que ainda NÃO funciona nesta fase
+- Fog of war (tudo visível para todos) — Fase 3
+- Paredes e LOS — Fase 4
+- Grid overlay — Fase 5 (estrutura no backend já existe: `gridEnabled`, `gridSize`)
 
 ---
 

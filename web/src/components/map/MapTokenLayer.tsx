@@ -6,10 +6,11 @@ import { getAccent } from '@/components/character/types'
 
 const TOKEN_RADIUS = 28
 
-function TokenShape({ token, isDraggable, scale, onDragEnd }: {
+function TokenShape({ token, isDraggable, scale, onDrag, onDragEnd }: {
   token: MapToken
   isDraggable: boolean
   scale: number
+  onDrag?: (id: string, x: number, y: number) => void
   onDragEnd?: (id: string, x: number, y: number) => void
 }) {
   const accent = getAccent(token.character.afinidade)
@@ -33,6 +34,7 @@ function TokenShape({ token, isDraggable, scale, onDragEnd }: {
       x={token.x}
       y={token.y}
       draggable={isDraggable}
+      onDragMove={e => onDrag?.(token.id, e.target.x(), e.target.y())}
       onDragEnd={e => onDragEnd?.(token.id, e.target.x(), e.target.y())}
       opacity={token.isVisible ? 1 : 0.4}
     >
@@ -87,6 +89,9 @@ interface MapTokenLayerProps {
   tool: MapTool
   isGm: boolean
   scale: number
+  panX: number
+  panY: number
+  onTokenDrag?: (tokenId: string, x: number, y: number) => void
   onTokenMove?: (tokenId: string, x: number, y: number) => void
 }
 
@@ -96,6 +101,9 @@ export function MapTokenLayer({
   tool,
   isGm,
   scale,
+  panX,
+  panY,
+  onTokenDrag,
   onTokenMove,
 }: MapTokenLayerProps) {
   const visibleTokens = tokens.filter(t =>
@@ -103,13 +111,14 @@ export function MapTokenLayer({
   )
 
   return (
-    <Layer>
+    <Layer x={panX} y={panY} scaleX={scale} scaleY={scale}>
       {visibleTokens.map(token => (
         <TokenShape
           key={token.id}
           token={token}
           isDraggable={isGm && tool === 'move'}
           scale={scale}
+          onDrag={onTokenDrag}
           onDragEnd={onTokenMove}
         />
       ))}

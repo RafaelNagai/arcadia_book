@@ -331,8 +331,8 @@ export const api = {
     mapLayerImage: async (mapId: string, file: File): Promise<{ url: string }> => {
       const token = await getToken()
       const form = new FormData()
-      form.append('file', file)
       form.append('mapId', mapId)
+      form.append('file', file)
 
       const headers: Record<string, string> = {}
       if (token) headers['Authorization'] = `Bearer ${token}`
