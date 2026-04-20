@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import type { CampaignChar, CampaignSummary, CampaignDetail } from '@/data/campaignTypes'
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string
@@ -57,7 +58,7 @@ export const api = {
   // ── Characters ──────────────────────────────────────────────────────────────
 
   characters: {
-    list: () => apiFetch<{ characters: unknown[] }>('/characters'),
+    list: () => apiFetch<{ characters: CampaignChar[] }>('/characters'),
 
     listPublic: () => apiFetch<{ characters: unknown[] }>('/characters/public'),
 
@@ -176,15 +177,15 @@ export const api = {
   // ── Campaigns ───────────────────────────────────────────────────────────────
 
   campaigns: {
-    list: () => apiFetch<{ campaigns: unknown[] }>('/campaigns'),
+    list: () => apiFetch<{ campaigns: CampaignSummary[] }>('/campaigns'),
 
-    get: (id: string) => apiFetch<{ campaign: unknown }>(`/campaigns/${id}`),
+    get: (id: string) => apiFetch<{ campaign: CampaignDetail }>(`/campaigns/${id}`),
 
     create: (data: { title: string; description?: string; image_url?: string | null }) =>
-      apiFetch<{ campaign: unknown }>('/campaigns', { method: 'POST', body: JSON.stringify(data) }),
+      apiFetch<{ campaign: CampaignSummary }>('/campaigns', { method: 'POST', body: JSON.stringify(data) }),
 
     update: (id: string, data: { title?: string; description?: string; image_url?: string | null }) =>
-      apiFetch<{ campaign: unknown }>(`/campaigns/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+      apiFetch<{ campaign: CampaignDetail }>(`/campaigns/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
 
     delete: (id: string) => apiFetch(`/campaigns/${id}`, { method: 'DELETE' }),
 

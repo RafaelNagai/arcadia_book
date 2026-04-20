@@ -32,3 +32,8 @@
   --font-body:    'EB Garamond', 'Merriweather', Georgia, serif;
   --font-ui:      'Inter', 'system-ui', sans-serif;
 }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}

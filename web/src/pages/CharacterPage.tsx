@@ -57,9 +57,11 @@ export function CharacterPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
+  const locationState = location.state as { fromCampaignId?: string; fromCampaignView?: string } | null;
   const fromCampaignId: string | null =
-    (location.state as { fromCampaignId?: string } | null)?.fromCampaignId ??
+    locationState?.fromCampaignId ??
     new URLSearchParams(location.search).get('campaignId');
+  const fromCampaignView: string | null = locationState?.fromCampaignView ?? null;
   const { user } = useAuth();
 
   const [character, setCharacter] = useState<Character | undefined>(undefined);
@@ -445,7 +447,7 @@ export function CharacterPage() {
             Personagem não encontrado
           </p>
           <button
-            onClick={() => fromCampaignId ? navigate(`/campanha/${fromCampaignId}`) : navigate("/personagens")}
+            onClick={() => fromCampaignId ? navigate(`/campanha/${fromCampaignId}${fromCampaignView ? `?view=${fromCampaignView}` : ''}`) : navigate("/personagens")}
             style={{
               color: "var(--color-arcano-glow)",
               background: "none",
@@ -485,7 +487,7 @@ export function CharacterPage() {
           }}
         >
           <button
-            onClick={() => fromCampaignId ? navigate(`/campanha/${fromCampaignId}`) : navigate("/personagens")}
+            onClick={() => fromCampaignId ? navigate(`/campanha/${fromCampaignId}${fromCampaignView ? `?view=${fromCampaignView}` : ''}`) : navigate("/personagens")}
             className="flex items-center gap-2 px-3 py-2 rounded-sm text-xs font-semibold uppercase tracking-wider"
             style={{
               background: "rgba(4,10,20,0.75)",

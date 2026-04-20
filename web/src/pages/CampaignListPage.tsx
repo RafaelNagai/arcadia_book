@@ -3,18 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/lib/authContext'
 import { api } from '@/lib/apiClient'
-
-interface CampaignSummary {
-  id: string
-  gmUserId: string
-  title: string
-  description: string
-  imageUrl: string | null
-  inviteCode?: string
-  isGm: boolean
-  playerCount: number
-  createdAt: string
-}
+import type { CampaignSummary } from '@/data/campaignTypes'
 
 function SkeletonCard() {
   return (
@@ -48,7 +37,6 @@ function CampaignCard({ campaign }: { campaign: CampaignSummary }) {
           boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
         }}
       >
-        {/* Image / placeholder */}
         <div style={{ height: 160, position: 'relative', overflow: 'hidden', background: 'rgba(8,12,28,0.8)' }}>
           {campaign.imageUrl ? (
             <img src={campaign.imageUrl} alt={campaign.title}
@@ -131,14 +119,14 @@ function CreateCampaignModal({ onClose, onCreate }: {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!title.trim()) return
     setSaving(true)
     setError(null)
     try {
       const res = await api.campaigns.create({ title: title.trim(), description: description.trim() })
-      onCreate((res as { campaign: CampaignSummary }).campaign)
+      onCreate(res.campaign)
       onClose()
     } catch (err) {
       setError((err as Error).message)
@@ -252,24 +240,31 @@ export function CampaignListPage() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [campaigns, setCampaigns] = useState<CampaignSummary[]>([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [showCreate, setShowCreate] = useState(false)
+
+  function fetchCampaigns() {
+    setLoading(true)
+    setError(null)
+    api.campaigns.list()
+      .then(res => setCampaigns(res.campaigns))
+      .catch(err => setError((err as Error).message))
+      .finally(() => setLoading(false))
+  }
 
   useEffect(() => {
     document.title = 'Campanhas — Arcádia'
     window.scrollTo({ top: 0 })
-    if (!user) return
-    setLoading(true)
-    api.campaigns.list()
-      .then(res => setCampaigns((res as { campaigns: CampaignSummary[] }).campaigns))
-      .catch(() => {})
-      .finally(() => setLoading(false))
+    if (!user) {
+      setLoading(false)
+      return
+    }
+    fetchCampaigns()
   }, [user])
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--color-abyss)' }}>
-      <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}`}</style>
-
       {/* Header */}
       <div style={{
         background: 'linear-gradient(180deg, rgba(8,18,36,0.9) 0%, var(--color-abyss) 100%)',
@@ -334,6 +329,21 @@ export function CampaignListPage() {
         ) : loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)}
+          </div>
+        ) : error ? (
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.85rem', color: '#E07070', marginBottom: '1rem' }}>
+              {error}
+            </p>
+            <button onClick={fetchCampaigns}
+              style={{
+                padding: '0.5rem 1.25rem', borderRadius: 4,
+                background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)',
+                color: 'rgba(255,255,255,0.5)', fontFamily: 'var(--font-ui)',
+                fontSize: '0.75rem', cursor: 'pointer',
+              }}>
+              Tentar novamente
+            </button>
           </div>
         ) : campaigns.length === 0 ? (
           <div style={{

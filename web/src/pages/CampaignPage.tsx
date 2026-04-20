@@ -3,45 +3,20 @@ import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/lib/authContext'
 import { api } from '@/lib/apiClient'
+import { getAccent } from '@/components/character/types'
+import type { CampaignChar, CampaignDetail } from '@/data/campaignTypes'
 
-interface CampaignChar {
-  id: string
-  name: string
-  race: string
-  afinidade: string
-  imageUrl: string | null
-  isPublic: boolean
-  userId: string
-  level: number
-  concept: string
-  campaignCharacterId: string
-}
+// ── CharMiniCard ─────────────────────────────────────────────────────────────
 
-interface CampaignDetail {
-  id: string
-  gmUserId: string
-  title: string
-  description: string
-  imageUrl: string | null
-  inviteCode?: string
-  isGm: boolean
-  players: CampaignChar[]
-  npcs: CampaignChar[]
-}
-
-const ELEMENT_COLORS: Record<string, string> = {
-  Energia: '#E8803A', Anomalia: '#6FC892', Paradoxo: '#50C8E8',
-  Astral: '#C090F0', Cognitivo: '#E8B84B',
-}
-
-function CharMiniCard({ char, canViewSheet, onRemove, isGm, campaignId }: {
+function CharMiniCard({ char, canViewSheet, onRemove, isGm, campaignId, view }: {
   char: CampaignChar
   canViewSheet: boolean
   onRemove?: () => void
   isGm: boolean
   campaignId: string
+  view: 'players' | 'npcs'
 }) {
-  const accentColor = ELEMENT_COLORS[char.afinidade] ?? '#80A8C8'
+  const accent = getAccent(char.afinidade)
 
   return (
     <div style={{
@@ -59,9 +34,9 @@ function CharMiniCard({ char, canViewSheet, onRemove, isGm, campaignId }: {
           <div style={{
             width: '100%', height: '100%',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: `radial-gradient(ellipse 80% 80% at 50% 30%, ${accentColor}18 0%, transparent 70%)`,
+            background: `radial-gradient(ellipse 80% 80% at 50% 30%, ${accent.text}18 0%, transparent 70%)`,
           }}>
-            <span style={{ fontSize: '5rem', opacity: 0.12, fontFamily: 'var(--font-display)', fontWeight: 700, color: accentColor }}>
+            <span style={{ fontSize: '5rem', opacity: 0.12, fontFamily: 'var(--font-display)', fontWeight: 700, color: accent.text }}>
               {char.name[0]}
             </span>
           </div>
@@ -73,8 +48,8 @@ function CharMiniCard({ char, canViewSheet, onRemove, isGm, campaignId }: {
         <span style={{
           display: 'inline-block', fontSize: '0.6rem', fontFamily: 'var(--font-ui)',
           fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: accentColor, background: `${accentColor}18`,
-          border: `1px solid ${accentColor}44`, borderRadius: 3,
+          color: accent.text, background: `${accent.text}18`,
+          border: `1px solid ${accent.text}44`, borderRadius: 3,
           padding: '0.15rem 0.45rem', marginBottom: '0.4rem',
         }}>
           {char.race}
@@ -87,13 +62,13 @@ function CharMiniCard({ char, canViewSheet, onRemove, isGm, campaignId }: {
         </p>
 
         {canViewSheet ? (
-          <Link to={`/ficha/${char.id}`} state={{ fromCampaignId: campaignId }}
+          <Link to={`/ficha/${char.id}`} state={{ fromCampaignId: campaignId, fromCampaignView: view }}
             style={{
               display: 'block', textAlign: 'center',
               padding: '0.4rem', borderRadius: 3,
-              background: `${accentColor}12`,
-              border: `1px solid ${accentColor}33`,
-              color: accentColor, fontFamily: 'var(--font-ui)',
+              background: `${accent.text}12`,
+              border: `1px solid ${accent.text}33`,
+              color: accent.text, fontFamily: 'var(--font-ui)',
               fontSize: '0.68rem', fontWeight: 600,
               letterSpacing: '0.1em', textDecoration: 'none',
               textTransform: 'uppercase',
@@ -134,23 +109,19 @@ function CharMiniCard({ char, canViewSheet, onRemove, isGm, campaignId }: {
   )
 }
 
-function SelectNpcModal({ campaignId, existingNpcIds, onClose, onAdd }: {
+// ── SelectNpcModal ────────────────────────────────────────────────────────────
+
+function SelectNpcModal({ campaignId, existingNpcIds, onClose, onAdd, chars, charsLoading }: {
   campaignId: string
   existingNpcIds: string[]
   onClose: () => void
   onAdd: (char: CampaignChar) => void
+  chars: CampaignChar[]
+  charsLoading: boolean
 }) {
   const navigate = useNavigate()
-  const [chars, setChars] = useState<CampaignChar[]>([])
-  const [loading, setLoading] = useState(true)
   const [adding, setAdding] = useState<string | null>(null)
   const [addedIds, setAddedIds] = useState<Set<string>>(new Set(existingNpcIds))
-
-  useEffect(() => {
-    api.characters.list().then(res => {
-      setChars((res as { characters: CampaignChar[] }).characters)
-    }).finally(() => setLoading(false))
-  }, [])
 
   async function handleAdd(char: CampaignChar) {
     setAdding(char.id)
@@ -206,7 +177,7 @@ function SelectNpcModal({ campaignId, existingNpcIds, onClose, onAdd }: {
           </button>
         </div>
 
-        {loading ? (
+        {charsLoading ? (
           <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Carregando…</p>
         ) : chars.length === 0 ? (
           <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
@@ -279,105 +250,38 @@ function SelectNpcModal({ campaignId, existingNpcIds, onClose, onAdd }: {
   )
 }
 
-export function CampaignPage() {
-  const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
-  const [searchParams, setSearchParams] = useSearchParams()
-  const { user } = useAuth()
+// ── CampaignSidebar ───────────────────────────────────────────────────────────
 
-  const view = (searchParams.get('view') as 'players' | 'npcs') ?? 'players'
+interface CampaignSidebarProps {
+  campaign: CampaignDetail
+  view: 'players' | 'npcs'
+  isGm: boolean
+  onChangeView: (v: 'players' | 'npcs') => void
+  onRegenerateCode: () => void
+  onRequestDelete: () => void
+  onClose?: () => void
+}
 
-  const [campaign, setCampaign] = useState<CampaignDetail | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [showNpcModal, setShowNpcModal] = useState(false)
+function CampaignSidebar({ campaign, view, isGm, onChangeView, onRegenerateCode, onRequestDelete, onClose }: CampaignSidebarProps) {
   const [showInviteCode, setShowInviteCode] = useState(false)
   const [copied, setCopied] = useState(false)
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
-  const [deleting, setDeleting] = useState(false)
-
-  useEffect(() => {
-    if (!id) return
-    setLoading(true)
-    api.campaigns.get(id)
-      .then(res => {
-        const c = (res as { campaign: CampaignDetail }).campaign
-        setCampaign(c)
-        document.title = `${c.title} — Arcádia`
-      })
-      .catch(() => setCampaign(null))
-      .finally(() => setLoading(false))
-  }, [id])
-
-  async function handleRemove(charId: string) {
-    if (!id) return
-    await api.campaigns.leave(id, charId)
-    setCampaign(prev => prev ? {
-      ...prev,
-      players: prev.players.filter(c => c.id !== charId),
-      npcs: prev.npcs.filter(c => c.id !== charId),
-    } : prev)
-  }
-
-  async function handleRegenerateCode() {
-    if (!id) return
-    const res = await api.campaigns.regenerateInviteCode(id)
-    setCampaign(prev => prev ? { ...prev, inviteCode: (res as { inviteCode: string }).inviteCode } : prev)
-  }
-
-  async function handleDeleteCampaign() {
-    if (!id) return
-    setDeleting(true)
-    try {
-      await api.campaigns.delete(id)
-      navigate('/campanhas')
-    } catch {
-      setDeleting(false)
-      setShowDeleteConfirm(false)
-    }
-  }
 
   function copyCode() {
-    if (!campaign?.inviteCode) return
+    if (!campaign.inviteCode) return
     navigator.clipboard.writeText(campaign.inviteCode)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
 
-  function setView(v: 'players' | 'npcs') {
-    setSearchParams({ view: v })
-    setSidebarOpen(false)
+  function handleNavClick(v: 'players' | 'npcs') {
+    onChangeView(v)
+    onClose?.()
   }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--color-abyss)' }}>
-        <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.85rem' }}>Carregando…</p>
-      </div>
-    )
-  }
-
-  if (!campaign) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--color-abyss)' }}>
-        <div className="text-center space-y-4">
-          <p className="font-display text-2xl" style={{ color: 'var(--color-text-secondary)' }}>Campanha não encontrada</p>
-          <button onClick={() => navigate('/campanhas')}
-            style={{ color: 'var(--color-arcano-glow)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: '0.8rem' }}>
-            ← Voltar
-          </button>
-        </div>
-      </div>
-    )
-  }
-
-  const isGm = campaign.isGm
-  const currentList = view === 'players' ? campaign.players : campaign.npcs
 
   const navItem = (v: 'players' | 'npcs', label: string, count: number) => (
     <button
       key={v}
-      onClick={() => setView(v)}
+      onClick={() => handleNavClick(v)}
       style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         width: '100%', padding: '0.65rem 1rem', borderRadius: 4,
@@ -400,7 +304,7 @@ export function CampaignPage() {
     </button>
   )
 
-  const sidebarContent = (
+  return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
       {/* Campaign header */}
       <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--color-border)', flexShrink: 0 }}>
@@ -472,7 +376,7 @@ export function CampaignPage() {
                 }}>
                   {copied ? '✓ Copiado' : 'Copiar'}
                 </button>
-                <button onClick={handleRegenerateCode} style={{
+                <button onClick={onRegenerateCode} style={{
                   flex: 1, padding: '0.3rem', borderRadius: 3,
                   background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
                   color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-ui)', fontSize: '0.65rem', cursor: 'pointer',
@@ -482,7 +386,7 @@ export function CampaignPage() {
               </div>
             </div>
           )}
-          <button onClick={() => setShowDeleteConfirm(true)}
+          <button onClick={onRequestDelete}
             style={{
               padding: '0.5rem 0.75rem', borderRadius: 4, textAlign: 'left',
               background: 'rgba(200,60,60,0.06)', border: '1px solid rgba(200,60,60,0.18)',
@@ -495,6 +399,117 @@ export function CampaignPage() {
       )}
     </div>
   )
+}
+
+// ── CampaignPage ──────────────────────────────────────────────────────────────
+
+export function CampaignPage() {
+  const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { user } = useAuth()
+
+  const view = (searchParams.get('view') as 'players' | 'npcs') ?? 'players'
+
+  const [campaign, setCampaign] = useState<CampaignDetail | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [showNpcModal, setShowNpcModal] = useState(false)
+  const [npcCandidates, setNpcCandidates] = useState<CampaignChar[] | null>(null)
+  const [npcCandidatesLoading, setNpcCandidatesLoading] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+
+  useEffect(() => {
+    if (!id) return
+    setLoading(true)
+    api.campaigns.get(id)
+      .then(res => {
+        setCampaign(res.campaign)
+        document.title = `${res.campaign.title} — Arcádia`
+      })
+      .catch(() => setCampaign(null))
+      .finally(() => setLoading(false))
+  }, [id])
+
+  function openNpcModal() {
+    setShowNpcModal(true)
+    if (npcCandidates !== null) return
+    setNpcCandidatesLoading(true)
+    api.characters.list()
+      .then(res => setNpcCandidates(res.characters))
+      .catch(() => setNpcCandidates([]))
+      .finally(() => setNpcCandidatesLoading(false))
+  }
+
+  async function handleRemove(charId: string, type: 'players' | 'npcs') {
+    if (!id || !campaign) return
+    const snapshot = campaign
+    setCampaign(prev => {
+      if (!prev) return prev
+      return {
+        ...prev,
+        players: type === 'players' ? prev.players.filter(c => c.id !== charId) : prev.players,
+        npcs: type === 'npcs' ? prev.npcs.filter(c => c.id !== charId) : prev.npcs,
+      }
+    })
+    try {
+      if (type === 'players') {
+        await api.campaigns.leave(id, charId)
+      } else {
+        await api.campaigns.removeNpc(id, charId)
+      }
+    } catch {
+      setCampaign(snapshot)
+    }
+  }
+
+  async function handleRegenerateCode() {
+    if (!id) return
+    const res = await api.campaigns.regenerateInviteCode(id)
+    setCampaign(prev => prev ? { ...prev, inviteCode: res.inviteCode } : prev)
+  }
+
+  async function handleDeleteCampaign() {
+    if (!id) return
+    setDeleting(true)
+    try {
+      await api.campaigns.delete(id)
+      navigate('/campanhas')
+    } catch {
+      setDeleting(false)
+      setShowDeleteConfirm(false)
+    }
+  }
+
+  function setView(v: 'players' | 'npcs') {
+    setSearchParams({ view: v })
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--color-abyss)' }}>
+        <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.85rem' }}>Carregando…</p>
+      </div>
+    )
+  }
+
+  if (!campaign) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--color-abyss)' }}>
+        <div className="text-center space-y-4">
+          <p className="font-display text-2xl" style={{ color: 'var(--color-text-secondary)' }}>Campanha não encontrada</p>
+          <button onClick={() => navigate('/campanhas')}
+            style={{ color: 'var(--color-arcano-glow)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: '0.8rem' }}>
+            ← Voltar
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  const isGm = campaign.isGm
+  const currentList = view === 'players' ? campaign.players : campaign.npcs
 
   return (
     <div style={{ background: 'var(--color-abyss)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -535,7 +550,14 @@ export function CampaignPage() {
           position: 'sticky', top: 52,
           flexDirection: 'column',
         }}>
-          {sidebarContent}
+          <CampaignSidebar
+            campaign={campaign}
+            view={view}
+            isGm={isGm}
+            onChangeView={setView}
+            onRegenerateCode={handleRegenerateCode}
+            onRequestDelete={() => setShowDeleteConfirm(true)}
+          />
         </div>
 
         {/* Mobile sidebar overlay */}
@@ -555,7 +577,15 @@ export function CampaignPage() {
                   borderRight: '1px solid var(--color-border)',
                 }}
               >
-                {sidebarContent}
+                <CampaignSidebar
+                  campaign={campaign}
+                  view={view}
+                  isGm={isGm}
+                  onChangeView={setView}
+                  onRegenerateCode={handleRegenerateCode}
+                  onRequestDelete={() => setShowDeleteConfirm(true)}
+                  onClose={() => setSidebarOpen(false)}
+                />
               </motion.div>
             </>
           )}
@@ -579,7 +609,7 @@ export function CampaignPage() {
                 </h2>
               </div>
               {isGm && view === 'npcs' && (
-                <button onClick={() => setShowNpcModal(true)}
+                <button onClick={openNpcModal}
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                     padding: '0.55rem 1rem', borderRadius: 4,
@@ -604,7 +634,7 @@ export function CampaignPage() {
                     : 'Nenhum NPC adicionado ainda.'}
                 </p>
                 {isGm && view === 'npcs' && (
-                  <button onClick={() => setShowNpcModal(true)}
+                  <button onClick={openNpcModal}
                     style={{
                       padding: '0.5rem 1.25rem', borderRadius: 4,
                       background: 'rgba(200,146,42,0.1)', border: '1px solid rgba(200,146,42,0.3)',
@@ -623,8 +653,9 @@ export function CampaignPage() {
                     char={char}
                     isGm={isGm}
                     campaignId={id!}
+                    view={view}
                     canViewSheet={char.isPublic || char.userId === user?.id || isGm}
-                    onRemove={isGm ? () => handleRemove(char.id) : undefined}
+                    onRemove={isGm ? () => handleRemove(char.id, view) : undefined}
                   />
                 ))}
               </div>
@@ -640,6 +671,8 @@ export function CampaignPage() {
             existingNpcIds={campaign.npcs.map(n => n.id)}
             onClose={() => setShowNpcModal(false)}
             onAdd={char => setCampaign(prev => prev ? { ...prev, npcs: [...prev.npcs, { ...char, campaignCharacterId: '' }] } : prev)}
+            chars={npcCandidates ?? []}
+            charsLoading={npcCandidatesLoading}
           />
         )}
       </AnimatePresence>
@@ -672,7 +705,7 @@ export function CampaignPage() {
                 Excluir campanha?
               </p>
               <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, marginBottom: '1.5rem' }}>
-                <span style={{ color: '#EEF4FC', fontWeight: 600 }}>{campaign?.title}</span> será removida permanentemente. Os personagens não serão deletados, apenas desvinculados.
+                <span style={{ color: '#EEF4FC', fontWeight: 600 }}>{campaign.title}</span> será removida permanentemente. Os personagens não serão deletados, apenas desvinculados.
               </p>
               <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
                 <button onClick={() => setShowDeleteConfirm(false)} disabled={deleting}
