@@ -7,6 +7,8 @@ import {
   UpdateMapLayerSchema,
   CreateMapTokenSchema,
   UpdateMapTokenSchema,
+  UpdateFogSchema,
+  AddFogPatchesSchema,
 } from '../schemas/map.schema.js'
 import { UUIDParamSchema } from '../schemas/shared.schema.js'
 import { z } from 'zod'
@@ -149,5 +151,33 @@ export async function mapsController(fastify: FastifyInstance) {
     const { id, tokenId } = MapAndTokenParamSchema.parse(req.params)
     await svc.deleteToken(id, tokenId, req.user!.id)
     return reply.status(204).send()
+  })
+
+  // ── Fog ──────────────────────────────────────────────────────────────────
+
+  // Toggle fog on/off
+  fastify.patch('/:id/fog', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id } = UUIDParamSchema.parse(req.params)
+    const input = UpdateFogSchema.parse(req.body)
+    const map = await svc.updateFog(id, req.user!.id, input)
+    return reply.send({ map })
+  })
+
+  // Add revealed patches to a layer
+  fastify.post('/:id/layers/:layerId/fog/patches', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id, layerId } = MapAndLayerParamSchema.parse(req.params)
+    const input = AddFogPatchesSchema.parse(req.body)
+    const layer = await svc.addFogPatches(id, layerId, req.user!.id, input)
+    return reply.send({ layer })
+  })
+
+  // Reset fog for a layer
+  fastify.delete('/:id/layers/:layerId/fog/patches', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id, layerId } = MapAndLayerParamSchema.parse(req.params)
+    const layer = await svc.resetFog(id, layerId, req.user!.id)
+    return reply.send({ layer })
   })
 }

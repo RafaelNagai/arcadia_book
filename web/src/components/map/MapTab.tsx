@@ -4,7 +4,7 @@ import { useAuth } from '@/lib/authContext'
 import { useMapRealtime, useCampaignMapChannel } from '@/hooks/useMapRealtime'
 import type { MapBroadcastEvent } from '@/hooks/useMapRealtime'
 import type { CampaignDetail } from '@/data/campaignTypes'
-import type { GameMap, MapToken, MapTool } from '@/lib/mapTypes'
+import type { GameMap, MapToken, MapTool, FogPatch } from '@/lib/mapTypes'
 import { MapCanvas } from './MapCanvas'
 import { MapToolbar } from './MapToolbar'
 import { MapLayerPanel } from './MapLayerPanel'
@@ -104,6 +104,7 @@ export function MapTab({ campaign }: MapTabProps) {
   const [tokens, setTokens] = useState<MapToken[]>([])
   const [loading, setLoading] = useState(true)
   const [tool, setTool] = useState<MapTool>('select')
+  const [fogEnabled, setFogEnabled] = useState(false)
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [panelOpen, setPanelOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -111,8 +112,19 @@ export function MapTab({ campaign }: MapTabProps) {
 
   // Throttle state for TOKEN_MOVE broadcasts during drag
   const lastDragBroadcastRef = useRef(0)
+  const localFogPatchesRef = useRef<FogPatch[]>([])
+  const currentDragTokenRef = useRef<string | null>(null)
+  const [activeDrag, setActiveDrag] = useState<{ tokenId: string; x: number; y: number } | null>(null)
+  const [localFogPatches, setLocalFogPatches] = useState<FogPatch[]>([])
 
   const allChars = [...campaign.players, ...campaign.npcs]
+  const myCharacterIds = campaign.isGm
+    ? []
+    : campaign.players.filter(c => c.userId === user?.id).map(c => c.id)
+  const npcCharacterIds = campaign.npcs.map(c => c.id)
+
+  const fogStateRef = useRef({ fogEnabled, map, tokens, npcCharacterIds })
+  fogStateRef.current = { fogEnabled, map, tokens, npcCharacterIds }
 
   // Measure canvas container
   useEffect(() => {
@@ -137,6 +149,7 @@ export function MapTab({ campaign }: MapTabProps) {
         const m = res.map as GameMap | null
         setMap(m)
         if (m?.tokens) setTokens(m.tokens)
+        if (m) setFogEnabled(m.fogEnabled)
       })
       .catch(() => setMap(null))
       .finally(() => setLoading(false))
@@ -160,6 +173,16 @@ export function MapTab({ campaign }: MapTabProps) {
     onLayerChange: useCallback((_layerId, layers) => {
       setMap(prev => prev ? { ...prev, layers } : prev)
     }, []),
+
+    onFogUpdate: useCallback((enabled: boolean, layerId: string | null, revealed: FogPatch[]) => {
+      setFogEnabled(enabled)
+      if (layerId) {
+        setMap(prev => prev ? {
+          ...prev,
+          layers: prev.layers.map(l => l.id === layerId ? { ...l, fogRevealed: revealed } : l),
+        } : prev)
+      }
+    }, []),
   })
 
   // ── Realtime: campaign-level events (map activated / deactivated) ───────────
@@ -175,24 +198,113 @@ export function MapTab({ campaign }: MapTabProps) {
     }, []),
   })
 
-  // ── Token drag: throttled broadcast (no DB write) ───────────────────────────
+  // ── Token drag: throttled broadcast + vision circle + fog painting ──────────
   const handleTokenDrag = useCallback((tokenId: string, x: number, y: number) => {
     const now = Date.now()
     if (now - lastDragBroadcastRef.current < TOKEN_DRAG_THROTTLE_MS) return
     lastDragBroadcastRef.current = now
+
+    if (currentDragTokenRef.current !== tokenId) {
+      localFogPatchesRef.current = []
+      currentDragTokenRef.current = tokenId
+    }
+
+    setActiveDrag({ tokenId, x, y })
     broadcastMap({ type: 'TOKEN_MOVE', tokenId, x, y, senderId: user?.id })
+
+    const { fogEnabled: fe, map: m, tokens: toks, npcCharacterIds: npcIds } = fogStateRef.current
+    if (fe && m) {
+      const token = toks.find(t => t.id === tokenId)
+      const activeLayer = m.layers.find(l => l.isActive)
+      if (token && activeLayer && token.layerId === activeLayer.id && !npcIds.includes(token.characterId)) {
+        const radius = token.visionRadius ?? m.defaultVisionRadius
+        localFogPatchesRef.current.push({ x, y, radius })
+        setLocalFogPatches([...localFogPatchesRef.current])
+      }
+    }
   }, [broadcastMap, user?.id])
 
-  // ── Token drag end: update state + DB + broadcast final position ────────────
+  // ── Token drag end: persist fog trail + update state + DB ───────────────────
   const handleTokenMove = useCallback(async (tokenId: string, x: number, y: number) => {
+    const pendingPatches = [...localFogPatchesRef.current]
+    localFogPatchesRef.current = []
+    currentDragTokenRef.current = null
+    setActiveDrag(null)
+    setLocalFogPatches([])
+
     setTokens(prev => prev.map(t => t.id === tokenId ? { ...t, x, y } : t))
     broadcastMap({ type: 'TOKEN_MOVE', tokenId, x, y, senderId: user?.id })
     try {
       await api.maps.updateToken(campaign.id, map!.id, tokenId, { x, y })
+
+      if (fogEnabled) {
+        const token = tokens.find(t => t.id === tokenId)
+        const activeLayer = map!.layers.find(l => l.isActive)
+        if (token && activeLayer && token.layerId === activeLayer.id && !npcCharacterIds.includes(token.characterId)) {
+          const radius = token.visionRadius ?? map!.defaultVisionRadius
+          const allNewPatches = pendingPatches.length > 0
+            ? [...pendingPatches, { x, y, radius }]
+            : [{ x, y, radius }]
+          const existing = activeLayer.fogRevealed ?? []
+          const next = [...existing, ...allNewPatches]
+          setMap(prev => prev ? {
+            ...prev,
+            layers: prev.layers.map(l => l.id === activeLayer.id ? { ...l, fogRevealed: next } : l),
+          } : prev)
+          await api.maps.addFogPatches(map!.campaignId, map!.id, activeLayer.id, allNewPatches)
+          broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: activeLayer.id, fogRevealed: next, senderId: user?.id })
+        }
+      }
     } catch {
       // revert handled by next full load
     }
-  }, [campaign.id, map, broadcastMap])
+  }, [campaign.id, map, fogEnabled, tokens, npcCharacterIds, broadcastMap, user?.id])
+
+  // ── Fog handlers ────────────────────────────────────────────────────────────
+  const handleFogToggle = useCallback(async () => {
+    if (!map) return
+    const next = !fogEnabled
+    setFogEnabled(next)
+    try {
+      await api.maps.updateFog(map.campaignId, map.id, next)
+      broadcastMap({ type: 'FOG_UPDATE', fogEnabled: next, layerId: null, fogRevealed: [], senderId: user?.id })
+    } catch { setFogEnabled(fogEnabled) }
+  }, [map, fogEnabled, broadcastMap, user?.id])
+
+  const handleFogReveal = useCallback(async (patch: FogPatch) => {
+    if (!map) return
+    const activeLayer = map.layers.find(l => l.isActive)
+    if (!activeLayer) return
+    const existing = activeLayer.fogRevealed ?? []
+    const next = [...existing, patch]
+    setMap(prev => prev ? {
+      ...prev,
+      layers: prev.layers.map(l => l.id === activeLayer.id ? { ...l, fogRevealed: next } : l),
+    } : prev)
+    try {
+      await api.maps.addFogPatches(map.campaignId, map.id, activeLayer.id, [patch])
+      broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: activeLayer.id, fogRevealed: next, senderId: user?.id })
+    } catch {
+      setMap(prev => prev ? {
+        ...prev,
+        layers: prev.layers.map(l => l.id === activeLayer.id ? { ...l, fogRevealed: existing } : l),
+      } : prev)
+    }
+  }, [map, fogEnabled, broadcastMap, user?.id])
+
+  const handleFogReset = useCallback(async () => {
+    if (!map) return
+    const activeLayer = map.layers.find(l => l.isActive)
+    if (!activeLayer) return
+    setMap(prev => prev ? {
+      ...prev,
+      layers: prev.layers.map(l => l.id === activeLayer.id ? { ...l, fogRevealed: [] } : l),
+    } : prev)
+    try {
+      await api.maps.resetFog(map.campaignId, map.id, activeLayer.id)
+      broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: activeLayer.id, fogRevealed: [], senderId: user?.id })
+    } catch { /* state stays optimistic */ }
+  }, [map, fogEnabled, broadcastMap, user?.id])
 
   // ── Handlers passed to panels so they can broadcast after mutations ─────────
   const handleMapBroadcast = useCallback((event: MapBroadcastEvent) => {
@@ -257,7 +369,13 @@ export function MapTab({ campaign }: MapTabProps) {
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#04060C' }}>
       {/* Toolbar (master only) */}
       {campaign.isGm && (
-        <MapToolbar tool={tool} onToolChange={setTool} />
+        <MapToolbar
+          tool={tool}
+          onToolChange={setTool}
+          fogEnabled={fogEnabled}
+          onFogToggle={handleFogToggle}
+          onFogReset={handleFogReset}
+        />
       )}
 
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
@@ -351,8 +469,14 @@ export function MapTab({ campaign }: MapTabProps) {
               isGm={campaign.isGm}
               containerWidth={containerSize.w}
               containerHeight={containerSize.h}
+              fogEnabled={fogEnabled}
+              myCharacterIds={myCharacterIds}
+              npcCharacterIds={npcCharacterIds}
+              dragOverride={activeDrag}
+              localFogPatches={localFogPatches}
               onTokenDrag={handleTokenDrag}
               onTokenMove={handleTokenMove}
+              onFogReveal={handleFogReveal}
             />
           ) : (
             <div style={{

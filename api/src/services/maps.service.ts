@@ -9,6 +9,9 @@ import type {
   UpdateMapLayerInput,
   CreateMapTokenInput,
   UpdateMapTokenInput,
+  UpdateFogInput,
+  AddFogPatchesInput,
+  FogPatchInput,
 } from '../schemas/map.schema.js'
 
 export class MapsService {
@@ -155,6 +158,28 @@ export class MapsService {
     const token = await this.repo.findTokenById(tokenId)
     if (!token || token.mapId !== mapId) throw new NotFoundError('Token não encontrado')
     await this.repo.deleteToken(tokenId)
+  }
+
+  // ── Fog ───────────────────────────────────────────────────────────────────
+
+  async updateFog(mapId: string, userId: string, input: UpdateFogInput) {
+    await this.assertMapGm(mapId, userId)
+    return this.repo.updateFog(mapId, { fogEnabled: input.enabled })
+  }
+
+  async addFogPatches(mapId: string, layerId: string, userId: string, input: AddFogPatchesInput) {
+    await this.assertMapGm(mapId, userId)
+    const layer = await this.repo.findLayerById(layerId)
+    if (!layer || layer.mapId !== mapId) throw new NotFoundError('Layer não encontrada')
+    const existing = (layer.fogRevealed as FogPatchInput[]) ?? []
+    return this.repo.updateLayerFog(layerId, [...existing, ...input.patches])
+  }
+
+  async resetFog(mapId: string, layerId: string, userId: string) {
+    await this.assertMapGm(mapId, userId)
+    const layer = await this.repo.findLayerById(layerId)
+    if (!layer || layer.mapId !== mapId) throw new NotFoundError('Layer não encontrada')
+    return this.repo.updateLayerFog(layerId, [])
   }
 
   // ── Guards ────────────────────────────────────────────────────────────────

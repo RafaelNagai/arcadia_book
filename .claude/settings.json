@@ -13,7 +13,10 @@
       "Bash(cat)",
       "Read(//tmp/**)",
       "Read(//Users/naga/Documents/arcadia/**)",
-      "Bash(npx prisma *)"
+      "Bash(npx prisma *)",
+      "Bash(sed -i '' 's/Em desenvolvimento — Fases 1 e 2 concluídas/Em desenvolvimento — Fases 1, 2 e 3 concluídas/' PRD_MAPA_INTERATIVO.md)",
+      "Bash(sed -i '' 's/\\\\*\\\\*Versão:\\\\*\\\\* 1\\\\.2/\\\\*\\\\*Versão:\\\\*\\\\* 1.3/' PRD_MAPA_INTERATIVO.md)",
+      "Bash(sed -i '' 's/| \\\\*\\\\*Fase 3 — Fog Básico\\\\*\\\\* | 🔜 Próxima | Visão circular sem paredes |/| **Fase 3 — Fog Básico** | ✅ Concluída | Visão circular, exploração, fog por layer |/' PRD_MAPA_INTERATIVO.md)"
     ]
   }
 }

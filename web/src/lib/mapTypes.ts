@@ -5,6 +5,7 @@ export interface MapLayer {
   orderIndex: number
   imageUrl: string
   isActive: boolean
+  fogRevealed: FogPatch[]
   createdAt: string
 }
 
@@ -28,6 +29,12 @@ export interface MapToken {
   character: MapTokenCharacter
 }
 
+export interface FogPatch {
+  x: number
+  y: number
+  radius: number
+}
+
 export interface GameMap {
   id: string
   campaignId: string
@@ -37,9 +44,10 @@ export interface GameMap {
   gridSize: number
   visionUnified: boolean
   defaultVisionRadius: number
+  fogEnabled: boolean
   createdAt: string
   layers: MapLayer[]
   tokens?: MapToken[]
 }
 
-export type MapTool = 'select' | 'move'
+export type MapTool = 'select' | 'move' | 'fog'

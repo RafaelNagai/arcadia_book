@@ -38,6 +38,24 @@ export const UpdateMapTokenSchema = z.object({
   is_visible: z.boolean().optional(),
 })
 
+export const FogPatchSchema = z.object({
+  x: z.number(),
+  y: z.number(),
+  radius: z.number().positive(),
+})
+
+export const UpdateFogSchema = z.object({
+  enabled: z.boolean(),
+})
+
+export const AddFogPatchesSchema = z.object({
+  patches: z.array(FogPatchSchema).min(1).max(200),
+})
+
+export type FogPatchInput = z.infer<typeof FogPatchSchema>
+export type UpdateFogInput = z.infer<typeof UpdateFogSchema>
+export type AddFogPatchesInput = z.infer<typeof AddFogPatchesSchema>
+
 export type CreateMapInput = z.infer<typeof CreateMapSchema>
 export type UpdateMapInput = z.infer<typeof UpdateMapSchema>
 export type CreateMapLayerInput = z.infer<typeof CreateMapLayerSchema>

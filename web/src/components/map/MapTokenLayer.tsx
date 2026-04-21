@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Layer, Circle, Image as KonvaImage, Text, Group, Ring } from 'react-konva'
 import type Konva from 'konva'
-import type { MapToken, MapTool } from '@/lib/mapTypes'
+import type { MapToken, MapTool, FogPatch } from '@/lib/mapTypes'
 import { getAccent } from '@/components/character/types'
 
 const TOKEN_RADIUS = 28
@@ -91,8 +91,19 @@ interface MapTokenLayerProps {
   scale: number
   panX: number
   panY: number
+  fogEnabled: boolean
+  visionCircles: FogPatch[]
+  myCharacterIds: string[]
   onTokenDrag?: (tokenId: string, x: number, y: number) => void
   onTokenMove?: (tokenId: string, x: number, y: number) => void
+}
+
+function isInsideAnyCircle(x: number, y: number, circles: FogPatch[]): boolean {
+  return circles.some(c => {
+    const dx = x - c.x
+    const dy = y - c.y
+    return dx * dx + dy * dy <= c.radius * c.radius
+  })
 }
 
 export function MapTokenLayer({
@@ -103,12 +114,21 @@ export function MapTokenLayer({
   scale,
   panX,
   panY,
+  fogEnabled,
+  visionCircles,
+  myCharacterIds,
   onTokenDrag,
   onTokenMove,
 }: MapTokenLayerProps) {
-  const visibleTokens = tokens.filter(t =>
-    t.layerId === activeLayerId && (isGm || t.isVisible),
-  )
+  const visibleTokens = tokens.filter(t => {
+    if (t.layerId !== activeLayerId) return false
+    if (!isGm && !t.isVisible) return false
+    // Own tokens are always visible to the player who owns them
+    if (!isGm && myCharacterIds.includes(t.characterId)) return true
+    // Other tokens only visible inside vision circles when fog is active
+    if (!isGm && fogEnabled && !isInsideAnyCircle(t.x, t.y, visionCircles)) return false
+    return true
+  })
 
   return (
     <Layer x={panX} y={panY} scaleX={scale} scaleY={scale}>

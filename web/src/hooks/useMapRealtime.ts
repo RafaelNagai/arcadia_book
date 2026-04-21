@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/apiClient'
-import type { GameMap, MapLayer, MapToken } from '@/lib/mapTypes'
+import type { GameMap, MapLayer, MapToken, FogPatch } from '@/lib/mapTypes'
 
 // ── Broadcast event types ─────────────────────────────────────────────────────
 
@@ -9,6 +9,7 @@ export type MapBroadcastEvent =
   | { type: 'TOKEN_ADD'; token: MapToken; senderId?: string }
   | { type: 'TOKEN_REMOVE'; tokenId: string; senderId?: string }
   | { type: 'LAYER_CHANGE'; layerId: string; layers: MapLayer[]; senderId?: string }
+  | { type: 'FOG_UPDATE'; fogEnabled: boolean; layerId: string | null; fogRevealed: FogPatch[]; senderId?: string }
 
 export type CampaignMapEvent =
   | { type: 'MAP_ACTIVATED'; map: GameMap }
@@ -23,6 +24,7 @@ interface MapRealtimeHandlers {
   onTokenAdd: (token: MapToken) => void
   onTokenRemove: (tokenId: string) => void
   onLayerChange: (layerId: string, layers: MapLayer[]) => void
+  onFogUpdate: (fogEnabled: boolean, layerId: string | null, fogRevealed: FogPatch[]) => void
 }
 
 export function useMapRealtime(
@@ -58,6 +60,11 @@ export function useMapRealtime(
         const p = payload as MapBroadcastEvent
         if (p.type === 'LAYER_CHANGE' && p.senderId !== handlersRef.current.selfId)
           handlersRef.current.onLayerChange(p.layerId, p.layers)
+      })
+      .on('broadcast', { event: 'FOG_UPDATE' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'FOG_UPDATE' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onFogUpdate(p.fogEnabled, p.layerId, p.fogRevealed)
       })
       .subscribe()
 

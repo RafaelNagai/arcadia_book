@@ -298,6 +298,15 @@ export const api = {
 
     deleteToken: (campaignId: string, mapId: string, tokenId: string) =>
       apiFetch(`/campaigns/${campaignId}/maps/${mapId}/tokens/${tokenId}`, { method: 'DELETE' }),
+
+    updateFog: (campaignId: string, mapId: string, enabled: boolean) =>
+      apiFetch(`/campaigns/${campaignId}/maps/${mapId}/fog`, { method: 'PATCH', body: JSON.stringify({ enabled }) }),
+
+    addFogPatches: (campaignId: string, mapId: string, layerId: string, patches: { x: number; y: number; radius: number }[]) =>
+      apiFetch(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/fog/patches`, { method: 'POST', body: JSON.stringify({ patches }) }),
+
+    resetFog: (campaignId: string, mapId: string, layerId: string) =>
+      apiFetch(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/fog/patches`, { method: 'DELETE' }),
   },
 
   // ── Upload ──────────────────────────────────────────────────────────────────

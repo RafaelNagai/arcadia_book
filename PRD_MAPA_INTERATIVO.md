@@ -1,7 +1,7 @@
 # PRD — Mapa Interativo de Campanha (Arcádia)
 
-> **Status:** Em desenvolvimento — Fases 1 e 2 concluídas  
-> **Versão:** 1.2  
+> **Status:** Em desenvolvimento — Fases 1, 2 e 3 concluídas  
+> **Versão:** 1.3  
 > **Data:** 2026-04-20  
 > **Escopo:** Feature de mapa tático com fog of war para campanhas do sistema Arcádia
 
@@ -11,13 +11,13 @@
 |---|---|---|
 | **Fase 1 — Fundação** | ✅ Concluída | Mapa estático, layers, tokens, drag |
 | **Fase 2 — Realtime** | ✅ Concluída | Sincronização ao vivo via Supabase Broadcast |
-| **Fase 3 — Fog Básico** | 🔜 Próxima | Visão circular sem paredes |
+| **Fase 3 — Fog Básico** | ✅ Concluída | Visão circular, exploração, fog por layer |
 | **Fase 4 — Line of Sight** | ⏳ Pendente | Ray casting com paredes |
 | **Fase 5 — Polimentos** | ⏳ Pendente | Grid, mobile, múltiplos mapas |
 
 ---
 
-## Como Testar (Fases 1 e 2)
+## Como Testar (Fases 1, 2 e 3)
 
 ### Pré-requisitos
 ```bash
@@ -38,16 +38,23 @@ npm run dev   # http://localhost:5173
 5. No painel (Tokens) → clicar **"+"** ao lado de um personagem/NPC para colocá-lo no mapa
 6. Selecionar ferramenta **"Mover token"** (toolbar) → arrastar tokens
 
-### Fluxo do Jogador (outra aba/browser)
-1. Logar com uma conta de jogador membro da campanha
-2. Abrir a campanha → aba **Mapa**
-3. Ver o mapa com os tokens em posição real-time
-4. Quando mestre mover tokens → atualização imediata (< 300ms)
-5. Quando mestre trocar layer ativa → imagem troca automaticamente
+### Testando Fog of War (Fase 3)
+1. Na toolbar, clicar em **🌫 Névoa OFF** para ativar a névoa → mapa fica escuro
+2. Tokens com `visionRadius` revelam círculos ao redor deles com gradiente suave
+3. Arrastar um token para uma nova área → a área fica **permanentemente revelada** para aquela layer
+4. Selecionar ferramenta **👁 Revelar névoa** → clicar no canvas para revelar manualmente uma área (raio = `defaultVisionRadius` do mapa)
+5. Clicar **↺ Reset névoa** → remove todas as revelações manuais (mantém apenas a visão ao vivo dos tokens)
+6. Layer fog é independente: trocar de layer reinicia a névoa visível para o estado daquela layer específica
 
-### O que ainda NÃO funciona nesta fase
-- Fog of war (tudo visível para todos) — Fase 3
-- Paredes e LOS — Fase 4
+### Fluxo do Jogador com Fog (outra aba/browser)
+1. Logar com uma conta de jogador membro da campanha
+2. Abrir a campanha → aba **Mapa** → ver apenas as áreas dentro do raio de visão dos tokens
+3. NPCs/tokens fora do raio de visão de qualquer token ficam invisíveis
+4. Quando mestre mover tokens → visão atualiza em tempo real
+5. Áreas já exploradas (token passou por lá) permanecem reveladas no mapa
+
+### O que ainda NÃO funciona
+- Paredes e Line of Sight (ray casting) — Fase 4
 - Grid overlay — Fase 5 (estrutura no backend já existe: `gridEnabled`, `gridSize`)
 
 ---
@@ -108,12 +115,12 @@ Adicionar uma aba **Mapa** à página de campanha, onde o mestre pode criar e ge
 - [ ] **RF-19** — Por padrão, as visões de todos os PCs são unidas (área revelada = union de todos os cones)
 - [ ] **RF-20** — Mestre pode desabilitar a visão unida; cada jogador vê apenas seu personagem
 - [ ] **RF-21** — Mestre pode **revelar manualmente** regiões do mapa (polygons de reveal)
-- [ ] **RF-22** — Estado do fog tem três zonas por pixel/célula:
-  - **Preto** — nunca visto
-  - **Cinza/P&B** — já foi visto, mas não está na visão atual
-  - **Visível** — dentro do raio de visão atual de algum PC
-- [ ] **RF-23** — Estado das áreas exploradas (preto → cinza) persiste entre sessões
-- [ ] **RF-24** — Fog of War é independente por layer
+- [x] **RF-22** — Estado do fog tem duas zonas (Fase 3: circular sem LOS):
+  - **Preto** — fora do raio de visão atual E nunca explorado
+  - **Visível** — dentro do raio de visão atual OU área explorada por token que passou por lá
+  - *(Fase 4 adicionará zona cinza "visto mas não atual" com LOS real)*
+- [x] **RF-23** — Áreas exploradas (onde tokens passaram) persistem no banco por layer
+- [x] **RF-24** — Fog of War é independente por layer (cada `MapLayer` tem seu próprio `fogRevealed`)
 
 ### 3.5 Visualização do Jogador
 

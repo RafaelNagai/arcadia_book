@@ -1,4 +1,4 @@
-import type { PrismaClient } from '../generated/prisma/client.js'
+import type { PrismaClient, Prisma } from '../generated/prisma/client.js'
 
 const TOKEN_CHAR_SELECT = {
   id: true,
@@ -49,6 +49,17 @@ export class MapsRepository {
     defaultVisionRadius: number
   }>) {
     return this.db.map.update({ where: { id }, data, include: { layers: true } })
+  }
+
+  updateFog(id: string, data: { fogEnabled?: boolean }) {
+    return this.db.map.update({ where: { id }, data, include: { layers: true } })
+  }
+
+  updateLayerFog(id: string, fogRevealed: Prisma.InputJsonValue) {
+    return this.db.mapLayer.update({
+      where: { id },
+      data: { fogRevealed },
+    })
   }
 
   deleteMap(id: string) {

@@ -1,8 +1,9 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { Stage, Layer, Image as KonvaImage, Line, Group, Rect } from 'react-konva'
 import type Konva from 'konva'
-import type { MapLayer, MapToken, GameMap, MapTool } from '@/lib/mapTypes'
+import type { MapLayer, MapToken, GameMap, MapTool, FogPatch } from '@/lib/mapTypes'
 import { MapTokenLayer } from './MapTokenLayer'
+import { MapFogLayer } from './MapFogLayer'
 
 interface MapCanvasProps {
   map: GameMap
@@ -12,8 +13,14 @@ interface MapCanvasProps {
   isGm: boolean
   containerWidth: number
   containerHeight: number
+  fogEnabled: boolean
+  myCharacterIds: string[]
+  npcCharacterIds: string[]
+  dragOverride: { tokenId: string; x: number; y: number } | null
+  localFogPatches: FogPatch[]
   onTokenDrag?: (tokenId: string, x: number, y: number) => void
   onTokenMove?: (tokenId: string, x: number, y: number) => void
+  onFogReveal?: (patch: FogPatch) => void
 }
 
 export function MapCanvas({
@@ -24,15 +31,20 @@ export function MapCanvas({
   isGm,
   containerWidth,
   containerHeight,
+  fogEnabled,
+  myCharacterIds,
+  npcCharacterIds,
+  dragOverride,
+  localFogPatches,
   onTokenDrag,
   onTokenMove,
+  onFogReveal,
 }: MapCanvasProps) {
   const stageRef = useRef<Konva.Stage>(null)
   const [bgImage, setBgImage] = useState<HTMLImageElement | null>(null)
   const [scale, setScale] = useState(1)
   const [position, setPosition] = useState({ x: 0, y: 0 })
 
-  // Keep latest values in a ref so wheel/pan handlers don't go stale
   const stateRef = useRef({ scale, position })
   stateRef.current = { scale, position }
 
@@ -64,7 +76,7 @@ export function MapCanvas({
     })
   }, [bgImage, containerWidth, containerHeight])
 
-  // Pointer-centered zoom via scroll wheel
+  // Pointer-centered zoom
   const handleWheel = useCallback((e: Konva.KonvaEventObject<WheelEvent>) => {
     e.evt.preventDefault()
     const stage = stageRef.current
@@ -80,12 +92,23 @@ export function MapCanvas({
     setPosition({ x: pointer.x - worldX * newScale, y: pointer.y - worldY * newScale })
   }, [])
 
-  // Pan via mouse drag (tool === 'select')
   const handleMouseDown = useCallback((e: Konva.KonvaEventObject<MouseEvent>) => {
-    if (tool !== 'select') return
-    isPanning.current = true
-    lastPan.current = { x: e.evt.clientX, y: e.evt.clientY }
-  }, [tool])
+    if (tool === 'select') {
+      isPanning.current = true
+      lastPan.current = { x: e.evt.clientX, y: e.evt.clientY }
+    } else if (tool === 'fog' && isGm) {
+      const stage = stageRef.current
+      if (!stage) return
+      const pointer = stage.getPointerPosition()
+      if (!pointer) return
+      const { position: pos, scale: sc } = stateRef.current
+      onFogReveal?.({
+        x: (pointer.x - pos.x) / sc,
+        y: (pointer.y - pos.y) / sc,
+        radius: map.defaultVisionRadius,
+      })
+    }
+  }, [tool, isGm, map.defaultVisionRadius, onFogReveal])
 
   const handleMouseMove = useCallback((e: Konva.KonvaEventObject<MouseEvent>) => {
     if (!isPanning.current) return
@@ -97,8 +120,27 @@ export function MapCanvas({
 
   const handleMouseUp = useCallback(() => { isPanning.current = false }, [])
 
+  // PC tokens always generate vision circles; dragOverride moves the active token's circle during drag
+  const visionCircles: FogPatch[] = tokens
+    .filter(t =>
+      t.layerId === activeLayer?.id &&
+      !npcCharacterIds.includes(t.characterId) &&
+      (isGm || t.isVisible),
+    )
+    .map(t => {
+      const pos = dragOverride?.tokenId === t.id
+        ? { x: dragOverride.x, y: dragOverride.y }
+        : { x: t.x, y: t.y }
+      return { ...pos, radius: t.visionRadius ?? map.defaultVisionRadius }
+    })
+
   const stageW = containerWidth || window.innerWidth
   const stageH = containerHeight || window.innerHeight
+
+  const cursorStyle =
+    tool === 'select' ? 'grab'
+    : tool === 'fog' ? 'crosshair'
+    : 'default'
 
   return (
     <Stage
@@ -109,9 +151,9 @@ export function MapCanvas({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      style={{ background: '#04060C', cursor: tool === 'select' ? 'grab' : 'crosshair' }}
+      style={{ background: '#04060C', cursor: cursorStyle }}
     >
-      {/* Background + grid — pan/zoom via Group */}
+      {/* Background + grid */}
       <Layer>
         <Group x={position.x} y={position.y} scaleX={scale} scaleY={scale}>
           {bgImage ? (
@@ -147,7 +189,7 @@ export function MapCanvas({
         </Group>
       </Layer>
 
-      {/* Token layer — same pan/zoom applied to the Layer directly */}
+      {/* Tokens */}
       <MapTokenLayer
         tokens={tokens}
         activeLayerId={activeLayer?.id ?? null}
@@ -156,9 +198,24 @@ export function MapCanvas({
         scale={scale}
         panX={position.x}
         panY={position.y}
+        fogEnabled={fogEnabled}
+        visionCircles={visionCircles}
+        myCharacterIds={myCharacterIds}
         onTokenDrag={onTokenDrag}
         onTokenMove={onTokenMove}
       />
+
+      {/* Fog of war (above tokens) */}
+      {fogEnabled && (
+        <MapFogLayer
+          enabled={fogEnabled}
+          panX={position.x}
+          panY={position.y}
+          scale={scale}
+          visionCircles={visionCircles}
+          revealedPatches={[...(activeLayer?.fogRevealed ?? []), ...localFogPatches]}
+        />
+      )}
     </Stage>
   )
 }
