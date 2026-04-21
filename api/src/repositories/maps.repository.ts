@@ -79,13 +79,30 @@ export class MapsRepository {
     return this.db.map.findFirst({
       where: { campaignId, isActive: true },
       include: {
-        layers: { orderBy: { orderIndex: 'asc' } },
+        layers: {
+          orderBy: { orderIndex: 'asc' },
+          include: { walls: { orderBy: { createdAt: 'asc' } } },
+        },
         tokens: {
           include: { character: { select: TOKEN_CHAR_SELECT } },
           orderBy: { createdAt: 'asc' },
         },
       },
     })
+  }
+
+  // ── Walls ─────────────────────────────────────────────────────────────────
+
+  findWallById(id: string) {
+    return this.db.mapWall.findUnique({ where: { id } })
+  }
+
+  createWall(data: { mapId: string; layerId: string; points: Prisma.InputJsonValue }) {
+    return this.db.mapWall.create({ data })
+  }
+
+  deleteWall(id: string) {
+    return this.db.mapWall.delete({ where: { id } })
   }
 
   // ── Layers ────────────────────────────────────────────────────────────────
@@ -146,6 +163,7 @@ export class MapsRepository {
     y: number
     visionRadius: number | null
     isVisible: boolean
+    size: number
   }>) {
     return this.db.mapToken.update({
       where: { id },

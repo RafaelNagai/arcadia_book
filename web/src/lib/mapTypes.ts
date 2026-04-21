@@ -1,3 +1,10 @@
+export interface MapWall {
+  id: string
+  mapId: string
+  layerId: string
+  points: Array<{ x: number; y: number }>
+}
+
 export interface MapLayer {
   id: string
   mapId: string
@@ -6,6 +13,7 @@ export interface MapLayer {
   imageUrl: string
   isActive: boolean
   fogRevealed: FogPatch[]
+  walls: MapWall[]
   createdAt: string
 }
 
@@ -26,6 +34,7 @@ export interface MapToken {
   y: number
   visionRadius: number | null
   isVisible: boolean
+  size: number
   character: MapTokenCharacter
 }
 
@@ -33,6 +42,7 @@ export interface FogPatch {
   x: number
   y: number
   radius: number
+  polygon?: Array<{ x: number; y: number }>
 }
 
 export interface GameMap {
@@ -50,4 +60,4 @@ export interface GameMap {
   tokens?: MapToken[]
 }
 
-export type MapTool = 'select' | 'move' | 'fog'
+export type MapTool = 'select' | 'fog' | 'wall'

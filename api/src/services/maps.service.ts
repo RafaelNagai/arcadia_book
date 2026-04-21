@@ -13,6 +13,7 @@ import type {
   AddFogPatchesInput,
   FogPatchInput,
 } from '../schemas/map.schema.js'
+import type { Prisma } from '../generated/prisma/client.js'
 
 export class MapsService {
   private readonly repo: MapsRepository
@@ -150,6 +151,7 @@ export class MapsService {
     if (input.y !== undefined) patch.y = input.y
     if (input.vision_radius !== undefined) patch.visionRadius = input.vision_radius
     if (input.is_visible !== undefined) patch.isVisible = input.is_visible
+    if (input.size !== undefined) patch.size = input.size
     return this.repo.updateToken(tokenId, patch)
   }
 
@@ -180,6 +182,22 @@ export class MapsService {
     const layer = await this.repo.findLayerById(layerId)
     if (!layer || layer.mapId !== mapId) throw new NotFoundError('Layer não encontrada')
     return this.repo.updateLayerFog(layerId, [])
+  }
+
+  // ── Walls ─────────────────────────────────────────────────────────────────
+
+  async createWall(mapId: string, layerId: string, userId: string, points: Array<{ x: number; y: number }>) {
+    await this.assertMapGm(mapId, userId)
+    const layer = await this.repo.findLayerById(layerId)
+    if (!layer || layer.mapId !== mapId) throw new NotFoundError('Layer não encontrada')
+    return this.repo.createWall({ mapId, layerId, points: points as Prisma.InputJsonValue })
+  }
+
+  async deleteWall(mapId: string, wallId: string, userId: string) {
+    await this.assertMapGm(mapId, userId)
+    const wall = await this.repo.findWallById(wallId)
+    if (!wall || wall.mapId !== mapId) throw new NotFoundError('Parede não encontrada')
+    await this.repo.deleteWall(wallId)
   }
 
   // ── Guards ────────────────────────────────────────────────────────────────

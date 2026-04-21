@@ -4,7 +4,8 @@ import { useAuth } from '@/lib/authContext'
 import { useMapRealtime, useCampaignMapChannel } from '@/hooks/useMapRealtime'
 import type { MapBroadcastEvent } from '@/hooks/useMapRealtime'
 import type { CampaignDetail } from '@/data/campaignTypes'
-import type { GameMap, MapToken, MapTool, FogPatch } from '@/lib/mapTypes'
+import type { GameMap, MapToken, MapTool, FogPatch, MapWall } from '@/lib/mapTypes'
+import { computeVisibilityPolygon } from '@/lib/fogOfWar'
 import { MapCanvas } from './MapCanvas'
 import { MapToolbar } from './MapToolbar'
 import { MapLayerPanel } from './MapLayerPanel'
@@ -162,6 +163,10 @@ export function MapTab({ campaign }: MapTabProps) {
       setTokens(prev => prev.map(t => t.id === tokenId ? { ...t, x, y } : t))
     }, []),
 
+    onTokenUpdate: useCallback((tokenId, data) => {
+      setTokens(prev => prev.map(t => t.id === tokenId ? { ...t, ...data } : t))
+    }, []),
+
     onTokenAdd: useCallback((token: MapToken) => {
       setTokens(prev => prev.some(t => t.id === token.id) ? prev : [...prev, token])
     }, []),
@@ -218,7 +223,8 @@ export function MapTab({ campaign }: MapTabProps) {
       const activeLayer = m.layers.find(l => l.isActive)
       if (token && activeLayer && token.layerId === activeLayer.id && !npcIds.includes(token.characterId)) {
         const radius = token.visionRadius ?? m.defaultVisionRadius
-        localFogPatchesRef.current.push({ x, y, radius })
+        const polygon = computeVisibilityPolygon({ x, y }, radius, activeLayer.walls ?? [])
+        localFogPatchesRef.current.push({ x, y, radius, polygon })
         setLocalFogPatches([...localFogPatchesRef.current])
       }
     }
@@ -242,9 +248,10 @@ export function MapTab({ campaign }: MapTabProps) {
         const activeLayer = map!.layers.find(l => l.isActive)
         if (token && activeLayer && token.layerId === activeLayer.id && !npcCharacterIds.includes(token.characterId)) {
           const radius = token.visionRadius ?? map!.defaultVisionRadius
+          const polygon = computeVisibilityPolygon({ x, y }, radius, activeLayer.walls ?? [])
           const allNewPatches = pendingPatches.length > 0
-            ? [...pendingPatches, { x, y, radius }]
-            : [{ x, y, radius }]
+            ? [...pendingPatches, { x, y, radius, polygon }]
+            : [{ x, y, radius, polygon }]
           const existing = activeLayer.fogRevealed ?? []
           const next = [...existing, ...allNewPatches]
           setMap(prev => prev ? {
@@ -275,14 +282,16 @@ export function MapTab({ campaign }: MapTabProps) {
     if (!map) return
     const activeLayer = map.layers.find(l => l.isActive)
     if (!activeLayer) return
+    const polygon = computeVisibilityPolygon({ x: patch.x, y: patch.y }, patch.radius, activeLayer.walls ?? [])
+    const patchWithPoly = { ...patch, polygon }
     const existing = activeLayer.fogRevealed ?? []
-    const next = [...existing, patch]
+    const next = [...existing, patchWithPoly]
     setMap(prev => prev ? {
       ...prev,
       layers: prev.layers.map(l => l.id === activeLayer.id ? { ...l, fogRevealed: next } : l),
     } : prev)
     try {
-      await api.maps.addFogPatches(map.campaignId, map.id, activeLayer.id, [patch])
+      await api.maps.addFogPatches(map.campaignId, map.id, activeLayer.id, [patchWithPoly])
       broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: activeLayer.id, fogRevealed: next, senderId: user?.id })
     } catch {
       setMap(prev => prev ? {
@@ -305,6 +314,50 @@ export function MapTab({ campaign }: MapTabProps) {
       broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: activeLayer.id, fogRevealed: [], senderId: user?.id })
     } catch { /* state stays optimistic */ }
   }, [map, fogEnabled, broadcastMap, user?.id])
+
+  // ── Wall handlers ────────────────────────────────────────────────────────────
+  const handleWallAdd = useCallback(async (points: Array<{ x: number; y: number }>) => {
+    if (!map) return
+    const activeLayer = map.layers.find(l => l.isActive)
+    if (!activeLayer) return
+    try {
+      const res = await api.maps.createWall(map.campaignId, map.id, activeLayer.id, points)
+      const wall = res.wall as MapWall
+      setMap(prev => prev ? {
+        ...prev,
+        layers: prev.layers.map(l => l.id === activeLayer.id
+          ? { ...l, walls: [...(l.walls ?? []), wall] }
+          : l),
+      } : prev)
+    } catch (err) {
+      alert((err as Error).message)
+    }
+  }, [map])
+
+  const handleWallDelete = useCallback(async (wallId: string) => {
+    if (!map) return
+    const activeLayer = map.layers.find(l => l.isActive)
+    if (!activeLayer) return
+    setMap(prev => prev ? {
+      ...prev,
+      layers: prev.layers.map(l => l.id === activeLayer.id
+        ? { ...l, walls: (l.walls ?? []).filter(w => w.id !== wallId) }
+        : l),
+    } : prev)
+    try {
+      await api.maps.deleteWall(map.campaignId, map.id, activeLayer.id, wallId)
+    } catch { /* keep optimistic delete */ }
+  }, [map])
+
+  // ── Token resize ─────────────────────────────────────────────────────────────
+  const handleTokenResize = useCallback(async (tokenId: string, size: number) => {
+    if (!map) return
+    setTokens(prev => prev.map(t => t.id === tokenId ? { ...t, size } : t))
+    broadcastMap({ type: 'TOKEN_UPDATE', tokenId, data: { size }, senderId: user?.id })
+    try {
+      await api.maps.updateToken(campaign.id, map.id, tokenId, { size })
+    } catch { /* keep optimistic */ }
+  }, [map, campaign.id, broadcastMap, user?.id])
 
   // ── Handlers passed to panels so they can broadcast after mutations ─────────
   const handleMapBroadcast = useCallback((event: MapBroadcastEvent) => {
@@ -476,7 +529,10 @@ export function MapTab({ campaign }: MapTabProps) {
               localFogPatches={localFogPatches}
               onTokenDrag={handleTokenDrag}
               onTokenMove={handleTokenMove}
+              onTokenResize={handleTokenResize}
               onFogReveal={handleFogReveal}
+              onWallAdd={handleWallAdd}
+              onWallDelete={handleWallDelete}
             />
           ) : (
             <div style={{

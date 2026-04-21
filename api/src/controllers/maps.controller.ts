@@ -9,6 +9,7 @@ import {
   UpdateMapTokenSchema,
   UpdateFogSchema,
   AddFogPatchesSchema,
+  CreateMapWallSchema,
 } from '../schemas/map.schema.js'
 import { UUIDParamSchema } from '../schemas/shared.schema.js'
 import { z } from 'zod'
@@ -179,5 +180,23 @@ export async function mapsController(fastify: FastifyInstance) {
     const { id, layerId } = MapAndLayerParamSchema.parse(req.params)
     const layer = await svc.resetFog(id, layerId, req.user!.id)
     return reply.send({ layer })
+  })
+
+  // ── Walls ──────────────────────────────────────────────────────────────────
+
+  fastify.post('/:id/layers/:layerId/walls', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id, layerId } = MapAndLayerParamSchema.parse(req.params)
+    const input = CreateMapWallSchema.parse(req.body)
+    const wall = await svc.createWall(id, layerId, req.user!.id, input.points)
+    return reply.status(201).send({ wall })
+  })
+
+  fastify.delete('/:id/layers/:layerId/walls/:wallId', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id } = UUIDParamSchema.parse(req.params)
+    const { wallId } = req.params as { wallId: string }
+    await svc.deleteWall(id, wallId, req.user!.id)
+    return reply.status(204).send()
   })
 }

@@ -1,17 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 import { Layer, Circle, Image as KonvaImage, Text, Group, Ring } from 'react-konva'
 import type Konva from 'konva'
-import type { MapToken, MapTool, FogPatch } from '@/lib/mapTypes'
+import type { MapToken, MapTool } from '@/lib/mapTypes'
+import type { WallPoint } from '@/lib/fogOfWar'
+import { isInsideAnyPolygon } from '@/lib/fogOfWar'
 import { getAccent } from '@/components/character/types'
 
-const TOKEN_RADIUS = 28
+const TOKEN_BASE_RADIUS = 28
 
-function TokenShape({ token, isDraggable, scale, onDrag, onDragEnd }: {
+function TokenShape({ token, isDraggable, scale, onDrag, onDragEnd, onTokenClick }: {
   token: MapToken
   isDraggable: boolean
   scale: number
   onDrag?: (id: string, x: number, y: number) => void
   onDragEnd?: (id: string, x: number, y: number) => void
+  onTokenClick?: (id: string) => void
 }) {
   const accent = getAccent(token.character.afinidade)
   const [img, setImg] = useState<HTMLImageElement | null>(null)
@@ -26,7 +29,7 @@ function TokenShape({ token, isDraggable, scale, onDrag, onDragEnd }: {
     return () => { i.onload = null }
   }, [token.character.imageUrl])
 
-  const r = TOKEN_RADIUS
+  const r = TOKEN_BASE_RADIUS * (token.size ?? 1)
 
   return (
     <Group
@@ -36,6 +39,7 @@ function TokenShape({ token, isDraggable, scale, onDrag, onDragEnd }: {
       draggable={isDraggable}
       onDragMove={e => onDrag?.(token.id, e.target.x(), e.target.y())}
       onDragEnd={e => onDragEnd?.(token.id, e.target.x(), e.target.y())}
+      onClick={(e) => { e.cancelBubble = true; onTokenClick?.(token.id) }}
       opacity={token.isVisible ? 1 : 0.4}
     >
       {/* Glow ring */}
@@ -92,18 +96,11 @@ interface MapTokenLayerProps {
   panX: number
   panY: number
   fogEnabled: boolean
-  visionCircles: FogPatch[]
+  visionPolygons: WallPoint[][]
   myCharacterIds: string[]
   onTokenDrag?: (tokenId: string, x: number, y: number) => void
   onTokenMove?: (tokenId: string, x: number, y: number) => void
-}
-
-function isInsideAnyCircle(x: number, y: number, circles: FogPatch[]): boolean {
-  return circles.some(c => {
-    const dx = x - c.x
-    const dy = y - c.y
-    return dx * dx + dy * dy <= c.radius * c.radius
-  })
+  onTokenClick?: (tokenId: string) => void
 }
 
 export function MapTokenLayer({
@@ -115,20 +112,25 @@ export function MapTokenLayer({
   panX,
   panY,
   fogEnabled,
-  visionCircles,
+  visionPolygons,
   myCharacterIds,
   onTokenDrag,
   onTokenMove,
+  onTokenClick,
 }: MapTokenLayerProps) {
   const visibleTokens = tokens.filter(t => {
     if (t.layerId !== activeLayerId) return false
-    if (!isGm && !t.isVisible) return false
-    // Own tokens are always visible to the player who owns them
-    if (!isGm && myCharacterIds.includes(t.characterId)) return true
-    // Other tokens only visible inside vision circles when fog is active
-    if (!isGm && fogEnabled && !isInsideAnyCircle(t.x, t.y, visionCircles)) return false
-    return true
+    if (isGm) return true
+    // Own character tokens are always visible
+    if (myCharacterIds.includes(t.characterId)) return true
+    // With fog: any token (NPC or other player) visible only if inside player LOS polygon
+    if (fogEnabled) return isInsideAnyPolygon(t.x, t.y, visionPolygons)
+    // Without fog: only GM-marked-visible tokens
+    return t.isVisible
   })
+
+  const canDrag = (token: MapToken) =>
+    tool === 'select' && (isGm || myCharacterIds.includes(token.characterId))
 
   return (
     <Layer x={panX} y={panY} scaleX={scale} scaleY={scale}>
@@ -136,10 +138,11 @@ export function MapTokenLayer({
         <TokenShape
           key={token.id}
           token={token}
-          isDraggable={isGm && tool === 'move'}
+          isDraggable={canDrag(token)}
           scale={scale}
           onDrag={onTokenDrag}
           onDragEnd={onTokenMove}
+          onTokenClick={onTokenClick}
         />
       ))}
     </Layer>

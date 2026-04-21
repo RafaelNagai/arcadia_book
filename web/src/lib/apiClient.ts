@@ -290,6 +290,7 @@ export const api = {
       y?: number
       vision_radius?: number | null
       is_visible?: boolean
+      size?: number
     }) =>
       apiFetch<{ token: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/tokens/${tokenId}`, {
         method: 'PATCH',
@@ -307,6 +308,15 @@ export const api = {
 
     resetFog: (campaignId: string, mapId: string, layerId: string) =>
       apiFetch(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/fog/patches`, { method: 'DELETE' }),
+
+    createWall: (campaignId: string, mapId: string, layerId: string, points: Array<{ x: number; y: number }>) =>
+      apiFetch<{ wall: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/walls`, {
+        method: 'POST',
+        body: JSON.stringify({ points }),
+      }),
+
+    deleteWall: (campaignId: string, mapId: string, layerId: string, wallId: string) =>
+      apiFetch(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/walls/${wallId}`, { method: 'DELETE' }),
   },
 
   // ── Upload ──────────────────────────────────────────────────────────────────

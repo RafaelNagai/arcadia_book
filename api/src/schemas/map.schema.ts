@@ -36,6 +36,7 @@ export const UpdateMapTokenSchema = z.object({
   y: z.number().optional(),
   vision_radius: z.number().int().min(50).max(2000).nullable().optional(),
   is_visible: z.boolean().optional(),
+  size: z.number().min(0.25).max(4).optional(),
 })
 
 export const FogPatchSchema = z.object({
@@ -55,6 +56,11 @@ export const AddFogPatchesSchema = z.object({
 export type FogPatchInput = z.infer<typeof FogPatchSchema>
 export type UpdateFogInput = z.infer<typeof UpdateFogSchema>
 export type AddFogPatchesInput = z.infer<typeof AddFogPatchesSchema>
+
+export const CreateMapWallSchema = z.object({
+  points: z.array(z.object({ x: z.number(), y: z.number() })).min(2).max(500),
+})
+export type CreateMapWallInput = z.infer<typeof CreateMapWallSchema>
 
 export type CreateMapInput = z.infer<typeof CreateMapSchema>
 export type UpdateMapInput = z.infer<typeof UpdateMapSchema>

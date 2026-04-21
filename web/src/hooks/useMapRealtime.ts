@@ -6,6 +6,7 @@ import type { GameMap, MapLayer, MapToken, FogPatch } from '@/lib/mapTypes'
 
 export type MapBroadcastEvent =
   | { type: 'TOKEN_MOVE'; tokenId: string; x: number; y: number; senderId?: string }
+  | { type: 'TOKEN_UPDATE'; tokenId: string; data: { size?: number; isVisible?: boolean }; senderId?: string }
   | { type: 'TOKEN_ADD'; token: MapToken; senderId?: string }
   | { type: 'TOKEN_REMOVE'; tokenId: string; senderId?: string }
   | { type: 'LAYER_CHANGE'; layerId: string; layers: MapLayer[]; senderId?: string }
@@ -21,6 +22,7 @@ export type CampaignMapEvent =
 interface MapRealtimeHandlers {
   selfId: string | undefined
   onTokenMove: (tokenId: string, x: number, y: number) => void
+  onTokenUpdate: (tokenId: string, data: { size?: number; isVisible?: boolean }) => void
   onTokenAdd: (token: MapToken) => void
   onTokenRemove: (tokenId: string) => void
   onLayerChange: (layerId: string, layers: MapLayer[]) => void
@@ -45,6 +47,11 @@ export function useMapRealtime(
         const p = payload as MapBroadcastEvent
         if (p.type === 'TOKEN_MOVE' && p.senderId !== handlersRef.current.selfId)
           handlersRef.current.onTokenMove(p.tokenId, p.x, p.y)
+      })
+      .on('broadcast', { event: 'TOKEN_UPDATE' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'TOKEN_UPDATE' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onTokenUpdate(p.tokenId, p.data)
       })
       .on('broadcast', { event: 'TOKEN_ADD' }, ({ payload }) => {
         const p = payload as MapBroadcastEvent

@@ -130,6 +130,7 @@ model Map {
   campaign Campaign   @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   layers   MapLayer[]
   tokens   MapToken[]
+  walls    MapWall[]
 
   @@map("maps")
 }
@@ -147,8 +148,22 @@ model MapLayer {
 
   map    Map        @relation(fields: [mapId], references: [id], onDelete: Cascade)
   tokens MapToken[]
+  walls  MapWall[]
 
   @@map("map_layers")
+}
+
+model MapWall {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  mapId     String   @map("map_id") @db.Uuid
+  layerId   String   @map("layer_id") @db.Uuid
+  points    Json
+  createdAt DateTime @default(now()) @map("created_at")
+
+  map   Map      @relation(fields: [mapId], references: [id], onDelete: Cascade)
+  layer MapLayer @relation(fields: [layerId], references: [id], onDelete: Cascade)
+
+  @@map("map_walls")
 }
 
 model MapToken {
@@ -160,6 +175,7 @@ model MapToken {
   y            Float    @default(0)
   visionRadius Int?     @map("vision_radius")
   isVisible    Boolean  @default(true) @map("is_visible")
+  size         Float    @default(1)
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
