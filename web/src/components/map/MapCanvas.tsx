@@ -95,6 +95,7 @@ interface MapCanvasProps {
   onTokenMove?: (tokenId: string, x: number, y: number) => void
   onTokenResize?: (tokenId: string, size: number) => void
   onTokenEdit?: (tokenId: string) => void
+  onTokenDrop?: (charId: string, worldX: number, worldY: number, visionRadius: number | null) => void
   onFogReveal?: (patch: FogPatch) => void
   onWallAdd?: (points: Array<{ x: number; y: number }>) => void
   onWallDelete?: (wallId: string) => void
@@ -127,6 +128,7 @@ export function MapCanvas({
   onTokenMove,
   onTokenResize,
   onTokenEdit,
+  onTokenDrop,
   onFogReveal,
   onWallAdd,
   onWallDelete,
@@ -238,6 +240,19 @@ export function MapCanvas({
 
   const handleMouseUp = useCallback(() => { isPanning.current = false }, [])
 
+  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    const charId = e.dataTransfer.getData('charId')
+    if (!charId) return
+    const vrStr = e.dataTransfer.getData('visionRadius')
+    const visionRadius = vrStr !== '' ? Number(vrStr) : null
+    const { scale: sc, position: pos } = stateRef.current
+    const rect = e.currentTarget.getBoundingClientRect()
+    const worldX = (e.clientX - rect.left - pos.x) / sc
+    const worldY = (e.clientY - rect.top - pos.y) / sc
+    onTokenDrop?.(charId, worldX, worldY, visionRadius)
+  }, [onTokenDrop])
+
   const handleClick = useCallback((_e: Konva.KonvaEventObject<MouseEvent>) => {
     setSelectedTokenId(null)
     if (tool !== 'wall' || !isGm) return
@@ -302,7 +317,11 @@ export function MapCanvas({
   const cursorStyle = tool === 'fog' || tool === 'wall' ? 'crosshair' : 'grab'
 
   return (
-    <>
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%' }}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={handleDrop}
+    >
       <Stage
         ref={stageRef}
         width={stageW}
@@ -441,6 +460,6 @@ export function MapCanvas({
           </button>
         </div>
       )}
-    </>
+    </div>
   )
 }

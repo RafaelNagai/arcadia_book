@@ -350,6 +350,42 @@ export function MapTab({ campaign }: MapTabProps) {
     } catch { /* keep optimistic delete */ }
   }, [map])
 
+  // ── Token drop from panel onto canvas ───────────────────────────────────────
+  const handleTokenDrop = useCallback(async (charId: string, worldX: number, worldY: number, visionRadius: number | null) => {
+    if (!map) return
+    const activeLayer = map.layers.find(l => l.isActive)
+    if (!activeLayer) return
+    try {
+      const res = await api.maps.createToken(campaign.id, map.id, {
+        layer_id: activeLayer.id,
+        character_id: charId,
+        x: worldX,
+        y: worldY,
+        vision_radius: visionRadius,
+      })
+      const newToken = res.token as MapToken
+      setTokens(prev => prev.some(t => t.id === newToken.id) ? prev : [...prev, newToken])
+      broadcastMap({ type: 'TOKEN_ADD', token: newToken, senderId: user?.id })
+
+      // Reveal fog only at the drop point, not along the drag path
+      if (fogEnabled && !npcCharacterIds.includes(charId)) {
+        const radius = newToken.visionRadius ?? map.defaultVisionRadius
+        const polygon = computeVisibilityPolygon({ x: worldX, y: worldY }, radius, activeLayer.walls ?? [])
+        const patchWithPoly = { x: worldX, y: worldY, radius, polygon }
+        const existing = activeLayer.fogRevealed ?? []
+        const next = [...existing, patchWithPoly]
+        setMap(prev => prev ? {
+          ...prev,
+          layers: prev.layers.map(l => l.id === activeLayer.id ? { ...l, fogRevealed: next } : l),
+        } : prev)
+        await api.maps.addFogPatches(map.campaignId, map.id, activeLayer.id, [patchWithPoly])
+        broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: activeLayer.id, fogRevealed: next, senderId: user?.id })
+      }
+    } catch (err) {
+      alert((err as Error).message)
+    }
+  }, [map, campaign.id, fogEnabled, npcCharacterIds, broadcastMap, user?.id])
+
   // ── Token modal ──────────────────────────────────────────────────────────────
   const [modalToken, setModalToken] = useState<MapToken | null>(null)
 
@@ -551,6 +587,7 @@ export function MapTab({ campaign }: MapTabProps) {
               onTokenMove={handleTokenMove}
               onTokenResize={handleTokenResize}
               onTokenEdit={handleTokenEdit}
+              onTokenDrop={handleTokenDrop}
               onFogReveal={handleFogReveal}
               onWallAdd={handleWallAdd}
               onWallDelete={handleWallDelete}
@@ -592,9 +629,10 @@ export function MapTab({ campaign }: MapTabProps) {
 
       {modalToken && (
         <MapTokenModal
-          token={modalToken}
+          character={modalToken.character}
+          visionRadius={modalToken.visionRadius}
           map={map}
-          onSave={handleVisionUpdate}
+          onSave={(vr) => handleVisionUpdate(modalToken.id, vr)}
           onClose={() => setModalToken(null)}
         />
       )}

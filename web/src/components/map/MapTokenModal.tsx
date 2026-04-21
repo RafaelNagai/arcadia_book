@@ -1,23 +1,30 @@
 import { useState } from 'react'
 import { getAccent } from '@/components/character/types'
-import type { MapToken, GameMap } from '@/lib/mapTypes'
+import type { GameMap } from '@/lib/mapTypes'
+
+interface TokenModalCharacter {
+  id: string
+  name: string
+  imageUrl?: string | null
+  afinidade: string
+}
 
 interface MapTokenModalProps {
-  token: MapToken
+  character: TokenModalCharacter
+  visionRadius: number | null
   map: GameMap
-  onSave: (tokenId: string, visionRadius: number | null) => void
+  onSave: (visionRadius: number | null) => void
   onClose: () => void
 }
 
-export function MapTokenModal({ token, map, onSave, onClose }: MapTokenModalProps) {
-  const useDefault = token.visionRadius == null
-  const [useMapDefault, setUseMapDefault] = useState(useDefault)
-  const [radius, setRadius] = useState(token.visionRadius ?? map.defaultVisionRadius)
+export function MapTokenModal({ character, visionRadius, map, onSave, onClose }: MapTokenModalProps) {
+  const [useMapDefault, setUseMapDefault] = useState(visionRadius == null)
+  const [radius, setRadius] = useState(visionRadius ?? map.defaultVisionRadius)
 
-  const accent = getAccent(token.character.afinidade)
+  const accent = getAccent(character.afinidade)
 
   function handleSave() {
-    onSave(token.id, useMapDefault ? null : radius)
+    onSave(useMapDefault ? null : radius)
     onClose()
   }
 
@@ -46,20 +53,20 @@ export function MapTokenModal({ token, map, onSave, onClose }: MapTokenModalProp
             background: accent.bg, border: `2px solid ${accent.text}`,
             overflow: 'hidden',
           }}>
-            {token.character.imageUrl && (
-              <img src={token.character.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            {character.imageUrl && (
+              <img src={character.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             )}
           </div>
           <div>
             <p style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 700, color: '#EEF4FC' }}>
-              {token.character.name}
+              {character.name}
             </p>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: accent.text, marginTop: 2 }}>
-              {token.character.afinidade}
+              {character.afinidade}
             </p>
           </div>
           <a
-            href={`/ficha/${token.characterId}`}
+            href={`/ficha/${character.id}`}
             target="_blank"
             rel="noopener noreferrer"
             title="Abrir ficha em nova aba"
