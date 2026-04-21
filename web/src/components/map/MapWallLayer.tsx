@@ -10,6 +10,7 @@ interface MapWallLayerProps {
   previewPoint: { x: number; y: number } | null
   selectedWallId: string | null
   onWallSelect: (wallId: string) => void
+  onWallEndpointClick?: (point: { x: number; y: number }) => void
 }
 
 export function MapWallLayer({
@@ -21,7 +22,13 @@ export function MapWallLayer({
   previewPoint,
   selectedWallId,
   onWallSelect,
+  onWallEndpointClick,
 }: MapWallLayerProps) {
+  const selectedWall = selectedWallId ? walls.find(w => w.id === selectedWallId) : null
+  const endpoints = selectedWall?.points.length === 2
+    ? [selectedWall.points[0], selectedWall.points[1]]
+    : []
+
   return (
     <Layer x={panX} y={panY} scaleX={scale} scaleY={scale}>
       {/* Saved walls — click to select */}
@@ -40,6 +47,22 @@ export function MapWallLayer({
           />
         ) : null
       )}
+
+      {/* Endpoint circles for selected wall — click to extend from that point */}
+      {endpoints.map((pt, i) => (
+        <Circle
+          key={`ep-${i}`}
+          x={pt.x}
+          y={pt.y}
+          radius={8 / scale}
+          fill="rgba(232,184,75,0.15)"
+          stroke="rgba(232,184,75,0.95)"
+          strokeWidth={2 / scale}
+          hitStrokeWidth={20 / scale}
+          onClick={(e) => { e.cancelBubble = true; onWallEndpointClick?.(pt) }}
+          style={{ cursor: 'crosshair' }}
+        />
+      ))}
 
       {/* Preview segment from wallStart to cursor */}
       {wallStart && previewPoint && (

@@ -241,16 +241,25 @@ export function MapCanvas({
   const handleClick = useCallback((_e: Konva.KonvaEventObject<MouseEvent>) => {
     setSelectedTokenId(null)
     if (tool !== 'wall' || !isGm) return
+    // If a wall is selected, clicking outside just deselects — don't start construction
+    if (selectedWallId !== null) {
+      setSelectedWallId(null)
+      return
+    }
     const wp = getWorldPos()
     if (!wp) return
-    setSelectedWallId(null)
     if (!wallStart) {
       setWallStart(wp)
     } else {
       onWallAdd?.([wallStart, wp])
       setWallStart(null)
     }
-  }, [tool, isGm, wallStart, onWallAdd, getWorldPos])
+  }, [tool, isGm, wallStart, selectedWallId, onWallAdd, getWorldPos])
+
+  const handleWallEndpointClick = useCallback((point: { x: number; y: number }) => {
+    setSelectedWallId(null)
+    setWallStart(point)
+  }, [])
 
   // Vision circles: only player's OWN tokens (non-NPC) generate vision
   // This prevents NPC tokens from clearing fog for players
@@ -366,6 +375,7 @@ export function MapCanvas({
             previewPoint={tool === 'wall' ? wallPreview : null}
             selectedWallId={selectedWallId}
             onWallSelect={setSelectedWallId}
+            onWallEndpointClick={handleWallEndpointClick}
           />
         )}
 
