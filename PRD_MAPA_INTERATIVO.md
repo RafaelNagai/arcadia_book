@@ -1,8 +1,8 @@
 # PRD — Mapa Interativo de Campanha (Arcádia)
 
-> **Status:** Em desenvolvimento — Fases 1, 2 e 3 concluídas  
-> **Versão:** 1.3  
-> **Data:** 2026-04-20  
+> **Status:** Em desenvolvimento — Fases 1, 2, 3 e 4 concluídas  
+> **Versão:** 1.5  
+> **Data:** 2026-04-21  
 > **Escopo:** Feature de mapa tático com fog of war para campanhas do sistema Arcádia
 
 ## Status de Implementação
@@ -12,12 +12,81 @@
 | **Fase 1 — Fundação** | ✅ Concluída | Mapa estático, layers, tokens, drag |
 | **Fase 2 — Realtime** | ✅ Concluída | Sincronização ao vivo via Supabase Broadcast |
 | **Fase 3 — Fog Básico** | ✅ Concluída | Visão circular, exploração, fog por layer |
-| **Fase 4 — Line of Sight** | ⏳ Pendente | Ray casting com paredes |
-| **Fase 5 — Polimentos** | ⏳ Pendente | Grid, mobile, múltiplos mapas |
+| **Fase 4 — Line of Sight** | ✅ Concluída | Ray casting com paredes; fog respeitando LOS |
+| **Polimentos pós-Fase 4** | ✅ Concluídos | Resize de token, modal de configuração, isolamento NPC |
+| **Fase 5 — Grid e Mobile** | ⏳ Pendente | Grid configurável, mobile polish, múltiplos mapas |
 
 ---
 
-## Como Testar (Fases 1, 2 e 3)
+## O que foi implementado (resumo acumulado)
+
+### Fase 1 — Fundação
+- Tabelas Prisma: `Map`, `MapLayer`, `MapToken`, `MapWall`
+- CRUD completo de mapas, layers e tokens via API REST
+- Upload de imagem de layer para Supabase Storage
+- `MapCanvas.tsx` com react-konva: imagem, pan/zoom via scroll/drag
+- `MapTokenLayer.tsx`: tokens com foto + nome, draggable
+- `MapLayerPanel.tsx`: trocar layer ativa, adicionar/remover layers
+- `MapTokenPanel.tsx`: adicionar/remover tokens por personagem
+- Aba **Mapa** na `CampaignPage`
+
+### Fase 2 — Realtime
+- `useMapRealtime.ts`: canal Supabase Broadcast `map:{mapId}`
+- `useCampaignMapChannel`: canal `campaign:{campaignId}:map` para ativar/desativar mapa entre sessões
+- Eventos broadcast: `TOKEN_MOVE`, `TOKEN_ADD`, `TOKEN_REMOVE`, `LAYER_CHANGE`, `FOG_UPDATE`, `TOKEN_UPDATE`
+- Throttle de drag a 50ms para broadcast eficiente
+- Estado inicial carregado via REST na entrada; broadcasts sincronizam deltas
+
+### Fase 3 — Fog of War Básico
+- `MapFogLayer.tsx`: duas camadas Konva com `destination-out` (fog escuro + memória cinza)
+- `fogOfWar.ts`: `computeVisibilityPolygon` (ray casting com paredes), `isInsidePolygon`, `isInsideAnyPolygon`
+- `visionCircles` por token próprio do jogador; union de todos os PCs
+- Exploração persistente por layer (`fogRevealed` JSONB no banco)
+- Revelação manual pelo mestre (clique com ferramenta fog)
+- Reset de fog por layer
+- Fog state sincronizado via `FOG_UPDATE` broadcast
+
+### Fase 4 — Line of Sight com Paredes
+- Tabela `MapWall` com `points JSONB` (segmentos A→B)
+- API REST: `POST/DELETE /campaigns/:cid/maps/:mid/layers/:lid/walls`
+- `MapWallLayer.tsx`: renderiza paredes visíveis apenas ao mestre; parede selecionada destacada
+- **Ferramenta de parede**: clique A → clique B → segmento criado; clique em parede existente abre HUD com botão de excluir (não exclui imediato)
+- `computeVisibilityPolygon`: ray casting para endpoints de parede ± ε, raios de preenchimento
+- Fog patches pré-computam o polígono LOS no momento da criação (`FogPatch.polygon?`) — sem recálculo no render
+- `MapFogLayer` usa `polygon` se presente; fallback para círculo
+- Paredes invisíveis para jogadores; LOS ainda bloqueia visão do jogador
+
+### Polimentos pós-Fase 4
+
+#### Ferramenta única "Selecionar"
+- Removida ferramenta separada "Mover" — `MapTool` agora é `'select' | 'fog' | 'wall'`
+- `handleMouseDown`: detecta se clicou em token draggable via `isOnDraggable()` (percorre árvore Konva); só inicia pan se não
+- `MapToolbar` simplificado: apenas Select, Parede, Fog
+
+#### Resize de token com drag handle Konva
+- `SelectionHandle`: componente Konva com `Ring` (anel de seleção) + `Circle` draggable no bordo direito
+- Drag do handle recalcula raio → `size` do token em tempo real (via ref imperativo, sem React re-render)
+- `onDragEnd`: chama `onTokenResize(tokenId, size)` → atualiza estado + broadcast `TOKEN_UPDATE` + PATCH no banco
+- Coluna `size FLOAT DEFAULT 1` adicionada ao modelo `MapToken`
+- Apenas o mestre vê e interage com o handle de resize
+
+#### Modal de configuração de token (`MapTokenModal`)
+- Aberto pelo mestre ao: clicar no ⚙ na lista "Tokens no mapa" OU no HUD flutuante acima do token selecionado
+- Exibe: foto + nome + elemento do personagem
+- Controle de raio de visão: slider (50–2000px) + input numérico + toggle "usar padrão do mapa"
+- Botão **Ficha ↗** abre `/ficha/:characterId` em nova aba
+- Salvar → `handleVisionUpdate` → atualiza estado + broadcast `TOKEN_UPDATE { visionRadius }` + PATCH no banco
+- **Somente mestre** pode abrir o modal (HUD e botão ⚙ não aparecem para jogadores)
+
+#### Isolamento de visão de NPCs
+- `visionCircles` filtra tokens por: `token.layerId === activeLayer.id && !npcCharacterIds.includes(t.characterId) && (isGm || myCharacterIds.includes(t.characterId))`
+- NPCs **nunca** geram polígono de visão para nenhum jogador
+- Jogadores veem NPCs dentro da visão dos **seus próprios personagens**
+- Mestre vê todos os tokens sempre
+
+---
+
+## Como Testar (estado atual)
 
 ### Pré-requisitos
 ```bash
@@ -31,31 +100,32 @@ npm run dev   # http://localhost:5173
 ```
 
 ### Fluxo do Mestre
-1. Abrir uma campanha → clicar aba **Mapa** na sidebar
-2. Clicar **"+ Criar mapa"** → digitar nome → confirmar
-3. No painel lateral (Layers) → clicar **"+ Adicionar layer"** → selecionar imagem (JPG/PNG/WebP, máx 20MB)
-4. Clicar **"Ativar"** na layer → imagem aparece no canvas
-5. No painel (Tokens) → clicar **"+"** ao lado de um personagem/NPC para colocá-lo no mapa
-6. Selecionar ferramenta **"Mover token"** (toolbar) → arrastar tokens
+1. Abrir campanha → aba **Mapa**
+2. Criar mapa → adicionar layer (upload de imagem) → ativar layer
+3. No painel lateral, adicionar tokens de personagens/NPCs
+4. **Ferramenta Selecionar** (padrão): arrastar tokens; clicar token seleciona (aparece anel laranja + handle de resize)
+5. Arrastar o handle circular na borda direita do anel → redimensiona o token
+6. Clicar ⚙ no HUD acima do token selecionado (ou no botão ⚙ na lista lateral) → modal de configuração
+   - Ajustar raio de visão individual ou usar padrão do mapa
+   - Abrir ficha do personagem em nova aba
+7. **Ferramenta Parede**: clicar ponto A → clicar ponto B → segmento criado; clicar em parede existente → HUD com 🗑 para excluir; ESC cancela
+8. **🌫 Névoa ON/OFF**: ativa fog of war com LOS real (paredes bloqueiam visão)
+9. **Ferramenta Fog**: clicar no canvas revela manualmente uma área (usa LOS do ponto clicado)
+10. **↺ Reset névoa**: limpa exploração persistida da layer ativa
 
-### Testando Fog of War (Fase 3)
-1. Na toolbar, clicar em **🌫 Névoa OFF** para ativar a névoa → mapa fica escuro
-2. Tokens com `visionRadius` revelam círculos ao redor deles com gradiente suave
-3. Arrastar um token para uma nova área → a área fica **permanentemente revelada** para aquela layer
-4. Selecionar ferramenta **👁 Revelar névoa** → clicar no canvas para revelar manualmente uma área (raio = `defaultVisionRadius` do mapa)
-5. Clicar **↺ Reset névoa** → remove todas as revelações manuais (mantém apenas a visão ao vivo dos tokens)
-6. Layer fog é independente: trocar de layer reinicia a névoa visível para o estado daquela layer específica
-
-### Fluxo do Jogador com Fog (outra aba/browser)
-1. Logar com uma conta de jogador membro da campanha
-2. Abrir a campanha → aba **Mapa** → ver apenas as áreas dentro do raio de visão dos tokens
-3. NPCs/tokens fora do raio de visão de qualquer token ficam invisíveis
-4. Quando mestre mover tokens → visão atualiza em tempo real
-5. Áreas já exploradas (token passou por lá) permanecem reveladas no mapa
+### Fluxo do Jogador (outra aba/browser)
+1. Logar com conta de jogador membro da campanha
+2. Aba **Mapa**: vê apenas áreas dentro do raio de visão dos seus personagens
+3. NPCs fora do raio de visão são invisíveis
+4. Tokens se movem em tempo real quando mestre arrasta
+5. Áreas já exploradas (token passou por lá) ficam permanentemente reveladas
+6. Paredes bloqueiam a linha de visão (LOS real)
 
 ### O que ainda NÃO funciona
-- Paredes e Line of Sight (ray casting) — Fase 4
-- Grid overlay — Fase 5 (estrutura no backend já existe: `gridEnabled`, `gridSize`)
+- Grid overlay configurável (Fase 5)
+- Suporte a touch/pinch mobile (Fase 5)
+- Múltiplos mapas por campanha na UI (backend suporta; UI só mostra o ativo)
+- `MapSettingsPanel` para configurar grid/visão unida inline (configuração atual: apenas via API)
 
 ---
 
@@ -76,8 +146,8 @@ Adicionar uma aba **Mapa** à página de campanha, onde o mestre pode criar e ge
 
 | Papel | Quem é | Permissões no Mapa |
 |---|---|---|
-| **Mestre** | Criador da campanha | Criar/editar/deletar mapas; mover tokens; desenhar paredes; revelar fog; trocar layer ativa |
-| **Jogador** | Membro da campanha com personagem | Visualizar mapa (perspectiva do seu personagem); pan/zoom; sem edição |
+| **Mestre** | Criador da campanha | Criar/editar/deletar mapas; mover tokens; redesenhar/excluir paredes; revelar fog; trocar layer ativa; configurar tokens |
+| **Jogador** | Membro da campanha com personagem | Visualizar mapa (perspectiva do seu personagem); pan/zoom; arrastar apenas seus próprios tokens |
 
 ---
 
@@ -85,56 +155,56 @@ Adicionar uma aba **Mapa** à página de campanha, onde o mestre pode criar e ge
 
 ### 3.1 Gerenciamento de Mapas
 
-- [ ] **RF-01** — Mestre cria mapas com nome e lista de layers (imagens por andar)
-- [ ] **RF-02** — Cada layer tem: nome, ordem e imagem (upload para Supabase Storage)
-- [ ] **RF-03** — Mestre pode adicionar, reordenar e remover layers de um mapa
-- [ ] **RF-04** — Mestre escolhe qual layer está ativa (visível para jogadores)
-- [ ] **RF-05** — Mestre pode ter múltiplos mapas por campanha; apenas um pode estar ativo por vez
+- [x] **RF-01** — Mestre cria mapas com nome e lista de layers (imagens por andar)
+- [x] **RF-02** — Cada layer tem: nome, ordem e imagem (upload para Supabase Storage)
+- [x] **RF-03** — Mestre pode adicionar, reordenar e remover layers de um mapa
+- [x] **RF-04** — Mestre escolhe qual layer está ativa (visível para jogadores)
+- [x] **RF-05** — Mestre pode ter múltiplos mapas por campanha; apenas um pode estar ativo por vez
 
 ### 3.2 Tokens
 
-- [ ] **RF-06** — Mestre adiciona tokens de personagens da campanha (PC ou NPC)
-- [ ] **RF-07** — Token de personagem usa a foto já cadastrada; token de NPC usa a foto do NPC
-- [ ] **RF-08** — Token pertence a uma layer específica; mestre pode movê-lo para outra layer
-- [ ] **RF-09** — Mestre arrasta tokens livremente sobre o mapa (movimento em pixel, não em grid)
-- [ ] **RF-10** — Mestre pode remover tokens do mapa
-- [ ] **RF-11** — Cada token tem configuração de **raio de visão** (valor padrão configurável globalmente, sobrescrito por token)
+- [x] **RF-06** — Mestre adiciona tokens de personagens da campanha (PC ou NPC)
+- [x] **RF-07** — Token de personagem usa a foto já cadastrada; token de NPC usa a foto do NPC
+- [x] **RF-08** — Token pertence a uma layer específica
+- [x] **RF-09** — Mestre arrasta tokens livremente sobre o mapa (ferramenta Selecionar unificada)
+- [x] **RF-10** — Mestre pode remover tokens do mapa
+- [x] **RF-11** — Cada token tem configuração de **raio de visão** (valor padrão configurável globalmente, sobrescrito por token via modal)
+- [x] **RF-11b** — Mestre pode redimensionar tokens com drag handle visual (Konva)
+- [x] **RF-11c** — Modal de configuração de token: raio de visão + link para ficha do personagem
 
 ### 3.3 Grid
 
-- [ ] **RF-12** — Mestre pode habilitar/desabilitar overlay de grid quadrado por mapa
-- [ ] **RF-13** — Tamanho da célula do grid é configurável (em pixels, relativo à imagem original)
+- [ ] **RF-12** — Mestre pode habilitar/desabilitar overlay de grid quadrado por mapa *(backend pronto; UI pendente)*
+- [ ] **RF-13** — Tamanho da célula do grid é configurável *(backend pronto; UI pendente)*
 - [ ] **RF-14** — Grid é apenas visual; tokens continuam com movimento livre
 
 ### 3.4 Fog of War
 
-- [ ] **RF-15** — Mestre entra no **Modo Editor** para desenhar paredes (polylines)
-- [ ] **RF-16** — Paredes são segmentos de linha clicados ponto a ponto (polyline); duplo-clique encerra o segmento
-- [ ] **RF-17** — Mestre pode remover segmentos de parede individualmente
-- [ ] **RF-18** — Visão de cada token é calculada como raio circular com line-of-sight (ray casting 2D)
-- [ ] **RF-19** — Por padrão, as visões de todos os PCs são unidas (área revelada = union de todos os cones)
-- [ ] **RF-20** — Mestre pode desabilitar a visão unida; cada jogador vê apenas seu personagem
-- [ ] **RF-21** — Mestre pode **revelar manualmente** regiões do mapa (polygons de reveal)
-- [x] **RF-22** — Estado do fog tem duas zonas (Fase 3: circular sem LOS):
-  - **Preto** — fora do raio de visão atual E nunca explorado
-  - **Visível** — dentro do raio de visão atual OU área explorada por token que passou por lá
-  - *(Fase 4 adicionará zona cinza "visto mas não atual" com LOS real)*
+- [x] **RF-15** — Mestre usa ferramenta **Paredes** para desenhar segmentos de bloqueio de LOS
+- [x] **RF-16** — Parede é um segmento A→B (clicar ponto A, clicar ponto B); ESC cancela
+- [x] **RF-17** — Mestre pode remover segmentos de parede individualmente (clicar → HUD → excluir)
+- [x] **RF-18** — Visão de cada token é calculada como polígono LOS com ray casting 2D (paredes bloqueiam)
+- [x] **RF-19** — As visões de todos os PCs são unidas (área revelada = union de todos os polígonos)
+- [ ] **RF-20** — Mestre pode desabilitar a visão unida *(campo `visionUnified` existe no banco; UI pendente)*
+- [x] **RF-21** — Mestre pode **revelar manualmente** regiões do mapa (ferramenta fog + clique)
+- [x] **RF-22** — Estado do fog: zona escura (nunca explorada) + zona revelada (visão atual OU explorada)
 - [x] **RF-23** — Áreas exploradas (onde tokens passaram) persistem no banco por layer
-- [x] **RF-24** — Fog of War é independente por layer (cada `MapLayer` tem seu próprio `fogRevealed`)
+- [x] **RF-24** — Fog of War é independente por layer (`fogRevealed` JSONB na `MapLayer`)
+- [x] **RF-24b** — Fog patches armazenam polígono LOS pré-computado (`FogPatch.polygon`) para performance no render
 
 ### 3.5 Visualização do Jogador
 
-- [ ] **RF-25** — Jogador só vê a aba Mapa se o mestre ativou um mapa na campanha
-- [ ] **RF-26** — Jogador vê a layer ativa do mapa com fog aplicado
-- [ ] **RF-27** — Se visão unida está ativa, jogador vê a perspectiva coletiva do grupo
-- [ ] **RF-28** — Jogador pode fazer pan e zoom no mapa
-- [ ] **RF-29** — Jogador não vê tokens de NPCs fora da área visível
+- [x] **RF-25** — Jogador só vê a aba Mapa se o mestre ativou um mapa na campanha
+- [x] **RF-26** — Jogador vê a layer ativa do mapa com fog LOS aplicado
+- [x] **RF-27** — Visão unida: jogador vê a perspectiva coletiva do grupo (union de LOS de todos os PCs)
+- [x] **RF-28** — Jogador pode fazer pan e zoom no mapa
+- [x] **RF-29** — Jogador não vê tokens de NPCs fora da área visível (isolamento de visão NPC implementado)
 
 ### 3.6 Sincronização em Tempo Real
 
-- [ ] **RF-30** — Toda ação do mestre (mover token, trocar layer, atualizar fog) é propagada imediatamente para jogadores
-- [ ] **RF-31** — Novo jogador que entra recebe o estado atual completo do mapa
-- [ ] **RF-32** — Tolerância de latência: ações de mover token devem aparecer em < 300ms para os players
+- [x] **RF-30** — Toda ação do mestre é propagada imediatamente via broadcast
+- [x] **RF-31** — Novo jogador que entra recebe o estado atual completo do mapa via REST
+- [x] **RF-32** — Latência de mover token: throttle de 50ms no broadcast
 
 ---
 
@@ -153,413 +223,257 @@ Adicionar uma aba **Mapa** à página de campanha, onde o mestre pode criar e ge
 
 ## 5. Modelo de Dados
 
-### Tabelas no Supabase (PostgreSQL)
+### Schema Prisma atual
 
-```sql
--- Mapa dentro de uma campanha
-CREATE TABLE maps (
-  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  campaign_id UUID NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
-  title       TEXT NOT NULL,
-  is_active   BOOLEAN NOT NULL DEFAULT false,  -- apenas 1 mapa ativo por campanha
-  grid_enabled BOOLEAN NOT NULL DEFAULT false,
-  grid_size   INTEGER NOT NULL DEFAULT 64,     -- pixels por célula no tamanho original
-  vision_unified BOOLEAN NOT NULL DEFAULT true, -- fog unido de todos os PCs
-  default_vision_radius INTEGER NOT NULL DEFAULT 150, -- em pixels no tamanho original
-  created_at  TIMESTAMPTZ DEFAULT now()
-);
+```prisma
+model Map {
+  id                  String     @id @default(uuid())
+  campaignId          String
+  title               String
+  isActive            Boolean    @default(false)
+  fogEnabled          Boolean    @default(false)
+  gridEnabled         Boolean    @default(false)
+  gridSize            Int        @default(64)
+  visionUnified       Boolean    @default(true)
+  defaultVisionRadius Int        @default(150)
+  createdAt           DateTime   @default(now())
+  layers              MapLayer[]
+  tokens              MapToken[]
+}
 
--- Layer (andar/nível) de um mapa
-CREATE TABLE map_layers (
-  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  map_id      UUID NOT NULL REFERENCES maps(id) ON DELETE CASCADE,
-  name        TEXT NOT NULL,
-  order_index INTEGER NOT NULL DEFAULT 0,
-  image_url   TEXT NOT NULL,   -- Supabase Storage URL
-  is_active   BOOLEAN NOT NULL DEFAULT false, -- layer visível no momento
-  created_at  TIMESTAMPTZ DEFAULT now()
-);
+model MapLayer {
+  id          String    @id @default(uuid())
+  mapId       String
+  name        String
+  orderIndex  Int       @default(0)
+  imageUrl    String
+  isActive    Boolean   @default(false)
+  fogRevealed Json      @default("[]")   // FogPatch[] com polygon pré-computado
+  createdAt   DateTime  @default(now())
+  walls       MapWall[]
+}
 
--- Token posicionado no mapa
-CREATE TABLE map_tokens (
-  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  map_id       UUID NOT NULL REFERENCES maps(id) ON DELETE CASCADE,
-  layer_id     UUID NOT NULL REFERENCES map_layers(id) ON DELETE CASCADE,
-  character_id UUID NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
-  x            FLOAT NOT NULL DEFAULT 0,  -- posição em pixels (espaço da imagem original)
-  y            FLOAT NOT NULL DEFAULT 0,
-  vision_radius INTEGER,  -- NULL = usa o default do mapa
-  is_visible   BOOLEAN NOT NULL DEFAULT true,  -- mestre pode ocultar token dos jogadores
-  created_at   TIMESTAMPTZ DEFAULT now()
-);
+model MapToken {
+  id          String    @id @default(uuid())
+  mapId       String
+  layerId     String
+  characterId String
+  x           Float     @default(0)
+  y           Float     @default(0)
+  visionRadius Int?                        // NULL = usa default do mapa
+  isVisible   Boolean   @default(true)
+  size        Float     @default(1)        // multiplicador de raio (0.25–4)
+  createdAt   DateTime  @default(now())
+}
 
--- Segmento de parede para LOS (polyline = lista de pontos)
-CREATE TABLE map_walls (
-  id       UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  map_id   UUID NOT NULL REFERENCES maps(id) ON DELETE CASCADE,
-  layer_id UUID NOT NULL REFERENCES map_layers(id) ON DELETE CASCADE,
-  points   JSONB NOT NULL  -- [{x, y}, {x, y}, ...] em coordenadas da imagem original
-);
-
--- Fog state: lista de polígonos de áreas já exploradas (persistido)
-CREATE TABLE map_fog_explored (
-  id       UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  map_id   UUID NOT NULL REFERENCES maps(id) ON DELETE CASCADE,
-  layer_id UUID NOT NULL REFERENCES map_layers(id) ON DELETE CASCADE,
-  -- Bitmap de células exploradas em RLE ou lista de polígonos (a definir na impl.)
-  explored_data JSONB NOT NULL DEFAULT '[]'
-);
-```
-
-### Índices
-
-```sql
-CREATE INDEX ON maps(campaign_id);
-CREATE INDEX ON map_layers(map_id);
-CREATE INDEX ON map_tokens(map_id, layer_id);
-CREATE INDEX ON map_walls(map_id, layer_id);
-CREATE INDEX ON map_fog_explored(map_id, layer_id);
--- Garante 1 mapa ativo por campanha
-CREATE UNIQUE INDEX ON maps(campaign_id) WHERE is_active = true;
--- Garante 1 layer ativa por mapa
-CREATE UNIQUE INDEX ON map_layers(map_id) WHERE is_active = true;
+model MapWall {
+  id       String @id @default(uuid())
+  mapId    String
+  layerId  String
+  points   Json   // [{x, y}, {x, y}] — segmento A→B
+  createdAt DateTime @default(now())
+}
 ```
 
 ---
 
 ## 6. Arquitetura
 
-### 6.1 Estrutura de Pastas (Frontend)
+### 6.1 Estrutura de Arquivos implementados
 
 ```
 web/src/
-├── pages/
-│   └── CampaignPage.tsx         # Adiciona aba "Mapa" ao TabBar existente
-├── components/
-│   └── map/
-│       ├── MapTab.tsx            # Orquestrador da aba; decide se mostra MasterView ou PlayerView
-│       ├── MasterMapView.tsx     # Visão completa do mestre com toolbar
-│       ├── PlayerMapView.tsx     # Visão restrita do jogador (fog aplicado)
-│       ├── MapCanvas.tsx         # Stage Konva principal (pan/zoom, layers de renderização)
-│       ├── MapImageLayer.tsx     # Layer da imagem do andar (Konva.Image)
-│       ├── MapGridLayer.tsx      # Overlay de grid (Konva.Line[])
-│       ├── MapWallLayer.tsx      # Paredes (Konva.Line[]) — visível só ao mestre
-│       ├── MapFogLayer.tsx       # Fog of war (Konva.Shape com composite operation)
-│       ├── MapTokenLayer.tsx     # Tokens (Konva.Group: circle + image + label)
-│       ├── MapToolbar.tsx        # Toolbar do mestre (ferramentas: selecionar, mover, paredes, revelar)
-│       ├── MapLayerPanel.tsx     # Painel lateral: lista de layers, adicionar/reordenar
-│       ├── MapTokenPanel.tsx     # Painel lateral: adicionar tokens ao mapa
-│       └── MapSettingsPanel.tsx  # Grid, raio de visão padrão, visão unida
+├── components/map/
+│   ├── MapTab.tsx            # Orquestrador: estado, handlers, realtime, modais
+│   ├── MapCanvas.tsx         # Stage Konva: pan/zoom, fog, seleção de token, resize handle
+│   ├── MapTokenLayer.tsx     # Tokens (foto, drag, visibilidade por LOS)
+│   ├── MapFogLayer.tsx       # Fog com destination-out e polígonos LOS
+│   ├── MapWallLayer.tsx      # Paredes (visível só ao mestre); seleção para delete
+│   ├── MapToolbar.tsx        # Selecionar | Parede | Fog + toggle fog + reset fog
+│   ├── MapLayerPanel.tsx     # CRUD de layers + upload de imagem
+│   ├── MapTokenPanel.tsx     # Adicionar/remover tokens; botão ⚙ por token (mestre)
+│   └── MapTokenModal.tsx     # Modal: raio de visão + link ficha (mestre only)
 ├── hooks/
-│   ├── useMapRealtime.ts         # Supabase Realtime broadcast para o mapa
-│   ├── useMapState.ts            # Estado local do mapa (tokens, walls, fog)
-│   └── useFogOfWar.ts            # Cálculo de LOS / ray casting
+│   └── useMapRealtime.ts     # useMapRealtime + useCampaignMapChannel
 └── lib/
-    ├── fogOfWar.ts               # Algoritmo de shadow casting 2D (puro TS, testável)
-    └── mapTypes.ts               # Interfaces: Map, MapLayer, MapToken, MapWall, FogState
+    ├── fogOfWar.ts           # computeVisibilityPolygon, isInsidePolygon, isInsideAnyPolygon
+    └── mapTypes.ts           # GameMap, MapLayer, MapToken, MapWall, FogPatch, MapTool
+
+api/src/
+├── schemas/map.schema.ts     # Zod: CreateMap, UpdateMap, Layer, Token, Fog, Wall
+├── repositories/maps.repository.ts
+├── services/maps.service.ts
+├── controllers/maps.controller.ts
+└── routes/maps.routes.ts
 ```
 
-### 6.2 Sincronização em Tempo Real
+### 6.2 Tipos de broadcast (useMapRealtime.ts)
 
-O mapa usa **dois canais Supabase** por estratégia de custo/frequência:
+```typescript
+type MapBroadcastEvent =
+  | { type: 'TOKEN_MOVE';   tokenId: string; x: number; y: number }
+  | { type: 'TOKEN_UPDATE'; tokenId: string; data: { size?: number; isVisible?: boolean; visionRadius?: number | null } }
+  | { type: 'TOKEN_ADD';    token: MapToken }
+  | { type: 'TOKEN_REMOVE'; tokenId: string }
+  | { type: 'LAYER_CHANGE'; layerId: string; layers: MapLayer[] }
+  | { type: 'FOG_UPDATE';   fogEnabled: boolean; layerId: string | null; fogRevealed: FogPatch[] }
 
-| Canal | Tipo | Dados | Frequência |
-|---|---|---|---|
-| `map:{mapId}:broadcast` | Realtime Broadcast | Posições de token em drag, layer ativa | Alta (cada mouse move) |
-| `map:{mapId}:db` | Postgres Changes | Tokens, walls, fog persistidos | Baixa (on commit) |
-
-**Fluxo de mover token:**
-1. Mestre arrasta token → broadcast imediato `{type: 'TOKEN_MOVE', tokenId, x, y}`
-2. Jogadores recebem e atualizam posição local
-3. Ao soltar (drag end) → PATCH no banco → dispara Postgres Changes para confirmar
-
-**Fluxo de fog update:**
-1. Mestre revela área / token se move → `useFogOfWar` recalcula no mestre
-2. Novo polígono de área explorada → broadcast `{type: 'FOG_UPDATE', exploredPolygon}`
-3. Periodicamente (debounce 2s) → PATCH no banco para persistir
+type CampaignMapEvent =
+  | { type: 'MAP_ACTIVATED';   map: GameMap }
+  | { type: 'MAP_DEACTIVATED' }
+```
 
 ### 6.3 Algoritmo de Fog of War
 
 ```
-lib/fogOfWar.ts — Shadow Casting 2D
+fogOfWar.ts — Ray Casting 2D
 
-Inputs:
-  - tokenPosition: {x, y}
-  - visionRadius: number
-  - walls: Segment[]           -- segmentos de parede da layer ativa
+computeVisibilityPolygon(origin, radius, walls):
+  1. Coletar ângulos únicos: endpoints dos segmentos de parede ± ε
+  2. Para cada ângulo: lançar raio; detectar primeira interseção com paredes
+  3. Se sem interseção: ponto = origem + radius * direção
+  4. Construir polígono com pontos resultantes, ordenados por ângulo
+  5. Retornar WallPoint[]
 
-Output:
-  - visiblePolygon: Polygon    -- área visível (para aplicar ao canvas)
+isInsidePolygon(x, y, polygon): ray-casting point-in-polygon
+isInsideAnyPolygon(x, y, polygons[]): any(isInsidePolygon)
 
-Algoritmo: Ray Casting circular
-  1. Lançar N raios (N=360 ou adaptativo) a partir do token
-  2. Para cada raio: detectar primeira interseção com segmentos de parede
-  3. Construir polígono convexo com os pontos de impacto/extremidade
-  4. Área visível = union dos polígonos de todos os PCs (se visão unida)
+FogPatch = { x, y, radius, polygon?: WallPoint[] }
+  — polygon pré-computado na criação (drag, reveal manual, move final)
+  — MapFogLayer usa polygon se presente; fallback para círculo
+```
 
-Renderização no Konva:
-  - Layer de fog: retângulo preto full-size (globalCompositeOperation: 'source-over')
-  - Área visível: shape com 'destination-out' (apaga o fog)
-  - Área explorada (cinza): shape com 'source-over' + opacity 0.7 (preto semitransparente)
-  - Tokens ocultados pelo fog: filtro de visibilidade antes de renderizar
+### 6.4 Isolamento de visão de NPCs
+
+```typescript
+// MapCanvas.tsx — visionCircles
+const visionCircles = tokens.filter(t =>
+  t.layerId === activeLayer?.id &&
+  !npcCharacterIds.includes(t.characterId) &&          // NPCs nunca geram visão
+  (isGm || myCharacterIds.includes(t.characterId))     // jogador vê só seus personagens
+)
 ```
 
 ---
 
-## 7. API Endpoints (Backend REST)
+## 7. API Endpoints (implementados)
 
-Todos com prefixo `/api/v1`. Autenticação via Bearer token JWT.
-
-### Maps
+Prefixo: `/api/v1`. Auth: Bearer JWT.
 
 ```
-GET    /campaigns/:id/maps              → lista mapas da campanha
-POST   /campaigns/:id/maps              → criar mapa
-PATCH  /campaigns/:id/maps/:mapId/activate → ativar mapa (desativa os outros)
-PUT    /maps/:mapId                     → editar config (title, grid, vision settings)
-DELETE /maps/:mapId                     → deletar mapa
-```
+GET    /campaigns/:id/maps/active          → mapa ativo + tokens + layers + paredes
+GET    /campaigns/:id/maps                 → lista todos os mapas
+POST   /campaigns/:id/maps                 → criar mapa
+PATCH  /campaigns/:id/maps/:mapId/activate → ativar mapa
+DELETE /campaigns/:id/maps/:mapId          → deletar
 
-### Layers
+POST   /campaigns/:id/maps/:mapId/layers            → criar layer
+PATCH  /campaigns/:id/maps/:mapId/layers/:lid/activate
+DELETE /campaigns/:id/maps/:mapId/layers/:lid
 
-```
-GET    /maps/:mapId/layers              → listar layers
-POST   /maps/:mapId/layers              → criar layer (+ upload de imagem via multipart)
-PATCH  /maps/:mapId/layers/:layerId/activate → ativar layer
-PUT    /maps/:mapId/layers/:layerId     → editar (nome, ordem)
-DELETE /maps/:mapId/layers/:layerId     → deletar (+ remove imagem do Storage)
-```
+GET    /campaigns/:id/maps/:mapId/tokens   → listar tokens
+POST   /campaigns/:id/maps/:mapId/tokens   → criar token
+PATCH  /campaigns/:id/maps/:mapId/tokens/:tid → atualizar (x, y, visionRadius, size, isVisible)
+DELETE /campaigns/:id/maps/:mapId/tokens/:tid
 
-### Tokens
+POST   /campaigns/:id/maps/:mapId/layers/:lid/walls → criar parede (points [{x,y},{x,y}])
+DELETE /campaigns/:id/maps/:mapId/layers/:lid/walls/:wid
 
-```
-GET    /maps/:mapId/tokens              → listar tokens da layer ativa
-POST   /maps/:mapId/tokens              → adicionar token ao mapa
-PATCH  /maps/:mapId/tokens/:tokenId     → atualizar posição / vision_radius / layer
-DELETE /maps/:mapId/tokens/:tokenId     → remover token
-```
-
-### Walls
-
-```
-GET    /maps/:mapId/walls?layerId=      → listar paredes da layer
-POST   /maps/:mapId/walls               → criar segmento de parede
-DELETE /maps/:mapId/walls/:wallId       → deletar segmento
-```
-
-### Fog
-
-```
-GET    /maps/:mapId/fog?layerId=        → obter fog state (áreas exploradas)
-PATCH  /maps/:mapId/fog                 → persistir fog state (debounced pelo cliente)
-DELETE /maps/:mapId/fog?layerId=        → resetar fog (apaga toda memória de exploração da layer)
-```
-
-### Upload
-
-```
-POST   /upload/map-layer                → upload de imagem de layer → retorna URL
+PATCH  /campaigns/:id/maps/:mapId/fog           → { enabled: boolean }
+POST   /campaigns/:id/maps/:mapId/layers/:lid/fog/patches → adicionar patches
+DELETE /campaigns/:id/maps/:mapId/layers/:lid/fog/reset   → resetar exploração
 ```
 
 ---
 
-## 8. Especificação de UI/UX
+## 8. Plano de Implementação — Fases
 
-### 8.1 Aba Mapa na CampaignPage
+### Fase 1 — Fundação ✅
+Mapa estático com layers e tokens. Sem fog, sem real-time.
 
-```
-[Personagens] [Sessão] [Mapa] [Configurações]
-                               ↑ nova aba
-```
+### Fase 2 — Realtime ✅
+Mover token sincroniza para todos em tempo real via Supabase Broadcast.
 
-- Se não houver mapa ativo: mestre vê botão "Criar Mapa"; jogador vê mensagem "Nenhum mapa ativo"
-- Mobile: aba fica no bottom nav já existente
+### Fase 3 — Fog of War Básico ✅
+Fog de visão circular, áreas exploradas persistidas.
 
-### 8.2 MasterMapView — Layout
+### Fase 4 — Line of Sight com Paredes ✅
+Ray casting real; fog bloqueado por paredes; ferramenta de parede A→B com HUD de delete.
 
-```
-┌─────────────────────────────────────────────────┐
-│ [Toolbar: Selecionar | Mover | Paredes | Revelar]│
-├─────────────┬───────────────────────────────────┤
-│ Painel      │                                   │
-│ ─ Layers    │          MapCanvas                │
-│   [L1] ●   │   (pan/zoom livre)                │
-│   [L2]     │                                   │
-│   [+ Layer] │                                   │
-│ ─ Tokens    │                                   │
-│   [Add PC]  │                                   │
-│   [Add NPC] │                                   │
-│ ─ Settings  │                                   │
-└─────────────┴───────────────────────────────────┘
-```
+### Polimentos pós-Fase 4 ✅
+- Ferramenta seleção unificada (pan + drag de token no mesmo modo)
+- Resize de token via drag handle Konva
+- Modal de configuração de token (raio de visão + link ficha)
+- Isolamento de visão NPC
+- Fog patches com polígono LOS pré-computado
 
-### 8.3 Ferramentas do Mestre (Toolbar)
-
-| Ferramenta | Ação |
-|---|---|
-| **Selecionar** | Click em token para selecionar (ver config: raio de visão) |
-| **Mover** | Arrastar token; drag registra broadcast em tempo real |
-| **Paredes** | Click para adicionar ponto; duplo-click encerra segmento; click em parede existente + Delete remove |
-| **Revelar** | Click-e-arrasta polígono de reveal manual; remove fog permanentemente naquela área |
-
-### 8.4 PlayerMapView — Layout
-
-```
-┌─────────────────────────────────────────────────┐
-│ [Ícone do seu personagem]  Nome da Layer         │
-├─────────────────────────────────────────────────┤
-│                                                 │
-│          MapCanvas (somente leitura)            │
-│      Fog aplicado; pan/zoom habilitado          │
-│                                                 │
-└─────────────────────────────────────────────────┘
-```
-
-### 8.5 Mobile
-
-- Mestre: toolbar colapsa em menu bottom-sheet; painel lateral vira drawer
-- Pan: 1 dedo; Zoom: pinch (2 dedos)
-- Mover token: long-press para entrar em modo drag
-
----
-
-## 9. Segurança e Validações
-
-| Regra | Onde validar |
-|---|---|
-| Apenas mestre pode criar/editar/deletar mapas, layers, walls, tokens | Backend: verificar `campaigns.owner_id == auth.uid` |
-| Jogador só pode ler mapas de campanhas que participa | RLS no Supabase + backend |
-| Upload de imagem de layer: apenas mestre | Backend: mesmo check |
-| Fog state write: apenas mestre | Backend |
-| Broadcast de posição: apenas mestre (tokens) | Validado no receptor: ignorar se sender ≠ mestre |
-
----
-
-## 10. Plano de Implementação — Fases
-
-### Fase 1 — Fundação (Semana 1-2)
-
-**Objetivo:** Mapa estático com layers e tokens visíveis. Sem fog, sem real-time.
-
-- [ ] Criar tabelas no Supabase (`maps`, `map_layers`, `map_tokens`)
-- [ ] Adicionar endpoints REST: CRUD de mapas, layers, tokens
-- [ ] Upload de imagem de layer (`/upload/map-layer`)
-- [ ] Criar `mapTypes.ts` com todas as interfaces
-- [ ] Criar `MapTab.tsx` com roteamento Mestre/Jogador
-- [ ] Criar `MapCanvas.tsx` com react-konva: imagem da layer, pan/zoom
-- [ ] Criar `MapTokenLayer.tsx`: renderizar tokens com foto + nome
-- [ ] Criar `MapLayerPanel.tsx`: trocar layer ativa
-- [ ] Adicionar aba "Mapa" à `CampaignPage`
-- [ ] `MapToolbar.tsx` com ferramenta Mover (drag de token, PATCH posição)
-
-**Entregável:** Mestre sobe imagem, coloca tokens, arrasta tokens. Jogador vê o mapa sem fog.
-
----
-
-### Fase 2 — Realtime (Semana 3)
-
-**Objetivo:** Mover token sincroniza para todos em tempo real.
-
-- [ ] Criar `useMapRealtime.ts` com canal Supabase Broadcast `map:{mapId}`
-- [ ] Broadcast de `TOKEN_MOVE` durante drag
-- [ ] Broadcast de `LAYER_CHANGE` ao mestre trocar layer
-- [ ] Broadcast de `TOKEN_ADD` / `TOKEN_REMOVE`
-- [ ] Jogador recebe broadcasts e atualiza canvas
-- [ ] Player que entra late: busca estado atual via REST e subscribes ao canal
-
-**Entregável:** Sessão ao vivo com tokens se movendo em tempo real.
-
----
-
-### Fase 3 — Fog of War Básico (Semana 4-5)
-
-**Objetivo:** Fog de visão circular sem paredes.
-
-- [ ] Criar `fogOfWar.ts` com cálculo de círculo de visão simples
-- [ ] Criar `MapFogLayer.tsx` com Konva composite operations
-- [ ] Renderizar fog no mestre (semitransparente) e jogador (opaco)
-- [ ] Raio de visão configurável por token e globalmente
-- [ ] Áreas exploradas (cinza) vs visíveis (full color) vs desconhecidas (preto)
-- [ ] Persistir `map_fog_explored` com debounce
-- [ ] Broadcast de `FOG_UPDATE` para sincronizar exploração
-- [ ] Opção de visão unida (union das visões dos PCs)
-
-**Entregável:** Fog of war circular funcionando e sincronizado.
-
----
-
-### Fase 4 — Line of Sight com Paredes (Semana 6-7)
-
-**Objetivo:** Fog bloqueado por paredes (ray casting real).
-
-- [ ] Criar tabela `map_walls`; endpoints de CRUD
-- [ ] Ferramenta **Paredes** no toolbar: polyline editor no Konva
-- [ ] `MapWallLayer.tsx`: renderizar paredes (visível só ao mestre)
-- [ ] Implementar ray casting em `fogOfWar.ts`:
-  - Detectar interseção raio × segmento de parede
-  - Construir polígono de visão resultante
-- [ ] Testar casos-limite: paredes abertas, corredores, salas fechadas
-- [ ] Ferramenta **Revelar** para reveal manual pelo mestre
-
-**Entregável:** Fog of war com line-of-sight bloqueado por paredes.
-
----
-
-### Fase 5 — Grid e Polimentos (Semana 8)
+### Fase 5 — Grid e Polimentos ⏳
 
 **Objetivo:** Grid, configurações, mobile, ajustes de UX.
 
 - [ ] `MapGridLayer.tsx`: overlay de grid configurável
-- [ ] `MapSettingsPanel.tsx`: grid on/off, tamanho, raio default, visão unida
+- [ ] `MapSettingsPanel.tsx`: grid on/off, tamanho, raio default, visão unida on/off
 - [ ] Suporte a touch (pinch-to-zoom, long-press para mover token)
-- [ ] Painel lateral responsivo (drawer no mobile)
-- [ ] Múltiplos mapas por campanha (lista de mapas, ativar/desativar)
-- [ ] Tokens de NPC ocultos para jogadores quando fora da visão
+- [ ] Painel lateral responsivo (drawer no mobile já existe; melhorar UX)
+- [ ] Lista de múltiplos mapas por campanha com troca na UI
 - [ ] Testes de carga (5 usuários simultâneos)
 
 **Entregável:** Feature completa e polida, pronta para uso em sessão real.
 
 ---
 
-## 11. Decisões Técnicas
+## 9. Segurança e Validações
 
-| Decisão | Escolha | Alternativas Descartadas | Motivo |
-|---|---|---|---|
-| Canvas library | **react-konva** | Pixi.js, Fabric.js, pure Canvas | React-friendly, layers nativas, eventos touch, sem WebGL overhead para este caso |
-| Realtime | **Supabase Broadcast** | WebSocket custom, Supabase Postgres Changes para drag | Broadcast é baixa latência sem persistir cada mouse move; Postgres Changes para confirmação |
-| Fog algorithm | **Ray Casting 2D** | Grid-based, precomputed shadow maps | Simples de implementar, funciona bem para N < 20 tokens e paredes simples |
-| Fog storage | **Polígonos JSONB** | Bitmap, grid de células | Resolução independente do zoom; fácil de fazer union/merge; tamanho razoável |
-| Mobile pan/zoom | **Konva built-in Stage drag + pinch** | HammerJS | Konva já tem suporte nativo a touch events no Stage |
+| Regra | Onde |
+|---|---|
+| Apenas mestre pode criar/editar/deletar mapas, layers, walls, tokens | `MapsService.assertMapGm()` |
+| Jogador só pode ler mapas de campanhas que participa | `MapsService.assertCampaignAccess()` |
+| Fog state write: apenas mestre | `assertMapGm()` |
+| Resize e modal de configuração de token: apenas mestre | UI (`isGm` guard) |
+| Upload de imagem de layer: apenas mestre | `assertMapGm()` |
 
 ---
 
-## 12. Dependências a Adicionar
+## 10. Decisões Técnicas
+
+| Decisão | Escolha | Motivo |
+|---|---|---|
+| Canvas library | **react-konva** | React-friendly, layers nativas, eventos touch |
+| Realtime | **Supabase Broadcast** | Baixa latência para mouse move; sem persistência desnecessária |
+| Fog algorithm | **Ray Casting 2D** | Implementação própria em `fogOfWar.ts`; funciona bem para N < 20 paredes por layer |
+| Fog storage | **Polígonos JSONB** com pré-computação | Polígono LOS computado na criação do patch; render sem recálculo |
+| Resize de token | **Drag handle Konva imperativo** | Atualiza anel via `ref.current` durante drag; evita conflito com sistema de drag do React |
+| Ferramenta de parede | **Segmento A→B** (não polyline) | Mais intuitivo; HUD de delete em vez de delete imediato |
+| Ferramenta unificada | **Select = pan + drag** | `isOnDraggable()` detecta se clicou em token; menos mudança de contexto para o mestre |
+
+---
+
+## 11. Dependências
 
 ```bash
-# Frontend
+# Frontend (já instaladas)
 npm install konva react-konva
-
-# Sem novas dependências de backend — usa Supabase Storage já configurado
 ```
 
 ---
 
-## 13. Métricas de Sucesso
+## 12. Métricas de Sucesso
 
 | Métrica | Meta |
 |---|---|
 | Latência de mover token (mestre → jogador) | < 300ms em rede 4G |
 | Tempo de cálculo de fog com 10 paredes e 4 tokens | < 16ms (60fps) |
 | Fog state ao entrar na sessão | Carregado em < 2s |
-| Funciona em iOS Safari / Android Chrome | ✓ |
+| Funciona em iOS Safari / Android Chrome | ✓ (pendente teste mobile) |
 | Funciona em 1 mestre + 4 jogadores simultâneos | ✓ |
 
 ---
 
-## 14. Perguntas em Aberto (Para Decisão Futura)
+## 13. Perguntas em Aberto
 
-1. **Múltiplos mapas ativos?** Versão atual: 1 mapa ativo por campanha. Futuro: mestre alterna entre mapas sem fechar o anterior?
-2. **Histórico de fog — DECIDIDO:** Mestre pode resetar o fog de uma layer (apaga toda memória de exploração). Ação destrutiva e irreversível; exige confirmação modal. Broadcast `{type: 'FOG_RESET', layerId}` para todos os clientes. Endpoint: `DELETE /maps/:mapId/fog?layerId=`.
-3. **Iniciativa no mapa?** Integrar com o sistema de combate (turno de cada personagem visível no mapa)?
-4. **Medição de distância?** Ferramenta de régua para calcular distância entre dois pontos (útil para magias e ataques à distância)?
-5. **Exportar/Importar mapas?** Mestre quer usar o mesmo mapa em outra campanha?
+1. **Visão unida configurável?** Campo `visionUnified` existe no banco e na API; falta UI no `MapSettingsPanel`.
+2. **Grid snapping?** Tokens continuam com movimento livre; adicionar snap-to-grid opcional?
+3. **Iniciativa no mapa?** Integrar com o sistema de combate (indicador de turno por token)?
+4. **Medição de distância?** Ferramenta de régua entre dois pontos (útil para magias e ataques à distância)?
+5. **Exportar/Importar mapas?** Reusar o mesmo mapa em outra campanha?
+6. **Histórico de fog — DECIDIDO:** Mestre pode resetar o fog de uma layer. Ação irreversível; exige confirmação modal. Endpoint: `DELETE /maps/:mapId/layers/:lid/fog/reset`.

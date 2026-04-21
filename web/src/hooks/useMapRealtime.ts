@@ -6,7 +6,7 @@ import type { GameMap, MapLayer, MapToken, FogPatch } from '@/lib/mapTypes'
 
 export type MapBroadcastEvent =
   | { type: 'TOKEN_MOVE'; tokenId: string; x: number; y: number; senderId?: string }
-  | { type: 'TOKEN_UPDATE'; tokenId: string; data: { size?: number; isVisible?: boolean }; senderId?: string }
+  | { type: 'TOKEN_UPDATE'; tokenId: string; data: { size?: number; isVisible?: boolean; visionRadius?: number | null }; senderId?: string }
   | { type: 'TOKEN_ADD'; token: MapToken; senderId?: string }
   | { type: 'TOKEN_REMOVE'; tokenId: string; senderId?: string }
   | { type: 'LAYER_CHANGE'; layerId: string; layers: MapLayer[]; senderId?: string }

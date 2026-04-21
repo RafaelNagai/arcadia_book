@@ -94,6 +94,7 @@ interface MapCanvasProps {
   onTokenDrag?: (tokenId: string, x: number, y: number) => void
   onTokenMove?: (tokenId: string, x: number, y: number) => void
   onTokenResize?: (tokenId: string, size: number) => void
+  onTokenEdit?: (tokenId: string) => void
   onFogReveal?: (patch: FogPatch) => void
   onWallAdd?: (points: Array<{ x: number; y: number }>) => void
   onWallDelete?: (wallId: string) => void
@@ -125,6 +126,7 @@ export function MapCanvas({
   onTokenDrag,
   onTokenMove,
   onTokenResize,
+  onTokenEdit,
   onFogReveal,
   onWallAdd,
   onWallDelete,
@@ -279,6 +281,12 @@ export function MapCanvas({
 
   const selectedToken = selectedTokenId ? tokens.find(t => t.id === selectedTokenId) : null
 
+  // Screen-space position of selected token (for HTML overlay)
+  const tokenHudPos = selectedToken ? {
+    x: selectedToken.x * scale + position.x,
+    y: (selectedToken.y - TOKEN_BASE_RADIUS * (selectedToken.size ?? 1)) * scale + position.y,
+  } : null
+
   const stageW = containerWidth || window.innerWidth
   const stageH = containerHeight || window.innerHeight
 
@@ -372,6 +380,29 @@ export function MapCanvas({
           </Layer>
         )}
       </Stage>
+
+      {/* Token settings HUD (GM only, HTML overlay) */}
+      {isGm && selectedToken && tokenHudPos && onTokenEdit && (
+        <button
+          title="Configurar token"
+          onClick={() => onTokenEdit(selectedToken.id)}
+          style={{
+            position: 'absolute',
+            left: tokenHudPos.x,
+            top: tokenHudPos.y,
+            transform: 'translate(-50%, calc(-100% - 6px))',
+            zIndex: 20,
+            display: 'flex', alignItems: 'center', gap: '0.3rem',
+            padding: '0.25rem 0.55rem',
+            background: 'rgba(8,12,24,0.96)', border: '1px solid rgba(200,146,42,0.4)',
+            borderRadius: 5, boxShadow: '0 4px 16px rgba(0,0,0,0.6)',
+            color: 'var(--color-arcano)', fontFamily: 'var(--font-ui)', fontSize: '0.65rem',
+            cursor: 'pointer',
+          }}
+        >
+          ⚙ {selectedToken.character.name}
+        </button>
+      )}
 
       {/* Wall delete HUD (HTML overlay) */}
       {isGm && tool === 'wall' && wallHudPos && selectedWallId && (

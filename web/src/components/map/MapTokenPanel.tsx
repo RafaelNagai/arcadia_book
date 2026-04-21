@@ -12,6 +12,7 @@ interface MapTokenPanelProps {
   allChars: CampaignChar[]
   onTokensChange: (tokens: MapToken[]) => void
   onBroadcast: (event: MapBroadcastEvent) => void
+  onTokenEdit?: (tokenId: string) => void
 }
 
 export function MapTokenPanel({
@@ -21,6 +22,7 @@ export function MapTokenPanel({
   allChars,
   onTokensChange,
   onBroadcast,
+  onTokenEdit,
 }: MapTokenPanelProps) {
   const [adding, setAdding] = useState<string | null>(null)
   const [removing, setRemoving] = useState<string | null>(null)
@@ -105,6 +107,20 @@ export function MapTokenPanel({
             }}>
               {token.character.name}
             </p>
+            {onTokenEdit && (
+              <button
+                onClick={() => onTokenEdit(token.id)}
+                title="Configurar token"
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  color: 'rgba(255,255,255,0.2)', fontSize: '0.75rem', padding: '0.1rem',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-arcano)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.2)' }}
+              >
+                ⚙
+              </button>
+            )}
             <button
               onClick={() => handleRemove(token)}
               disabled={removing === token.id}

@@ -10,6 +10,7 @@ import { MapCanvas } from './MapCanvas'
 import { MapToolbar } from './MapToolbar'
 import { MapLayerPanel } from './MapLayerPanel'
 import { MapTokenPanel } from './MapTokenPanel'
+import { MapTokenModal } from './MapTokenModal'
 
 const TOKEN_DRAG_THROTTLE_MS = 50
 
@@ -349,6 +350,23 @@ export function MapTab({ campaign }: MapTabProps) {
     } catch { /* keep optimistic delete */ }
   }, [map])
 
+  // ── Token modal ──────────────────────────────────────────────────────────────
+  const [modalToken, setModalToken] = useState<MapToken | null>(null)
+
+  const handleTokenEdit = useCallback((tokenId: string) => {
+    const token = tokens.find(t => t.id === tokenId)
+    if (token) setModalToken(token)
+  }, [tokens])
+
+  const handleVisionUpdate = useCallback(async (tokenId: string, visionRadius: number | null) => {
+    if (!map) return
+    setTokens(prev => prev.map(t => t.id === tokenId ? { ...t, visionRadius } : t))
+    broadcastMap({ type: 'TOKEN_UPDATE', tokenId, data: { visionRadius }, senderId: user?.id })
+    try {
+      await api.maps.updateToken(campaign.id, map.id, tokenId, { vision_radius: visionRadius })
+    } catch { /* keep optimistic */ }
+  }, [map, campaign.id, broadcastMap, user?.id])
+
   // ── Token resize ─────────────────────────────────────────────────────────────
   const handleTokenResize = useCallback(async (tokenId: string, size: number) => {
     if (!map) return
@@ -458,6 +476,7 @@ export function MapTab({ campaign }: MapTabProps) {
                 allChars={allChars}
                 onTokensChange={setTokens}
                 onBroadcast={handleMapBroadcast}
+                onTokenEdit={handleTokenEdit}
               />
             </div>
 
@@ -504,6 +523,7 @@ export function MapTab({ campaign }: MapTabProps) {
                     allChars={allChars}
                     onTokensChange={t => { setTokens(t); setPanelOpen(false) }}
                     onBroadcast={handleMapBroadcast}
+                    onTokenEdit={handleTokenEdit}
                   />
                 </div>
               </div>
@@ -530,6 +550,7 @@ export function MapTab({ campaign }: MapTabProps) {
               onTokenDrag={handleTokenDrag}
               onTokenMove={handleTokenMove}
               onTokenResize={handleTokenResize}
+              onTokenEdit={handleTokenEdit}
               onFogReveal={handleFogReveal}
               onWallAdd={handleWallAdd}
               onWallDelete={handleWallDelete}
@@ -566,6 +587,15 @@ export function MapTab({ campaign }: MapTabProps) {
           campaignId={campaign.id}
           onCreated={handleMapCreated}
           onClose={() => setShowCreateModal(false)}
+        />
+      )}
+
+      {modalToken && (
+        <MapTokenModal
+          token={modalToken}
+          map={map}
+          onSave={handleVisionUpdate}
+          onClose={() => setModalToken(null)}
         />
       )}
     </div>
