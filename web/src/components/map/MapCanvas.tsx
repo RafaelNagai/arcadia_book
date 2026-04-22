@@ -10,7 +10,6 @@ import { MapWallLayer } from './MapWallLayer'
 const TOKEN_BASE_RADIUS = 28
 
 // ── SelectionHandle ───────────────────────────────────────────────────────────
-// Rendered above fog + walls. Drag the edge handle to resize the token.
 
 function SelectionHandle({ token, scale, onResize }: {
   token: MapToken
@@ -26,10 +25,8 @@ function SelectionHandle({ token, scale, onResize }: {
     const dy = e.target.y() - token.y
     const dist = Math.max(TOKEN_BASE_RADIUS * 0.25, Math.sqrt(dx * dx + dy * dy))
     const angle = Math.atan2(dy, dx)
-    // Constrain handle to the circle edge
     e.target.x(token.x + dist * Math.cos(angle))
     e.target.y(token.y + dist * Math.sin(angle))
-    // Update ring live without React state (imperative)
     if (ringRef.current) {
       ringRef.current.innerRadius(dist)
       ringRef.current.outerRadius(dist + 3 / scale)
@@ -41,27 +38,22 @@ function SelectionHandle({ token, scale, onResize }: {
     const dx = e.target.x() - token.x
     const dy = e.target.y() - token.y
     const dist = Math.max(TOKEN_BASE_RADIUS * 0.25, Math.sqrt(dx * dx + dy * dy))
-    const newSize = dist / TOKEN_BASE_RADIUS
-    onResize?.(token.id, newSize)
+    onResize?.(token.id, dist / TOKEN_BASE_RADIUS)
   }, [token.x, token.y, token.id, onResize])
 
   return (
     <>
-      {/* Selection ring */}
       <Ring
         ref={ringRef}
-        x={token.x}
-        y={token.y}
+        x={token.x} y={token.y}
         innerRadius={r}
         outerRadius={r + 3 / scale}
         fill="rgba(200,146,42,0.65)"
         listening={false}
       />
-      {/* Resize handle at the right edge */}
       <Circle
         ref={handleRef}
-        x={token.x + r}
-        y={token.y}
+        x={token.x + r} y={token.y}
         radius={6 / scale}
         fill="rgba(200,146,42,0.9)"
         stroke="rgba(255,255,255,0.5)"
@@ -80,7 +72,10 @@ function SelectionHandle({ token, scale, onResize }: {
 
 interface MapCanvasProps {
   map: GameMap
-  activeLayer: MapLayer | null
+  /** All layers of the map sorted by orderIndex */
+  allLayers: MapLayer[]
+  /** The layer the viewer is currently "on" (GM active layer or player's token layer) */
+  currentLayerId: string | null
   tokens: MapToken[]
   tool: MapTool
   isGm: boolean
@@ -101,7 +96,6 @@ interface MapCanvasProps {
   onWallDelete?: (wallId: string) => void
 }
 
-// Walk the Konva node tree to check if any ancestor is draggable
 function isOnDraggable(node: Konva.Node): boolean {
   let n: Konva.Node | null = node
   while (n && n.getClassName() !== 'Stage') {
@@ -113,7 +107,8 @@ function isOnDraggable(node: Konva.Node): boolean {
 
 export function MapCanvas({
   map,
-  activeLayer,
+  allLayers,
+  currentLayerId,
   tokens,
   tool,
   isGm,
@@ -134,9 +129,10 @@ export function MapCanvas({
   onWallDelete,
 }: MapCanvasProps) {
   const stageRef = useRef<Konva.Stage>(null)
-  const [bgImage, setBgImage] = useState<HTMLImageElement | null>(null)
+  const [layerImages, setLayerImages] = useState<Record<string, HTMLImageElement>>({})
   const [scale, setScale] = useState(1)
   const [position, setPosition] = useState({ x: 0, y: 0 })
+  const hasFitted = useRef(false)
 
   const stateRef = useRef({ scale, position })
   stateRef.current = { scale, position }
@@ -144,15 +140,48 @@ export function MapCanvas({
   const isPanning = useRef(false)
   const lastPan = useRef({ x: 0, y: 0 })
 
-  // Wall editor state: A→B single segment
   const [wallStart, setWallStart] = useState<{ x: number; y: number } | null>(null)
   const [wallPreview, setWallPreview] = useState<{ x: number; y: number } | null>(null)
   const [selectedWallId, setSelectedWallId] = useState<string | null>(null)
-
-  // Selected token for resize handle
   const [selectedTokenId, setSelectedTokenId] = useState<string | null>(null)
 
-  // ESC cancels current wall or deselects
+  // Derived layer data
+  const sortedLayers = [...allLayers].sort((a, b) => a.orderIndex - b.orderIndex)
+  const currentLayerIndex = sortedLayers.findIndex(l => l.id === currentLayerId)
+  const currentLayer = currentLayerIndex >= 0 ? sortedLayers[currentLayerIndex] : (sortedLayers[sortedLayers.length - 1] ?? null)
+  const layersToRender = currentLayerIndex >= 0
+    ? sortedLayers.slice(0, currentLayerIndex + 1)
+    : sortedLayers.length > 0 ? [sortedLayers[sortedLayers.length - 1]] : []
+
+  // Load images for all layers
+  const layerImageUrlsKey = allLayers.map(l => `${l.id}:${l.imageUrl}`).join('|')
+  useEffect(() => {
+    const cleanup: (() => void)[] = []
+    for (const layer of allLayers) {
+      const img = new Image()
+      img.crossOrigin = 'anonymous'
+      img.src = layer.imageUrl
+      img.onload = () => setLayerImages(prev => ({ ...prev, [layer.id]: img }))
+      img.onerror = () => {}
+      cleanup.push(() => { img.onload = null; img.onerror = null })
+    }
+    return () => cleanup.forEach(f => f())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [layerImageUrlsKey])
+
+  // Fit the current layer image to the container once on initial load
+  const currentLayerImage = currentLayer ? layerImages[currentLayer.id] ?? null : null
+  useEffect(() => {
+    if (hasFitted.current || !currentLayerImage || containerWidth === 0 || containerHeight === 0) return
+    hasFitted.current = true
+    const fit = Math.min(containerWidth / currentLayerImage.naturalWidth, containerHeight / currentLayerImage.naturalHeight)
+    setScale(fit)
+    setPosition({
+      x: (containerWidth - currentLayerImage.naturalWidth * fit) / 2,
+      y: (containerHeight - currentLayerImage.naturalHeight * fit) / 2,
+    })
+  }, [currentLayerImage, containerWidth, containerHeight])
+
   useEffect(() => {
     if (tool !== 'wall') {
       setWallStart(null); setWallPreview(null); setSelectedWallId(null)
@@ -166,28 +195,6 @@ export function MapCanvas({
   }, [tool])
 
   useEffect(() => { setSelectedTokenId(null) }, [tool])
-
-  // Load background image when active layer changes
-  useEffect(() => {
-    if (!activeLayer) { setBgImage(null); return }
-    const img = new Image()
-    img.crossOrigin = 'anonymous'
-    img.src = activeLayer.imageUrl
-    img.onload = () => setBgImage(img)
-    img.onerror = () => setBgImage(null)
-    return () => { img.onload = null; img.onerror = null }
-  }, [activeLayer?.id, activeLayer?.imageUrl])
-
-  // Fit image to container on first load
-  useEffect(() => {
-    if (!bgImage || containerWidth === 0 || containerHeight === 0) return
-    const fit = Math.min(containerWidth / bgImage.naturalWidth, containerHeight / bgImage.naturalHeight)
-    setScale(fit)
-    setPosition({
-      x: (containerWidth - bgImage.naturalWidth * fit) / 2,
-      y: (containerHeight - bgImage.naturalHeight * fit) / 2,
-    })
-  }, [bgImage, containerWidth, containerHeight])
 
   const getWorldPos = useCallback(() => {
     const stage = stageRef.current
@@ -256,7 +263,6 @@ export function MapCanvas({
   const handleClick = useCallback((_e: Konva.KonvaEventObject<MouseEvent>) => {
     setSelectedTokenId(null)
     if (tool !== 'wall' || !isGm) return
-    // If a wall is selected, clicking outside just deselects — don't start construction
     if (selectedWallId !== null) {
       setSelectedWallId(null)
       return
@@ -276,11 +282,11 @@ export function MapCanvas({
     setWallStart(point)
   }, [])
 
-  // Vision circles: only player's OWN tokens (non-NPC) generate vision
-  // This prevents NPC tokens from clearing fog for players
+  // Vision circles: non-NPC tokens on the current layer
+  const walls = currentLayer?.walls ?? []
   const visionCircles: FogPatch[] = tokens
     .filter(t =>
-      t.layerId === activeLayer?.id &&
+      t.layerId === currentLayer?.id &&
       !npcCharacterIds.includes(t.characterId) &&
       (isGm || myCharacterIds.includes(t.characterId)),
     )
@@ -291,7 +297,6 @@ export function MapCanvas({
       return { ...pos, radius: t.visionRadius ?? map.defaultVisionRadius }
     })
 
-  const walls = activeLayer?.walls ?? []
   const visionPolygons = fogEnabled
     ? visionCircles.map(c => computeVisibilityPolygon({ x: c.x, y: c.y }, c.radius, walls))
     : []
@@ -304,8 +309,6 @@ export function MapCanvas({
   } : null
 
   const selectedToken = selectedTokenId ? tokens.find(t => t.id === selectedTokenId) : null
-
-  // Screen-space position of selected token (for HTML overlay)
   const tokenHudPos = selectedToken ? {
     x: selectedToken.x * scale + position.x,
     y: (selectedToken.y - TOKEN_BASE_RADIUS * (selectedToken.size ?? 1)) * scale + position.y,
@@ -313,7 +316,6 @@ export function MapCanvas({
 
   const stageW = containerWidth || window.innerWidth
   const stageH = containerHeight || window.innerHeight
-
   const cursorStyle = tool === 'fog' || tool === 'wall' ? 'crosshair' : 'grab'
 
   return (
@@ -333,45 +335,80 @@ export function MapCanvas({
         onClick={handleClick}
         style={{ background: '#04060C', cursor: cursorStyle }}
       >
-        {/* Background + grid */}
-        <Layer>
-          <Group x={position.x} y={position.y} scaleX={scale} scaleY={scale}>
-            {bgImage ? (
-              <KonvaImage image={bgImage} width={bgImage.naturalWidth} height={bgImage.naturalHeight} />
-            ) : (
-              <Rect width={stageW} height={stageH} fill="#0A0F1E" />
-            )}
-            {map.gridEnabled && bgImage && (
-              <>
-                {Array.from({ length: Math.ceil(bgImage.naturalWidth / map.gridSize) + 1 }, (_, i) => (
-                  <Line key={`vl${i}`} points={[i * map.gridSize, 0, i * map.gridSize, bgImage.naturalHeight]} stroke="rgba(255,255,255,0.12)" strokeWidth={1 / scale} />
-                ))}
-                {Array.from({ length: Math.ceil(bgImage.naturalHeight / map.gridSize) + 1 }, (_, i) => (
-                  <Line key={`hl${i}`} points={[0, i * map.gridSize, bgImage.naturalWidth, i * map.gridSize]} stroke="rgba(255,255,255,0.12)" strokeWidth={1 / scale} />
-                ))}
-              </>
-            )}
-          </Group>
-        </Layer>
+        {/*
+         * Per-layer rendering bottom → top.
+         * Z-order per the spec: image layer N, tokens layer N, image layer N+1, tokens layer N+1 …
+         * Lower-layer tokens are non-interactive and filtered by the current vision polygons.
+         */}
+        {layersToRender.map(layer => {
+          const img = layerImages[layer.id]
+          const isCurrent = layer.id === currentLayer?.id
+          return (
+            <>
+              {/* Layer image */}
+              <Layer key={`img-${layer.id}`}>
+                <Group
+                  x={position.x} y={position.y}
+                  scaleX={scale} scaleY={scale}
+                  opacity={isCurrent ? 1 : 0.55}
+                >
+                  {img ? (
+                    <KonvaImage image={img} width={img.naturalWidth} height={img.naturalHeight} />
+                  ) : (
+                    isCurrent && <Rect width={stageW / scale} height={stageH / scale} fill="#0A0F1E" />
+                  )}
+                  {isCurrent && map.gridEnabled && img && (
+                    <>
+                      {Array.from({ length: Math.ceil(img.naturalWidth / map.gridSize) + 1 }, (_, i) => (
+                        <Line key={`vl${i}`} points={[i * map.gridSize, 0, i * map.gridSize, img.naturalHeight]} stroke="rgba(255,255,255,0.12)" strokeWidth={1 / scale} />
+                      ))}
+                      {Array.from({ length: Math.ceil(img.naturalHeight / map.gridSize) + 1 }, (_, i) => (
+                        <Line key={`hl${i}`} points={[0, i * map.gridSize, img.naturalWidth, i * map.gridSize]} stroke="rgba(255,255,255,0.12)" strokeWidth={1 / scale} />
+                      ))}
+                    </>
+                  )}
+                </Group>
+              </Layer>
 
-        {/* Tokens */}
-        <MapTokenLayer
-          tokens={tokens}
-          activeLayerId={activeLayer?.id ?? null}
-          tool={tool}
-          isGm={isGm}
-          scale={scale}
-          panX={position.x}
-          panY={position.y}
-          fogEnabled={fogEnabled}
-          visionPolygons={visionPolygons}
-          myCharacterIds={myCharacterIds}
-          onTokenDrag={onTokenDrag}
-          onTokenMove={onTokenMove}
-          onTokenClick={setSelectedTokenId}
-        />
+              {/* Layer tokens */}
+              {isCurrent ? (
+                <MapTokenLayer
+                  key={`tok-${layer.id}`}
+                  tokens={tokens}
+                  activeLayerId={layer.id}
+                  tool={tool}
+                  isGm={isGm}
+                  scale={scale}
+                  panX={position.x}
+                  panY={position.y}
+                  fogEnabled={fogEnabled}
+                  visionPolygons={visionPolygons}
+                  myCharacterIds={myCharacterIds}
+                  onTokenDrag={onTokenDrag}
+                  onTokenMove={onTokenMove}
+                  onTokenClick={setSelectedTokenId}
+                />
+              ) : (
+                <MapTokenLayer
+                  key={`tok-${layer.id}`}
+                  tokens={tokens}
+                  activeLayerId={layer.id}
+                  tool={tool}
+                  isGm={isGm}
+                  scale={scale}
+                  panX={position.x}
+                  panY={position.y}
+                  fogEnabled={fogEnabled}
+                  visionPolygons={visionPolygons}
+                  myCharacterIds={myCharacterIds}
+                  readOnly
+                />
+              )}
+            </>
+          )
+        })}
 
-        {/* Fog of war (above tokens) */}
+        {/* Fog of war (current layer only) */}
         {fogEnabled && (
           <MapFogLayer
             enabled={fogEnabled}
@@ -379,14 +416,14 @@ export function MapCanvas({
             panY={position.y}
             scale={scale}
             visionPolygons={visionPolygons}
-            revealedPatches={[...(activeLayer?.fogRevealed ?? []), ...localFogPatches]}
+            revealedPatches={[...(currentLayer?.fogRevealed ?? []), ...localFogPatches]}
           />
         )}
 
-        {/* Walls — visible only to GM */}
+        {/* Walls — GM only, current layer */}
         {isGm && (
           <MapWallLayer
-            walls={activeLayer?.walls ?? []}
+            walls={currentLayer?.walls ?? []}
             panX={position.x}
             panY={position.y}
             scale={scale}
@@ -398,7 +435,7 @@ export function MapCanvas({
           />
         )}
 
-        {/* Selection + resize handle (above fog and walls) */}
+        {/* Selection + resize handle */}
         {selectedToken && (
           <Layer x={position.x} y={position.y} scaleX={scale} scaleY={scale}>
             <SelectionHandle
@@ -410,7 +447,7 @@ export function MapCanvas({
         )}
       </Stage>
 
-      {/* Token settings HUD (GM only, HTML overlay) */}
+      {/* Token settings HUD (GM only) */}
       {isGm && selectedToken && tokenHudPos && onTokenEdit && (
         <button
           title="Configurar token"
@@ -433,7 +470,7 @@ export function MapCanvas({
         </button>
       )}
 
-      {/* Wall delete HUD (HTML overlay) */}
+      {/* Wall delete HUD */}
       {isGm && tool === 'wall' && wallHudPos && selectedWallId && (
         <div style={{
           position: 'absolute', left: wallHudPos.x, top: wallHudPos.y,

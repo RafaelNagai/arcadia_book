@@ -101,6 +101,8 @@ interface MapTokenLayerProps {
   onTokenDrag?: (tokenId: string, x: number, y: number) => void
   onTokenMove?: (tokenId: string, x: number, y: number) => void
   onTokenClick?: (tokenId: string) => void
+  /** When true: non-interactive, dimmed, no fog filter (lower floor view) */
+  readOnly?: boolean
 }
 
 export function MapTokenLayer({
@@ -117,32 +119,39 @@ export function MapTokenLayer({
   onTokenDrag,
   onTokenMove,
   onTokenClick,
+  readOnly = false,
 }: MapTokenLayerProps) {
   const visibleTokens = tokens.filter(t => {
     if (t.layerId !== activeLayerId) return false
+    if (readOnly) {
+      if (isGm) return true
+      if (fogEnabled) return isInsideAnyPolygon(t.x, t.y, visionPolygons)
+      return t.isVisible
+    }
     if (isGm) return true
-    // Own character tokens are always visible
     if (myCharacterIds.includes(t.characterId)) return true
-    // With fog: any token (NPC or other player) visible only if inside player LOS polygon
     if (fogEnabled) return isInsideAnyPolygon(t.x, t.y, visionPolygons)
-    // Without fog: only GM-marked-visible tokens
     return t.isVisible
   })
 
   const canDrag = (token: MapToken) =>
-    tool === 'select' && (isGm || myCharacterIds.includes(token.characterId))
+    !readOnly && tool === 'select' && (isGm || myCharacterIds.includes(token.characterId))
 
   return (
-    <Layer x={panX} y={panY} scaleX={scale} scaleY={scale}>
+    <Layer
+      x={panX} y={panY} scaleX={scale} scaleY={scale}
+      opacity={readOnly ? 0.45 : 1}
+      listening={readOnly ? false : undefined}
+    >
       {visibleTokens.map(token => (
         <TokenShape
           key={token.id}
           token={token}
           isDraggable={canDrag(token)}
           scale={scale}
-          onDrag={onTokenDrag}
-          onDragEnd={onTokenMove}
-          onTokenClick={onTokenClick}
+          onDrag={readOnly ? undefined : onTokenDrag}
+          onDragEnd={readOnly ? undefined : onTokenMove}
+          onTokenClick={readOnly ? undefined : onTokenClick}
         />
       ))}
     </Layer>

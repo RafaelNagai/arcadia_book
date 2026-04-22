@@ -1,6 +1,7 @@
 import type { FastifyInstance } from 'fastify'
 import { UploadService } from '../services/upload.service.js'
 import { ValidationError } from '../middleware/error-handler.js'
+import { env } from '../config/env.js'
 import { z } from 'zod'
 
 const DeleteImageSchema = z.object({
@@ -41,7 +42,7 @@ export async function uploadController(fastify: FastifyInstance) {
   fastify.post('/map-layer', async (req, reply) => {
     await fastify.authenticate(req)
 
-    const data = await req.file()
+    const data = await req.file({ limits: { fileSize: env.MAX_MAP_IMAGE_SIZE_MB * 1024 * 1024 } })
     if (!data) throw new ValidationError('Nenhum arquivo enviado')
 
     const mapIdField = data.fields.mapId as any

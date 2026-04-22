@@ -125,7 +125,8 @@ const userId = data.user?.id  // undefined se não autenticado
 | `SUPABASE_ANON_KEY` | Validação de JWT via `auth.getUser()` |
 | `CORS_ORIGINS` | Origens permitidas, separadas por vírgula |
 | `SUPABASE_STORAGE_BUCKET` | Nome do bucket de imagens (default: `character-portraits`) |
-| `MAX_IMAGE_SIZE_MB` | Limite de upload (default: 5) |
+| `MAX_IMAGE_SIZE_MB` | Limite de upload para fotos de personagem (default: 15) |
+| `MAX_MAP_IMAGE_SIZE_MB` | Limite de upload para imagens de layer de mapa (default: 30) |
 
 > `DATABASE_URL` é usado pelo `PrismaPg` adapter em runtime.
 > `DIRECT_URL` é usado pelo `prisma.config.ts` apenas no CLI (migrate/push).

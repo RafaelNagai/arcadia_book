@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { api } from '@/lib/apiClient'
 import { useAuth } from '@/lib/authContext'
 import { useMapRealtime, useCampaignMapChannel } from '@/hooks/useMapRealtime'
@@ -112,7 +112,6 @@ export function MapTab({ campaign }: MapTabProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerSize, setContainerSize] = useState({ w: 0, h: 0 })
 
-  // Throttle state for TOKEN_MOVE broadcasts during drag
   const lastDragBroadcastRef = useRef(0)
   const localFogPatchesRef = useRef<FogPatch[]>([])
   const currentDragTokenRef = useRef<string | null>(null)
@@ -125,16 +124,29 @@ export function MapTab({ campaign }: MapTabProps) {
     : campaign.players.filter(c => c.userId === user?.id).map(c => c.id)
   const npcCharacterIds = campaign.npcs.map(c => c.id)
 
-  const fogStateRef = useRef({ fogEnabled, map, tokens, npcCharacterIds })
-  fogStateRef.current = { fogEnabled, map, tokens, npcCharacterIds }
+  // GM's current layer (isActive flag)
+  const gmCurrentLayerId = map?.layers.find(l => l.isActive)?.id ?? null
+  const gmCurrentLayer = gmCurrentLayerId ? map?.layers.find(l => l.id === gmCurrentLayerId) ?? null : null
 
-  // Measure canvas container
+  // Player's effective current layer: highest-floor layer where they have a token
+  const effectiveCurrentLayerId = useMemo(() => {
+    if (campaign.isGm || !map) return gmCurrentLayerId
+    const sorted = [...map.layers].sort((a, b) => a.orderIndex - b.orderIndex)
+    for (let i = sorted.length - 1; i >= 0; i--) {
+      if (tokens.some(t => t.layerId === sorted[i].id && myCharacterIds.includes(t.characterId))) {
+        return sorted[i].id
+      }
+    }
+    return gmCurrentLayerId
+  }, [campaign.isGm, gmCurrentLayerId, map, tokens, myCharacterIds])
+
+  const fogStateRef = useRef({ fogEnabled, map, tokens, npcCharacterIds, gmCurrentLayerId })
+  fogStateRef.current = { fogEnabled, map, tokens, npcCharacterIds, gmCurrentLayerId }
+
   useEffect(() => {
     if (!containerRef.current) return
     const rect = containerRef.current.getBoundingClientRect()
-    if (rect.width > 0 && rect.height > 0) {
-      setContainerSize({ w: rect.width, h: rect.height })
-    }
+    if (rect.width > 0 && rect.height > 0) setContainerSize({ w: rect.width, h: rect.height })
     const obs = new ResizeObserver(entries => {
       const e = entries[0]
       if (e) setContainerSize({ w: e.contentRect.width, h: e.contentRect.height })
@@ -143,7 +155,6 @@ export function MapTab({ campaign }: MapTabProps) {
     return () => obs.disconnect()
   }, [])
 
-  // Load active map + tokens on mount
   useEffect(() => {
     setLoading(true)
     api.maps.getActive(campaign.id)
@@ -157,7 +168,7 @@ export function MapTab({ campaign }: MapTabProps) {
       .finally(() => setLoading(false))
   }, [campaign.id])
 
-  // ── Realtime: map-level events (token moves, layer changes) ─────────────────
+  // ── Realtime ─────────────────────────────────────────────────────────────────
   const broadcastMap = useMapRealtime(map?.id, {
     selfId: user?.id,
     onTokenMove: useCallback((tokenId, x, y) => {
@@ -191,7 +202,6 @@ export function MapTab({ campaign }: MapTabProps) {
     }, []),
   })
 
-  // ── Realtime: campaign-level events (map activated / deactivated) ───────────
   const broadcastCampaign = useCampaignMapChannel(campaign.id, {
     onMapActivated: useCallback((newMap: GameMap) => {
       setMap(newMap)
@@ -204,7 +214,7 @@ export function MapTab({ campaign }: MapTabProps) {
     }, []),
   })
 
-  // ── Token drag: throttled broadcast + vision circle + fog painting ──────────
+  // ── Token drag: throttled broadcast + fog trail ───────────────────────────────
   const handleTokenDrag = useCallback((tokenId: string, x: number, y: number) => {
     const now = Date.now()
     if (now - lastDragBroadcastRef.current < TOKEN_DRAG_THROTTLE_MS) return
@@ -218,20 +228,20 @@ export function MapTab({ campaign }: MapTabProps) {
     setActiveDrag({ tokenId, x, y })
     broadcastMap({ type: 'TOKEN_MOVE', tokenId, x, y, senderId: user?.id })
 
-    const { fogEnabled: fe, map: m, tokens: toks, npcCharacterIds: npcIds } = fogStateRef.current
+    const { fogEnabled: fe, map: m, tokens: toks, npcCharacterIds: npcIds, gmCurrentLayerId: clId } = fogStateRef.current
     if (fe && m) {
       const token = toks.find(t => t.id === tokenId)
-      const activeLayer = m.layers.find(l => l.isActive)
-      if (token && activeLayer && token.layerId === activeLayer.id && !npcIds.includes(token.characterId)) {
+      const currentLayer = m.layers.find(l => l.id === clId)
+      if (token && currentLayer && token.layerId === currentLayer.id && !npcIds.includes(token.characterId)) {
         const radius = token.visionRadius ?? m.defaultVisionRadius
-        const polygon = computeVisibilityPolygon({ x, y }, radius, activeLayer.walls ?? [])
+        const polygon = computeVisibilityPolygon({ x, y }, radius, currentLayer.walls ?? [])
         localFogPatchesRef.current.push({ x, y, radius, polygon })
         setLocalFogPatches([...localFogPatchesRef.current])
       }
     }
   }, [broadcastMap, user?.id])
 
-  // ── Token drag end: persist fog trail + update state + DB ───────────────────
+  // ── Token drag end: persist fog + update state ────────────────────────────────
   const handleTokenMove = useCallback(async (tokenId: string, x: number, y: number) => {
     const pendingPatches = [...localFogPatchesRef.current]
     localFogPatchesRef.current = []
@@ -246,29 +256,29 @@ export function MapTab({ campaign }: MapTabProps) {
 
       if (fogEnabled) {
         const token = tokens.find(t => t.id === tokenId)
-        const activeLayer = map!.layers.find(l => l.isActive)
-        if (token && activeLayer && token.layerId === activeLayer.id && !npcCharacterIds.includes(token.characterId)) {
+        const currentLayer = map!.layers.find(l => l.id === gmCurrentLayerId)
+        if (token && currentLayer && token.layerId === currentLayer.id && !npcCharacterIds.includes(token.characterId)) {
           const radius = token.visionRadius ?? map!.defaultVisionRadius
-          const polygon = computeVisibilityPolygon({ x, y }, radius, activeLayer.walls ?? [])
+          const polygon = computeVisibilityPolygon({ x, y }, radius, currentLayer.walls ?? [])
           const allNewPatches = pendingPatches.length > 0
             ? [...pendingPatches, { x, y, radius, polygon }]
             : [{ x, y, radius, polygon }]
-          const existing = activeLayer.fogRevealed ?? []
+          const existing = currentLayer.fogRevealed ?? []
           const next = [...existing, ...allNewPatches]
           setMap(prev => prev ? {
             ...prev,
-            layers: prev.layers.map(l => l.id === activeLayer.id ? { ...l, fogRevealed: next } : l),
+            layers: prev.layers.map(l => l.id === currentLayer.id ? { ...l, fogRevealed: next } : l),
           } : prev)
-          await api.maps.addFogPatches(map!.campaignId, map!.id, activeLayer.id, allNewPatches)
-          broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: activeLayer.id, fogRevealed: next, senderId: user?.id })
+          await api.maps.addFogPatches(map!.campaignId, map!.id, currentLayer.id, allNewPatches)
+          broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: currentLayer.id, fogRevealed: next, senderId: user?.id })
         }
       }
     } catch {
       // revert handled by next full load
     }
-  }, [campaign.id, map, fogEnabled, tokens, npcCharacterIds, broadcastMap, user?.id])
+  }, [campaign.id, map, fogEnabled, tokens, npcCharacterIds, gmCurrentLayerId, broadcastMap, user?.id])
 
-  // ── Fog handlers ────────────────────────────────────────────────────────────
+  // ── Fog handlers ──────────────────────────────────────────────────────────────
   const handleFogToggle = useCallback(async () => {
     if (!map) return
     const next = !fogEnabled
@@ -280,113 +290,101 @@ export function MapTab({ campaign }: MapTabProps) {
   }, [map, fogEnabled, broadcastMap, user?.id])
 
   const handleFogReveal = useCallback(async (patch: FogPatch) => {
-    if (!map) return
-    const activeLayer = map.layers.find(l => l.isActive)
-    if (!activeLayer) return
-    const polygon = computeVisibilityPolygon({ x: patch.x, y: patch.y }, patch.radius, activeLayer.walls ?? [])
+    if (!map || !gmCurrentLayer) return
+    const polygon = computeVisibilityPolygon({ x: patch.x, y: patch.y }, patch.radius, gmCurrentLayer.walls ?? [])
     const patchWithPoly = { ...patch, polygon }
-    const existing = activeLayer.fogRevealed ?? []
+    const existing = gmCurrentLayer.fogRevealed ?? []
     const next = [...existing, patchWithPoly]
     setMap(prev => prev ? {
       ...prev,
-      layers: prev.layers.map(l => l.id === activeLayer.id ? { ...l, fogRevealed: next } : l),
+      layers: prev.layers.map(l => l.id === gmCurrentLayer.id ? { ...l, fogRevealed: next } : l),
     } : prev)
     try {
-      await api.maps.addFogPatches(map.campaignId, map.id, activeLayer.id, [patchWithPoly])
-      broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: activeLayer.id, fogRevealed: next, senderId: user?.id })
+      await api.maps.addFogPatches(map.campaignId, map.id, gmCurrentLayer.id, [patchWithPoly])
+      broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: gmCurrentLayer.id, fogRevealed: next, senderId: user?.id })
     } catch {
       setMap(prev => prev ? {
         ...prev,
-        layers: prev.layers.map(l => l.id === activeLayer.id ? { ...l, fogRevealed: existing } : l),
+        layers: prev.layers.map(l => l.id === gmCurrentLayer.id ? { ...l, fogRevealed: existing } : l),
       } : prev)
     }
-  }, [map, fogEnabled, broadcastMap, user?.id])
+  }, [map, gmCurrentLayer, fogEnabled, broadcastMap, user?.id])
 
   const handleFogReset = useCallback(async () => {
-    if (!map) return
-    const activeLayer = map.layers.find(l => l.isActive)
-    if (!activeLayer) return
+    if (!map || !gmCurrentLayer) return
     setMap(prev => prev ? {
       ...prev,
-      layers: prev.layers.map(l => l.id === activeLayer.id ? { ...l, fogRevealed: [] } : l),
+      layers: prev.layers.map(l => l.id === gmCurrentLayer.id ? { ...l, fogRevealed: [] } : l),
     } : prev)
     try {
-      await api.maps.resetFog(map.campaignId, map.id, activeLayer.id)
-      broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: activeLayer.id, fogRevealed: [], senderId: user?.id })
-    } catch { /* state stays optimistic */ }
-  }, [map, fogEnabled, broadcastMap, user?.id])
+      await api.maps.resetFog(map.campaignId, map.id, gmCurrentLayer.id)
+      broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: gmCurrentLayer.id, fogRevealed: [], senderId: user?.id })
+    } catch { /* stay optimistic */ }
+  }, [map, gmCurrentLayer, fogEnabled, broadcastMap, user?.id])
 
-  // ── Wall handlers ────────────────────────────────────────────────────────────
+  // ── Wall handlers ─────────────────────────────────────────────────────────────
   const handleWallAdd = useCallback(async (points: Array<{ x: number; y: number }>) => {
-    if (!map) return
-    const activeLayer = map.layers.find(l => l.isActive)
-    if (!activeLayer) return
+    if (!map || !gmCurrentLayer) return
     try {
-      const res = await api.maps.createWall(map.campaignId, map.id, activeLayer.id, points)
+      const res = await api.maps.createWall(map.campaignId, map.id, gmCurrentLayer.id, points)
       const wall = res.wall as MapWall
       setMap(prev => prev ? {
         ...prev,
-        layers: prev.layers.map(l => l.id === activeLayer.id
+        layers: prev.layers.map(l => l.id === gmCurrentLayer.id
           ? { ...l, walls: [...(l.walls ?? []), wall] }
           : l),
       } : prev)
     } catch (err) {
       alert((err as Error).message)
     }
-  }, [map])
+  }, [map, gmCurrentLayer])
 
   const handleWallDelete = useCallback(async (wallId: string) => {
-    if (!map) return
-    const activeLayer = map.layers.find(l => l.isActive)
-    if (!activeLayer) return
+    if (!map || !gmCurrentLayer) return
     setMap(prev => prev ? {
       ...prev,
-      layers: prev.layers.map(l => l.id === activeLayer.id
+      layers: prev.layers.map(l => l.id === gmCurrentLayer.id
         ? { ...l, walls: (l.walls ?? []).filter(w => w.id !== wallId) }
         : l),
     } : prev)
     try {
-      await api.maps.deleteWall(map.campaignId, map.id, activeLayer.id, wallId)
-    } catch { /* keep optimistic delete */ }
-  }, [map])
+      await api.maps.deleteWall(map.campaignId, map.id, gmCurrentLayer.id, wallId)
+    } catch { /* keep optimistic */ }
+  }, [map, gmCurrentLayer])
 
-  // ── Token drop from panel onto canvas ───────────────────────────────────────
+  // ── Token drop from panel onto canvas ────────────────────────────────────────
   const handleTokenDrop = useCallback(async (charId: string, worldX: number, worldY: number, visionRadius: number | null) => {
-    if (!map) return
-    const activeLayer = map.layers.find(l => l.isActive)
-    if (!activeLayer) return
+    if (!map || !gmCurrentLayer) return
     try {
       const res = await api.maps.createToken(campaign.id, map.id, {
-        layer_id: activeLayer.id,
+        layer_id: gmCurrentLayer.id,
         character_id: charId,
-        x: worldX,
-        y: worldY,
+        x: worldX, y: worldY,
         vision_radius: visionRadius,
       })
       const newToken = res.token as MapToken
       setTokens(prev => prev.some(t => t.id === newToken.id) ? prev : [...prev, newToken])
       broadcastMap({ type: 'TOKEN_ADD', token: newToken, senderId: user?.id })
 
-      // Reveal fog only at the drop point, not along the drag path
       if (fogEnabled && !npcCharacterIds.includes(charId)) {
         const radius = newToken.visionRadius ?? map.defaultVisionRadius
-        const polygon = computeVisibilityPolygon({ x: worldX, y: worldY }, radius, activeLayer.walls ?? [])
+        const polygon = computeVisibilityPolygon({ x: worldX, y: worldY }, radius, gmCurrentLayer.walls ?? [])
         const patchWithPoly = { x: worldX, y: worldY, radius, polygon }
-        const existing = activeLayer.fogRevealed ?? []
+        const existing = gmCurrentLayer.fogRevealed ?? []
         const next = [...existing, patchWithPoly]
         setMap(prev => prev ? {
           ...prev,
-          layers: prev.layers.map(l => l.id === activeLayer.id ? { ...l, fogRevealed: next } : l),
+          layers: prev.layers.map(l => l.id === gmCurrentLayer.id ? { ...l, fogRevealed: next } : l),
         } : prev)
-        await api.maps.addFogPatches(map.campaignId, map.id, activeLayer.id, [patchWithPoly])
-        broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: activeLayer.id, fogRevealed: next, senderId: user?.id })
+        await api.maps.addFogPatches(map.campaignId, map.id, gmCurrentLayer.id, [patchWithPoly])
+        broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: gmCurrentLayer.id, fogRevealed: next, senderId: user?.id })
       }
     } catch (err) {
       alert((err as Error).message)
     }
-  }, [map, campaign.id, fogEnabled, npcCharacterIds, broadcastMap, user?.id])
+  }, [map, campaign.id, gmCurrentLayer, fogEnabled, npcCharacterIds, broadcastMap, user?.id])
 
-  // ── Token modal ──────────────────────────────────────────────────────────────
+  // ── Token modal ───────────────────────────────────────────────────────────────
   const [modalToken, setModalToken] = useState<MapToken | null>(null)
 
   const handleTokenEdit = useCallback((tokenId: string) => {
@@ -403,7 +401,6 @@ export function MapTab({ campaign }: MapTabProps) {
     } catch { /* keep optimistic */ }
   }, [map, campaign.id, broadcastMap, user?.id])
 
-  // ── Token resize ─────────────────────────────────────────────────────────────
   const handleTokenResize = useCallback(async (tokenId: string, size: number) => {
     if (!map) return
     setTokens(prev => prev.map(t => t.id === tokenId ? { ...t, size } : t))
@@ -413,21 +410,16 @@ export function MapTab({ campaign }: MapTabProps) {
     } catch { /* keep optimistic */ }
   }, [map, campaign.id, broadcastMap, user?.id])
 
-  // ── Handlers passed to panels so they can broadcast after mutations ─────────
   const handleMapBroadcast = useCallback((event: MapBroadcastEvent) => {
     broadcastMap({ ...event, senderId: user?.id })
   }, [broadcastMap, user?.id])
 
-  // ── CreateMapModal callback: activate + broadcast to campaign channel ────────
   const handleMapCreated = useCallback(async (newMap: GameMap) => {
     setMap(newMap)
     setShowCreateModal(false)
-    // Load tokens (empty for a new map)
     setTokens([])
     broadcastCampaign({ type: 'MAP_ACTIVATED', map: newMap })
   }, [broadcastCampaign])
-
-  const activeLayer = map?.layers.find(l => l.isActive) ?? null
 
   if (loading) {
     return (
@@ -472,9 +464,10 @@ export function MapTab({ campaign }: MapTabProps) {
     )
   }
 
+  const hasLayers = map.layers.length > 0
+
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#04060C' }}>
-      {/* Toolbar (master only) */}
       {campaign.isGm && (
         <MapToolbar
           tool={tool}
@@ -486,7 +479,6 @@ export function MapTab({ campaign }: MapTabProps) {
       )}
 
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-        {/* Side panel (master only) */}
         {campaign.isGm && (
           <>
             {/* Desktop panel */}
@@ -495,8 +487,7 @@ export function MapTab({ campaign }: MapTabProps) {
               background: 'rgba(6,10,22,0.9)',
               borderRight: '1px solid var(--color-border)',
               flexDirection: 'column', gap: '1rem',
-              padding: '1rem 0.75rem',
-              overflowY: 'auto',
+              padding: '1rem 0.75rem', overflowY: 'auto',
             }}>
               <MapLayerPanel
                 campaignId={campaign.id}
@@ -569,10 +560,11 @@ export function MapTab({ campaign }: MapTabProps) {
 
         {/* Canvas area */}
         <div ref={containerRef} style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
-          {activeLayer ? (
+          {hasLayers ? (
             <MapCanvas
               map={map}
-              activeLayer={activeLayer}
+              allLayers={map.layers}
+              currentLayerId={effectiveCurrentLayerId}
               tokens={tokens}
               tool={tool}
               isGm={campaign.isGm}
@@ -598,13 +590,13 @@ export function MapTab({ campaign }: MapTabProps) {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
               <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
-                {campaign.isGm ? 'Adicione uma layer para começar.' : 'Aguardando o mestre ativar uma layer.'}
+                {campaign.isGm ? 'Adicione uma layer para começar.' : 'Aguardando o mestre.'}
               </p>
             </div>
           )}
 
           {/* Layer indicator */}
-          {activeLayer && (
+          {gmCurrentLayer && (
             <div style={{
               position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)',
               padding: '0.3rem 0.75rem', borderRadius: 99,
@@ -613,7 +605,7 @@ export function MapTab({ campaign }: MapTabProps) {
               fontFamily: 'var(--font-ui)', fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)',
               pointerEvents: 'none',
             }}>
-              {map.title} — {activeLayer.name}
+              {map.title} — {gmCurrentLayer.name}
             </div>
           )}
         </div>

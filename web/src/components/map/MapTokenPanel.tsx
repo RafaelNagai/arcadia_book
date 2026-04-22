@@ -30,6 +30,10 @@ export function MapTokenPanel({
   const [pendingVisionRadii, setPendingVisionRadii] = useState<Record<string, number | null>>({})
 
   const activeLayer = map.layers.find(l => l.isActive)
+  // Layers sorted highest floor first for display
+  const sortedLayers = [...map.layers].sort((a, b) => b.orderIndex - a.orderIndex)
+  // Characters not placed on any layer
+  const charsNotOnMap = allChars.filter(c => !tokens.some(t => t.characterId === c.id))
 
   async function handleRemove(token: MapToken) {
     setRemoving(token.id)
@@ -44,15 +48,14 @@ export function MapTokenPanel({
     }
   }
 
-  const onMapTokens = tokens.filter(t => t.layerId === activeLayer?.id)
-  const charsNotOnLayer = allChars.filter(c => !onMapTokens.some(t => t.characterId === c.id))
-
   function handleDragStart(e: React.DragEvent, char: CampaignChar) {
     e.dataTransfer.setData('charId', char.id)
     const vr = pendingVisionRadii[char.id]
     e.dataTransfer.setData('visionRadius', vr != null ? String(vr) : '')
     e.dataTransfer.effectAllowed = 'copy'
   }
+
+  const hasAnyTokens = tokens.length > 0
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -64,70 +67,87 @@ export function MapTokenPanel({
         Tokens no mapa
       </p>
 
-      {!activeLayer && (
+      {!hasAnyTokens && (
         <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
-          Ative uma layer primeiro.
+          Nenhum token colocado.
         </p>
       )}
 
-      {/* Tokens already placed */}
-      {onMapTokens.map(token => {
-        const accent = getAccent(token.character.afinidade)
+      {/* Tokens grouped by layer (highest floor first) */}
+      {sortedLayers.map(layer => {
+        const layerTokens = tokens.filter(t => t.layerId === layer.id)
+        if (layerTokens.length === 0) return null
         return (
-          <div key={token.id} style={{
-            display: 'flex', alignItems: 'center', gap: '0.5rem',
-            padding: '0.4rem 0.6rem', borderRadius: 4,
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.07)',
-          }}>
-            <div style={{
-              width: 28, height: 28, borderRadius: '50%',
-              background: accent.bg, border: `2px solid ${accent.text}`,
-              overflow: 'hidden', flexShrink: 0,
-            }}>
-              {token.character.imageUrl && (
-                <img src={token.character.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              )}
-            </div>
+          <div key={layer.id}>
             <p style={{
-              flex: 1, fontFamily: 'var(--font-ui)', fontSize: '0.75rem',
-              color: '#EEF4FC', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+              fontFamily: 'var(--font-ui)', fontSize: '0.58rem', fontWeight: 700,
+              letterSpacing: '0.1em', textTransform: 'uppercase',
+              color: layer.isActive ? 'rgba(200,146,42,0.6)' : 'rgba(255,255,255,0.18)',
+              paddingLeft: '0.25rem', marginBottom: '0.2rem',
             }}>
-              {token.character.name}
+              {layer.name}
             </p>
-            {onTokenEdit && (
-              <button
-                onClick={() => onTokenEdit(token.id)}
-                title="Configurar token"
-                style={{
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  color: 'rgba(255,255,255,0.2)', fontSize: '0.75rem', padding: '0.1rem',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-arcano)' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.2)' }}
-              >
-                ⚙
-              </button>
-            )}
-            <button
-              onClick={() => handleRemove(token)}
-              disabled={removing === token.id}
-              title="Remover token"
-              style={{
-                background: 'none', border: 'none', cursor: 'pointer',
-                color: 'rgba(255,255,255,0.2)', fontSize: '0.75rem', padding: '0.1rem',
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#C05050' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.2)' }}
-            >
-              {removing === token.id ? '…' : '✕'}
-            </button>
+            {layerTokens.map(token => {
+              const accent = getAccent(token.character.afinidade)
+              return (
+                <div key={token.id} style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.4rem 0.6rem', borderRadius: 4,
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.07)',
+                  marginBottom: '0.25rem',
+                }}>
+                  <div style={{
+                    width: 28, height: 28, borderRadius: '50%',
+                    background: accent.bg, border: `2px solid ${accent.text}`,
+                    overflow: 'hidden', flexShrink: 0,
+                  }}>
+                    {token.character.imageUrl && (
+                      <img src={token.character.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    )}
+                  </div>
+                  <p style={{
+                    flex: 1, fontFamily: 'var(--font-ui)', fontSize: '0.75rem',
+                    color: '#EEF4FC', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                  }}>
+                    {token.character.name}
+                  </p>
+                  {onTokenEdit && (
+                    <button
+                      onClick={() => onTokenEdit(token.id)}
+                      title="Configurar token"
+                      style={{
+                        background: 'none', border: 'none', cursor: 'pointer',
+                        color: 'rgba(255,255,255,0.2)', fontSize: '0.75rem', padding: '0.1rem',
+                      }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-arcano)' }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.2)' }}
+                    >
+                      ⚙
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleRemove(token)}
+                    disabled={removing === token.id}
+                    title="Remover token"
+                    style={{
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      color: 'rgba(255,255,255,0.2)', fontSize: '0.75rem', padding: '0.1rem',
+                    }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#C05050' }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.2)' }}
+                  >
+                    {removing === token.id ? '…' : '✕'}
+                  </button>
+                </div>
+              )
+            })}
           </div>
         )
       })}
 
-      {/* Characters available to add — drag onto the map canvas */}
-      {activeLayer && charsNotOnLayer.length > 0 && (
+      {/* Characters available to drag onto the current layer */}
+      {activeLayer && charsNotOnMap.length > 0 && (
         <>
           <p style={{
             fontFamily: 'var(--font-ui)', fontSize: '0.6rem', fontWeight: 700,
@@ -136,7 +156,7 @@ export function MapTokenPanel({
           }}>
             Arrastar para o mapa
           </p>
-          {charsNotOnLayer.map(char => (
+          {charsNotOnMap.map(char => (
             <div
               key={char.id}
               draggable
@@ -146,16 +166,14 @@ export function MapTokenPanel({
                 padding: '0.4rem 0.6rem', borderRadius: 4,
                 background: 'rgba(255,255,255,0.02)',
                 border: '1px solid rgba(255,255,255,0.05)',
-                cursor: 'grab',
-                userSelect: 'none',
+                cursor: 'grab', userSelect: 'none',
               }}
               onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(200,146,42,0.06)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(200,146,42,0.2)' }}
               onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(255,255,255,0.02)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.05)' }}
             >
               <div style={{
                 width: 28, height: 28, borderRadius: '50%',
-                background: 'rgba(255,255,255,0.06)',
-                overflow: 'hidden', flexShrink: 0,
+                background: 'rgba(255,255,255,0.06)', overflow: 'hidden', flexShrink: 0,
               }}>
                 {char.imageUrl && (
                   <img src={char.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

@@ -51,6 +51,16 @@ web/src/
 │   │   ├── CharacterShowcase.tsx  # Carrossel de personagens de exemplo
 │   │   ├── MechanicsHighlight.tsx # Cards de mecânicas em destaque
 │   │   └── WorldIntro.tsx         # Introdução ao mundo
+│   ├── map/                       # Sistema de mapa tático de campanha
+│   │   ├── MapTab.tsx             # Orquestrador: estado, handlers, realtime, GM vs player
+│   │   ├── MapCanvas.tsx          # Stage Konva multi-floor: Z-order correto, fog, HUDs HTML overlay
+│   │   ├── MapTokenLayer.tsx      # Tokens (foto, drag, LOS filter; readOnly para andares inferiores)
+│   │   ├── MapFogLayer.tsx        # Fog com destination-out e polígonos LOS pré-computados
+│   │   ├── MapWallLayer.tsx       # Paredes + círculos interativos nos endpoints
+│   │   ├── MapToolbar.tsx         # Selecionar | Parede | Fog + toggle + reset
+│   │   ├── MapLayerPanel.tsx      # CRUD de layers + dnd-kit sortable para reordenar andares
+│   │   ├── MapTokenPanel.tsx      # Tokens agrupados por andar; drag-to-place; pré-config ⚙
+│   │   └── MapTokenModal.tsx      # Modal genérico: raio de visão + link ficha
 │   ├── layout/                    # AppShell, Sidebar, TopBar
 │   ├── parallax/                  # HeroParallax, ParallaxLayer
 │   ├── reader/                    # MarkdownRenderer, TableOfContents
@@ -280,6 +290,23 @@ interface ChapterMeta {
   subtitle?: string
 }
 ```
+
+## Sistema de Mapa Tático (`components/map/`)
+
+### Conceitos-chave
+- **`MapTab.tsx`** é o orquestrador único: mantém `map`, `tokens`, `fogEnabled`, `localFogPatches`, realtime
+- **Multi-floor**: layers ordenadas por `orderIndex` (0 = térreo, maior = andar mais alto); GM seleciona andar ativo clicando na lista
+- **`effectiveCurrentLayerId`**: GM usa `isActive` da layer; jogador auto-detecta pelo andar mais alto onde tem token
+- **Z-order Konva** (de baixo para cima): `[imagem layer N, tokens layer N]` repetido por andar, depois fog, paredes, selection
+- **Tokens de andar inferior** (`readOnly=true` no `MapTokenLayer`): `listening={false}`, opacidade 0.45, visibilidade filtrada pelos `visionPolygons` do andar atual
+- **Fog** só aplica ao andar atual; patches têm `polygon?: WallPoint[]` pré-computado na criação
+
+### Padrões específicos do mapa
+- **`stateRef`**: `stateRef.current = { scale, position }` atualizado em cada render; lido dentro de `useCallback`s de drag e drop para evitar stale closures
+- **Upload de layer**: limite de 30MB via `MAX_MAP_IMAGE_SIZE_MB`; o controller passa `{ limits: { fileSize } }` direto no `req.file()` (override do global)
+- **Reordenação de layers**: lista exibe `orderIndex` DESC (mais alto no topo); após drag, posição 0 = maior `orderIndex`
+- **`isActive`** no `MapLayer`: POV do GM, não "única layer visível" — todas abaixo também renderizam
+- **Broadcast `LAYER_CHANGE`**: enviado ao trocar andar ativo; jogadores não precisam reagir (usam posição do token)
 
 ## O que Nunca Fazer
 
