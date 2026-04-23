@@ -1005,5 +1005,23 @@
     ],
     "description": "Um artefato de ouro antigo, encrustado com rubys extraido de North Galahad, que pulsa magia glacial. Rumores dizem que este item foi forjado por Sugovat.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/c36eb43f-2e7d-49d6-82af-b81017592fa0/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_crown_2.jpg"
+  },
+  {
+    "id": "lanca-do-transpasse",
+    "name": "Manopla do Gigante",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Manopla",
+    "tier": "A",
+    "damage": "4D6+2",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Portadores da manopla do gigante, ganha mais 20 cm de altura.",
+      "Portadores da manopla do gigante, ganha +3 de combate.",
+      "Portadores da manopla do gigante, ganha +5 em testes de agarrar e ganha 1D12 de dano em alvos agarrados."
+    ],
+    "description": "Uma manopla forjada em alta temperatura, com propriedades arcanas proprias. Esta manopla tem o slogan do vilarejo de Pés Altos, e tem o tamanho maior do que deveria. Tem uma letra cravado dentro do manopla: 'Cy.'.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f42b-051f-6a70-bf32-206e1ed4954e/lucid-origin_A_highly_detailed_illustration_of_a_single_mechanical_fantasy_gauntlet_displayed-0.jpg"
   }
 ]
