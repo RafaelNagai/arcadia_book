@@ -1,29 +1,29 @@
 import { z } from 'zod'
 
 const AttributesSchema = z.object({
-  fisico: z.number().int().min(0).max(10),
-  destreza: z.number().int().min(0).max(10),
-  intelecto: z.number().int().min(0).max(10),
-  influencia: z.number().int().min(0).max(10),
+  fisico: z.number().int().min(0).max(99),
+  destreza: z.number().int().min(0).max(99),
+  intelecto: z.number().int().min(0).max(99),
+  influencia: z.number().int().min(0).max(99),
 })
 
 const SkillsSchema = z.object({
-  fortitude: z.number().int().min(0).max(10),
-  vontade: z.number().int().min(0).max(10),
-  atletismo: z.number().int().min(0).max(10),
-  combate: z.number().int().min(0).max(10),
-  furtividade: z.number().int().min(0).max(10),
-  precisao: z.number().int().min(0).max(10),
-  acrobacia: z.number().int().min(0).max(10),
-  reflexo: z.number().int().min(0).max(10),
-  percepcao: z.number().int().min(0).max(10),
-  intuicao: z.number().int().min(0).max(10),
-  investigacao: z.number().int().min(0).max(10),
-  conhecimento: z.number().int().min(0).max(10),
-  empatia: z.number().int().min(0).max(10),
-  dominacao: z.number().int().min(0).max(10),
-  persuasao: z.number().int().min(0).max(10),
-  performance: z.number().int().min(0).max(10),
+  fortitude: z.number().int().min(0).max(99),
+  vontade: z.number().int().min(0).max(99),
+  atletismo: z.number().int().min(0).max(99),
+  combate: z.number().int().min(0).max(99),
+  furtividade: z.number().int().min(0).max(99),
+  precisao: z.number().int().min(0).max(99),
+  acrobacia: z.number().int().min(0).max(99),
+  reflexo: z.number().int().min(0).max(99),
+  percepcao: z.number().int().min(0).max(99),
+  intuicao: z.number().int().min(0).max(99),
+  investigacao: z.number().int().min(0).max(99),
+  conhecimento: z.number().int().min(0).max(99),
+  empatia: z.number().int().min(0).max(99),
+  dominacao: z.number().int().min(0).max(99),
+  persuasao: z.number().int().min(0).max(99),
+  performance: z.number().int().min(0).max(99),
 })
 
 const ELEMENTS = ['Energia', 'Anomalia', 'Paradoxo', 'Astral', 'Cognitivo'] as const
