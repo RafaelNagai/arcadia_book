@@ -5,7 +5,7 @@
     "category": "Arma Corpo-a-Corpo",
     "subcategory": "Espada",
     "tier": "C",
-    "damage": "2D6",
+    "damage": "3D6",
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 4,
@@ -14,35 +14,70 @@
     "image": "assets/images/equipments/equipment_lamina-do-viajante.jpg"
   },
   {
-    "id": "sabre-dos-imperiais",
-    "name": "Sabre dos Imperiais",
+    "id": "soberania-gelida",
+    "name": "Soberania Gelída",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Coroa",
+    "tier": "SS",
+    "damage": null,
+    "da": "+1",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 30,
+    "effects": [
+      "Ganha +10 em magias que contém a runa de GELO.",
+      "Uma vez por turno, permite usar uma magia que contém a runa de gelo sem gastar uma AÇÃO.",
+      "A cada magia realizada com a Soberania Gelida, perde 1 de Sanidade. Porém se houver uma falha critica, o personagem perde 12 de sanidade. Se houver um desastre, o personagem ganha um trauma relacionado."
+    ],
+    "description": "Um artefato de ouro antigo, encrustado com rubys extraido de North Galahad, que pulsa magia glacial. Rumores dizem que este item foi forjado por Sugovat.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/c36eb43f-2e7d-49d6-82af-b81017592fa0/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_crown_2.jpg"
+  },
+  {
+    "id": "espada-imperial",
+    "name": "Espada Imperial",
     "category": "Arma Corpo-a-Corpo",
     "subcategory": "Espada",
     "tier": "B",
-    "damage": "2D8",
+    "damage": "3D8",
     "weight": "medio",
     "isEquipment": true,
-    "maxDurability": 4,
-    "effects": ["+2 em testes de Combate quando o portador tiver pelo menos um aliado adjacente."],
+    "maxDurability": 3,
+    "effects": ["Brilha no escuro."],
     "description": "A espada da lei de Camelot — uniforme por fora, leal por dentro.",
-    "image": null
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/9c4c37f7-0989-4846-a606-4ece94bbe95a/segments/2:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_divinelooking_1.jpg"
   },
   {
-    "id": "fio-de-nevoa",
-    "name": "Fio de Névoa",
+    "id": "espada-gloria",
+    "name": "Espada Gloria",
     "category": "Arma Corpo-a-Corpo",
     "subcategory": "Espada",
-    "tier": "A",
-    "damage": "2D10",
+    "tier": "S",
+    "damage": "3D8",
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 5,
     "effects": [
-      "+2 em testes de Combate ao atacar alvos sem Reação disponível neste turno.",
-      "Ao causar dano, o alvo precisa gastar 1 Ação adicional para se mover no próximo turno."
+      "Todo ataque feito com sucesso, dobra o multiplicador de queimadura.",
+      "Todo ataque feito com sucesso, causa x1 de Queimadura."
     ],
-    "description": "Forjada em névoa arcana — seu corte é silencioso como o espaço entre ilhas.",
-    "image": null
+    "description": "Forjada por avaros anciões na ilha que recebeu o proprio nome da espada, ilha de Gloria.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/161e4fba-7e96-4876-b47e-329845c902e0/segments/4:4:1/Lucid_Origin_A_detailed_illustration_of_a_vibrant_ornate_katan_3.jpg"
+  },
+  {
+    "id": "lanca-do-transpasse",
+    "name": "Lança do Transpasse",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Lança",
+    "tier": "B",
+    "damage": "2D12",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ataques de arremesso com a Lança do Transpasse, permite acertar multiplos alvos em uma linha reta."
+    ],
+    "description": "No espaço entre Camelot e Galahad, um grupo de andarilhos que ja foram pacificas, tiveram que utilizar esta arma para sobreviver em meio a guerra. Em seu cabo contem uma escrita de runas antigas, que acreditam que significa 'O vento sussura o nosso passado.'",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/763ab2f6-f9c7-4853-bc93-5a218b8689e3/segments/4:4:1/Lucid_Origin_A_detailed_illustration_of_a_stylish_ornate_spear_3.jpg"
   },
   {
     "id": "ponta-de-ferro",
@@ -118,8 +153,8 @@
     "image": null
   },
   {
-    "id": "machado-das-correntes",
-    "name": "Machado das Correntes",
+    "id": "oasis-metalico",
+    "name": "Oasis Metalico",
     "category": "Arma Corpo-a-Corpo",
     "subcategory": "Machado",
     "tier": "A",
@@ -128,11 +163,25 @@
     "isEquipment": true,
     "maxDurability": 6,
     "effects": [
-      "Se dois ou mais dados causarem dano no mesmo ataque, a DA do alvo é reduzida em 1 até o fim do round.",
-      "Uma vez por round, ao acertar um inimigo de pé, ele sofre Desvantagem na próxima Reação deste turno."
+      "Se dois ou mais dados causarem dano no mesmo ataque, a DA do alvo é reduzida em 1 até o fim do turno. Aplicavel apenas uma vez por turno.",
+      "Uma vez por turno, ao acertar um inimigo com dificuldade de locomoção, o Oasis Metalico ganha +2 de ataque."
     ],
-    "description": "As correntes nos cabos não são para estilo — são para agarrar o braço que tenta fugir.",
-    "image": null
+    "description": "Os artesões de Rubra projetaram esta arma, para proteger e minerar em seu vasto deserto.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/aef3f69c-8068-4f2f-8eb5-8c32cdd17f29/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_massive_fanta_3.jpg"
+  },
+  {
+    "id": "arco-improvisado",
+    "name": "Arco Improvisado",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Arco",
+    "tier": "E",
+    "damage": "1 dado",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [],
+    "description": "Um arco feito com restos de madeira e corda.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/8d9295a2-7702-4868-a078-fc9bdce27b14/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_makeshift_cru_0.jpg"
   },
   {
     "id": "arco-de-viagem",
@@ -141,12 +190,12 @@
     "subcategory": "Arco",
     "tier": "C",
     "damage": "2 dados",
-    "weight": "medio",
+    "weight": "leve",
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [],
     "description": "Dobrável, portátil, confiável. O favorito de quem não quer aparecer — e ainda precisa de precisão.",
-    "image": null
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/156b9b44-b60b-4bbf-a60c-697ae6bd8e9a/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_an_elvenstyle_c_0.jpg"
   },
   {
     "id": "arco-de-galahad",
@@ -154,13 +203,13 @@
     "category": "Arma Longa-Distância",
     "subcategory": "Arco",
     "tier": "B",
-    "damage": "2 dados",
+    "damage": "3 dados",
     "weight": "medio",
     "isEquipment": true,
-    "maxDurability": 4,
+    "maxDurability": 3,
     "effects": ["+2 em testes de Precisão ao atacar alvos a mais de 20 metros de distância."],
     "description": "Os arqueiros de Galahad não miram na cabeça — miram no olho esquerdo. Sabem a diferença.",
-    "image": null
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/3385dfe5-d220-4b21-ad05-adb1597256a2/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_large_ornate__3.jpg"
   },
   {
     "id": "arco-das-nervuras",
@@ -168,16 +217,16 @@
     "category": "Arma Longa-Distância",
     "subcategory": "Arco",
     "tier": "A",
-    "damage": "3 dados",
+    "damage": "4 dados",
     "weight": "medio",
     "isEquipment": true,
-    "maxDurability": 5,
+    "maxDurability": 3,
     "effects": [
-      "+2 em testes de Precisão em qualquer alcance.",
+      "Ao receber dano, ganha +5 no próximo teste de PRECISÃO.",
       "Projéteis especiais disparados por este arco nunca são destruídos após o uso."
     ],
     "description": "Tecido com nervuras de árvores ancestrais de Galahad. Respira com o arqueiro. Mira antes dele.",
-    "image": null
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/e13e08cb-f1db-4ecf-8d6f-adcb6ae7efb5/segments/1:1:1/Lucid_Origin_A_highly_detailed_elegant_composite_recurve_bow_d_0.jpg"
   },
   {
     "id": "revolver-de-rubra",
@@ -330,19 +379,19 @@
     "image": null
   },
   {
-    "id": "peitoral-de-ferro",
-    "name": "Peitoral de Ferro",
+    "id": "armadura-imperial",
+    "name": "Armadura Imperial",
     "category": "Equipamento Defensivo",
     "subcategory": "Armadura",
     "tier": "B",
     "damage": null,
-    "da": 4,
+    "da": 3,
     "weight": "super_pesado",
     "isEquipment": true,
-    "maxDurability": 4,
-    "effects": ["Uma vez por combate, ao receber um acerto Crítico, cancela o multiplicador de dano. O item precisa de reparo após esse uso."],
-    "description": "Os Imperiais de Camelot usam algo parecido. O deles brilha mais.",
-    "image": null
+    "maxDurability": 8,
+    "effects": ["Se for usada por um Alfaista, a DA aumenta para 4."],
+    "description": "Os Imperiais de Camelot usam para chamar a atenção da Alfa. A cruz vermelha em seu peito é para refletir a sua devoção a ela.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/71e8078d-6ae4-4b55-a8ce-a4b9f2363e1c/segments/1:1:1/Lucid_Origin_A_highly_detailed_fullview_illustration_of_a_medi_0.jpg"
   },
   {
     "id": "armadura-de-placas-arcanas",
