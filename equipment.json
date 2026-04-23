@@ -108,8 +108,27 @@
     "effects": [
       "Ataques de arremesso com a Lança do Transpasse, permite acertar multiplos alvos em uma linha reta."
     ],
-    "description": "No espaço entre Camelot e Galahad, um grupo de andarilhos que ja foram pacificas, tiveram que utilizar esta arma para sobreviver em meio a guerra. Em seu cabo contem uma escrita de runas antigas, que acreditam que significa 'O vento sussura o nosso passado.'",
+    "description": "No espaço entre Camelot e Galahad, um grupo de andarilhos que ja foram pacificas, tiveram que utilizar esta arma para sobreviver em meio a guerra. Em seu cabo contem uma escrita de runas antigas, que acreditam que significa 'O vento sussura o nosso passado. Dizem boatos, que esta lança serviu para matar um Nauak.'",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/763ab2f6-f9c7-4853-bc93-5a218b8689e3/segments/4:4:1/Lucid_Origin_A_detailed_illustration_of_a_stylish_ornate_spear_3.jpg"
+  },
+  {
+    "id": "lanca-divisora-de-dimensoes",
+    "name": "Lança Divisora de Dimensões",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Lança",
+    "tier": "SS",
+    "damage": "4D8",
+    "weight": "hyper_massivo",
+    "isEquipment": true,
+    "maxDurability": 20,
+    "effects": [
+      "Durante o periodo da noite, a Lança Divisora de Dimensões ignora a DA e DP do alvo.",
+      "Uma vez por sessão, permite transforma o dia em noite.",
+      "Se a lança divisora de dimensões for quebrada, ela cria um buraco negro ao redor de 30m causando 30D12 de dano.",
+      "Se o portador tiver afinidade com Paradoxo, o portador deve rolar um teste de Vontade, dif. 15 se não tiver afinidade a dif. é 20. Se falhar, fica pausado 1D4 de turnos."
+    ],
+    "description": "Isto não é uma lança, ela é a materialização de uma ruptura dentre as dimensões. O seu portador esta carregando uma rachadura que esta cortando duas dimensões.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f374-082e-6f70-9422-4b2cdd3e3798/lucid-origin_A_detailed_illustration_of_a_divine_starry-void_fantasy_spear_displayed_diagonal-0.jpg"
   },
   {
     "id": "tridente-dos-mares",
@@ -481,7 +500,7 @@
     "maxDurability": null,
     "effects": [],
     "description": "Madeira, pena, ponta de ferro. Funciona.",
-    "image": null
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f3b3-31e7-6350-b6b3-0ec97ae536e1/lucid-origin_A_highly_detailed_illustration_of_a_single_fantasy_arrow_displayed_diagonally_fr-1.jpg"
   },
   {
     "id": "flechas-sibilantes",
@@ -495,7 +514,7 @@
     "maxDurability": null,
     "effects": ["Ao causar dano, aplica Sangramento."],
     "description": "A ponta serrilhada sibila no ar. Ao pousar, canta. Nem sempre é uma música agradável.",
-    "image": null
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f3bf-3ca2-6e50-9a19-a5902d774fb8/lucid-origin_A_highly_detailed_illustration_of_a_single_vicious_fantasy_arrow_displayed_diago-1.jpg"
   },
   {
     "id": "flechas-de-eltys",
@@ -512,7 +531,7 @@
       "Ao ser consumida, explode em fragmentos — criaturas adjacentes ao alvo fazem Reflexo (dif. 24) ou recebem 3 dano."
     ],
     "description": "Cultivadas em Britannia. Fragmentam no impacto, soltando energia arcana acumulada durante anos.",
-    "image": null
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f3cd-34b2-6160-9a88-7a5b127d9894/lucid-origin_A_highly_detailed_illustration_of_a_single_fantasy_arrow_displayed_diagonally_fr-1.jpg"
   },
   {
     "id": "balas-de-ferro",
@@ -612,15 +631,17 @@
     "name": "Vestes de Capivaqueiro",
     "category": "Equipamento Defensivo",
     "subcategory": "Armadura",
-    "tier": "C",
+    "tier": "B",
     "damage": null,
     "da": 3,
     "weight": "pesado",
     "isEquipment": true,
-    "maxDurability": 4,
-    "effects": [],
+    "maxDurability": 3,
+    "effects": [
+      "Capivacas não atacam o portador, se o portador não tiver atacado."
+    ],
     "description": "Vestes tradicionais de capivaqueiros.",
-    "image": null
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f329-e71d-6150-a55a-42ed1542d587/lucid-origin_A_highly_detailed_illustration_of_a_unique_rugged_fantasy_poncho_outfit_displaye-1.jpg"
   },
   {
     "id": "armadura-de-madeira",
@@ -819,6 +840,23 @@
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/6dc075f2-fcb8-4049-9483-82c2ff8b5a9c/segments/2:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_intan_1.jpg"
   },
   {
+    "id": "chapeu-de-capivaqueiro",
+    "name": "Chapéu de Capivaqueiro",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "B",
+    "damage": null,
+    "da": "+1",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ganha +2 em testes de montaria."
+    ],
+    "description": "Chapéu tradicional dos capivaqueiros.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f3a4-ac7f-6ef0-b744-437c73b0c2f6/lucid-origin_A_highly_detailed_illustration_of_a_unique_fantasy_hat_blending_the_iconic_struc-0.jpg"
+  },
+  {
     "id": "capacete-de-couro",
     "name": "Capacete de Couro",
     "category": "Equipamento Defensivo",
@@ -831,7 +869,7 @@
     "maxDurability": 2,
     "effects": [],
     "description": "Não salva de muito. Mas é melhor que nada quando a madeira voadora passa pela cabeça.",
-    "image": null
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f3e9-12c2-6e30-a897-c0730e11554d/lucid-origin_A_highly_detailed_illustration_of_a_sturdy_fantasy_helmet_crafted_from_a_mix_of_-1.jpg"
   },
   {
     "id": "elmo-de-ferro",
@@ -843,10 +881,10 @@
     "da": 2,
     "weight": "medio",
     "isEquipment": true,
-    "maxDurability": 2,
-    "effects": ["Imunidade à condição Atordoado causada por golpes em área (explosões, colisões, afundamentos)."],
+    "maxDurability": 3,
+    "effects": ["Imunidade à condição Atordoado."],
     "description": "Anões de Britannia gravam o nome da família no elmo. Este não tem família — mas cumpre seu dever.",
-    "image": null
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f3f0-29d9-6f90-bec5-2eb466be8aa2/lucid-origin_A_highly_detailed_illustration_of_a_full-face_fantasy_iron_helmet_based_on_the_g-3.jpg"
   },
   {
     "id": "elmo-arcano",
@@ -860,11 +898,11 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "+1 DA (bônus aditivo).",
-      "Imunidade a feitiços de manipulação mental de Execução Rápida."
+      "+1 DP contra arcano.",
+      "Imunidade a feitiços de manipulação de Cognitivos."
     ],
     "description": "Gravado com runas de bloqueio mental — uma escolha sábia num mundo onde arcanistas miram na cabeça.",
-    "image": null
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f3fb-e7f0-6140-bd61-c4f293504cc0/lucid-origin_A_highly_detailed_illustration_of_a_full-head_arcane_fantasy_helmet_shaped_into_-1.jpg"
   },
   {
     "id": "cajado-do-aprendiz",
