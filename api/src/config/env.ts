@@ -17,6 +17,7 @@ const EnvSchema = z.object({
     .transform((s) => s.split(',')),
 
   SUPABASE_STORAGE_BUCKET: z.string().default('character-portraits'),
+  SUPABASE_MAP_STORAGE_BUCKET: z.string().default('map-assets'),
   MAX_IMAGE_SIZE_MB: z.coerce.number().default(15),
   MAX_MAP_IMAGE_SIZE_MB: z.coerce.number().default(30),
 })

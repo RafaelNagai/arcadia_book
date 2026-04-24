@@ -18,7 +18,7 @@ const MapAndLayerParamSchema = UUIDParamSchema.extend({ layerId: z.string().uuid
 const MapAndTokenParamSchema = UUIDParamSchema.extend({ tokenId: z.string().uuid() })
 
 export async function mapsController(fastify: FastifyInstance) {
-  const svc = new MapsService(fastify.prisma)
+  const svc = new MapsService(fastify.prisma, fastify.supabase)
 
   // ── Maps ────────────────────────────────────────────────────────────────
 

@@ -3,6 +3,7 @@ import type { FogPatch } from '@/lib/mapTypes'
 
 interface MapFogLayerProps {
   enabled: boolean
+  isGm: boolean
   panX: number
   panY: number
   scale: number
@@ -29,6 +30,7 @@ function PolygonHole({ poly }: { poly: Array<{ x: number; y: number }> }) {
 
 export function MapFogLayer({
   enabled,
+  isGm,
   panX,
   panY,
   scale,
@@ -41,7 +43,7 @@ export function MapFogLayer({
     <>
       {/* Dark fog: holes for current vision + all explored patches */}
       <Layer x={panX} y={panY} scaleX={scale} scaleY={scale} listening={false}>
-        <Rect x={-50000} y={-50000} width={100000} height={100000} fill="rgba(0,0,0,0.92)" />
+        <Rect x={-50000} y={-50000} width={100000} height={100000} fill={isGm ? 'rgba(0,0,0,0.65)' : '#000000'} />
 
         {visionPolygons.map((poly, i) => (
           <PolygonHole key={`dv${i}`} poly={poly} />

@@ -1,7 +1,10 @@
 import type { PrismaClient } from '../generated/prisma/client.js'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { ForbiddenError, NotFoundError, ValidationError } from '../middleware/error-handler.js'
 import { CampaignsRepository } from '../repositories/campaigns.repository.js'
 import { CharactersRepository } from '../repositories/characters.repository.js'
+import { MapsRepository } from '../repositories/maps.repository.js'
+import { UploadService } from './upload.service.js'
 import type { CreateCampaignInput, UpdateCampaignInput } from '../schemas/campaign.schema.js'
 
 function generateInviteCode(): string {
@@ -11,10 +14,14 @@ function generateInviteCode(): string {
 export class CampaignsService {
   private readonly repo: CampaignsRepository
   private readonly charRepo: CharactersRepository
+  private readonly mapsRepo: MapsRepository
+  private readonly uploadSvc: UploadService
 
-  constructor(db: PrismaClient) {
+  constructor(db: PrismaClient, supabase: SupabaseClient) {
     this.repo = new CampaignsRepository(db)
     this.charRepo = new CharactersRepository(db)
+    this.mapsRepo = new MapsRepository(db)
+    this.uploadSvc = new UploadService(supabase)
   }
 
   async create(gmUserId: string, input: CreateCampaignInput) {
@@ -84,7 +91,14 @@ export class CampaignsService {
 
   async delete(id: string, userId: string) {
     await this.assertGm(id, userId)
+    const maps = await this.mapsRepo.listMaps(id)
     await this.repo.delete(id)
+    // Clean up all map layer images from storage after DB deletion
+    for (const map of maps) {
+      for (const layer of map.layers) {
+        await this.uploadSvc.deleteImageByUrl(layer.imageUrl).catch(() => {})
+      }
+    }
   }
 
   async regenerateInviteCode(id: string, userId: string) {

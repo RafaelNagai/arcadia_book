@@ -1,7 +1,9 @@
 import type { PrismaClient } from '../generated/prisma/client.js'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { ForbiddenError, NotFoundError } from '../middleware/error-handler.js'
 import { MapsRepository } from '../repositories/maps.repository.js'
 import { CampaignsRepository } from '../repositories/campaigns.repository.js'
+import { UploadService } from './upload.service.js'
 import type {
   CreateMapInput,
   UpdateMapInput,
@@ -18,10 +20,12 @@ import type { Prisma } from '../generated/prisma/client.js'
 export class MapsService {
   private readonly repo: MapsRepository
   private readonly campaignsRepo: CampaignsRepository
+  private readonly uploadSvc: UploadService
 
-  constructor(db: PrismaClient) {
+  constructor(db: PrismaClient, supabase: SupabaseClient) {
     this.repo = new MapsRepository(db)
     this.campaignsRepo = new CampaignsRepository(db)
+    this.uploadSvc = new UploadService(supabase)
   }
 
   // ── Maps ──────────────────────────────────────────────────────────────────
@@ -59,8 +63,12 @@ export class MapsService {
   }
 
   async delete(mapId: string, userId: string) {
-    await this.assertMapGm(mapId, userId)
+    const map = await this.assertMapGm(mapId, userId)
     await this.repo.deleteMap(mapId)
+    // Clean up all layer images from storage after DB deletion
+    for (const layer of map.layers) {
+      await this.uploadSvc.deleteImageByUrl(layer.imageUrl).catch(() => {})
+    }
   }
 
   async activate(campaignId: string, mapId: string, userId: string) {
@@ -103,6 +111,7 @@ export class MapsService {
     const layer = await this.repo.findLayerById(layerId)
     if (!layer || layer.mapId !== mapId) throw new NotFoundError('Layer não encontrada')
     await this.repo.deleteLayer(layerId)
+    await this.uploadSvc.deleteImageByUrl(layer.imageUrl).catch(() => {})
     return layer.imageUrl
   }
 
@@ -138,9 +147,26 @@ export class MapsService {
   }
 
   async updateToken(mapId: string, tokenId: string, userId: string, input: UpdateMapTokenInput) {
-    await this.assertMapGm(mapId, userId)
+    const map = await this.repo.findMapById(mapId)
+    if (!map) throw new NotFoundError('Mapa não encontrado')
+    const campaign = await this.assertCampaignAccess(map.campaignId, userId)
+    const isGm = campaign.gmUserId === userId
+
     const token = await this.repo.findTokenById(tokenId)
     if (!token || token.mapId !== mapId) throw new NotFoundError('Token não encontrado')
+
+    if (!isGm) {
+      const ownsCharacter = campaign.characters.some(
+        cc => cc.characterId === token.characterId && cc.character.userId === userId,
+      )
+      if (!ownsCharacter) throw new ForbiddenError()
+      // Players may only reposition their own token
+      if (input.layer_id !== undefined || input.vision_radius !== undefined ||
+          input.is_visible !== undefined || input.size !== undefined) {
+        throw new ForbiddenError()
+      }
+    }
+
     if (input.layer_id) {
       const layer = await this.repo.findLayerById(input.layer_id)
       if (!layer || layer.mapId !== mapId) throw new NotFoundError('Layer não encontrada')
@@ -170,7 +196,7 @@ export class MapsService {
   }
 
   async addFogPatches(mapId: string, layerId: string, userId: string, input: AddFogPatchesInput) {
-    await this.assertMapGm(mapId, userId)
+    await this.assertMapMember(mapId, userId)
     const layer = await this.repo.findLayerById(layerId)
     if (!layer || layer.mapId !== mapId) throw new NotFoundError('Layer não encontrada')
     const existing = (layer.fogRevealed as FogPatchInput[]) ?? []
@@ -222,6 +248,13 @@ export class MapsService {
     const map = await this.repo.findMapById(mapId)
     if (!map) throw new NotFoundError('Mapa não encontrado')
     await this.assertGm(map.campaignId, userId)
+    return map
+  }
+
+  private async assertMapMember(mapId: string, userId: string) {
+    const map = await this.repo.findMapById(mapId)
+    if (!map) throw new NotFoundError('Mapa não encontrado')
+    await this.assertCampaignAccess(map.campaignId, userId)
     return map
   }
 }

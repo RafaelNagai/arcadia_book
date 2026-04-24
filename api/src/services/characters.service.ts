@@ -71,8 +71,13 @@ export class CharactersService {
   }
 
   async update(id: string, userId: string, input: Record<string, unknown>): Promise<Character> {
-    await this.assertOwner(id, userId)
-    return this.repo.update(id, snakeToCamelPatch(input))
+    const char = await this.assertOwner(id, userId)
+    const updated = await this.repo.update(id, snakeToCamelPatch(input))
+    // Delete old image if a new one was provided
+    if ('image_url' in input && char.imageUrl && char.imageUrl !== input.image_url) {
+      await this.uploadSvc.deleteImageByUrl(char.imageUrl).catch(() => {})
+    }
+    return updated
   }
 
   async updateCurrentValues(

@@ -350,12 +350,20 @@ export function MapCanvas({
                 <Group
                   x={position.x} y={position.y}
                   scaleX={scale} scaleY={scale}
-                  opacity={isCurrent ? 1 : 0.55}
                 >
                   {img ? (
                     <KonvaImage image={img} width={img.naturalWidth} height={img.naturalHeight} />
                   ) : (
                     isCurrent && <Rect width={stageW / scale} height={stageH / scale} fill="#0A0F1E" />
+                  )}
+                  {/* Dark overlay on lower floors so they don't bleed through */}
+                  {!isCurrent && img && (
+                    <Rect
+                      x={0} y={0}
+                      width={img.naturalWidth} height={img.naturalHeight}
+                      fill="rgba(0,0,0,0.55)"
+                      listening={false}
+                    />
                   )}
                   {isCurrent && map.gridEnabled && img && (
                     <>
@@ -412,6 +420,7 @@ export function MapCanvas({
         {fogEnabled && (
           <MapFogLayer
             enabled={fogEnabled}
+            isGm={isGm}
             panX={position.x}
             panY={position.y}
             scale={scale}

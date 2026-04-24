@@ -228,15 +228,17 @@ export function MapTab({ campaign }: MapTabProps) {
     setActiveDrag({ tokenId, x, y })
     broadcastMap({ type: 'TOKEN_MOVE', tokenId, x, y, senderId: user?.id })
 
-    const { fogEnabled: fe, map: m, tokens: toks, npcCharacterIds: npcIds, gmCurrentLayerId: clId } = fogStateRef.current
+    const { fogEnabled: fe, map: m, tokens: toks, npcCharacterIds: npcIds } = fogStateRef.current
     if (fe && m) {
       const token = toks.find(t => t.id === tokenId)
-      const currentLayer = m.layers.find(l => l.id === clId)
-      if (token && currentLayer && token.layerId === currentLayer.id && !npcIds.includes(token.characterId)) {
-        const radius = token.visionRadius ?? m.defaultVisionRadius
-        const polygon = computeVisibilityPolygon({ x, y }, radius, currentLayer.walls ?? [])
-        localFogPatchesRef.current.push({ x, y, radius, polygon })
-        setLocalFogPatches([...localFogPatchesRef.current])
+      if (token && !npcIds.includes(token.characterId)) {
+        const tokenLayer = m.layers.find(l => l.id === token.layerId)
+        if (tokenLayer) {
+          const radius = token.visionRadius ?? m.defaultVisionRadius
+          const polygon = computeVisibilityPolygon({ x, y }, radius, tokenLayer.walls ?? [])
+          localFogPatchesRef.current.push({ x, y, radius, polygon })
+          setLocalFogPatches([...localFogPatchesRef.current])
+        }
       }
     }
   }, [broadcastMap, user?.id])
@@ -256,27 +258,29 @@ export function MapTab({ campaign }: MapTabProps) {
 
       if (fogEnabled) {
         const token = tokens.find(t => t.id === tokenId)
-        const currentLayer = map!.layers.find(l => l.id === gmCurrentLayerId)
-        if (token && currentLayer && token.layerId === currentLayer.id && !npcCharacterIds.includes(token.characterId)) {
-          const radius = token.visionRadius ?? map!.defaultVisionRadius
-          const polygon = computeVisibilityPolygon({ x, y }, radius, currentLayer.walls ?? [])
-          const allNewPatches = pendingPatches.length > 0
-            ? [...pendingPatches, { x, y, radius, polygon }]
-            : [{ x, y, radius, polygon }]
-          const existing = currentLayer.fogRevealed ?? []
-          const next = [...existing, ...allNewPatches]
-          setMap(prev => prev ? {
-            ...prev,
-            layers: prev.layers.map(l => l.id === currentLayer.id ? { ...l, fogRevealed: next } : l),
-          } : prev)
-          await api.maps.addFogPatches(map!.campaignId, map!.id, currentLayer.id, allNewPatches)
-          broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: currentLayer.id, fogRevealed: next, senderId: user?.id })
+        if (token && !npcCharacterIds.includes(token.characterId)) {
+          const tokenLayer = map!.layers.find(l => l.id === token.layerId)
+          if (tokenLayer) {
+            const radius = token.visionRadius ?? map!.defaultVisionRadius
+            const polygon = computeVisibilityPolygon({ x, y }, radius, tokenLayer.walls ?? [])
+            const allNewPatches = pendingPatches.length > 0
+              ? [...pendingPatches, { x, y, radius, polygon }]
+              : [{ x, y, radius, polygon }]
+            const existing = tokenLayer.fogRevealed ?? []
+            const next = [...existing, ...allNewPatches]
+            setMap(prev => prev ? {
+              ...prev,
+              layers: prev.layers.map(l => l.id === tokenLayer.id ? { ...l, fogRevealed: next } : l),
+            } : prev)
+            await api.maps.addFogPatches(map!.campaignId, map!.id, tokenLayer.id, allNewPatches)
+            broadcastMap({ type: 'FOG_UPDATE', fogEnabled, layerId: tokenLayer.id, fogRevealed: next, senderId: user?.id })
+          }
         }
       }
     } catch {
       // revert handled by next full load
     }
-  }, [campaign.id, map, fogEnabled, tokens, npcCharacterIds, gmCurrentLayerId, broadcastMap, user?.id])
+  }, [campaign.id, map, fogEnabled, tokens, npcCharacterIds, broadcastMap, user?.id])
 
   // ── Fog handlers ──────────────────────────────────────────────────────────────
   const handleFogToggle = useCallback(async () => {

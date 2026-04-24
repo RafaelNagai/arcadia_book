@@ -13,7 +13,7 @@ const CampaignAndCharParamSchema = UUIDParamSchema.extend({
 })
 
 export async function campaignsController(fastify: FastifyInstance) {
-  const svc = new CampaignsService(fastify.prisma)
+  const svc = new CampaignsService(fastify.prisma, fastify.supabase)
 
   // List user campaigns
   fastify.get('/', async (req, reply) => {
