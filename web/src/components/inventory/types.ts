@@ -11,6 +11,7 @@ export interface CatalogEntry {
   subcategory: string;
   tier: string;
   damage: string | null;
+  da: number | null;
   weight: WeightCategory;
   isEquipment: boolean;
   maxDurability: number | null;
@@ -89,6 +90,7 @@ export interface ItemFormData {
   maxDurability: number;
   image: string;
   damage: string;
+  da: string;
   effects: string[];
 }
 
@@ -100,5 +102,6 @@ export const DEFAULT_FORM: ItemFormData = {
   maxDurability: 5,
   image: "",
   damage: "",
+  da: "",
   effects: [],
 };

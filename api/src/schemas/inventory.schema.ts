@@ -25,6 +25,7 @@ export const CreateItemSchema = z.object({
   catalog_subcategory: z.string().nullable().optional(),
   catalog_tier: z.string().nullable().optional(),
   damage: z.string().nullable().optional(),
+  da: z.string().nullable().optional(),
   effects: z.array(z.string()).default([]),
   sort_order: z.number().int().default(0),
 })

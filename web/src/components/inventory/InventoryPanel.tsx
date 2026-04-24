@@ -306,6 +306,7 @@ export function InventoryPanel({
       currentDurability: data.isEquipment ? data.maxDurability : undefined,
       image: data.image.trim() || undefined,
       damage: data.damage.trim() || null,
+      da: data.da.trim() || null,
       effects: data.effects.filter((e) => e.trim()),
     };
   }
@@ -328,6 +329,7 @@ export function InventoryPanel({
       catalogSubcategory: entry.subcategory,
       catalogTier: entry.tier,
       damage: entry.damage ?? null,
+      da: entry.da != null ? String(entry.da) : null,
       effects: entry.effects,
     };
 
@@ -353,6 +355,7 @@ export function InventoryPanel({
           catalog_subcategory: entry.subcategory ?? null,
           catalog_tier: entry.tier ?? null,
           damage: entry.damage ?? null,
+          da: entry.da != null ? String(entry.da) : null,
           effects: entry.effects,
           sort_order: bagId
             ? (bags.find(b => b.id === bagId)?.items.length ?? 0)
@@ -409,6 +412,7 @@ export function InventoryPanel({
           current_durability: data.isEquipment ? data.maxDurability : null,
           image_url: data.image.trim() || null,
           damage: data.damage.trim() || null,
+          da: data.da.trim() || null,
           effects: data.effects.filter(e => e.trim()),
           sort_order: bagId
             ? (bags.find(b => b.id === bagId)?.items.length ?? 0)
@@ -457,6 +461,7 @@ export function InventoryPanel({
       currentDurability: newCurrentDurability,
       image: data.image.trim() || undefined,
       damage: data.damage.trim() || null,
+      da: data.da.trim() || null,
       effects: data.effects.filter(e => e.trim()),
     };
 
@@ -481,6 +486,7 @@ export function InventoryPanel({
         current_durability: newCurrentDurability ?? null,
         image_url: data.image.trim() || null,
         damage: data.damage.trim() || null,
+        da: data.da.trim() || null,
         effects: data.effects.filter(e => e.trim()),
       });
     } else {
@@ -565,6 +571,7 @@ export function InventoryPanel({
         maxDurability: editItem.maxDurability ?? 5,
         image: editItem.image ?? "",
         damage: editItem.damage ?? "",
+        da: editItem.da ?? "",
         effects: editItem.effects ?? [],
       }
     : undefined;

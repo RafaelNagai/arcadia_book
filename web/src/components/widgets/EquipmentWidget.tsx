@@ -4,10 +4,9 @@ import { CATALOG, TIER_COLOR, WEIGHT_OPTIONS } from '@/components/inventory/type
 import type { CatalogEntry } from '@/components/inventory/types'
 import { ImageZoomOverlay } from '@/components/ImageZoomOverlay'
 
-/* ─── Extended type (da / arcaneBonus not in CatalogEntry) ──────── */
+/* ─── Extended type (arcaneBonus not in CatalogEntry) ───────────── */
 
 interface EquipmentEntry extends CatalogEntry {
-  da?: number
   arcaneBonus?: number
 }
 

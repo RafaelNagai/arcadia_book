@@ -56,6 +56,7 @@ export interface InventoryItem {
   catalogTier?: string
   /** Unified stats — present for both catalog and custom items */
   damage?: string | null
+  da?: string | null
   effects?: string[]
 }
 

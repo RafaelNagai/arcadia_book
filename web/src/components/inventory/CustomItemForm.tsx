@@ -80,6 +80,18 @@ export function CustomItemForm({
         />
       </label>
 
+      {/* DA */}
+      <label style={{ display: "block", marginBottom: "0.875rem" }}>
+        <span style={labelStyle}>DA (Defesa)</span>
+        <input
+          type="text"
+          value={form.da}
+          onChange={(e) => onChange((f) => ({ ...f, da: e.target.value }))}
+          placeholder="Ex: 3, +1..."
+          style={{ ...inputStyle, width: 120 }}
+        />
+      </label>
+
       {/* Effects */}
       <div style={{ marginBottom: "0.875rem" }}>
         <span style={labelStyle}>Efeitos</span>

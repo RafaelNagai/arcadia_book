@@ -74,6 +74,7 @@ model InventoryItem {
   catalogSubcategory String?  @map("catalog_subcategory")
   catalogTier        String?  @map("catalog_tier")
   damage             String?
+  da                 String?
   effects            String[]
   sortOrder          Int      @default(0) @map("sort_order")
   createdAt          DateTime @default(now()) @map("created_at")

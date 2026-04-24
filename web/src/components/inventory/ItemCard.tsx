@@ -79,6 +79,29 @@ function ItemDescriptionBlock({
           </span>
         </p>
       )}
+      {item.da != null && item.da !== "" && (
+        <p>
+          <span
+            style={{
+              color: "rgba(255,255,255,0.35)",
+              fontFamily: "var(--font-ui)",
+              fontSize: "0.65rem",
+              letterSpacing: "0.1em",
+            }}
+          >
+            DA:{" "}
+          </span>
+          <span
+            style={{
+              color: "#50C8E8",
+              fontFamily: "var(--font-display)",
+              fontWeight: 700,
+            }}
+          >
+            {item.da}
+          </span>
+        </p>
+      )}
       {item.effects &&
         item.effects.length > 0 &&
         item.effects.map((effect, i) => (

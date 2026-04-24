@@ -51,6 +51,7 @@ export interface ApiRawItem {
   catalogSubcategory: string | null
   catalogTier: string | null
   damage: string | null
+  da: string | null
   effects: string[]
   sortOrder: number
 }
@@ -77,6 +78,7 @@ export function mapApiItemToInventoryItem(raw: ApiRawItem): InventoryItem {
     catalogSubcategory: raw.catalogSubcategory ?? undefined,
     catalogTier: raw.catalogTier ?? undefined,
     damage: raw.damage ?? null,
+    da: raw.da ?? null,
     effects: raw.effects,
   }
 }
