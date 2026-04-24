@@ -418,6 +418,14 @@ export function MapTab({ campaign }: MapTabProps) {
     broadcastMap({ ...event, senderId: user?.id })
   }, [broadcastMap, user?.id])
 
+  const handleLayerDelete = useCallback((layerId: string) => {
+    setTokens(prev => {
+      const removed = prev.filter(t => t.layerId === layerId)
+      removed.forEach(t => broadcastMap({ type: 'TOKEN_REMOVE', tokenId: t.id, senderId: user?.id }))
+      return prev.filter(t => t.layerId !== layerId)
+    })
+  }, [broadcastMap, user?.id])
+
   const handleMapCreated = useCallback(async (newMap: GameMap) => {
     setMap(newMap)
     setShowCreateModal(false)
@@ -498,6 +506,7 @@ export function MapTab({ campaign }: MapTabProps) {
                 map={map}
                 onMapChange={setMap}
                 onBroadcast={handleMapBroadcast}
+                onLayerDelete={handleLayerDelete}
               />
               <div style={{ height: 1, background: 'var(--color-border)' }} />
               <MapTokenPanel
@@ -545,6 +554,7 @@ export function MapTab({ campaign }: MapTabProps) {
                     map={map}
                     onMapChange={m => { setMap(m); setPanelOpen(false) }}
                     onBroadcast={handleMapBroadcast}
+                    onLayerDelete={handleLayerDelete}
                   />
                   <div style={{ height: 1, background: 'var(--color-border)' }} />
                   <MapTokenPanel

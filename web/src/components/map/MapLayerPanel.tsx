@@ -16,6 +16,7 @@ interface MapLayerPanelProps {
   map: GameMap
   onMapChange: (map: GameMap) => void
   onBroadcast: (event: MapBroadcastEvent) => void
+  onLayerDelete?: (layerId: string) => void
 }
 
 function SortableLayerItem({
@@ -106,7 +107,7 @@ function SortableLayerItem({
   )
 }
 
-export function MapLayerPanel({ campaignId, map, onMapChange, onBroadcast }: MapLayerPanelProps) {
+export function MapLayerPanel({ campaignId, map, onMapChange, onBroadcast, onLayerDelete }: MapLayerPanelProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
   const [selectingId, setSelectingId] = useState<string | null>(null)
@@ -166,6 +167,7 @@ export function MapLayerPanel({ campaignId, map, onMapChange, onBroadcast }: Map
     try {
       await api.maps.deleteLayer(campaignId, map.id, layer.id)
       onMapChange({ ...map, layers: map.layers.filter(l => l.id !== layer.id) })
+      onLayerDelete?.(layer.id)
     } catch (err) {
       alert((err as Error).message)
     }
