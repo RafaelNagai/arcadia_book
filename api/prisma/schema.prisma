@@ -132,6 +132,7 @@ model Map {
   layers   MapLayer[]
   tokens   MapToken[]
   walls    MapWall[]
+  doors    MapDoor[]
 
   @@map("maps")
 }
@@ -150,6 +151,7 @@ model MapLayer {
   map    Map        @relation(fields: [mapId], references: [id], onDelete: Cascade)
   tokens MapToken[]
   walls  MapWall[]
+  doors  MapDoor[]
 
   @@map("map_layers")
 }
@@ -165,6 +167,20 @@ model MapWall {
   layer MapLayer @relation(fields: [layerId], references: [id], onDelete: Cascade)
 
   @@map("map_walls")
+}
+
+model MapDoor {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  mapId     String   @map("map_id") @db.Uuid
+  layerId   String   @map("layer_id") @db.Uuid
+  points    Json
+  isOpen    Boolean  @default(false) @map("is_open")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  map   Map      @relation(fields: [mapId], references: [id], onDelete: Cascade)
+  layer MapLayer @relation(fields: [layerId], references: [id], onDelete: Cascade)
+
+  @@map("map_doors")
 }
 
 model MapToken {

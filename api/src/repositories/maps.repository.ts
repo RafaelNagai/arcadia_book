@@ -81,7 +81,10 @@ export class MapsRepository {
       include: {
         layers: {
           orderBy: { orderIndex: 'asc' },
-          include: { walls: { orderBy: { createdAt: 'asc' } } },
+          include: {
+            walls: { orderBy: { createdAt: 'asc' } },
+            doors: { orderBy: { createdAt: 'asc' } },
+          },
         },
         tokens: {
           include: { character: { select: TOKEN_CHAR_SELECT } },
@@ -103,6 +106,24 @@ export class MapsRepository {
 
   deleteWall(id: string) {
     return this.db.mapWall.delete({ where: { id } })
+  }
+
+  // ── Doors ─────────────────────────────────────────────────────────────────
+
+  findDoorById(id: string) {
+    return this.db.mapDoor.findUnique({ where: { id } })
+  }
+
+  createDoor(data: { mapId: string; layerId: string; points: Prisma.InputJsonValue }) {
+    return this.db.mapDoor.create({ data })
+  }
+
+  deleteDoor(id: string) {
+    return this.db.mapDoor.delete({ where: { id } })
+  }
+
+  toggleDoor(id: string, isOpen: boolean) {
+    return this.db.mapDoor.update({ where: { id }, data: { isOpen } })
   }
 
   // ── Layers ────────────────────────────────────────────────────────────────

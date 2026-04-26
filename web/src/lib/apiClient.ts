@@ -317,6 +317,18 @@ export const api = {
 
     deleteWall: (campaignId: string, mapId: string, layerId: string, wallId: string) =>
       apiFetch(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/walls/${wallId}`, { method: 'DELETE' }),
+
+    createDoor: (campaignId: string, mapId: string, layerId: string, points: Array<{ x: number; y: number }>) =>
+      apiFetch<{ door: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/doors`, {
+        method: 'POST',
+        body: JSON.stringify({ points }),
+      }),
+
+    deleteDoor: (campaignId: string, mapId: string, layerId: string, doorId: string) =>
+      apiFetch(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/doors/${doorId}`, { method: 'DELETE' }),
+
+    toggleDoor: (campaignId: string, mapId: string, layerId: string, doorId: string) =>
+      apiFetch<{ door: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/doors/${doorId}/toggle`, { method: 'PATCH' }),
   },
 
   // ── Upload ──────────────────────────────────────────────────────────────────

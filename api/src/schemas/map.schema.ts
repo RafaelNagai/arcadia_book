@@ -62,6 +62,11 @@ export const CreateMapWallSchema = z.object({
 })
 export type CreateMapWallInput = z.infer<typeof CreateMapWallSchema>
 
+export const CreateMapDoorSchema = z.object({
+  points: z.array(z.object({ x: z.number(), y: z.number() })).length(2),
+})
+export type CreateMapDoorInput = z.infer<typeof CreateMapDoorSchema>
+
 export type CreateMapInput = z.infer<typeof CreateMapSchema>
 export type UpdateMapInput = z.infer<typeof UpdateMapSchema>
 export type CreateMapLayerInput = z.infer<typeof CreateMapLayerSchema>

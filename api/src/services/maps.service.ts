@@ -14,6 +14,7 @@ import type {
   UpdateFogInput,
   AddFogPatchesInput,
   FogPatchInput,
+  CreateMapDoorInput,
 } from '../schemas/map.schema.js'
 import type { Prisma } from '../generated/prisma/client.js'
 
@@ -186,6 +187,29 @@ export class MapsService {
     const token = await this.repo.findTokenById(tokenId)
     if (!token || token.mapId !== mapId) throw new NotFoundError('Token não encontrado')
     await this.repo.deleteToken(tokenId)
+  }
+
+  // ── Doors ────────────────────────────────────────────────────────────────
+
+  async createDoor(mapId: string, layerId: string, userId: string, input: CreateMapDoorInput) {
+    await this.assertMapGm(mapId, userId)
+    const layer = await this.repo.findLayerById(layerId)
+    if (!layer || layer.mapId !== mapId) throw new NotFoundError('Layer não encontrada')
+    return this.repo.createDoor({ mapId, layerId, points: input.points as never })
+  }
+
+  async deleteDoor(mapId: string, doorId: string, userId: string) {
+    await this.assertMapGm(mapId, userId)
+    const door = await this.repo.findDoorById(doorId)
+    if (!door || door.mapId !== mapId) throw new NotFoundError('Porta não encontrada')
+    await this.repo.deleteDoor(doorId)
+  }
+
+  async toggleDoor(mapId: string, doorId: string, userId: string) {
+    await this.assertMapGm(mapId, userId)
+    const door = await this.repo.findDoorById(doorId)
+    if (!door || door.mapId !== mapId) throw new NotFoundError('Porta não encontrada')
+    return this.repo.toggleDoor(doorId, !door.isOpen)
   }
 
   // ── Fog ───────────────────────────────────────────────────────────────────

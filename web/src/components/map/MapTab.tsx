@@ -4,7 +4,7 @@ import { useAuth } from '@/lib/authContext'
 import { useMapRealtime, useCampaignMapChannel } from '@/hooks/useMapRealtime'
 import type { MapBroadcastEvent } from '@/hooks/useMapRealtime'
 import type { CampaignDetail } from '@/data/campaignTypes'
-import type { GameMap, MapToken, MapTool, FogPatch, MapWall } from '@/lib/mapTypes'
+import type { GameMap, MapToken, MapTool, FogPatch, MapWall, MapDoor } from '@/lib/mapTypes'
 import { computeVisibilityPolygon } from '@/lib/fogOfWar'
 import { MapCanvas } from './MapCanvas'
 import { MapToolbar } from './MapToolbar'
@@ -200,6 +200,29 @@ export function MapTab({ campaign }: MapTabProps) {
         } : prev)
       }
     }, []),
+
+    onDoorAdd: useCallback((door: MapDoor) => {
+      setMap(prev => prev ? {
+        ...prev,
+        layers: prev.layers.map(l => l.id === door.layerId ? { ...l, doors: [...(l.doors ?? []), door] } : l),
+      } : prev)
+    }, []),
+
+    onDoorDelete: useCallback((doorId: string, layerId: string) => {
+      setMap(prev => prev ? {
+        ...prev,
+        layers: prev.layers.map(l => l.id === layerId ? { ...l, doors: (l.doors ?? []).filter(d => d.id !== doorId) } : l),
+      } : prev)
+    }, []),
+
+    onDoorToggle: useCallback((door: MapDoor) => {
+      setMap(prev => prev ? {
+        ...prev,
+        layers: prev.layers.map(l => l.id === door.layerId
+          ? { ...l, doors: (l.doors ?? []).map(d => d.id === door.id ? door : d) }
+          : l),
+      } : prev)
+    }, []),
   })
 
   const broadcastCampaign = useCampaignMapChannel(campaign.id, {
@@ -235,7 +258,12 @@ export function MapTab({ campaign }: MapTabProps) {
         const tokenLayer = m.layers.find(l => l.id === token.layerId)
         if (tokenLayer) {
           const radius = token.visionRadius ?? m.defaultVisionRadius
-          const polygon = computeVisibilityPolygon({ x, y }, radius, tokenLayer.walls ?? [])
+          const closedDoors = (tokenLayer.doors ?? []).filter(d => !d.isOpen)
+          const blockingWalls = [
+            ...(tokenLayer.walls ?? []),
+            ...closedDoors.map(d => ({ id: d.id, mapId: d.mapId, layerId: d.layerId, points: d.points })),
+          ]
+          const polygon = computeVisibilityPolygon({ x, y }, radius, blockingWalls)
           localFogPatchesRef.current.push({ x, y, radius, polygon })
           setLocalFogPatches([...localFogPatchesRef.current])
         }
@@ -262,7 +290,12 @@ export function MapTab({ campaign }: MapTabProps) {
           const tokenLayer = map!.layers.find(l => l.id === token.layerId)
           if (tokenLayer) {
             const radius = token.visionRadius ?? map!.defaultVisionRadius
-            const polygon = computeVisibilityPolygon({ x, y }, radius, tokenLayer.walls ?? [])
+            const closedDoors = (tokenLayer.doors ?? []).filter(d => !d.isOpen)
+            const blockingWalls = [
+              ...(tokenLayer.walls ?? []),
+              ...closedDoors.map(d => ({ id: d.id, mapId: d.mapId, layerId: d.layerId, points: d.points })),
+            ]
+            const polygon = computeVisibilityPolygon({ x, y }, radius, blockingWalls)
             const allNewPatches = pendingPatches.length > 0
               ? [...pendingPatches, { x, y, radius, polygon }]
               : [{ x, y, radius, polygon }]
@@ -355,6 +388,55 @@ export function MapTab({ campaign }: MapTabProps) {
       await api.maps.deleteWall(map.campaignId, map.id, gmCurrentLayer.id, wallId)
     } catch { /* keep optimistic */ }
   }, [map, gmCurrentLayer])
+
+  // ── Door handlers ─────────────────────────────────────────────────────────────
+  const handleDoorAdd = useCallback(async (points: Array<{ x: number; y: number }>) => {
+    if (!map || !gmCurrentLayer) return
+    try {
+      const res = await api.maps.createDoor(map.campaignId, map.id, gmCurrentLayer.id, points)
+      const door = res.door as MapDoor
+      setMap(prev => prev ? {
+        ...prev,
+        layers: prev.layers.map(l => l.id === gmCurrentLayer.id
+          ? { ...l, doors: [...(l.doors ?? []), door] }
+          : l),
+      } : prev)
+      broadcastMap({ type: 'DOOR_ADD', door, senderId: user?.id })
+    } catch (err) {
+      alert((err as Error).message)
+    }
+  }, [map, gmCurrentLayer, broadcastMap, user?.id])
+
+  const handleDoorDelete = useCallback(async (doorId: string) => {
+    if (!map || !gmCurrentLayer) return
+    setMap(prev => prev ? {
+      ...prev,
+      layers: prev.layers.map(l => l.id === gmCurrentLayer.id
+        ? { ...l, doors: (l.doors ?? []).filter(d => d.id !== doorId) }
+        : l),
+    } : prev)
+    broadcastMap({ type: 'DOOR_DELETE', doorId, layerId: gmCurrentLayer.id, senderId: user?.id })
+    try {
+      await api.maps.deleteDoor(map.campaignId, map.id, gmCurrentLayer.id, doorId)
+    } catch { /* keep optimistic */ }
+  }, [map, gmCurrentLayer, broadcastMap, user?.id])
+
+  const handleDoorToggle = useCallback(async (doorId: string) => {
+    if (!map || !gmCurrentLayer) return
+    try {
+      const res = await api.maps.toggleDoor(map.campaignId, map.id, gmCurrentLayer.id, doorId)
+      const door = res.door as MapDoor
+      setMap(prev => prev ? {
+        ...prev,
+        layers: prev.layers.map(l => l.id === gmCurrentLayer.id
+          ? { ...l, doors: (l.doors ?? []).map(d => d.id === doorId ? door : d) }
+          : l),
+      } : prev)
+      broadcastMap({ type: 'DOOR_TOGGLE', door, senderId: user?.id })
+    } catch (err) {
+      alert((err as Error).message)
+    }
+  }, [map, gmCurrentLayer, broadcastMap, user?.id])
 
   // ── Token drop from panel onto canvas ────────────────────────────────────────
   const handleTokenDrop = useCallback(async (charId: string, worldX: number, worldY: number, visionRadius: number | null) => {
@@ -597,6 +679,9 @@ export function MapTab({ campaign }: MapTabProps) {
               onFogReveal={handleFogReveal}
               onWallAdd={handleWallAdd}
               onWallDelete={handleWallDelete}
+              onDoorAdd={handleDoorAdd}
+              onDoorDelete={handleDoorDelete}
+              onDoorToggle={handleDoorToggle}
             />
           ) : (
             <div style={{

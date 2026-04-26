@@ -11,6 +11,7 @@ interface MapToolbarProps {
 const TOOLS: { id: MapTool; label: string; icon: string }[] = [
   { id: 'select', label: 'Mover',        icon: '✥' },
   { id: 'wall',   label: 'Paredes',      icon: '⬛' },
+  { id: 'door',   label: 'Portas',       icon: '🚪' },
   { id: 'fog',    label: 'Revelar névoa', icon: '👁' },
 ]
 

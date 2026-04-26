@@ -5,6 +5,14 @@ export interface MapWall {
   points: Array<{ x: number; y: number }>
 }
 
+export interface MapDoor {
+  id: string
+  mapId: string
+  layerId: string
+  points: Array<{ x: number; y: number }>
+  isOpen: boolean
+}
+
 export interface MapLayer {
   id: string
   mapId: string
@@ -14,6 +22,7 @@ export interface MapLayer {
   isActive: boolean
   fogRevealed: FogPatch[]
   walls: MapWall[]
+  doors: MapDoor[]
   createdAt: string
 }
 
@@ -60,4 +69,4 @@ export interface GameMap {
   tokens?: MapToken[]
 }
 
-export type MapTool = 'select' | 'fog' | 'wall'
+export type MapTool = 'select' | 'fog' | 'wall' | 'door'

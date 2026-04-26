@@ -10,7 +10,8 @@ interface MapWallLayerProps {
   previewPoint: { x: number; y: number } | null
   selectedWallId: string | null
   onWallSelect: (wallId: string) => void
-  onWallEndpointClick?: (point: { x: number; y: number }) => void
+  /** Called when user clicks an endpoint; receives the point and which tool is active */
+  onEndpointClick?: (point: { x: number; y: number }) => void
 }
 
 export function MapWallLayer({
@@ -22,7 +23,7 @@ export function MapWallLayer({
   previewPoint,
   selectedWallId,
   onWallSelect,
-  onWallEndpointClick,
+  onEndpointClick,
 }: MapWallLayerProps) {
   const selectedWall = selectedWallId ? walls.find(w => w.id === selectedWallId) : null
   const endpoints = selectedWall?.points.length === 2
@@ -59,7 +60,7 @@ export function MapWallLayer({
           stroke="rgba(232,184,75,0.95)"
           strokeWidth={2 / scale}
           hitStrokeWidth={20 / scale}
-          onClick={(e) => { e.cancelBubble = true; onWallEndpointClick?.(pt) }}
+          onClick={(e) => { e.cancelBubble = true; onEndpointClick?.(pt) }}
           style={{ cursor: 'crosshair' }}
         />
       ))}

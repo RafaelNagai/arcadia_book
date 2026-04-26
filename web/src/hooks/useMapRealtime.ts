@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/apiClient'
-import type { GameMap, MapLayer, MapToken, FogPatch } from '@/lib/mapTypes'
+import type { GameMap, MapLayer, MapToken, MapDoor, FogPatch } from '@/lib/mapTypes'
 
 // ── Broadcast event types ─────────────────────────────────────────────────────
 
@@ -11,6 +11,9 @@ export type MapBroadcastEvent =
   | { type: 'TOKEN_REMOVE'; tokenId: string; senderId?: string }
   | { type: 'LAYER_CHANGE'; layerId: string; layers: MapLayer[]; senderId?: string }
   | { type: 'FOG_UPDATE'; fogEnabled: boolean; layerId: string | null; fogRevealed: FogPatch[]; senderId?: string }
+  | { type: 'DOOR_ADD'; door: MapDoor; senderId?: string }
+  | { type: 'DOOR_DELETE'; doorId: string; layerId: string; senderId?: string }
+  | { type: 'DOOR_TOGGLE'; door: MapDoor; senderId?: string }
 
 export type CampaignMapEvent =
   | { type: 'MAP_ACTIVATED'; map: GameMap }
@@ -27,6 +30,9 @@ interface MapRealtimeHandlers {
   onTokenRemove: (tokenId: string) => void
   onLayerChange: (layerId: string, layers: MapLayer[]) => void
   onFogUpdate: (fogEnabled: boolean, layerId: string | null, fogRevealed: FogPatch[]) => void
+  onDoorAdd: (door: MapDoor) => void
+  onDoorDelete: (doorId: string, layerId: string) => void
+  onDoorToggle: (door: MapDoor) => void
 }
 
 export function useMapRealtime(
@@ -72,6 +78,21 @@ export function useMapRealtime(
         const p = payload as MapBroadcastEvent
         if (p.type === 'FOG_UPDATE' && p.senderId !== handlersRef.current.selfId)
           handlersRef.current.onFogUpdate(p.fogEnabled, p.layerId, p.fogRevealed)
+      })
+      .on('broadcast', { event: 'DOOR_ADD' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'DOOR_ADD' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onDoorAdd(p.door)
+      })
+      .on('broadcast', { event: 'DOOR_DELETE' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'DOOR_DELETE' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onDoorDelete(p.doorId, p.layerId)
+      })
+      .on('broadcast', { event: 'DOOR_TOGGLE' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'DOOR_TOGGLE' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onDoorToggle(p.door)
       })
       .subscribe()
 

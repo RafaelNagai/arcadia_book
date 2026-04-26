@@ -6,6 +6,7 @@ import { computeVisibilityPolygon } from '@/lib/fogOfWar'
 import { MapTokenLayer } from './MapTokenLayer'
 import { MapFogLayer } from './MapFogLayer'
 import { MapWallLayer } from './MapWallLayer'
+import { MapDoorLayer } from './MapDoorLayer'
 
 const TOKEN_BASE_RADIUS = 28
 
@@ -94,6 +95,9 @@ interface MapCanvasProps {
   onFogReveal?: (patch: FogPatch) => void
   onWallAdd?: (points: Array<{ x: number; y: number }>) => void
   onWallDelete?: (wallId: string) => void
+  onDoorAdd?: (points: Array<{ x: number; y: number }>) => void
+  onDoorDelete?: (doorId: string) => void
+  onDoorToggle?: (doorId: string) => void
 }
 
 function isOnDraggable(node: Konva.Node): boolean {
@@ -127,6 +131,9 @@ export function MapCanvas({
   onFogReveal,
   onWallAdd,
   onWallDelete,
+  onDoorAdd,
+  onDoorDelete,
+  onDoorToggle,
 }: MapCanvasProps) {
   const stageRef = useRef<Konva.Stage>(null)
   const [layerImages, setLayerImages] = useState<Record<string, HTMLImageElement>>({})
@@ -143,6 +150,9 @@ export function MapCanvas({
   const [wallStart, setWallStart] = useState<{ x: number; y: number } | null>(null)
   const [wallPreview, setWallPreview] = useState<{ x: number; y: number } | null>(null)
   const [selectedWallId, setSelectedWallId] = useState<string | null>(null)
+  const [doorStart, setDoorStart] = useState<{ x: number; y: number } | null>(null)
+  const [doorPreview, setDoorPreview] = useState<{ x: number; y: number } | null>(null)
+  const [selectedDoorId, setSelectedDoorId] = useState<string | null>(null)
   const [selectedTokenId, setSelectedTokenId] = useState<string | null>(null)
 
   // Derived layer data
@@ -183,12 +193,14 @@ export function MapCanvas({
   }, [currentLayerImage, containerWidth, containerHeight])
 
   useEffect(() => {
-    if (tool !== 'wall') {
-      setWallStart(null); setWallPreview(null); setSelectedWallId(null)
-      return
-    }
+    if (tool !== 'wall') { setWallStart(null); setWallPreview(null); setSelectedWallId(null) }
+    if (tool !== 'door') { setDoorStart(null); setDoorPreview(null); setSelectedDoorId(null) }
+    if (tool !== 'wall' && tool !== 'door') return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') { setWallStart(null); setSelectedWallId(null) }
+      if (e.key === 'Escape') {
+        setWallStart(null); setSelectedWallId(null)
+        setDoorStart(null); setSelectedDoorId(null)
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -239,10 +251,8 @@ export function MapCanvas({
       lastPan.current = { x: e.evt.clientX, y: e.evt.clientY }
       setPosition(prev => ({ x: prev.x + dx, y: prev.y + dy }))
     }
-    if (tool === 'wall' && isGm) {
-      const wp = getWorldPos()
-      if (wp) setWallPreview(wp)
-    }
+    if (tool === 'wall' && isGm) { const wp = getWorldPos(); if (wp) setWallPreview(wp) }
+    if (tool === 'door' && isGm) { const wp = getWorldPos(); if (wp) setDoorPreview(wp) }
   }, [tool, isGm, getWorldPos])
 
   const handleMouseUp = useCallback(() => { isPanning.current = false }, [])
@@ -262,28 +272,46 @@ export function MapCanvas({
 
   const handleClick = useCallback((_e: Konva.KonvaEventObject<MouseEvent>) => {
     setSelectedTokenId(null)
-    if (tool !== 'wall' || !isGm) return
-    if (selectedWallId !== null) {
+    if (!isGm) return
+
+    if (tool === 'select') {
       setSelectedWallId(null)
+      setSelectedDoorId(null)
       return
     }
-    const wp = getWorldPos()
-    if (!wp) return
-    if (!wallStart) {
-      setWallStart(wp)
-    } else {
-      onWallAdd?.([wallStart, wp])
-      setWallStart(null)
+
+    if (tool === 'wall') {
+      if (selectedWallId !== null) { setSelectedWallId(null); return }
+      const wp = getWorldPos(); if (!wp) return
+      if (!wallStart) { setWallStart(wp) } else { onWallAdd?.([wallStart, wp]); setWallStart(null) }
+      return
     }
-  }, [tool, isGm, wallStart, selectedWallId, onWallAdd, getWorldPos])
+
+    if (tool === 'door') {
+      if (selectedDoorId !== null) { setSelectedDoorId(null); return }
+      const wp = getWorldPos(); if (!wp) return
+      if (!doorStart) { setDoorStart(wp) } else { onDoorAdd?.([doorStart, wp]); setDoorStart(null) }
+      return
+    }
+  }, [tool, isGm, wallStart, selectedWallId, doorStart, selectedDoorId, onWallAdd, onDoorAdd, getWorldPos])
 
   const handleWallEndpointClick = useCallback((point: { x: number; y: number }) => {
-    setSelectedWallId(null)
-    setWallStart(point)
-  }, [])
+    setSelectedWallId(null); setSelectedDoorId(null)
+    if (tool === 'door') {
+      if (doorStart) { onDoorAdd?.([doorStart, point]); setDoorStart(null) }
+      else { setDoorStart(point) }
+    } else {
+      if (wallStart) { onWallAdd?.([wallStart, point]); setWallStart(null) }
+      else { setWallStart(point) }
+    }
+  }, [tool, wallStart, doorStart, onWallAdd, onDoorAdd])
 
-  // Vision circles: non-NPC tokens on the current layer
-  const walls = currentLayer?.walls ?? []
+  // Vision blocking segments: walls + closed doors
+  const closedDoors = (currentLayer?.doors ?? []).filter(d => !d.isOpen)
+  const walls = [
+    ...(currentLayer?.walls ?? []),
+    ...closedDoors.map(d => ({ id: d.id, mapId: d.mapId, layerId: d.layerId, points: d.points })),
+  ]
   const visionCircles: FogPatch[] = tokens
     .filter(t =>
       t.layerId === currentLayer?.id &&
@@ -316,7 +344,7 @@ export function MapCanvas({
 
   const stageW = containerWidth || window.innerWidth
   const stageH = containerHeight || window.innerHeight
-  const cursorStyle = tool === 'fog' || tool === 'wall' ? 'crosshair' : 'grab'
+  const cursorStyle = tool === 'fog' || tool === 'wall' || tool === 'door' ? 'crosshair' : 'grab'
 
   return (
     <div
@@ -439,8 +467,24 @@ export function MapCanvas({
             wallStart={wallStart}
             previewPoint={tool === 'wall' ? wallPreview : null}
             selectedWallId={selectedWallId}
-            onWallSelect={setSelectedWallId}
-            onWallEndpointClick={handleWallEndpointClick}
+            onWallSelect={id => { setSelectedWallId(id); setSelectedDoorId(null) }}
+            onEndpointClick={handleWallEndpointClick}
+          />
+        )}
+
+        {/* Doors — GM only, current layer */}
+        {isGm && (
+          <MapDoorLayer
+            doors={currentLayer?.doors ?? []}
+            panX={position.x}
+            panY={position.y}
+            scale={scale}
+            tool={tool}
+            doorStart={doorStart}
+            previewPoint={tool === 'door' ? doorPreview : null}
+            selectedDoorId={selectedDoorId}
+            onDoorSelect={id => { setSelectedDoorId(id); setSelectedWallId(null) }}
+            onEndpointClick={handleWallEndpointClick}
           />
         )}
 
@@ -506,6 +550,55 @@ export function MapCanvas({
           </button>
         </div>
       )}
+
+      {/* Door HUD — toggle open/close (select mode) or delete (door mode) */}
+      {isGm && selectedDoorId && (() => {
+        const door = (currentLayer?.doors ?? []).find(d => d.id === selectedDoorId)
+        if (!door || door.points.length < 2) return null
+        const hx = ((door.points[0].x + door.points[1].x) / 2) * scale + position.x
+        const hy = ((door.points[0].y + door.points[1].y) / 2) * scale + position.y
+        return (
+          <div style={{
+            position: 'absolute', left: hx, top: hy,
+            transform: 'translate(-50%, calc(-100% - 10px))', zIndex: 20,
+            display: 'flex', alignItems: 'center', gap: '0.4rem',
+            padding: '0.3rem 0.5rem',
+            background: 'rgba(8,12,24,0.96)', border: '1px solid rgba(200,146,42,0.45)',
+            borderRadius: 6, boxShadow: '0 4px 16px rgba(0,0,0,0.6)',
+          }}>
+            <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.68rem', color: 'rgba(255,255,255,0.45)', userSelect: 'none' }}>
+              Porta
+            </span>
+            <button
+              title={door.isOpen ? 'Fechar porta' : 'Abrir porta'}
+              onClick={() => { onDoorToggle?.(door.id); setSelectedDoorId(null) }}
+              style={{
+                padding: '0.2rem 0.55rem', borderRadius: 4, cursor: 'pointer',
+                fontFamily: 'var(--font-ui)', fontSize: '0.68rem', fontWeight: 700,
+                background: door.isOpen ? 'rgba(232,80,48,0.15)' : 'rgba(111,200,146,0.15)',
+                border: `1px solid ${door.isOpen ? 'rgba(232,80,48,0.5)' : 'rgba(111,200,146,0.5)'}`,
+                color: door.isOpen ? 'rgba(232,80,48,0.9)' : 'rgba(111,200,146,0.9)',
+              }}
+            >
+              {door.isOpen ? 'Fechar' : 'Abrir'}
+            </button>
+            {tool === 'door' && (
+              <button
+                title="Excluir porta"
+                onClick={() => { onDoorDelete?.(door.id); setSelectedDoorId(null) }}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  width: 26, height: 26, borderRadius: 4, cursor: 'pointer', fontSize: '0.85rem',
+                  background: 'rgba(232,80,48,0.15)', border: '1px solid rgba(232,80,48,0.45)',
+                  color: 'rgba(232,80,48,0.9)',
+                }}
+              >
+                🗑
+              </button>
+            )}
+          </div>
+        )
+      })()}
     </div>
   )
 }

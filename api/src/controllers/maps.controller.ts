@@ -10,6 +10,7 @@ import {
   UpdateFogSchema,
   AddFogPatchesSchema,
   CreateMapWallSchema,
+  CreateMapDoorSchema,
 } from '../schemas/map.schema.js'
 import { UUIDParamSchema } from '../schemas/shared.schema.js'
 import { z } from 'zod'
@@ -198,5 +199,31 @@ export async function mapsController(fastify: FastifyInstance) {
     const { wallId } = req.params as { wallId: string }
     await svc.deleteWall(id, wallId, req.user!.id)
     return reply.status(204).send()
+  })
+
+  // ── Doors ──────────────────────────────────────────────────────────────────
+
+  fastify.post('/:id/layers/:layerId/doors', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id, layerId } = MapAndLayerParamSchema.parse(req.params)
+    const input = CreateMapDoorSchema.parse(req.body)
+    const door = await svc.createDoor(id, layerId, req.user!.id, input)
+    return reply.status(201).send({ door })
+  })
+
+  fastify.delete('/:id/layers/:layerId/doors/:doorId', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id } = UUIDParamSchema.parse(req.params)
+    const { doorId } = req.params as { doorId: string }
+    await svc.deleteDoor(id, doorId, req.user!.id)
+    return reply.status(204).send()
+  })
+
+  fastify.patch('/:id/layers/:layerId/doors/:doorId/toggle', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id } = UUIDParamSchema.parse(req.params)
+    const { doorId } = req.params as { doorId: string }
+    const door = await svc.toggleDoor(id, doorId, req.user!.id)
+    return reply.send({ door })
   })
 }
