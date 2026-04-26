@@ -136,7 +136,14 @@ export class MapsService {
     await this.assertMapGm(mapId, userId)
     const layer = await this.repo.findLayerById(input.layer_id)
     if (!layer || layer.mapId !== mapId) throw new NotFoundError('Layer não encontrada')
-    return this.repo.createToken({
+
+    // Evict any existing token for this character (they can only be in one place)
+    const existing = await this.repo.findTokenForCharacter(input.character_id)
+    const removedTokenId = existing?.id ?? null
+    const removedTokenMapId = existing?.mapId ?? null
+    if (existing) await this.repo.deleteToken(existing.id)
+
+    const token = await this.repo.createToken({
       mapId,
       layerId: input.layer_id,
       characterId: input.character_id,
@@ -145,6 +152,7 @@ export class MapsService {
       visionRadius: input.vision_radius ?? null,
       isVisible: input.is_visible,
     })
+    return { token, removedTokenId, removedTokenMapId }
   }
 
   async updateToken(mapId: string, tokenId: string, userId: string, input: UpdateMapTokenInput) {
@@ -163,7 +171,8 @@ export class MapsService {
       if (!ownsCharacter) throw new ForbiddenError()
       // Players may only reposition their own token
       if (input.layer_id !== undefined || input.vision_radius !== undefined ||
-          input.is_visible !== undefined || input.size !== undefined) {
+          input.is_visible !== undefined || input.size !== undefined ||
+          input.shared_with !== undefined) {
         throw new ForbiddenError()
       }
     }
@@ -179,6 +188,7 @@ export class MapsService {
     if (input.vision_radius !== undefined) patch.visionRadius = input.vision_radius
     if (input.is_visible !== undefined) patch.isVisible = input.is_visible
     if (input.size !== undefined) patch.size = input.size
+    if (input.shared_with !== undefined) patch.sharedWith = input.shared_with
     return this.repo.updateToken(tokenId, patch)
   }
 

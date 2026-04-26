@@ -134,8 +134,8 @@ export async function mapsController(fastify: FastifyInstance) {
     await fastify.authenticate(req)
     const { id } = UUIDParamSchema.parse(req.params)
     const input = CreateMapTokenSchema.parse(req.body)
-    const token = await svc.createToken(id, req.user!.id, input)
-    return reply.status(201).send({ token })
+    const { token, removedTokenId, removedTokenMapId } = await svc.createToken(id, req.user!.id, input)
+    return reply.status(201).send({ token, removedTokenId, removedTokenMapId })
   })
 
   // Update token (position, layer, visibility)

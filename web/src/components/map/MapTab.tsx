@@ -4,7 +4,7 @@ import { useAuth } from '@/lib/authContext'
 import { useMapRealtime, useCampaignMapChannel } from '@/hooks/useMapRealtime'
 import type { MapBroadcastEvent } from '@/hooks/useMapRealtime'
 import type { CampaignDetail } from '@/data/campaignTypes'
-import type { GameMap, MapToken, MapTool, FogPatch, MapWall, MapDoor } from '@/lib/mapTypes'
+import type { GameMap, MapToken, MapTool, FogPatch, MapWall, MapDoor, MapSummary } from '@/lib/mapTypes'
 import { computeVisibilityPolygon } from '@/lib/fogOfWar'
 import { MapCanvas } from './MapCanvas'
 import { MapToolbar } from './MapToolbar'
@@ -13,8 +13,6 @@ import { MapTokenPanel } from './MapTokenPanel'
 import { MapTokenModal } from './MapTokenModal'
 import { MapSettingsPanel } from './MapSettingsPanel'
 import { MapListPanel } from './MapListPanel'
-
-type MapSummary = Pick<GameMap, 'id' | 'title' | 'isActive'>
 
 const TOKEN_DRAG_THROTTLE_MS = 50
 
@@ -136,17 +134,19 @@ export function MapTab({ campaign }: MapTabProps) {
   const gmCurrentLayerId = map?.layers.find(l => l.isActive)?.id ?? null
   const gmCurrentLayer = gmCurrentLayerId ? map?.layers.find(l => l.id === gmCurrentLayerId) ?? null : null
 
-  // Player's effective current layer: highest-floor layer where they have a token
+  // Player's effective current layer: highest-floor layer where they have an own or shared token
   const effectiveCurrentLayerId = useMemo(() => {
     if (campaign.isGm || !map) return gmCurrentLayerId
     const sorted = [...map.layers].sort((a, b) => a.orderIndex - b.orderIndex)
     for (let i = sorted.length - 1; i >= 0; i--) {
-      if (tokens.some(t => t.layerId === sorted[i].id && myCharacterIds.includes(t.characterId))) {
-        return sorted[i].id
-      }
+      const hasAccess = tokens.some(t =>
+        t.layerId === sorted[i].id &&
+        (myCharacterIds.includes(t.characterId) || (user?.id != null && t.sharedWith.includes(user.id))),
+      )
+      if (hasAccess) return sorted[i].id
     }
     return gmCurrentLayerId
-  }, [campaign.isGm, gmCurrentLayerId, map, tokens, myCharacterIds])
+  }, [campaign.isGm, gmCurrentLayerId, map, tokens, myCharacterIds, user?.id])
 
   const fogStateRef = useRef({ fogEnabled, map, tokens, npcCharacterIds, gmCurrentLayerId })
   fogStateRef.current = { fogEnabled, map, tokens, npcCharacterIds, gmCurrentLayerId }
@@ -276,7 +276,7 @@ export function MapTab({ campaign }: MapTabProps) {
             ...closedDoors.map(d => ({ id: d.id, mapId: d.mapId, layerId: d.layerId, points: d.points })),
           ]
           const polygon = computeVisibilityPolygon({ x, y }, radius, blockingWalls)
-          localFogPatchesRef.current.push({ x, y, radius, polygon })
+          localFogPatchesRef.current.push({ x, y, radius, polygon, characterId: token.characterId })
           setLocalFogPatches([...localFogPatchesRef.current])
         }
       }
@@ -309,8 +309,8 @@ export function MapTab({ campaign }: MapTabProps) {
             ]
             const polygon = computeVisibilityPolygon({ x, y }, radius, blockingWalls)
             const allNewPatches = pendingPatches.length > 0
-              ? [...pendingPatches, { x, y, radius, polygon }]
-              : [{ x, y, radius, polygon }]
+              ? [...pendingPatches, { x, y, radius, polygon, characterId: token.characterId }]
+              : [{ x, y, radius, polygon, characterId: token.characterId }]
             const existing = tokenLayer.fogRevealed ?? []
             const next = [...existing, ...allNewPatches]
             setMap(prev => prev ? {
@@ -459,15 +459,22 @@ export function MapTab({ campaign }: MapTabProps) {
         character_id: charId,
         x: worldX, y: worldY,
         vision_radius: visionRadius,
-      })
-      const newToken = res.token as MapToken
+      }) as { token: MapToken; removedTokenId: string | null; removedTokenMapId: string | null }
+
+      // Evict old token from state if it was on this map
+      if (res.removedTokenId && res.removedTokenMapId === map.id) {
+        setTokens(prev => prev.filter(t => t.id !== res.removedTokenId))
+        broadcastMap({ type: 'TOKEN_REMOVE', tokenId: res.removedTokenId, senderId: user?.id })
+      }
+
+      const newToken = res.token
       setTokens(prev => prev.some(t => t.id === newToken.id) ? prev : [...prev, newToken])
       broadcastMap({ type: 'TOKEN_ADD', token: newToken, senderId: user?.id })
 
       if (fogEnabled && !npcCharacterIds.includes(charId)) {
         const radius = newToken.visionRadius ?? map.defaultVisionRadius
         const polygon = computeVisibilityPolygon({ x: worldX, y: worldY }, radius, gmCurrentLayer.walls ?? [])
-        const patchWithPoly = { x: worldX, y: worldY, radius, polygon }
+        const patchWithPoly = { x: worldX, y: worldY, radius, polygon, characterId: charId }
         const existing = gmCurrentLayer.fogRevealed ?? []
         const next = [...existing, patchWithPoly]
         setMap(prev => prev ? {
@@ -499,6 +506,15 @@ export function MapTab({ campaign }: MapTabProps) {
     } catch { /* keep optimistic */ }
   }, [map, campaign.id, broadcastMap, user?.id])
 
+  const handleShareUpdate = useCallback(async (tokenId: string, sharedWith: string[]) => {
+    if (!map) return
+    setTokens(prev => prev.map(t => t.id === tokenId ? { ...t, sharedWith } : t))
+    broadcastMap({ type: 'TOKEN_UPDATE', tokenId, data: { sharedWith }, senderId: user?.id })
+    try {
+      await api.maps.updateToken(campaign.id, map.id, tokenId, { shared_with: sharedWith })
+    } catch { /* keep optimistic */ }
+  }, [map, campaign.id, broadcastMap, user?.id])
+
   const handleTokenResize = useCallback(async (tokenId: string, size: number) => {
     if (!map) return
     setTokens(prev => prev.map(t => t.id === tokenId ? { ...t, size } : t))
@@ -524,7 +540,7 @@ export function MapTab({ campaign }: MapTabProps) {
     setMap(newMap)
     setShowCreateModal(false)
     setTokens([])
-    setAllMaps(prev => [...prev.map(m => ({ ...m, isActive: false })), { id: newMap.id, title: newMap.title, isActive: true }])
+    setAllMaps(prev => [...prev.map(m => ({ ...m, isActive: false })), { ...newMap, tokens: [], isActive: true }])
     broadcastCampaign({ type: 'MAP_ACTIVATED', map: newMap })
   }, [broadcastCampaign])
 
@@ -533,7 +549,7 @@ export function MapTab({ campaign }: MapTabProps) {
     if (!showMapList || !campaign.isGm) return
     setAllMapsLoading(true)
     api.maps.list(campaign.id)
-      .then(res => setAllMaps((res.maps as MapSummary[]) ?? []))
+      .then(res => setAllMaps(res.maps ?? []))
       .catch(() => {})
       .finally(() => setAllMapsLoading(false))
   }, [showMapList, campaign.id, campaign.isGm])
@@ -546,7 +562,7 @@ export function MapTab({ campaign }: MapTabProps) {
       setMap(newMap)
       setTokens(newMap.tokens ?? [])
       setFogEnabled(newMap.fogEnabled)
-      setAllMaps(prev => prev.map(m => ({ ...m, isActive: m.id === mapId })))
+      setAllMaps(prev => prev.map(m => ({ ...m, isActive: m.id === mapId } as MapSummary)))
       broadcastCampaign({ type: 'MAP_ACTIVATED', map: newMap })
     } catch (err) {
       alert((err as Error).message)
@@ -763,6 +779,7 @@ export function MapTab({ campaign }: MapTabProps) {
               containerWidth={containerSize.w}
               containerHeight={containerSize.h}
               fogEnabled={fogEnabled}
+              userId={user?.id}
               myCharacterIds={myCharacterIds}
               npcCharacterIds={npcCharacterIds}
               dragOverride={activeDrag}
@@ -840,8 +857,11 @@ export function MapTab({ campaign }: MapTabProps) {
         <MapTokenModal
           character={modalToken.character}
           visionRadius={modalToken.visionRadius}
+          sharedWith={modalToken.sharedWith}
           map={map}
+          players={campaign.players}
           onSave={(vr) => handleVisionUpdate(modalToken.id, vr)}
+          onShareUpdate={(sw) => handleShareUpdate(modalToken.id, sw)}
           onClose={() => setModalToken(null)}
         />
       )}

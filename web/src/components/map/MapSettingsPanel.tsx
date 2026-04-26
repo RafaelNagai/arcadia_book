@@ -14,7 +14,6 @@ export function MapSettingsPanel({ campaignId, map, onSave, onClose }: Props) {
   const [gridEnabled, setGridEnabled] = useState(map.gridEnabled)
   const [gridSize, setGridSize] = useState(map.gridSize)
   const [defaultVisionRadius, setDefaultVisionRadius] = useState(map.defaultVisionRadius)
-  const [visionUnified, setVisionUnified] = useState(map.visionUnified)
   const [saving, setSaving] = useState(false)
 
   async function handleSave() {
@@ -25,7 +24,6 @@ export function MapSettingsPanel({ campaignId, map, onSave, onClose }: Props) {
         grid_enabled: gridEnabled,
         grid_size: gridSize,
         default_vision_radius: defaultVisionRadius,
-        vision_unified: visionUnified,
       })
       onSave(res.map as GameMap)
     } catch (err) {
@@ -94,12 +92,6 @@ export function MapSettingsPanel({ campaignId, map, onSave, onClose }: Props) {
             <span>50px</span><span>2000px</span>
           </div>
         </Field>
-
-        <Toggle
-          label="Visão unificada — todos os PCs revelam névoa juntos"
-          value={visionUnified}
-          onChange={setVisionUnified}
-        />
 
         <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', paddingTop: '0.25rem' }}>
           <button onClick={onClose} style={cancelBtnStyle}>Cancelar</button>

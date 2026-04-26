@@ -37,6 +37,7 @@ export const UpdateMapTokenSchema = z.object({
   vision_radius: z.number().int().min(50).max(2000).nullable().optional(),
   is_visible: z.boolean().optional(),
   size: z.number().min(0.25).max(4).optional(),
+  shared_with: z.array(z.string().uuid()).optional(),
 })
 
 export const FogPatchSchema = z.object({

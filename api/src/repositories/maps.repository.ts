@@ -2,6 +2,7 @@ import type { PrismaClient, Prisma } from '../generated/prisma/client.js'
 
 const TOKEN_CHAR_SELECT = {
   id: true,
+  userId: true,
   name: true,
   imageUrl: true,
   afinidade: true,
@@ -23,7 +24,13 @@ export class MapsRepository {
   listMaps(campaignId: string) {
     return this.db.map.findMany({
       where: { campaignId },
-      include: { layers: { orderBy: { orderIndex: 'asc' } } },
+      include: {
+        layers: { orderBy: { orderIndex: 'asc' } },
+        tokens: {
+          include: { character: { select: TOKEN_CHAR_SELECT } },
+          orderBy: { createdAt: 'asc' },
+        },
+      },
       orderBy: { createdAt: 'asc' },
     })
   }
@@ -163,6 +170,10 @@ export class MapsRepository {
     return this.db.mapToken.findUnique({ where: { id } })
   }
 
+  findTokenForCharacter(characterId: string) {
+    return this.db.mapToken.findFirst({ where: { characterId } })
+  }
+
   createToken(data: {
     mapId: string
     layerId: string
@@ -185,6 +196,7 @@ export class MapsRepository {
     visionRadius: number | null
     isVisible: boolean
     size: number
+    sharedWith: Prisma.InputJsonValue
   }>) {
     return this.db.mapToken.update({
       where: { id },

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { getAccent } from '@/components/character/types'
 import type { GameMap } from '@/lib/mapTypes'
+import type { CampaignChar } from '@/data/campaignTypes'
 
 interface TokenModalCharacter {
   id: string
@@ -12,20 +13,35 @@ interface TokenModalCharacter {
 interface MapTokenModalProps {
   character: TokenModalCharacter
   visionRadius: number | null
+  sharedWith?: string[]
   map: GameMap
+  players?: CampaignChar[]
   onSave: (visionRadius: number | null) => void
+  onShareUpdate?: (sharedWith: string[]) => void
   onClose: () => void
 }
 
-export function MapTokenModal({ character, visionRadius, map, onSave, onClose }: MapTokenModalProps) {
+export function MapTokenModal({ character, visionRadius, sharedWith = [], map, players = [], onSave, onShareUpdate, onClose }: MapTokenModalProps) {
   const [useMapDefault, setUseMapDefault] = useState(visionRadius == null)
   const [radius, setRadius] = useState(visionRadius ?? map.defaultVisionRadius)
+  const [localShared, setLocalShared] = useState<string[]>(sharedWith)
 
   const accent = getAccent(character.afinidade)
+  const hasPlayers = players.length > 0
+  const sharingChanged = JSON.stringify([...localShared].sort()) !== JSON.stringify([...sharedWith].sort())
 
   function handleSave() {
     onSave(useMapDefault ? null : radius)
+    if (onShareUpdate && sharingChanged) {
+      onShareUpdate(localShared)
+    }
     onClose()
+  }
+
+  function togglePlayer(userId: string) {
+    setLocalShared(prev =>
+      prev.includes(userId) ? prev.filter(id => id !== userId) : [...prev, userId],
+    )
   }
 
   return (
@@ -134,6 +150,57 @@ export function MapTokenModal({ character, visionRadius, map, onSave, onClose }:
             </div>
           )}
         </div>
+
+        {/* Sharing section — only shown when there are other players */}
+        {hasPlayers && onShareUpdate && (
+          <>
+            <div style={{ height: 1, background: 'rgba(255,255,255,0.07)' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <p style={{
+                fontFamily: 'var(--font-ui)', fontSize: '0.6rem', fontWeight: 700,
+                letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)',
+              }}>
+                Compartilhar Visão com
+              </p>
+              {players.map(p => {
+                const checked = localShared.includes(p.userId)
+                return (
+                  <label
+                    key={p.userId}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer',
+                      padding: '0.35rem 0.5rem', borderRadius: 4,
+                      background: checked ? 'rgba(200,146,42,0.07)' : 'rgba(255,255,255,0.02)',
+                      border: `1px solid ${checked ? 'rgba(200,146,42,0.2)' : 'rgba(255,255,255,0.06)'}`,
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => togglePlayer(p.userId)}
+                      style={{ accentColor: 'var(--color-arcano)', width: 14, height: 14, flexShrink: 0 }}
+                    />
+                    <div style={{
+                      width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
+                      background: 'rgba(255,255,255,0.08)', overflow: 'hidden',
+                    }}>
+                      {p.imageUrl && (
+                        <img src={p.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      )}
+                    </div>
+                    <span style={{
+                      fontFamily: 'var(--font-ui)', fontSize: '0.75rem',
+                      color: checked ? 'var(--color-arcano)' : 'rgba(255,255,255,0.55)',
+                      flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                    }}>
+                      {p.name}
+                    </span>
+                  </label>
+                )
+              })}
+            </div>
+          </>
+        )}
 
         {/* Actions */}
         <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>

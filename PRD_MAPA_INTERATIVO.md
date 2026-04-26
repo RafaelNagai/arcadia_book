@@ -1,7 +1,7 @@
 # PRD — Mapa Interativo de Campanha (Arcádia)
 
-> **Status:** Em desenvolvimento — Fases 1–4 + Polimentos + Multi-Floor + Portas concluídos
-> **Versão:** 1.7
+> **Status:** Em desenvolvimento — Fases 1–5 parcialmente concluídas + Vision Sharing + Map Gallery pendentes
+> **Versão:** 1.8
 > **Data:** 2026-04-26
 > **Escopo:** Feature de mapa tático com fog of war para campanhas do sistema Arcádia
 
@@ -16,7 +16,8 @@
 | **Polimentos pós-Fase 4** | ✅ Concluídos | Resize, modal config, drag-to-place, QoL paredes |
 | **Multi-Floor (Fases de Andar)** | ✅ Concluído | Layers empilhadas, reordenação, Z-order correto |
 | **Portas (Fase 4.5)** | ✅ Concluída | Ferramenta de porta, bloqueio LOS, abrir/fechar |
-| **Fase 5 — Grid e Mobile** | ⏳ Pendente | Grid configurável, mobile polish, múltiplos mapas |
+| **Fase 5 — Grid e Mobile** | ✅ Concluída | Grid configurável, pinch-to-zoom, map gallery básica, config de mapa |
+| **Fase 6 — Vision Sharing + Map Gallery** | 🔨 Em andamento | Compartilhamento de visão por token, galeria de mapas com thumbnail |
 
 ---
 
@@ -136,6 +137,23 @@ selection
 #### Limite de upload de layer aumentado
 - `MAX_MAP_IMAGE_SIZE_MB` (default: 30MB) separado de `MAX_IMAGE_SIZE_MB` (character portraits: 15MB)
 - Limite por-rota via `req.file({ limits: { fileSize: ... } })` no controller de `/upload/map-layer`
+
+### Fase 5 — Grid, Mobile e Múltiplos Mapas
+
+#### Grid configurável
+- Toggle on/off + slider de tamanho (16–256px) em `MapSettingsPanel`
+- Renderizado como linhas Konva sobre a layer atual; `strokeWidth = 1/scale` mantém espessura visual constante
+
+#### Touch / Mobile
+- **Pinch-to-zoom**: dois dedos controlam escala com zoom centrado entre eles
+- **Pan por toque único**: arrastar em área vazia; `isOnDraggable` garante que tocar em token inicia drag do token
+- `touchAction: 'none'` no Stage para prevenir scroll de página
+
+#### Múltiplos mapas e configurações
+- Botão ⚙ na toolbar abre `MapSettingsPanel`: título, grid, raio de visão padrão
+- Broadcast `MAP_SETTINGS_UPDATE` sincroniza configurações em tempo real
+- **`visionUnified` removido da UI** — substituído por compartilhamento individual de visão (Fase 6)
+- Viewport resetado ao trocar de mapa
 
 ### Fase 4.5 — Portas
 
@@ -322,16 +340,33 @@ Aba **Mapa** na página de campanha com mapas táticos multi-andar (layers), tok
 - [x] **RF-D-10** — Estado aberta/fechada sincronizado em tempo real via broadcast `DOOR_TOGGLE`
 - [x] **RF-D-11** — Portas persistidas no banco (`map_doors`); cascade delete com layer e mapa
 
-### 3.7 Visualização do Jogador
+### 3.7 Compartilhamento de Visão por Token
+
+- [ ] **RF-V-01** — Por padrão cada jogador enxerga apenas a visão dos seus próprios tokens
+- [ ] **RF-V-02** — GM pode conceder visão de um token específico a qualquer outro usuário da campanha
+- [ ] **RF-V-03** — Concessão de visão é configurada no modal do token: lista de usuários da campanha com toggle por usuário
+- [ ] **RF-V-04** — Jogador com visão concedida enxerga através do token como se fosse o seu; a layer ativa é determinada pelo token mais alto onde ele tem token próprio, com fallback para tokens compartilhados
+- [ ] **RF-V-05** — `sharedWith: string[]` (array de userId) persiste em `MapToken`; atualizado via `PATCH token/:tid`
+
+### 3.8 Galeria de Mapas
+
+- [ ] **RF-G-01** — "Mapas" no sidebar abre uma galeria de cards (uma tela, não modal)
+- [ ] **RF-G-02** — Cada card exibe: thumbnail da primeira layer (ordenada por `orderIndex`), título do mapa, avatares dos tokens presentes, badge "Ao vivo" se `isActive`
+- [ ] **RF-G-03** — GM vê todos os mapas; pode criar novo (card `+`), abrir e deletar cada mapa
+- [ ] **RF-G-04** — Jogador vê apenas mapas onde tem ao menos um token próprio ou compartilhado
+- [ ] **RF-G-05** — Clicar num card abre o canvas para aquele mapa (ativa-o se não estiver ativo)
+- [ ] **RF-G-06** — Botão "← Mapas" no canvas retorna à galeria sem desativar o mapa
+
+### 3.9 Visualização do Jogador
 
 - [x] **RF-25** — Jogador só vê aba Mapa se mestre ativou um mapa
 - [x] **RF-26** — Jogador vê o andar do seu token com fog LOS aplicado
 - [x] **RF-26b** — Jogador vê andares inferiores dimidos através de partes transparentes
-- [x] **RF-27** — Visão unida: union de LOS de todos os PCs do grupo
-- [x] **RF-28** — Pan e zoom no mapa
+- [x] **RF-27** — Visão individual por padrão; tokens compartilhados adicionam visão ao jogador (substitui visão unificada global)
+- [x] **RF-28** — Pan e zoom no mapa (mouse wheel + pinch-to-zoom)
 - [x] **RF-29** — NPCs fora da área visível não aparecem
 
-### 3.8 Sincronização
+### 3.10 Sincronização
 
 - [x] **RF-30** — Toda ação do mestre propagada via broadcast
 - [x] **RF-31** — Novo jogador recebe estado completo via REST
@@ -386,16 +421,17 @@ model MapLayer {
 }
 
 model MapToken {
-  id          String    @id @default(uuid())
-  mapId       String
-  layerId     String                     // qual andar o token está
-  characterId String
-  x           Float     @default(0)
-  y           Float     @default(0)
-  visionRadius Int?                      // NULL = usa default do mapa
-  isVisible   Boolean   @default(true)
-  size        Float     @default(1)      // multiplicador de raio (0.25–4)
-  createdAt   DateTime  @default(now())
+  id           String   @id @default(uuid())
+  mapId        String
+  layerId      String                     // qual andar o token está
+  characterId  String
+  x            Float    @default(0)
+  y            Float    @default(0)
+  visionRadius Int?                       // NULL = usa default do mapa
+  isVisible    Boolean  @default(true)
+  size         Float    @default(1)       // multiplicador de raio (0.25–4)
+  sharedWith   Json     @default("[]")    // userId[] — usuários com visão compartilhada
+  createdAt    DateTime @default(now())
 }
 
 model MapWall {
@@ -630,13 +666,25 @@ POST   /upload/character-image                                  → upload foto 
 - Snap de endpoint ao segundo ponto para paredes e portas
 - Deselect ao clicar fora em qualquer ferramenta
 
-### Fase 5 — Grid e Polimentos ⏳
+### Fase 5 — Grid e Mobile ✅
+- Grid configurável inline no `MapSettingsPanel` (toggle + slider)
+- Pinch-to-zoom + pan por toque único
+- `MapSettingsPanel.tsx`: título, grid on/off + tamanho, raio de visão padrão
+- `MapListPanel` modal básica para troca de mapa
+- Broadcast `MAP_SETTINGS_UPDATE` para sincronizar configurações
 
-- [ ] `MapGridLayer.tsx`: overlay de grid configurável
-- [ ] `MapSettingsPanel.tsx`: grid on/off, tamanho, raio default, visão unida
-- [ ] Touch (pinch-to-zoom, long-press para mover token)
-- [ ] Lista de múltiplos mapas com troca na UI
-- [ ] Testes de carga (5 usuários simultâneos)
+### Fase 6 — Vision Sharing + Map Gallery 🔨
+
+- [ ] `sharedWith Json @default("[]")` em `MapToken` — persiste userId[] de quem tem visão compartilhada
+- [ ] `MapTokenModal.tsx`: seção "Compartilhar visão" com um botão toggle por usuário da campanha
+- [ ] `MapGallery.tsx`: galeria de cards como landing page da aba Mapa
+  - Card: thumbnail da primeira layer, título, avatares dos tokens, badge "Ao vivo"
+  - GM: todos os mapas + criar novo + deletar
+  - Jogador: apenas mapas com token próprio ou compartilhado
+- [ ] Navegação: galeria → canvas (ao clicar card) → galeria (botão ←)
+- [ ] `visionCircles` no `MapCanvas` inclui tokens de outros users compartilhados com o jogador atual
+- [ ] `effectiveCurrentLayerId` considera tokens compartilhados no fallback
+- [ ] `visionUnified` removido de `MapSettingsPanel` (mantido no DB como campo legado)
 
 ---
 
@@ -677,9 +725,10 @@ POST   /upload/character-image                                  → upload foto 
 
 ## 11. Perguntas em Aberto
 
-1. **Visão unida configurável?** Campo `visionUnified` existe; falta UI no `MapSettingsPanel`.
+1. **`visionUnified` legado** — campo existe no banco mas foi removido da UI; substituído por `sharedWith` por token. Pode ser removido do schema em cleanup futuro.
 2. **Grid snapping?** Tokens com movimento livre; snap-to-grid opcional?
 3. **Tokens em múltiplos andares simultaneamente?** Hoje: 1 token por personagem por mapa. Split party em andares diferentes requer que o mestre mova o token manualmente.
 4. **Iniciativa no mapa?** Indicador de turno por token integrado ao combate?
 5. **Medição de distância?** Ferramenta de régua útil para magias e ataques.
 6. **Portas visíveis para jogadores?** Hoje: portas são GM-only. Considerar renderizar silhueta para jogadores?
+7. **Testes de carga** — 5 usuários simultâneos não foram testados formalmente.

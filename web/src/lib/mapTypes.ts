@@ -28,6 +28,7 @@ export interface MapLayer {
 
 export interface MapTokenCharacter {
   id: string
+  userId: string
   name: string
   imageUrl: string | null
   afinidade: string
@@ -44,6 +45,7 @@ export interface MapToken {
   visionRadius: number | null
   isVisible: boolean
   size: number
+  sharedWith: string[]
   character: MapTokenCharacter
 }
 
@@ -52,6 +54,7 @@ export interface FogPatch {
   y: number
   radius: number
   polygon?: Array<{ x: number; y: number }>
+  characterId?: string  // undefined = GM-placed (visible to all); set = only visible to that character's owner/sharers
 }
 
 export interface GameMap {
@@ -70,3 +73,17 @@ export interface GameMap {
 }
 
 export type MapTool = 'select' | 'fog' | 'wall' | 'door'
+
+export interface MapSummary {
+  id: string
+  campaignId: string
+  title: string
+  isActive: boolean
+  gridEnabled: boolean
+  gridSize: number
+  defaultVisionRadius: number
+  fogEnabled: boolean
+  createdAt: string
+  layers: Array<{ id: string; name: string; orderIndex: number; imageUrl: string; isActive: boolean }>
+  tokens: MapToken[]
+}

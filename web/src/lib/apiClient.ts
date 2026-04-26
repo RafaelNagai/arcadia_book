@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import type { CampaignChar, CampaignSummary, CampaignDetail } from '@/data/campaignTypes'
+import type { MapSummary } from '@/lib/mapTypes'
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string
@@ -212,7 +213,7 @@ export const api = {
 
   maps: {
     list: (campaignId: string) =>
-      apiFetch<{ maps: unknown[] }>(`/campaigns/${campaignId}/maps`),
+      apiFetch<{ maps: MapSummary[] }>(`/campaigns/${campaignId}/maps`),
 
     getActive: (campaignId: string) =>
       apiFetch<{ map: unknown }>(`/campaigns/${campaignId}/maps/active`),
@@ -291,6 +292,7 @@ export const api = {
       vision_radius?: number | null
       is_visible?: boolean
       size?: number
+      shared_with?: string[]
     }) =>
       apiFetch<{ token: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/tokens/${tokenId}`, {
         method: 'PATCH',

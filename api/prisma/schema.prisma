@@ -193,6 +193,7 @@ model MapToken {
   visionRadius Int?     @map("vision_radius")
   isVisible    Boolean  @default(true) @map("is_visible")
   size         Float    @default(1)
+  sharedWith   Json     @default("[]") @map("shared_with")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 

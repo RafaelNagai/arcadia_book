@@ -83,6 +83,7 @@ interface MapCanvasProps {
   containerWidth: number
   containerHeight: number
   fogEnabled: boolean
+  userId?: string
   myCharacterIds: string[]
   npcCharacterIds: string[]
   dragOverride: { tokenId: string; x: number; y: number } | null
@@ -119,6 +120,7 @@ export function MapCanvas({
   containerWidth,
   containerHeight,
   fogEnabled,
+  userId,
   myCharacterIds,
   npcCharacterIds,
   dragOverride,
@@ -373,7 +375,7 @@ export function MapCanvas({
     .filter(t =>
       t.layerId === currentLayer?.id &&
       !npcCharacterIds.includes(t.characterId) &&
-      (isGm || myCharacterIds.includes(t.characterId)),
+      (isGm || myCharacterIds.includes(t.characterId) || (userId != null && t.sharedWith.includes(userId))),
     )
     .map(t => {
       const pos = dragOverride?.tokenId === t.id
@@ -385,6 +387,16 @@ export function MapCanvas({
   const visionPolygons = fogEnabled
     ? visionCircles.map(c => computeVisibilityPolygon({ x: c.x, y: c.y }, c.radius, walls))
     : []
+
+  // For players, only show fog patches from their own characters or shared ones (not other players' exploration)
+  const accessibleCharIds = new Set([
+    ...myCharacterIds,
+    ...tokens.filter(t => userId != null && t.sharedWith.includes(userId ?? '')).map(t => t.characterId),
+  ])
+  const rawFogPatches = [...(currentLayer?.fogRevealed ?? []), ...localFogPatches]
+  const effectiveFogPatches = isGm
+    ? rawFogPatches
+    : rawFogPatches.filter(p => p.characterId == null || accessibleCharIds.has(p.characterId))
 
   // Wall delete HUD position
   const selectedWall = walls.find(w => w.id === selectedWallId)
@@ -513,7 +525,7 @@ export function MapCanvas({
             panY={position.y}
             scale={scale}
             visionPolygons={visionPolygons}
-            revealedPatches={[...(currentLayer?.fogRevealed ?? []), ...localFogPatches]}
+            revealedPatches={effectiveFogPatches}
           />
         )}
 
