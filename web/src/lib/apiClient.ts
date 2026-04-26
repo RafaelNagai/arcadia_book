@@ -229,14 +229,14 @@ export const api = {
         body: JSON.stringify(data),
       }),
 
-    update: (mapId: string, data: {
+    update: (campaignId: string, mapId: string, data: {
       title?: string
       grid_enabled?: boolean
       grid_size?: number
       vision_unified?: boolean
       default_vision_radius?: number
     }) =>
-      apiFetch<{ map: unknown }>(`/maps/${mapId}`, {
+      apiFetch<{ map: unknown }>(`/campaigns/${campaignId}/maps/${mapId}`, {
         method: 'PUT',
         body: JSON.stringify(data),
       }),

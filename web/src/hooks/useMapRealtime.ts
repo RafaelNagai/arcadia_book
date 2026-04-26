@@ -14,6 +14,7 @@ export type MapBroadcastEvent =
   | { type: 'DOOR_ADD'; door: MapDoor; senderId?: string }
   | { type: 'DOOR_DELETE'; doorId: string; layerId: string; senderId?: string }
   | { type: 'DOOR_TOGGLE'; door: MapDoor; senderId?: string }
+  | { type: 'MAP_SETTINGS_UPDATE'; title: string; gridEnabled: boolean; gridSize: number; defaultVisionRadius: number; visionUnified: boolean; senderId?: string }
 
 export type CampaignMapEvent =
   | { type: 'MAP_ACTIVATED'; map: GameMap }
@@ -33,6 +34,7 @@ interface MapRealtimeHandlers {
   onDoorAdd: (door: MapDoor) => void
   onDoorDelete: (doorId: string, layerId: string) => void
   onDoorToggle: (door: MapDoor) => void
+  onSettingsUpdate: (settings: { title: string; gridEnabled: boolean; gridSize: number; defaultVisionRadius: number; visionUnified: boolean }) => void
 }
 
 export function useMapRealtime(
@@ -93,6 +95,17 @@ export function useMapRealtime(
         const p = payload as MapBroadcastEvent
         if (p.type === 'DOOR_TOGGLE' && p.senderId !== handlersRef.current.selfId)
           handlersRef.current.onDoorToggle(p.door)
+      })
+      .on('broadcast', { event: 'MAP_SETTINGS_UPDATE' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'MAP_SETTINGS_UPDATE' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onSettingsUpdate({
+            title: p.title,
+            gridEnabled: p.gridEnabled,
+            gridSize: p.gridSize,
+            defaultVisionRadius: p.defaultVisionRadius,
+            visionUnified: p.visionUnified,
+          })
       })
       .subscribe()
 

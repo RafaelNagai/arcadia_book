@@ -11,6 +11,10 @@ import { MapToolbar } from './MapToolbar'
 import { MapLayerPanel } from './MapLayerPanel'
 import { MapTokenPanel } from './MapTokenPanel'
 import { MapTokenModal } from './MapTokenModal'
+import { MapSettingsPanel } from './MapSettingsPanel'
+import { MapListPanel } from './MapListPanel'
+
+type MapSummary = Pick<GameMap, 'id' | 'title' | 'isActive'>
 
 const TOKEN_DRAG_THROTTLE_MS = 50
 
@@ -108,6 +112,10 @@ export function MapTab({ campaign }: MapTabProps) {
   const [tool, setTool] = useState<MapTool>('select')
   const [fogEnabled, setFogEnabled] = useState(false)
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [showMapList, setShowMapList] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
+  const [allMaps, setAllMaps] = useState<MapSummary[]>([])
+  const [allMapsLoading, setAllMapsLoading] = useState(false)
   const [panelOpen, setPanelOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerSize, setContainerSize] = useState({ w: 0, h: 0 })
@@ -222,6 +230,10 @@ export function MapTab({ campaign }: MapTabProps) {
           ? { ...l, doors: (l.doors ?? []).map(d => d.id === door.id ? door : d) }
           : l),
       } : prev)
+    }, []),
+
+    onSettingsUpdate: useCallback((settings: { title: string; gridEnabled: boolean; gridSize: number; defaultVisionRadius: number; visionUnified: boolean }) => {
+      setMap(prev => prev ? { ...prev, ...settings } : prev)
     }, []),
   })
 
@@ -512,8 +524,65 @@ export function MapTab({ campaign }: MapTabProps) {
     setMap(newMap)
     setShowCreateModal(false)
     setTokens([])
+    setAllMaps(prev => [...prev.map(m => ({ ...m, isActive: false })), { id: newMap.id, title: newMap.title, isActive: true }])
     broadcastCampaign({ type: 'MAP_ACTIVATED', map: newMap })
   }, [broadcastCampaign])
+
+  // ── Map list ──────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!showMapList || !campaign.isGm) return
+    setAllMapsLoading(true)
+    api.maps.list(campaign.id)
+      .then(res => setAllMaps((res.maps as MapSummary[]) ?? []))
+      .catch(() => {})
+      .finally(() => setAllMapsLoading(false))
+  }, [showMapList, campaign.id, campaign.isGm])
+
+  const handleMapSwitch = useCallback(async (mapId: string) => {
+    try {
+      await api.maps.activate(campaign.id, mapId)
+      const res = await api.maps.getActive(campaign.id)
+      const newMap = res.map as GameMap
+      setMap(newMap)
+      setTokens(newMap.tokens ?? [])
+      setFogEnabled(newMap.fogEnabled)
+      setAllMaps(prev => prev.map(m => ({ ...m, isActive: m.id === mapId })))
+      broadcastCampaign({ type: 'MAP_ACTIVATED', map: newMap })
+    } catch (err) {
+      alert((err as Error).message)
+    }
+  }, [campaign.id, broadcastCampaign])
+
+  const handleMapDelete = useCallback(async (mapId: string) => {
+    if (!confirm('Deletar este mapa permanentemente?')) return
+    const wasActive = map?.id === mapId
+    try {
+      await api.maps.delete(campaign.id, mapId)
+      setAllMaps(prev => prev.filter(m => m.id !== mapId))
+      if (wasActive) {
+        setMap(null)
+        setTokens([])
+        broadcastCampaign({ type: 'MAP_DEACTIVATED' })
+      }
+    } catch (err) {
+      alert((err as Error).message)
+    }
+  }, [campaign.id, map?.id, broadcastCampaign])
+
+  const handleSettingsSave = useCallback((updated: GameMap) => {
+    setMap(prev => prev ? { ...prev, ...updated } : prev)
+    setAllMaps(prev => prev.map(m => m.id === updated.id ? { ...m, title: updated.title } : m))
+    setShowSettings(false)
+    broadcastMap({
+      type: 'MAP_SETTINGS_UPDATE',
+      title: updated.title,
+      gridEnabled: updated.gridEnabled,
+      gridSize: updated.gridSize,
+      defaultVisionRadius: updated.defaultVisionRadius,
+      visionUnified: updated.visionUnified,
+      senderId: user?.id,
+    })
+  }, [broadcastMap, user?.id])
 
   if (loading) {
     return (
@@ -530,17 +599,30 @@ export function MapTab({ campaign }: MapTabProps) {
           Nenhum mapa ativo
         </p>
         {campaign.isGm && (
-          <button
-            onClick={() => setShowCreateModal(true)}
-            style={{
-              padding: '0.65rem 1.5rem', borderRadius: 4,
-              background: 'rgba(200,146,42,0.12)', border: '1px solid rgba(200,146,42,0.35)',
-              color: 'var(--color-arcano)', fontFamily: 'var(--font-ui)',
-              fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer',
-            }}
-          >
-            + Criar mapa
-          </button>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button
+              onClick={() => setShowCreateModal(true)}
+              style={{
+                padding: '0.65rem 1.5rem', borderRadius: 4,
+                background: 'rgba(200,146,42,0.12)', border: '1px solid rgba(200,146,42,0.35)',
+                color: 'var(--color-arcano)', fontFamily: 'var(--font-ui)',
+                fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer',
+              }}
+            >
+              + Criar mapa
+            </button>
+            <button
+              onClick={() => setShowMapList(true)}
+              style={{
+                padding: '0.65rem 1.5rem', borderRadius: 4,
+                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)',
+                color: 'rgba(255,255,255,0.5)', fontFamily: 'var(--font-ui)',
+                fontSize: '0.8rem', cursor: 'pointer',
+              }}
+            >
+              🗺 Ver mapas
+            </button>
+          </div>
         )}
         {!campaign.isGm && (
           <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
@@ -552,6 +634,18 @@ export function MapTab({ campaign }: MapTabProps) {
             campaignId={campaign.id}
             onCreated={handleMapCreated}
             onClose={() => setShowCreateModal(false)}
+          />
+        )}
+        {showMapList && campaign.isGm && (
+          <MapListPanel
+            maps={allMaps}
+            activeMapId={null}
+            loading={allMapsLoading}
+            onSwitch={handleMapSwitch}
+            onDelete={handleMapDelete}
+            onSettings={() => {}}
+            onCreate={() => { setShowMapList(false); setShowCreateModal(true) }}
+            onClose={() => setShowMapList(false)}
           />
         )}
       </div>
@@ -569,6 +663,8 @@ export function MapTab({ campaign }: MapTabProps) {
           fogEnabled={fogEnabled}
           onFogToggle={handleFogToggle}
           onFogReset={handleFogReset}
+          onMapList={() => setShowMapList(true)}
+          onSettings={() => setShowSettings(true)}
         />
       )}
 
@@ -715,6 +811,28 @@ export function MapTab({ campaign }: MapTabProps) {
           campaignId={campaign.id}
           onCreated={handleMapCreated}
           onClose={() => setShowCreateModal(false)}
+        />
+      )}
+
+      {showMapList && campaign.isGm && (
+        <MapListPanel
+          maps={allMaps}
+          activeMapId={map.id}
+          loading={allMapsLoading}
+          onSwitch={handleMapSwitch}
+          onDelete={handleMapDelete}
+          onSettings={() => { setShowMapList(false); setShowSettings(true) }}
+          onCreate={() => { setShowMapList(false); setShowCreateModal(true) }}
+          onClose={() => setShowMapList(false)}
+        />
+      )}
+
+      {showSettings && campaign.isGm && (
+        <MapSettingsPanel
+          campaignId={campaign.id}
+          map={map}
+          onSave={handleSettingsSave}
+          onClose={() => setShowSettings(false)}
         />
       )}
 

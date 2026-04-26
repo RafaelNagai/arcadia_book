@@ -147,6 +147,11 @@ export function MapCanvas({
   const isPanning = useRef(false)
   const lastPan = useRef({ x: 0, y: 0 })
 
+  // Touch support refs
+  const lastPinchDist = useRef<number | null>(null)
+  const isTouchPanning = useRef(false)
+  const lastTouchPos = useRef({ x: 0, y: 0 })
+
   const [wallStart, setWallStart] = useState<{ x: number; y: number } | null>(null)
   const [wallPreview, setWallPreview] = useState<{ x: number; y: number } | null>(null)
   const [selectedWallId, setSelectedWallId] = useState<string | null>(null)
@@ -178,6 +183,9 @@ export function MapCanvas({
     return () => cleanup.forEach(f => f())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layerImageUrlsKey])
+
+  // Reset viewport when the map changes (switching between maps)
+  useEffect(() => { hasFitted.current = false }, [map.id])
 
   // Fit the current layer image to the container once on initial load
   const currentLayerImage = currentLayer ? layerImages[currentLayer.id] ?? null : null
@@ -256,6 +264,55 @@ export function MapCanvas({
   }, [tool, isGm, getWorldPos])
 
   const handleMouseUp = useCallback(() => { isPanning.current = false }, [])
+
+  // ── Touch: pinch-to-zoom + single-finger pan ──────────────────────────────
+  const handleTouchStart = useCallback((e: Konva.KonvaEventObject<TouchEvent>) => {
+    const touches = e.evt.touches
+    if (touches.length === 2) {
+      e.evt.preventDefault()
+      const t1 = touches[0], t2 = touches[1]
+      lastPinchDist.current = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY)
+      isTouchPanning.current = false
+    } else if (touches.length === 1 && tool === 'select') {
+      if (!isOnDraggable(e.target)) {
+        e.evt.preventDefault()
+        isTouchPanning.current = true
+        lastTouchPos.current = { x: touches[0].clientX, y: touches[0].clientY }
+      }
+    }
+  }, [tool])
+
+  const handleTouchMove = useCallback((e: Konva.KonvaEventObject<TouchEvent>) => {
+    const touches = e.evt.touches
+    if (touches.length === 2) {
+      e.evt.preventDefault()
+      const t1 = touches[0], t2 = touches[1]
+      const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY)
+      const cx = (t1.clientX + t2.clientX) / 2
+      const cy = (t1.clientY + t2.clientY) / 2
+      if (lastPinchDist.current) {
+        const { scale: oldScale, position: pos } = stateRef.current
+        const factor = dist / lastPinchDist.current
+        const newScale = Math.max(0.05, Math.min(8, oldScale * factor))
+        const worldX = (cx - pos.x) / oldScale
+        const worldY = (cy - pos.y) / oldScale
+        setScale(newScale)
+        setPosition({ x: cx - worldX * newScale, y: cy - worldY * newScale })
+      }
+      lastPinchDist.current = dist
+    } else if (touches.length === 1 && isTouchPanning.current) {
+      e.evt.preventDefault()
+      const dx = touches[0].clientX - lastTouchPos.current.x
+      const dy = touches[0].clientY - lastTouchPos.current.y
+      lastTouchPos.current = { x: touches[0].clientX, y: touches[0].clientY }
+      setPosition(prev => ({ x: prev.x + dx, y: prev.y + dy }))
+    }
+  }, [])
+
+  const handleTouchEnd = useCallback(() => {
+    isTouchPanning.current = false
+    lastPinchDist.current = null
+  }, [])
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -360,8 +417,11 @@ export function MapCanvas({
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         onClick={handleClick}
-        style={{ background: '#04060C', cursor: cursorStyle }}
+        style={{ background: '#04060C', cursor: cursorStyle, touchAction: 'none' }}
       >
         {/*
          * Per-layer rendering bottom → top.
@@ -396,10 +456,10 @@ export function MapCanvas({
                   {isCurrent && map.gridEnabled && img && (
                     <>
                       {Array.from({ length: Math.ceil(img.naturalWidth / map.gridSize) + 1 }, (_, i) => (
-                        <Line key={`vl${i}`} points={[i * map.gridSize, 0, i * map.gridSize, img.naturalHeight]} stroke="rgba(255,255,255,0.12)" strokeWidth={1 / scale} />
+                        <Line key={`vl${i}`} points={[i * map.gridSize, 0, i * map.gridSize, img.naturalHeight]} stroke="rgba(255,255,255,0.15)" strokeWidth={1 / scale} />
                       ))}
                       {Array.from({ length: Math.ceil(img.naturalHeight / map.gridSize) + 1 }, (_, i) => (
-                        <Line key={`hl${i}`} points={[0, i * map.gridSize, img.naturalWidth, i * map.gridSize]} stroke="rgba(255,255,255,0.12)" strokeWidth={1 / scale} />
+                        <Line key={`hl${i}`} points={[0, i * map.gridSize, img.naturalWidth, i * map.gridSize]} stroke="rgba(255,255,255,0.15)" strokeWidth={1 / scale} />
                       ))}
                     </>
                   )}
