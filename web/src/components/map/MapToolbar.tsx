@@ -6,7 +6,7 @@ interface MapToolbarProps {
   fogEnabled: boolean
   onFogToggle: () => void
   onFogReset: () => void
-  onMapList: () => void
+  onBackToGallery: () => void
   onSettings: () => void
 }
 
@@ -17,7 +17,7 @@ const TOOLS: { id: MapTool; label: string; icon: string }[] = [
   { id: 'fog',    label: 'Revelar névoa', icon: '👁' },
 ]
 
-export function MapToolbar({ tool, onToolChange, fogEnabled, onFogToggle, onFogReset, onMapList, onSettings }: MapToolbarProps) {
+export function MapToolbar({ tool, onToolChange, fogEnabled, onFogToggle, onFogReset, onBackToGallery, onSettings }: MapToolbarProps) {
   return (
     <div style={{
       display: 'flex', alignItems: 'center', gap: '0.5rem',
@@ -109,8 +109,8 @@ export function MapToolbar({ tool, onToolChange, fogEnabled, onFogToggle, onFogR
         </button>
 
         <button
-          title="Lista de mapas"
-          onClick={onMapList}
+          title="Voltar à galeria de mapas"
+          onClick={onBackToGallery}
           style={{
             display: 'flex', alignItems: 'center', gap: '0.4rem',
             padding: '0.35rem 0.65rem', borderRadius: 4,
@@ -121,7 +121,7 @@ export function MapToolbar({ tool, onToolChange, fogEnabled, onFogToggle, onFogR
             cursor: 'pointer',
           }}
         >
-          <span style={{ fontSize: '0.9rem' }}>🗺</span>
+          <span style={{ fontSize: '0.85rem' }}>←</span>
           <span className="hidden md:inline">Mapas</span>
         </button>
       </div>

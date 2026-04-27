@@ -41,6 +41,13 @@ export class MapsService {
     return this.repo.findActiveMap(campaignId)
   }
 
+  async getById(campaignId: string, mapId: string, userId: string) {
+    await this.assertCampaignAccess(campaignId, userId)
+    const map = await this.repo.findMapFull(mapId)
+    if (!map || map.campaignId !== campaignId) throw new NotFoundError('Mapa não encontrado')
+    return map
+  }
+
   async create(campaignId: string, userId: string, input: CreateMapInput) {
     await this.assertGm(campaignId, userId)
     return this.repo.createMap(campaignId, {

@@ -39,6 +39,15 @@ export async function mapsController(fastify: FastifyInstance) {
     return reply.send({ map })
   })
 
+  // Get specific map by id (accessible to campaign members)
+  fastify.get('/:id', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { campaignId } = req.params as { campaignId: string }
+    const { id } = UUIDParamSchema.parse(req.params)
+    const map = await svc.getById(campaignId, id, req.user!.id)
+    return reply.send({ map })
+  })
+
   // Create map
   fastify.post('/', async (req, reply) => {
     await fastify.authenticate(req)

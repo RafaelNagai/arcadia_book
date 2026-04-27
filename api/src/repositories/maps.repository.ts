@@ -21,6 +21,25 @@ export class MapsRepository {
     })
   }
 
+  findMapFull(id: string) {
+    return this.db.map.findUnique({
+      where: { id },
+      include: {
+        layers: {
+          orderBy: { orderIndex: 'asc' },
+          include: {
+            walls: { orderBy: { createdAt: 'asc' } },
+            doors: { orderBy: { createdAt: 'asc' } },
+          },
+        },
+        tokens: {
+          include: { character: { select: TOKEN_CHAR_SELECT } },
+          orderBy: { createdAt: 'asc' },
+        },
+      },
+    })
+  }
+
   listMaps(campaignId: string) {
     return this.db.map.findMany({
       where: { campaignId },

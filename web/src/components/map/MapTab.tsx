@@ -12,7 +12,7 @@ import { MapLayerPanel } from './MapLayerPanel'
 import { MapTokenPanel } from './MapTokenPanel'
 import { MapTokenModal } from './MapTokenModal'
 import { MapSettingsPanel } from './MapSettingsPanel'
-import { MapListPanel } from './MapListPanel'
+import { MapGallery } from './MapGallery'
 
 const TOKEN_DRAG_THROTTLE_MS = 50
 
@@ -110,10 +110,10 @@ export function MapTab({ campaign }: MapTabProps) {
   const [tool, setTool] = useState<MapTool>('select')
   const [fogEnabled, setFogEnabled] = useState(false)
   const [showCreateModal, setShowCreateModal] = useState(false)
-  const [showMapList, setShowMapList] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [allMaps, setAllMaps] = useState<MapSummary[]>([])
   const [allMapsLoading, setAllMapsLoading] = useState(false)
+  const [view, setView] = useState<'gallery' | 'canvas'>('gallery')
   const [panelOpen, setPanelOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerSize, setContainerSize] = useState({ w: 0, h: 0 })
@@ -542,17 +542,17 @@ export function MapTab({ campaign }: MapTabProps) {
     setTokens([])
     setAllMaps(prev => [...prev.map(m => ({ ...m, isActive: false })), { ...newMap, tokens: [], isActive: true }])
     broadcastCampaign({ type: 'MAP_ACTIVATED', map: newMap })
+    setView('canvas')
   }, [broadcastCampaign])
 
-  // ── Map list ──────────────────────────────────────────────────────────────
+  // ── Map list — load once on mount ─────────────────────────────────────────
   useEffect(() => {
-    if (!showMapList || !campaign.isGm) return
     setAllMapsLoading(true)
     api.maps.list(campaign.id)
       .then(res => setAllMaps(res.maps ?? []))
       .catch(() => {})
       .finally(() => setAllMapsLoading(false))
-  }, [showMapList, campaign.id, campaign.isGm])
+  }, [campaign.id])
 
   const handleMapSwitch = useCallback(async (mapId: string) => {
     try {
@@ -568,6 +568,34 @@ export function MapTab({ campaign }: MapTabProps) {
       alert((err as Error).message)
     }
   }, [campaign.id, broadcastCampaign])
+
+  // Gallery → canvas: GM activates the clicked map; player loads that specific map
+  const handleGalleryEnter = useCallback(async (mapId: string) => {
+    if (campaign.isGm) {
+      const target = allMaps.find(m => m.id === mapId)
+      if (target && !target.isActive) {
+        await handleMapSwitch(mapId)
+      } else if (!map || map.id !== mapId) {
+        const res = await api.maps.getActive(campaign.id)
+        const m = res.map as GameMap
+        setMap(m)
+        setTokens(m?.tokens ?? [])
+        if (m) setFogEnabled(m.fogEnabled)
+      }
+    } else {
+      // Player: load the specific map they clicked (may differ from the active map)
+      if (!map || map.id !== mapId) {
+        try {
+          const res = await api.maps.get(campaign.id, mapId)
+          const m = res.map as GameMap
+          setMap(m)
+          setTokens(m?.tokens ?? [])
+          if (m) setFogEnabled(m.fogEnabled)
+        } catch { /* stay on current map */ }
+      }
+    }
+    setView('canvas')
+  }, [campaign.isGm, campaign.id, allMaps, map, handleMapSwitch])
 
   const handleMapDelete = useCallback(async (mapId: string) => {
     if (!confirm('Deletar este mapa permanentemente?')) return
@@ -608,43 +636,19 @@ export function MapTab({ campaign }: MapTabProps) {
     )
   }
 
-  if (!map) {
+  // ── Gallery view ────────────────────────────────────────────────────────────
+  if (view === 'gallery') {
     return (
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', background: '#04060C' }}>
-        <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 700, color: 'rgba(255,255,255,0.2)' }}>
-          Nenhum mapa ativo
-        </p>
-        {campaign.isGm && (
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button
-              onClick={() => setShowCreateModal(true)}
-              style={{
-                padding: '0.65rem 1.5rem', borderRadius: 4,
-                background: 'rgba(200,146,42,0.12)', border: '1px solid rgba(200,146,42,0.35)',
-                color: 'var(--color-arcano)', fontFamily: 'var(--font-ui)',
-                fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer',
-              }}
-            >
-              + Criar mapa
-            </button>
-            <button
-              onClick={() => setShowMapList(true)}
-              style={{
-                padding: '0.65rem 1.5rem', borderRadius: 4,
-                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)',
-                color: 'rgba(255,255,255,0.5)', fontFamily: 'var(--font-ui)',
-                fontSize: '0.8rem', cursor: 'pointer',
-              }}
-            >
-              🗺 Ver mapas
-            </button>
-          </div>
-        )}
-        {!campaign.isGm && (
-          <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
-            O mestre não ativou um mapa ainda.
-          </p>
-        )}
+      <>
+        <MapGallery
+          campaign={campaign}
+          userId={user?.id}
+          maps={allMaps}
+          loading={allMapsLoading}
+          onEnterMap={handleGalleryEnter}
+          onCreate={() => setShowCreateModal(true)}
+          onDelete={handleMapDelete}
+        />
         {showCreateModal && (
           <CreateMapModal
             campaignId={campaign.id}
@@ -652,18 +656,28 @@ export function MapTab({ campaign }: MapTabProps) {
             onClose={() => setShowCreateModal(false)}
           />
         )}
-        {showMapList && campaign.isGm && (
-          <MapListPanel
-            maps={allMaps}
-            activeMapId={null}
-            loading={allMapsLoading}
-            onSwitch={handleMapSwitch}
-            onDelete={handleMapDelete}
-            onSettings={() => {}}
-            onCreate={() => { setShowMapList(false); setShowCreateModal(true) }}
-            onClose={() => setShowMapList(false)}
-          />
-        )}
+      </>
+    )
+  }
+
+  // ── Canvas view ─────────────────────────────────────────────────────────────
+  if (!map) {
+    return (
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', background: '#04060C' }}>
+        <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 700, color: 'rgba(255,255,255,0.2)' }}>
+          Nenhum mapa ativo
+        </p>
+        <button
+          onClick={() => setView('gallery')}
+          style={{
+            padding: '0.5rem 1.25rem', borderRadius: 4,
+            background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)',
+            color: 'rgba(255,255,255,0.5)', fontFamily: 'var(--font-ui)',
+            fontSize: '0.8rem', cursor: 'pointer',
+          }}
+        >
+          ← Voltar à galeria
+        </button>
       </div>
     )
   }
@@ -672,16 +686,44 @@ export function MapTab({ campaign }: MapTabProps) {
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#04060C' }}>
-      {campaign.isGm && (
+      {campaign.isGm ? (
         <MapToolbar
           tool={tool}
           onToolChange={setTool}
           fogEnabled={fogEnabled}
           onFogToggle={handleFogToggle}
           onFogReset={handleFogReset}
-          onMapList={() => setShowMapList(true)}
+          onBackToGallery={() => setView('gallery')}
           onSettings={() => setShowSettings(true)}
         />
+      ) : (
+        <div style={{
+          display: 'flex', alignItems: 'center',
+          padding: '0.4rem 0.75rem',
+          background: 'rgba(4,6,12,0.92)',
+          borderBottom: '1px solid var(--color-border)',
+        }}>
+          <button
+            onClick={() => setView('gallery')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '0.4rem',
+              padding: '0.3rem 0.65rem', borderRadius: 4,
+              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+              color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)',
+              fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer',
+            }}
+          >
+            <span>←</span>
+            <span>Mapas</span>
+          </button>
+          <span style={{
+            marginLeft: '0.75rem',
+            fontFamily: 'var(--font-ui)', fontSize: '0.75rem',
+            color: 'rgba(255,255,255,0.25)',
+          }}>
+            {map.title}
+          </span>
+        </div>
       )}
 
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
@@ -828,19 +870,6 @@ export function MapTab({ campaign }: MapTabProps) {
           campaignId={campaign.id}
           onCreated={handleMapCreated}
           onClose={() => setShowCreateModal(false)}
-        />
-      )}
-
-      {showMapList && campaign.isGm && (
-        <MapListPanel
-          maps={allMaps}
-          activeMapId={map.id}
-          loading={allMapsLoading}
-          onSwitch={handleMapSwitch}
-          onDelete={handleMapDelete}
-          onSettings={() => { setShowMapList(false); setShowSettings(true) }}
-          onCreate={() => { setShowMapList(false); setShowCreateModal(true) }}
-          onClose={() => setShowMapList(false)}
         />
       )}
 

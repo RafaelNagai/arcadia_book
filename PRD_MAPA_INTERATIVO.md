@@ -1,7 +1,7 @@
 # PRD — Mapa Interativo de Campanha (Arcádia)
 
-> **Status:** Em desenvolvimento — Fases 1–5 parcialmente concluídas + Vision Sharing + Map Gallery pendentes
-> **Versão:** 1.8
+> **Status:** Fase 6 concluída — Vision Sharing + Map Gallery implementados
+> **Versão:** 1.9
 > **Data:** 2026-04-26
 > **Escopo:** Feature de mapa tático com fog of war para campanhas do sistema Arcádia
 
@@ -17,7 +17,8 @@
 | **Multi-Floor (Fases de Andar)** | ✅ Concluído | Layers empilhadas, reordenação, Z-order correto |
 | **Portas (Fase 4.5)** | ✅ Concluída | Ferramenta de porta, bloqueio LOS, abrir/fechar |
 | **Fase 5 — Grid e Mobile** | ✅ Concluída | Grid configurável, pinch-to-zoom, map gallery básica, config de mapa |
-| **Fase 6 — Vision Sharing + Map Gallery** | 🔨 Em andamento | Compartilhamento de visão por token, galeria de mapas com thumbnail |
+| **Fase 6a — Vision Sharing** | ✅ Concluída | `sharedWith` por token, fog isolado por personagem, token único no mapa |
+| **Fase 6b — Map Gallery** | ✅ Concluída | Galeria como tela principal, navegação GM↔jogador, back button |
 
 ---
 
@@ -237,10 +238,7 @@ npm run dev   # http://localhost:5173
 5. Mover token revela fog ao longo do caminho (live durante drag e ao soltar)
 
 ### O que ainda NÃO funciona
-- Grid overlay configurável (Fase 5)
-- Suporte a touch/pinch mobile (Fase 5)
-- Múltiplos mapas por campanha na UI (backend suporta; UI só mostra o ativo)
-- `MapSettingsPanel` para grid/visão unida inline
+- Nenhum requisito pendente nas Fases 1–6. Itens em aberto estão na seção "Perguntas em Aberto".
 
 ---
 
@@ -305,8 +303,8 @@ Aba **Mapa** na página de campanha com mapas táticos multi-andar (layers), tok
 
 ### 3.4 Grid
 
-- [ ] **RF-12** — Grid overlay configurável *(backend pronto; UI pendente)*
-- [ ] **RF-13** — Tamanho da célula configurável *(backend pronto; UI pendente)*
+- [x] **RF-12** — Grid overlay configurável
+- [x] **RF-13** — Tamanho da célula configurável (16–256px, slider em `MapSettingsPanel`)
 
 ### 3.5 Fog of War
 
@@ -342,20 +340,20 @@ Aba **Mapa** na página de campanha com mapas táticos multi-andar (layers), tok
 
 ### 3.7 Compartilhamento de Visão por Token
 
-- [ ] **RF-V-01** — Por padrão cada jogador enxerga apenas a visão dos seus próprios tokens
-- [ ] **RF-V-02** — GM pode conceder visão de um token específico a qualquer outro usuário da campanha
-- [ ] **RF-V-03** — Concessão de visão é configurada no modal do token: lista de usuários da campanha com toggle por usuário
-- [ ] **RF-V-04** — Jogador com visão concedida enxerga através do token como se fosse o seu; a layer ativa é determinada pelo token mais alto onde ele tem token próprio, com fallback para tokens compartilhados
-- [ ] **RF-V-05** — `sharedWith: string[]` (array de userId) persiste em `MapToken`; atualizado via `PATCH token/:tid`
+- [x] **RF-V-01** — Por padrão cada jogador enxerga apenas a visão dos seus próprios tokens
+- [x] **RF-V-02** — GM pode conceder visão de um token específico a qualquer outro usuário da campanha
+- [x] **RF-V-03** — Concessão de visão é configurada no modal do token: lista de usuários da campanha com toggle por usuário
+- [x] **RF-V-04** — Jogador com visão concedida enxerga através do token como se fosse o seu; a layer ativa é determinada pelo token mais alto onde ele tem token próprio, com fallback para tokens compartilhados
+- [x] **RF-V-05** — `sharedWith: string[]` (array de userId) persiste em `MapToken`; atualizado via `PATCH token/:tid`
 
 ### 3.8 Galeria de Mapas
 
-- [ ] **RF-G-01** — "Mapas" no sidebar abre uma galeria de cards (uma tela, não modal)
-- [ ] **RF-G-02** — Cada card exibe: thumbnail da primeira layer (ordenada por `orderIndex`), título do mapa, avatares dos tokens presentes, badge "Ao vivo" se `isActive`
-- [ ] **RF-G-03** — GM vê todos os mapas; pode criar novo (card `+`), abrir e deletar cada mapa
-- [ ] **RF-G-04** — Jogador vê apenas mapas onde tem ao menos um token próprio ou compartilhado
-- [ ] **RF-G-05** — Clicar num card abre o canvas para aquele mapa (ativa-o se não estiver ativo)
-- [ ] **RF-G-06** — Botão "← Mapas" no canvas retorna à galeria sem desativar o mapa
+- [x] **RF-G-01** — Galeria de cards como tela principal da aba Mapa (não modal); toolbar mostra "← Mapas" para voltar
+- [x] **RF-G-02** — Cada card exibe: thumbnail da primeira layer, título, avatares dos tokens, badge "AO VIVO"
+- [x] **RF-G-03** — GM vê todos os mapas; pode criar novo, ativar e deletar
+- [x] **RF-G-04** — Jogador vê apenas mapas onde tem ao menos um token próprio ou compartilhado
+- [x] **RF-G-05** — Clicar num card no GM ativa o mapa e abre o canvas; jogador vai direto ao canvas do mapa ativo
+- [x] **RF-G-06** — Botão "← Mapas" na toolbar retorna à galeria sem desativar o mapa
 
 ### 3.9 Visualização do Jogador
 
@@ -468,10 +466,13 @@ web/src/
 │   ├── MapFogLayer.tsx     # Fog com destination-out e polígonos LOS; opacidade diferente por papel
 │   ├── MapWallLayer.tsx    # Paredes + endpoint circles interativos
 │   ├── MapDoorLayer.tsx    # Portas (GM-only) + endpoint circles + preview + toggle visual
-│   ├── MapToolbar.tsx      # Selecionar | Parede | Porta | Fog + toggle + reset
+│   ├── MapToolbar.tsx      # Selecionar | Parede | Porta | Fog + toggle + reset + ← Mapas
 │   ├── MapLayerPanel.tsx   # CRUD de layers + dnd-kit sortable + seleção de andar
 │   ├── MapTokenPanel.tsx   # Tokens agrupados por andar; drag-to-place; pré-config ⚙
-│   └── MapTokenModal.tsx   # Modal genérico: raio de visão + link ficha
+│   ├── MapTokenModal.tsx   # Modal genérico: raio de visão + compartilhamento + link ficha
+│   ├── MapGallery.tsx      # [Fase 6b] Tela de galeria de mapas (GM e jogador)
+│   ├── MapSettingsPanel.tsx # Modal de configurações: título, grid, raio de visão
+│   └── MapListPanel.tsx    # Modal de listagem de mapas (GM only, acesso via toolbar)
 ├── hooks/
 │   └── useMapRealtime.ts   # useMapRealtime + useCampaignMapChannel; handlers de porta
 └── lib/
@@ -673,18 +674,23 @@ POST   /upload/character-image                                  → upload foto 
 - `MapListPanel` modal básica para troca de mapa
 - Broadcast `MAP_SETTINGS_UPDATE` para sincronizar configurações
 
-### Fase 6 — Vision Sharing + Map Gallery 🔨
+### Fase 6a — Vision Sharing ✅
 
-- [ ] `sharedWith Json @default("[]")` em `MapToken` — persiste userId[] de quem tem visão compartilhada
-- [ ] `MapTokenModal.tsx`: seção "Compartilhar visão" com um botão toggle por usuário da campanha
-- [ ] `MapGallery.tsx`: galeria de cards como landing page da aba Mapa
-  - Card: thumbnail da primeira layer, título, avatares dos tokens, badge "Ao vivo"
-  - GM: todos os mapas + criar novo + deletar
-  - Jogador: apenas mapas com token próprio ou compartilhado
-- [ ] Navegação: galeria → canvas (ao clicar card) → galeria (botão ←)
-- [ ] `visionCircles` no `MapCanvas` inclui tokens de outros users compartilhados com o jogador atual
-- [ ] `effectiveCurrentLayerId` considera tokens compartilhados no fallback
-- [ ] `visionUnified` removido de `MapSettingsPanel` (mantido no DB como campo legado)
+- [x] `sharedWith Json @default("[]")` em `MapToken` — persiste userId[] de quem tem visão compartilhada
+- [x] `MapTokenModal.tsx`: seção "Compartilhar visão" com toggle por usuário da campanha
+- [x] `visionCircles` no `MapCanvas` inclui tokens onde `sharedWith.includes(userId)`
+- [x] `effectiveCurrentLayerId` considera tokens compartilhados no fallback
+- [x] `visionUnified` removido de `MapSettingsPanel` (mantido no DB como campo legado)
+- [x] Fog isolado por personagem: `FogPatch.characterId?` — patches sem id = GM (visível a todos); com id = apenas dono/compartilhado
+- [x] Token único no mapa: `createToken` evita o personagem anterior antes de criar; retorna `removedTokenId`
+
+### Fase 6b — Map Gallery 🔨
+
+- [ ] `MapGallery.tsx`: tela principal da aba Mapa (substitui a landing de "nenhum mapa ativo")
+  - Grid de cards: thumbnail, título, avatares dos tokens, badge "Ativo"
+  - GM: todos os mapas + card "+ Novo mapa" + deletar
+  - Jogador: apenas mapas onde tem token próprio ou compartilhado
+- [ ] Navegação: galeria → canvas (clicar card) → galeria (botão "← Mapas" na toolbar)
 
 ---
 

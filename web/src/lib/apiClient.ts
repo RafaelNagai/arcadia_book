@@ -218,6 +218,9 @@ export const api = {
     getActive: (campaignId: string) =>
       apiFetch<{ map: unknown }>(`/campaigns/${campaignId}/maps/active`),
 
+    get: (campaignId: string, mapId: string) =>
+      apiFetch<{ map: unknown }>(`/campaigns/${campaignId}/maps/${mapId}`),
+
     create: (campaignId: string, data: {
       title: string
       grid_enabled?: boolean
