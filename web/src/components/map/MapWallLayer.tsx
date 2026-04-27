@@ -9,6 +9,7 @@ interface MapWallLayerProps {
   wallStart: { x: number; y: number } | null
   previewPoint: { x: number; y: number } | null
   selectedWallId: string | null
+  passthrough?: boolean
   onWallSelect: (wallId: string) => void
   /** Called when user clicks an endpoint; receives the point and which tool is active */
   onEndpointClick?: (point: { x: number; y: number }) => void
@@ -22,6 +23,7 @@ export function MapWallLayer({
   wallStart,
   previewPoint,
   selectedWallId,
+  passthrough = false,
   onWallSelect,
   onEndpointClick,
 }: MapWallLayerProps) {
@@ -31,7 +33,7 @@ export function MapWallLayer({
     : []
 
   return (
-    <Layer x={panX} y={panY} scaleX={scale} scaleY={scale}>
+    <Layer x={panX} y={panY} scaleX={scale} scaleY={scale} listening={passthrough ? false : undefined}>
       {/* Saved walls — click to select */}
       {walls.map(wall =>
         wall.points.length >= 2 ? (

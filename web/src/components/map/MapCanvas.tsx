@@ -640,6 +640,7 @@ export function MapCanvas({
             wallStart={wallStart}
             previewPoint={tool === 'wall' ? wallPreview : null}
             selectedWallId={selectedWallId}
+            passthrough={tool === 'ruler' || tool === 'circle'}
             onWallSelect={id => { setSelectedWallId(id); setSelectedDoorId(null) }}
             onEndpointClick={handleWallEndpointClick}
           />

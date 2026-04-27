@@ -32,7 +32,7 @@ export function MapDoorLayer({
     : []
 
   return (
-    <Layer x={panX} y={panY} scaleX={scale} scaleY={scale}>
+    <Layer x={panX} y={panY} scaleX={scale} scaleY={scale} listening={tool === 'ruler' || tool === 'circle' ? false : undefined}>
       {doors.map(door =>
         door.points.length === 2 ? (
           <Line

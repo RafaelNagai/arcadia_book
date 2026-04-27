@@ -143,7 +143,7 @@ export function MapTokenLayer({
     <Layer
       x={panX} y={panY} scaleX={scale} scaleY={scale}
       opacity={readOnly ? 0.45 : 1}
-      listening={readOnly ? false : undefined}
+      listening={readOnly || tool === 'ruler' || tool === 'circle' ? false : undefined}
     >
       {visibleTokens.map(token => (
         <TokenShape
