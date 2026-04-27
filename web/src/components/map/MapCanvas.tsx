@@ -4,6 +4,7 @@ import type Konva from 'konva'
 import type { MapLayer, MapToken, GameMap, MapTool, FogPatch, Measurement } from '@/lib/mapTypes'
 import { measureColor } from '@/lib/mapTypes'
 import { computeVisibilityPolygon } from '@/lib/fogOfWar'
+import { pointsToSegments } from '@/lib/wallCollision'
 import { MapTokenLayer } from './MapTokenLayer'
 import { MapFogLayer } from './MapFogLayer'
 import { MapWallLayer } from './MapWallLayer'
@@ -463,6 +464,11 @@ export function MapCanvas({
     ...(currentLayer?.walls ?? []),
     ...closedDoors.map(d => ({ id: d.id, mapId: d.mapId, layerId: d.layerId, points: d.points })),
   ]
+  // Segments used for token collision (all walls + closed doors of current layer)
+  const blockingWalls = [
+    ...(currentLayer?.walls ?? []).flatMap(w => pointsToSegments(w.points)),
+    ...closedDoors.flatMap(d => pointsToSegments(d.points)),
+  ]
   const visionCircles: FogPatch[] = tokens
     .filter(t =>
       t.layerId === currentLayer?.id &&
@@ -595,6 +601,7 @@ export function MapCanvas({
                   visionPolygons={visionPolygons}
                   myCharacterIds={myCharacterIds}
                   allowPlayerTokenMove={allowPlayerTokenMove}
+                  blockingWalls={blockingWalls}
                   onTokenDrag={onTokenDrag}
                   onTokenMove={onTokenMove}
                   onTokenClick={setSelectedTokenId}

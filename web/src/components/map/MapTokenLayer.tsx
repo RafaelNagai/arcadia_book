@@ -1,17 +1,20 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Layer, Circle, Image as KonvaImage, Text, Group, Ring } from 'react-konva'
 import type Konva from 'konva'
 import type { MapToken, MapTool } from '@/lib/mapTypes'
 import type { WallPoint } from '@/lib/fogOfWar'
 import { isInsideAnyPolygon } from '@/lib/fogOfWar'
 import { getAccent } from '@/components/character/types'
+import { constrainToWalls } from '@/lib/wallCollision'
+import type { WallSegment } from '@/lib/wallCollision'
 
 const TOKEN_BASE_RADIUS = 28
 
-function TokenShape({ token, isDraggable, scale, onDrag, onDragEnd, onTokenClick }: {
+function TokenShape({ token, isDraggable, scale, walls, onDrag, onDragEnd, onTokenClick }: {
   token: MapToken
   isDraggable: boolean
   scale: number
+  walls: WallSegment[]
   onDrag?: (id: string, x: number, y: number) => void
   onDragEnd?: (id: string, x: number, y: number) => void
   onTokenClick?: (id: string) => void
@@ -19,6 +22,24 @@ function TokenShape({ token, isDraggable, scale, onDrag, onDragEnd, onTokenClick
   const accent = getAccent(token.character.afinidade)
   const [img, setImg] = useState<HTMLImageElement | null>(null)
   const groupRef = useRef<Konva.Group>(null)
+  const lastValidPos = useRef({ x: token.x, y: token.y })
+
+  // Keep mutable refs so the stable callbacks below don't capture stale values
+  const wallsRef = useRef(walls)
+  wallsRef.current = walls
+  const radiusRef = useRef(TOKEN_BASE_RADIUS * (token.size ?? 1))
+  radiusRef.current = TOKEN_BASE_RADIUS * (token.size ?? 1)
+  const tokenIdRef = useRef(token.id)
+  tokenIdRef.current = token.id
+  const onDragRef = useRef(onDrag)
+  onDragRef.current = onDrag
+  const onDragEndRef = useRef(onDragEnd)
+  onDragEndRef.current = onDragEnd
+
+  // Sync lastValidPos when position is updated externally (end of drag, remote move)
+  useEffect(() => {
+    lastValidPos.current = { x: token.x, y: token.y }
+  }, [token.x, token.y])
 
   useEffect(() => {
     if (!token.character.imageUrl) return
@@ -31,14 +52,44 @@ function TokenShape({ token, isDraggable, scale, onDrag, onDragEnd, onTokenClick
 
   const r = TOKEN_BASE_RADIUS * (token.size ?? 1)
 
+  // Stable callbacks — empty dep array so Konva never re-binds during drag
+  const handleDragMove = useCallback((e: Konva.KonvaEventObject<DragEvent>) => {
+    const raw = { x: e.target.x(), y: e.target.y() }
+    const w = wallsRef.current
+    if (w.length > 0) {
+      const constrained = constrainToWalls(lastValidPos.current, raw, w, radiusRef.current)
+      e.target.x(constrained.x)
+      e.target.y(constrained.y)
+      lastValidPos.current = constrained
+      onDragRef.current?.(tokenIdRef.current, constrained.x, constrained.y)
+    } else {
+      lastValidPos.current = raw
+      onDragRef.current?.(tokenIdRef.current, raw.x, raw.y)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleDragEnd = useCallback((e: Konva.KonvaEventObject<DragEvent>) => {
+    const w = wallsRef.current
+    if (w.length > 0) {
+      // Snap to constrained position
+      const pos = lastValidPos.current
+      e.target.x(pos.x)
+      e.target.y(pos.y)
+      onDragEndRef.current?.(tokenIdRef.current, pos.x, pos.y)
+    } else {
+      // GM: use the actual released position directly
+      onDragEndRef.current?.(tokenIdRef.current, e.target.x(), e.target.y())
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Group
       ref={groupRef}
       x={token.x}
       y={token.y}
       draggable={isDraggable}
-      onDragMove={e => onDrag?.(token.id, e.target.x(), e.target.y())}
-      onDragEnd={e => onDragEnd?.(token.id, e.target.x(), e.target.y())}
+      onDragMove={handleDragMove}
+      onDragEnd={handleDragEnd}
       onClick={(e) => { e.cancelBubble = true; onTokenClick?.(token.id) }}
       opacity={token.isVisible ? 1 : 0.4}
     >
@@ -99,6 +150,8 @@ interface MapTokenLayerProps {
   visionPolygons: WallPoint[][]
   myCharacterIds: string[]
   allowPlayerTokenMove?: boolean
+  /** Wall + closed-door segments used for collision; GM tokens bypass this. */
+  blockingWalls?: WallSegment[]
   onTokenDrag?: (tokenId: string, x: number, y: number) => void
   onTokenMove?: (tokenId: string, x: number, y: number) => void
   onTokenClick?: (tokenId: string) => void
@@ -118,6 +171,7 @@ export function MapTokenLayer({
   visionPolygons,
   myCharacterIds,
   allowPlayerTokenMove = true,
+  blockingWalls = [],
   onTokenDrag,
   onTokenMove,
   onTokenClick,
@@ -151,6 +205,7 @@ export function MapTokenLayer({
           token={token}
           isDraggable={canDrag(token)}
           scale={scale}
+          walls={readOnly || isGm ? [] : blockingWalls}
           onDrag={readOnly ? undefined : onTokenDrag}
           onDragEnd={readOnly ? undefined : onTokenMove}
           onTokenClick={readOnly ? undefined : onTokenClick}
