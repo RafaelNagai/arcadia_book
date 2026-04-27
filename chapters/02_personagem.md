@@ -273,10 +273,10 @@ Todo personagem carrega consigo um conjunto de **slots de inventário** — espa
 
 | Fonte | Slots Ganhos |
 |---|---|
-| Base | 3 slots |
+| Base | 2 slots |
 | Por ponto de Físico | +1 slot |
 
-> **Exemplo:** Um personagem com Físico 3 possui 6 slots de inventário (3 base + 3 do Físico).
+> **Exemplo:** Um personagem com Físico 3 possui 5 slots de inventário (2 base + 3 do Físico).
 
 Cada slot comporta um único item, independentemente do seu peso.
 
@@ -284,16 +284,16 @@ Cada slot comporta um único item, independentemente do seu peso.
 
 O peso total que um personagem consegue carregar sem penalidade é determinado pelo atributo **Físico**:
 
-> **Limite de Carga = 15 + (Físico × 5)**
+> **Limite de Carga = 12 + (Físico × 3)**
 
 | Físico | Slots | Limite de Carga |
 |---|---|---|
-| 0 | 3 | 15 |
-| 1 | 4 | 20 |
-| 2 | 5 | 25 |
-| 3 | 6 | 30 |
-| 4 | 7 | 35 |
-| 5 | 8 | 40 |
+| 0 | 2 | 12 |
+| 1 | 3 | 15 |
+| 2 | 4 | 18 |
+| 3 | 5 | 21 |
+| 4 | 6 | 24 |
+| 5 | 7 | 27 |
 
 ### Penalidades por Sobrecarga
 
@@ -304,7 +304,7 @@ O peso total que um personagem consegue carregar sem penalidade é determinado p
 
 > **Desvantagem** significa rolar um dado a menos no pool. **2× Desvantagem** significa rolar dois dados a menos. Se o pool chegar a zero dados, o teste falha automaticamente.
 
-> **Exemplo:** Um personagem com Físico 2 (Limite 25) que carrega peso 32 sofre Desvantagem em todos os testes. Se carregar peso 52 ou mais, sofre 2× Desvantagem.
+> **Exemplo:** Um personagem com Físico 2 (Limite 18) que carrega peso 24 sofre Desvantagem em todos os testes. Se carregar peso 36 ou mais, sofre 2× Desvantagem.
 
 ### Itens e Equipamentos no Inventário
 

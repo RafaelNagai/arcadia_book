@@ -55,8 +55,8 @@ export function InventoryPanel({
   canEdit?: boolean;
   inventorySnapshot?: { bags: InventoryBag[]; items: InventoryItem[] } | null;
 }) {
-  const totalSlots = 3 + fisico;
-  const maxWeight = 15 + fisico * 5;
+  const totalSlots = 2 + fisico;
+  const maxWeight = 12 + fisico * 3;
   const isApiChar = isApiCharacterId(characterId);
 
   const [items, setItems] = useState<InventoryItem[]>([]);

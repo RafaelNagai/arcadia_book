@@ -215,8 +215,8 @@ function calcSanidade(intelecto, influencia): number  // base 15 + soma com max(
 ### Sistema de Inventário
 
 Capacidade calculada em `InventoryPanel.tsx`:
-- **Slots**: `3 + fisico`
-- **Peso máximo**: `15 + fisico × 5`
+- **Slots**: `2 + fisico`
+- **Peso máximo**: `12 + fisico × 3`
 - Slots extras via bolsas (`InventoryBag`), cada bolsa tem `id`, `name`, `slots`, `items[]`
 - Drag-and-drop de itens entre slots e bolsas via `@dnd-kit`
 

@@ -131,7 +131,7 @@ Os efeitos podem ser qualquer coisa narrativamente coerente: bônus situacionais
 
 ### Mochilas e Contêineres
 
-Por padrão, cada personagem possui **3 + Físico** slots de inventário. Mochilas e contêineres podem ampliar essa capacidade, adicionando **slots extras** além do limite base.
+Por padrão, cada personagem possui **2 + Físico** slots de inventário. Mochilas e contêineres podem ampliar essa capacidade, adicionando **slots extras** além do limite base.
 
 | Item | Slots Extras | Peso | Observação |
 |---|---|---|---|
