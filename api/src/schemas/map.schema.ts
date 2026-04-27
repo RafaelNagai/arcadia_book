@@ -6,6 +6,7 @@ export const CreateMapSchema = z.object({
   grid_size: z.number().int().min(16).max(256).default(64),
   vision_unified: z.boolean().default(true),
   default_vision_radius: z.number().int().min(50).max(2000).default(150),
+  default_token_size: z.number().min(0.25).max(10).default(1),
 })
 
 export const UpdateMapSchema = CreateMapSchema.partial()
@@ -36,7 +37,7 @@ export const UpdateMapTokenSchema = z.object({
   y: z.number().optional(),
   vision_radius: z.number().int().min(50).max(2000).nullable().optional(),
   is_visible: z.boolean().optional(),
-  size: z.number().min(0.25).max(4).optional(),
+  size: z.number().min(0.25).max(10).optional(),
   shared_with: z.array(z.string().uuid()).optional(),
 })
 
@@ -57,6 +58,22 @@ export const AddFogPatchesSchema = z.object({
 export type FogPatchInput = z.infer<typeof FogPatchSchema>
 export type UpdateFogInput = z.infer<typeof UpdateFogSchema>
 export type AddFogPatchesInput = z.infer<typeof AddFogPatchesSchema>
+
+const MeasurementSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  type: z.enum(['ruler', 'circle']),
+  x1: z.number(),
+  y1: z.number(),
+  x2: z.number(),
+  y2: z.number(),
+  color: z.string(),
+})
+
+export const UpdateMeasurementsSchema = z.object({
+  measurements: z.array(MeasurementSchema).max(50),
+})
+export type UpdateMeasurementsInput = z.infer<typeof UpdateMeasurementsSchema>
 
 export const CreateMapWallSchema = z.object({
   points: z.array(z.object({ x: z.number(), y: z.number() })).min(2).max(500),

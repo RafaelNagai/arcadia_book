@@ -19,7 +19,9 @@
       "Bash(sed -i '' 's/| \\\\*\\\\*Fase 3 — Fog Básico\\\\*\\\\* | 🔜 Próxima | Visão circular sem paredes |/| **Fase 3 — Fog Básico** | ✅ Concluída | Visão circular, exploração, fog por layer |/' PRD_MAPA_INTERATIVO.md)",
       "Bash(npx vite *)",
       "Bash(node_modules/.bin/tsc --noEmit)",
-      "Bash(/Users/naga/Documents/arcadia/book/web/node_modules/.bin/tsc --noEmit --project /Users/naga/Documents/arcadia/book/web/tsconfig.json)"
+      "Bash(/Users/naga/Documents/arcadia/book/web/node_modules/.bin/tsc --noEmit --project /Users/naga/Documents/arcadia/book/web/tsconfig.json)",
+      "Bash(sed -i '' 's/default_token_size: z.number\\(\\).min\\(0.25\\).max\\(4\\).default\\(1\\)/default_token_size: z.number\\(\\).min\\(0.25\\).max\\(10\\).default\\(1\\)/' /Users/naga/Documents/arcadia/book/api/src/schemas/map.schema.ts)",
+      "Bash(sed -i '' 's/size: z.number\\(\\).min\\(0.25\\).max\\(4\\).optional\\(\\)/size: z.number\\(\\).min\\(0.25\\).max\\(10\\).optional\\(\\)/' /Users/naga/Documents/arcadia/book/api/src/schemas/map.schema.ts)"
     ]
   }
 }

@@ -54,7 +54,19 @@ export interface FogPatch {
   y: number
   radius: number
   polygon?: Array<{ x: number; y: number }>
-  characterId?: string  // undefined = GM-placed (visible to all); set = only visible to that character's owner/sharers
+  characterId?: string
+}
+
+export interface Measurement {
+  id: string
+  userId: string
+  type: 'ruler' | 'circle'
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+  color: string
+  isLive?: boolean
 }
 
 export interface GameMap {
@@ -66,13 +78,15 @@ export interface GameMap {
   gridSize: number
   visionUnified: boolean
   defaultVisionRadius: number
+  defaultTokenSize: number
   fogEnabled: boolean
+  measurements: Measurement[]
   createdAt: string
   layers: MapLayer[]
   tokens?: MapToken[]
 }
 
-export type MapTool = 'select' | 'fog' | 'wall' | 'door'
+export type MapTool = 'select' | 'fog' | 'wall' | 'door' | 'ruler' | 'circle'
 
 export interface MapSummary {
   id: string
@@ -82,8 +96,19 @@ export interface MapSummary {
   gridEnabled: boolean
   gridSize: number
   defaultVisionRadius: number
+  defaultTokenSize: number
   fogEnabled: boolean
   createdAt: string
   layers: Array<{ id: string; name: string; orderIndex: number; imageUrl: string; isActive: boolean }>
   tokens: MapToken[]
+}
+
+// ── Measurement color helper ──────────────────────────────────────────────────
+
+const MEASURE_COLORS = ['#E8803A', '#6FC892', '#50C8E8', '#C090F0', '#E8B84B', '#EF4444', '#3B82F6']
+
+export function measureColor(userId: string): string {
+  let h = 5381
+  for (let i = 0; i < userId.length; i++) h = ((h << 5) + h) ^ userId.charCodeAt(i)
+  return MEASURE_COLORS[Math.abs(h) % MEASURE_COLORS.length]
 }

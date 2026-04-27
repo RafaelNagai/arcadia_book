@@ -11,6 +11,7 @@ import {
   AddFogPatchesSchema,
   CreateMapWallSchema,
   CreateMapDoorSchema,
+  UpdateMeasurementsSchema,
 } from '../schemas/map.schema.js'
 import { UUIDParamSchema } from '../schemas/shared.schema.js'
 import { z } from 'zod'
@@ -161,6 +162,15 @@ export async function mapsController(fastify: FastifyInstance) {
     await fastify.authenticate(req)
     const { id, tokenId } = MapAndTokenParamSchema.parse(req.params)
     await svc.deleteToken(id, tokenId, req.user!.id)
+    return reply.status(204).send()
+  })
+
+  // Update measurements (any campaign member — stores current measurement state)
+  fastify.patch('/:id/measurements', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id } = UUIDParamSchema.parse(req.params)
+    const input = UpdateMeasurementsSchema.parse(req.body)
+    await svc.updateMeasurements(id, req.user!.id, input)
     return reply.status(204).send()
   })
 

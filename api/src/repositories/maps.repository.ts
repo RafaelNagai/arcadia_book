@@ -60,6 +60,7 @@ export class MapsRepository {
     gridSize: number
     visionUnified: boolean
     defaultVisionRadius: number
+    defaultTokenSize: number
   }) {
     return this.db.map.create({
       data: { campaignId, ...data },
@@ -73,8 +74,13 @@ export class MapsRepository {
     gridSize: number
     visionUnified: boolean
     defaultVisionRadius: number
+    defaultTokenSize: number
   }>) {
     return this.db.map.update({ where: { id }, data, include: { layers: true } })
+  }
+
+  updateMeasurements(id: string, measurements: Prisma.InputJsonValue) {
+    return this.db.map.update({ where: { id }, data: { measurements } })
   }
 
   updateFog(id: string, data: { fogEnabled?: boolean }) {

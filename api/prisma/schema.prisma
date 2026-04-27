@@ -124,7 +124,9 @@ model Map {
   gridSize            Int      @default(64) @map("grid_size")
   visionUnified       Boolean  @default(true) @map("vision_unified")
   defaultVisionRadius Int      @default(150) @map("default_vision_radius")
+  defaultTokenSize    Float    @default(1) @map("default_token_size")
   fogEnabled          Boolean  @default(false) @map("fog_enabled")
+  measurements        Json     @default("[]") @map("measurements")
   createdAt           DateTime @default(now()) @map("created_at")
   updatedAt           DateTime @updatedAt @map("updated_at")
 

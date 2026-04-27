@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import type { CampaignChar, CampaignSummary, CampaignDetail } from '@/data/campaignTypes'
-import type { MapSummary } from '@/lib/mapTypes'
+import type { MapSummary, Measurement } from '@/lib/mapTypes'
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string
@@ -227,6 +227,7 @@ export const api = {
       grid_size?: number
       vision_unified?: boolean
       default_vision_radius?: number
+      default_token_size?: number
     }) =>
       apiFetch<{ map: unknown }>(`/campaigns/${campaignId}/maps`, {
         method: 'POST',
@@ -239,10 +240,17 @@ export const api = {
       grid_size?: number
       vision_unified?: boolean
       default_vision_radius?: number
+      default_token_size?: number
     }) =>
       apiFetch<{ map: unknown }>(`/campaigns/${campaignId}/maps/${mapId}`, {
         method: 'PUT',
         body: JSON.stringify(data),
+      }),
+
+    updateMeasurements: (campaignId: string, mapId: string, measurements: Measurement[]) =>
+      apiFetch(`/campaigns/${campaignId}/maps/${mapId}/measurements`, {
+        method: 'PATCH',
+        body: JSON.stringify({ measurements }),
       }),
 
     delete: (campaignId: string, mapId: string) =>

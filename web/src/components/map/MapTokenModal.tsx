@@ -3,6 +3,32 @@ import { getAccent } from '@/components/character/types'
 import type { GameMap } from '@/lib/mapTypes'
 import type { CampaignChar } from '@/data/campaignTypes'
 
+const PREFERRED_SIZES_KEY = 'arcadia_preferred_token_sizes'
+
+function loadPreferredSize(characterId: string): number | null {
+  try {
+    const raw = localStorage.getItem(PREFERRED_SIZES_KEY)
+    if (!raw) return null
+    const map = JSON.parse(raw) as Record<string, number>
+    return map[characterId] ?? null
+  } catch {
+    return null
+  }
+}
+
+function savePreferredSize(characterId: string, size: number) {
+  try {
+    const raw = localStorage.getItem(PREFERRED_SIZES_KEY)
+    const map = raw ? (JSON.parse(raw) as Record<string, number>) : {}
+    map[characterId] = size
+    localStorage.setItem(PREFERRED_SIZES_KEY, JSON.stringify(map))
+  } catch {}
+}
+
+export function loadPreferredTokenSize(characterId: string, mapDefault: number): number {
+  return loadPreferredSize(characterId) ?? mapDefault
+}
+
 interface TokenModalCharacter {
   id: string
   name: string
@@ -13,17 +39,22 @@ interface TokenModalCharacter {
 interface MapTokenModalProps {
   character: TokenModalCharacter
   visionRadius: number | null
+  size: number
   sharedWith?: string[]
   map: GameMap
   players?: CampaignChar[]
-  onSave: (visionRadius: number | null) => void
+  onSave: (visionRadius: number | null, size: number) => void
   onShareUpdate?: (sharedWith: string[]) => void
   onClose: () => void
 }
 
-export function MapTokenModal({ character, visionRadius, sharedWith = [], map, players = [], onSave, onShareUpdate, onClose }: MapTokenModalProps) {
+export function MapTokenModal({
+  character, visionRadius, size, sharedWith = [], map, players = [],
+  onSave, onShareUpdate, onClose,
+}: MapTokenModalProps) {
   const [useMapDefault, setUseMapDefault] = useState(visionRadius == null)
   const [radius, setRadius] = useState(visionRadius ?? map.defaultVisionRadius)
+  const [tokenSize, setTokenSize] = useState(size)
   const [localShared, setLocalShared] = useState<string[]>(sharedWith)
 
   const accent = getAccent(character.afinidade)
@@ -31,7 +62,8 @@ export function MapTokenModal({ character, visionRadius, sharedWith = [], map, p
   const sharingChanged = JSON.stringify([...localShared].sort()) !== JSON.stringify([...sharedWith].sort())
 
   function handleSave() {
-    onSave(useMapDefault ? null : radius)
+    savePreferredSize(character.id, tokenSize)
+    onSave(useMapDefault ? null : radius, tokenSize)
     if (onShareUpdate && sharingChanged) {
       onShareUpdate(localShared)
     }
@@ -100,6 +132,32 @@ export function MapTokenModal({ character, visionRadius, sharedWith = [], map, p
 
         <div style={{ height: 1, background: 'rgba(255,255,255,0.07)' }} />
 
+        {/* Token size */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <p style={{
+            fontFamily: 'var(--font-ui)', fontSize: '0.6rem', fontWeight: 700,
+            letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)',
+          }}>
+            Tamanho do Token — {tokenSize.toFixed(2)}×
+          </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <input
+              type="range" min={0.25} max={10} step={0.25}
+              value={tokenSize}
+              onChange={e => setTokenSize(Number(e.target.value))}
+              style={{ flex: 1, accentColor: 'var(--color-arcano)' }}
+            />
+            <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', width: 36, textAlign: 'right' }}>
+              {tokenSize.toFixed(2)}×
+            </span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-ui)', fontSize: '0.6rem', color: 'rgba(255,255,255,0.25)' }}>
+            <span>0.25×</span><span>10×</span>
+          </div>
+        </div>
+
+        <div style={{ height: 1, background: 'rgba(255,255,255,0.07)' }} />
+
         {/* Vision radius */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
           <p style={{
@@ -151,7 +209,7 @@ export function MapTokenModal({ character, visionRadius, sharedWith = [], map, p
           )}
         </div>
 
-        {/* Sharing section — only shown when there are other players */}
+        {/* Sharing section */}
         {hasPlayers && onShareUpdate && (
           <>
             <div style={{ height: 1, background: 'rgba(255,255,255,0.07)' }} />

@@ -208,6 +208,7 @@ export function MapTokenPanel({
         <MapTokenModal
           character={configuringChar}
           visionRadius={pendingVisionRadii[configuringChar.id] ?? null}
+          size={map.defaultTokenSize ?? 1}
           map={map}
           onSave={(vr) => {
             setPendingVisionRadii(prev => ({ ...prev, [configuringChar.id]: vr }))

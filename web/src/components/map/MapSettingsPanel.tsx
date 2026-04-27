@@ -14,6 +14,7 @@ export function MapSettingsPanel({ campaignId, map, onSave, onClose }: Props) {
   const [gridEnabled, setGridEnabled] = useState(map.gridEnabled)
   const [gridSize, setGridSize] = useState(map.gridSize)
   const [defaultVisionRadius, setDefaultVisionRadius] = useState(map.defaultVisionRadius)
+  const [defaultTokenSize, setDefaultTokenSize] = useState(map.defaultTokenSize ?? 1)
   const [saving, setSaving] = useState(false)
 
   async function handleSave() {
@@ -24,6 +25,7 @@ export function MapSettingsPanel({ campaignId, map, onSave, onClose }: Props) {
         grid_enabled: gridEnabled,
         grid_size: gridSize,
         default_vision_radius: defaultVisionRadius,
+        default_token_size: defaultTokenSize,
       })
       onSave(res.map as GameMap)
     } catch (err) {
@@ -90,6 +92,18 @@ export function MapSettingsPanel({ campaignId, map, onSave, onClose }: Props) {
           />
           <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', marginTop: 2 }}>
             <span>50px</span><span>2000px</span>
+          </div>
+        </Field>
+
+        <Field label={`Tamanho padrão dos tokens: ${defaultTokenSize.toFixed(2)}×`}>
+          <input
+            type="range" min={0.25} max={10} step={0.25}
+            value={defaultTokenSize}
+            onChange={e => setDefaultTokenSize(Number(e.target.value))}
+            style={{ width: '100%', accentColor: 'var(--color-arcano)', cursor: 'pointer' }}
+          />
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', marginTop: 2 }}>
+            <span>0.25×</span><span>10×</span>
           </div>
         </Field>
 

@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/apiClient'
-import type { GameMap, MapLayer, MapToken, MapDoor, FogPatch } from '@/lib/mapTypes'
+import type { GameMap, MapLayer, MapToken, MapDoor, FogPatch, Measurement } from '@/lib/mapTypes'
 
 // ── Broadcast event types ─────────────────────────────────────────────────────
 
 export type MapBroadcastEvent =
   | { type: 'TOKEN_MOVE'; tokenId: string; x: number; y: number; senderId?: string }
-  | { type: 'TOKEN_UPDATE'; tokenId: string; data: { size?: number; isVisible?: boolean; visionRadius?: number | null }; senderId?: string }
+  | { type: 'TOKEN_UPDATE'; tokenId: string; data: { size?: number; isVisible?: boolean; visionRadius?: number | null; sharedWith?: string[] }; senderId?: string }
   | { type: 'TOKEN_ADD'; token: MapToken; senderId?: string }
   | { type: 'TOKEN_REMOVE'; tokenId: string; senderId?: string }
   | { type: 'LAYER_CHANGE'; layerId: string; layers: MapLayer[]; senderId?: string }
@@ -14,19 +14,23 @@ export type MapBroadcastEvent =
   | { type: 'DOOR_ADD'; door: MapDoor; senderId?: string }
   | { type: 'DOOR_DELETE'; doorId: string; layerId: string; senderId?: string }
   | { type: 'DOOR_TOGGLE'; door: MapDoor; senderId?: string }
-  | { type: 'MAP_SETTINGS_UPDATE'; title: string; gridEnabled: boolean; gridSize: number; defaultVisionRadius: number; visionUnified: boolean; senderId?: string }
+  | { type: 'MAP_SETTINGS_UPDATE'; title: string; gridEnabled: boolean; gridSize: number; defaultVisionRadius: number; defaultTokenSize: number; visionUnified: boolean; senderId?: string }
+  | { type: 'MEASUREMENT_LIVE'; measurement: Measurement; senderId?: string }
+  | { type: 'MEASUREMENT_ADD'; measurement: Measurement; senderId?: string }
+  | { type: 'MEASUREMENT_REMOVE'; userId: string; senderId?: string }
+  | { type: 'MEASUREMENT_CLEAR_ALL'; senderId?: string }
 
 export type CampaignMapEvent =
   | { type: 'MAP_ACTIVATED'; map: GameMap }
   | { type: 'MAP_DEACTIVATED' }
+  | { type: 'FOCUS_ALL'; mapId: string; layerId: string; scale: number; panX: number; panY: number; senderId?: string }
 
 // ── useMapRealtime ────────────────────────────────────────────────────────────
-// Subscribes to map:{mapId} channel for in-session token/layer events.
 
 interface MapRealtimeHandlers {
   selfId: string | undefined
   onTokenMove: (tokenId: string, x: number, y: number) => void
-  onTokenUpdate: (tokenId: string, data: { size?: number; isVisible?: boolean }) => void
+  onTokenUpdate: (tokenId: string, data: { size?: number; isVisible?: boolean; visionRadius?: number | null; sharedWith?: string[] }) => void
   onTokenAdd: (token: MapToken) => void
   onTokenRemove: (tokenId: string) => void
   onLayerChange: (layerId: string, layers: MapLayer[]) => void
@@ -34,7 +38,11 @@ interface MapRealtimeHandlers {
   onDoorAdd: (door: MapDoor) => void
   onDoorDelete: (doorId: string, layerId: string) => void
   onDoorToggle: (door: MapDoor) => void
-  onSettingsUpdate: (settings: { title: string; gridEnabled: boolean; gridSize: number; defaultVisionRadius: number; visionUnified: boolean }) => void
+  onSettingsUpdate: (settings: { title: string; gridEnabled: boolean; gridSize: number; defaultVisionRadius: number; defaultTokenSize: number; visionUnified: boolean }) => void
+  onMeasurementLive: (m: Measurement) => void
+  onMeasurementAdd: (m: Measurement) => void
+  onMeasurementRemove: (userId: string) => void
+  onMeasurementClearAll: () => void
 }
 
 export function useMapRealtime(
@@ -104,8 +112,29 @@ export function useMapRealtime(
             gridEnabled: p.gridEnabled,
             gridSize: p.gridSize,
             defaultVisionRadius: p.defaultVisionRadius,
+            defaultTokenSize: p.defaultTokenSize,
             visionUnified: p.visionUnified,
           })
+      })
+      .on('broadcast', { event: 'MEASUREMENT_LIVE' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'MEASUREMENT_LIVE' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onMeasurementLive(p.measurement)
+      })
+      .on('broadcast', { event: 'MEASUREMENT_ADD' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'MEASUREMENT_ADD' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onMeasurementAdd(p.measurement)
+      })
+      .on('broadcast', { event: 'MEASUREMENT_REMOVE' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'MEASUREMENT_REMOVE' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onMeasurementRemove(p.userId)
+      })
+      .on('broadcast', { event: 'MEASUREMENT_CLEAR_ALL' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'MEASUREMENT_CLEAR_ALL' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onMeasurementClearAll()
       })
       .subscribe()
 
@@ -121,12 +150,11 @@ export function useMapRealtime(
 }
 
 // ── useCampaignMapChannel ─────────────────────────────────────────────────────
-// Subscribes to campaign:{campaignId}:map for map lifecycle events
-// (activate / deactivate). Keeps players in sync when the GM switches maps.
 
 interface CampaignMapHandlers {
   onMapActivated: (map: GameMap) => void
   onMapDeactivated: () => void
+  onFocusAll: (mapId: string, layerId: string, scale: number, panX: number, panY: number) => void
 }
 
 export function useCampaignMapChannel(
@@ -147,6 +175,10 @@ export function useCampaignMapChannel(
       })
       .on('broadcast', { event: 'MAP_DEACTIVATED' }, () => {
         handlersRef.current.onMapDeactivated()
+      })
+      .on('broadcast', { event: 'FOCUS_ALL' }, ({ payload }) => {
+        const p = payload as CampaignMapEvent
+        if (p.type === 'FOCUS_ALL') handlersRef.current.onFocusAll(p.mapId, p.layerId, p.scale, p.panX, p.panY)
       })
       .subscribe()
 

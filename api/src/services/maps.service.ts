@@ -15,6 +15,7 @@ import type {
   AddFogPatchesInput,
   FogPatchInput,
   CreateMapDoorInput,
+  UpdateMeasurementsInput,
 } from '../schemas/map.schema.js'
 import type { Prisma } from '../generated/prisma/client.js'
 
@@ -56,6 +57,7 @@ export class MapsService {
       gridSize: input.grid_size,
       visionUnified: input.vision_unified,
       defaultVisionRadius: input.default_vision_radius,
+      defaultTokenSize: input.default_token_size,
     })
   }
 
@@ -67,7 +69,13 @@ export class MapsService {
     if (input.grid_size !== undefined) patch.gridSize = input.grid_size
     if (input.vision_unified !== undefined) patch.visionUnified = input.vision_unified
     if (input.default_vision_radius !== undefined) patch.defaultVisionRadius = input.default_vision_radius
+    if (input.default_token_size !== undefined) patch.defaultTokenSize = input.default_token_size
     return this.repo.updateMap(map.id, patch)
+  }
+
+  async updateMeasurements(mapId: string, userId: string, input: UpdateMeasurementsInput) {
+    await this.assertMapMember(mapId, userId)
+    return this.repo.updateMeasurements(mapId, input.measurements as Prisma.InputJsonValue)
   }
 
   async delete(mapId: string, userId: string) {

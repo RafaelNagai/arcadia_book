@@ -4,13 +4,14 @@ import { useAuth } from '@/lib/authContext'
 import { useMapRealtime, useCampaignMapChannel } from '@/hooks/useMapRealtime'
 import type { MapBroadcastEvent } from '@/hooks/useMapRealtime'
 import type { CampaignDetail } from '@/data/campaignTypes'
-import type { GameMap, MapToken, MapTool, FogPatch, MapWall, MapDoor, MapSummary } from '@/lib/mapTypes'
+import type { GameMap, MapToken, MapTool, FogPatch, MapWall, MapDoor, MapSummary, Measurement } from '@/lib/mapTypes'
 import { computeVisibilityPolygon } from '@/lib/fogOfWar'
 import { MapCanvas } from './MapCanvas'
 import { MapToolbar } from './MapToolbar'
 import { MapLayerPanel } from './MapLayerPanel'
 import { MapTokenPanel } from './MapTokenPanel'
 import { MapTokenModal } from './MapTokenModal'
+import { loadPreferredTokenSize } from './MapTokenModal'
 import { MapSettingsPanel } from './MapSettingsPanel'
 import { MapGallery } from './MapGallery'
 
@@ -124,19 +125,28 @@ export function MapTab({ campaign }: MapTabProps) {
   const [activeDrag, setActiveDrag] = useState<{ tokenId: string; x: number; y: number } | null>(null)
   const [localFogPatches, setLocalFogPatches] = useState<FogPatch[]>([])
 
+  // Measurement state
+  const [measurements, setMeasurements] = useState<Measurement[]>([])
+  const [liveMeasurements, setLiveMeasurements] = useState<Measurement[]>([])
+  const measureSyncTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // "Call everyone here" — players get forced to a specific layer + viewport
+  const [forcedLayerId, setForcedLayerId] = useState<string | null>(null)
+  const [viewportOverride, setViewportOverride] = useState<{ scale: number; x: number; y: number } | null>(null)
+  const [currentViewport, setCurrentViewport] = useState<{ scale: number; x: number; y: number } | null>(null)
+
   const allChars = [...campaign.players, ...campaign.npcs]
   const myCharacterIds = campaign.isGm
     ? []
     : campaign.players.filter(c => c.userId === user?.id).map(c => c.id)
   const npcCharacterIds = campaign.npcs.map(c => c.id)
 
-  // GM's current layer (isActive flag)
   const gmCurrentLayerId = map?.layers.find(l => l.isActive)?.id ?? null
   const gmCurrentLayer = gmCurrentLayerId ? map?.layers.find(l => l.id === gmCurrentLayerId) ?? null : null
 
-  // Player's effective current layer: highest-floor layer where they have an own or shared token
   const effectiveCurrentLayerId = useMemo(() => {
     if (campaign.isGm || !map) return gmCurrentLayerId
+    if (forcedLayerId && map.layers.some(l => l.id === forcedLayerId)) return forcedLayerId
     const sorted = [...map.layers].sort((a, b) => a.orderIndex - b.orderIndex)
     for (let i = sorted.length - 1; i >= 0; i--) {
       const hasAccess = tokens.some(t =>
@@ -146,7 +156,7 @@ export function MapTab({ campaign }: MapTabProps) {
       if (hasAccess) return sorted[i].id
     }
     return gmCurrentLayerId
-  }, [campaign.isGm, gmCurrentLayerId, map, tokens, myCharacterIds, user?.id])
+  }, [campaign.isGm, gmCurrentLayerId, map, tokens, myCharacterIds, user?.id, forcedLayerId])
 
   const fogStateRef = useRef({ fogEnabled, map, tokens, npcCharacterIds, gmCurrentLayerId })
   fogStateRef.current = { fogEnabled, map, tokens, npcCharacterIds, gmCurrentLayerId }
@@ -171,12 +181,23 @@ export function MapTab({ campaign }: MapTabProps) {
         setMap(m)
         if (m?.tokens) setTokens(m.tokens)
         if (m) setFogEnabled(m.fogEnabled)
+        if (m?.measurements) setMeasurements(m.measurements)
       })
       .catch(() => setMap(null))
       .finally(() => setLoading(false))
   }, [campaign.id])
 
-  // ── Realtime ─────────────────────────────────────────────────────────────────
+  // ── Debounced measurement persistence ──────────────────────────────────────
+  const persistMeasurements = useCallback((next: Measurement[], mapId: string) => {
+    if (measureSyncTimer.current) clearTimeout(measureSyncTimer.current)
+    measureSyncTimer.current = setTimeout(async () => {
+      try {
+        await api.maps.updateMeasurements(campaign.id, mapId, next)
+      } catch { /* non-critical */ }
+    }, 800)
+  }, [campaign.id])
+
+  // ── Realtime ──────────────────────────────────────────────────────────────
   const broadcastMap = useMapRealtime(map?.id, {
     selfId: user?.id,
     onTokenMove: useCallback((tokenId, x, y) => {
@@ -232,8 +253,30 @@ export function MapTab({ campaign }: MapTabProps) {
       } : prev)
     }, []),
 
-    onSettingsUpdate: useCallback((settings: { title: string; gridEnabled: boolean; gridSize: number; defaultVisionRadius: number; visionUnified: boolean }) => {
+    onSettingsUpdate: useCallback((settings) => {
       setMap(prev => prev ? { ...prev, ...settings } : prev)
+    }, []),
+
+    onMeasurementLive: useCallback((m: Measurement) => {
+      setLiveMeasurements(prev => [...prev.filter(x => x.userId !== m.userId), { ...m, isLive: true }])
+    }, []),
+
+    onMeasurementAdd: useCallback((m: Measurement) => {
+      setLiveMeasurements(prev => prev.filter(x => x.userId !== m.userId))
+      setMeasurements(prev => {
+        const next = [...prev.filter(x => x.userId !== m.userId), m]
+        return next
+      })
+    }, []),
+
+    onMeasurementRemove: useCallback((userId: string) => {
+      setLiveMeasurements(prev => prev.filter(m => m.userId !== userId))
+      setMeasurements(prev => prev.filter(m => m.userId !== userId))
+    }, []),
+
+    onMeasurementClearAll: useCallback(() => {
+      setLiveMeasurements([])
+      setMeasurements([])
     }, []),
   })
 
@@ -241,15 +284,34 @@ export function MapTab({ campaign }: MapTabProps) {
     onMapActivated: useCallback((newMap: GameMap) => {
       setMap(newMap)
       setTokens(newMap.tokens ?? [])
+      if (newMap.measurements) setMeasurements(newMap.measurements)
     }, []),
 
     onMapDeactivated: useCallback(() => {
       setMap(null)
       setTokens([])
+      setMeasurements([])
     }, []),
+
+    onFocusAll: useCallback(async (focusMapId: string, focusLayerId: string, scale: number, panX: number, panY: number) => {
+      if (campaign.isGm) return
+      setForcedLayerId(focusLayerId)
+      setViewportOverride({ scale, x: panX, y: panY })
+      setView('canvas')
+      if (!map || map.id !== focusMapId) {
+        try {
+          const res = await api.maps.get(campaign.id, focusMapId)
+          const m = res.map as GameMap
+          setMap(m)
+          setTokens(m?.tokens ?? [])
+          if (m) setFogEnabled(m.fogEnabled)
+          if (m?.measurements) setMeasurements(m.measurements ?? [])
+        } catch { /* stay on current */ }
+      }
+    }, [campaign.isGm, campaign.id, map]),
   })
 
-  // ── Token drag: throttled broadcast + fog trail ───────────────────────────────
+  // ── Token drag ────────────────────────────────────────────────────────────
   const handleTokenDrag = useCallback((tokenId: string, x: number, y: number) => {
     const now = Date.now()
     if (now - lastDragBroadcastRef.current < TOKEN_DRAG_THROTTLE_MS) return
@@ -283,7 +345,6 @@ export function MapTab({ campaign }: MapTabProps) {
     }
   }, [broadcastMap, user?.id])
 
-  // ── Token drag end: persist fog + update state ────────────────────────────────
   const handleTokenMove = useCallback(async (tokenId: string, x: number, y: number) => {
     const pendingPatches = [...localFogPatchesRef.current]
     localFogPatchesRef.current = []
@@ -322,12 +383,10 @@ export function MapTab({ campaign }: MapTabProps) {
           }
         }
       }
-    } catch {
-      // revert handled by next full load
-    }
+    } catch { /* revert handled by next full load */ }
   }, [campaign.id, map, fogEnabled, tokens, npcCharacterIds, broadcastMap, user?.id])
 
-  // ── Fog handlers ──────────────────────────────────────────────────────────────
+  // ── Fog handlers ──────────────────────────────────────────────────────────
   const handleFogToggle = useCallback(async () => {
     if (!map) return
     const next = !fogEnabled
@@ -371,7 +430,7 @@ export function MapTab({ campaign }: MapTabProps) {
     } catch { /* stay optimistic */ }
   }, [map, gmCurrentLayer, fogEnabled, broadcastMap, user?.id])
 
-  // ── Wall handlers ─────────────────────────────────────────────────────────────
+  // ── Wall handlers ─────────────────────────────────────────────────────────
   const handleWallAdd = useCallback(async (points: Array<{ x: number; y: number }>) => {
     if (!map || !gmCurrentLayer) return
     try {
@@ -401,7 +460,7 @@ export function MapTab({ campaign }: MapTabProps) {
     } catch { /* keep optimistic */ }
   }, [map, gmCurrentLayer])
 
-  // ── Door handlers ─────────────────────────────────────────────────────────────
+  // ── Door handlers ─────────────────────────────────────────────────────────
   const handleDoorAdd = useCallback(async (points: Array<{ x: number; y: number }>) => {
     if (!map || !gmCurrentLayer) return
     try {
@@ -450,9 +509,60 @@ export function MapTab({ campaign }: MapTabProps) {
     }
   }, [map, gmCurrentLayer, broadcastMap, user?.id])
 
-  // ── Token drop from panel onto canvas ────────────────────────────────────────
+  // ── Measurement handlers ──────────────────────────────────────────────────
+  const handleMeasurementAdd = useCallback((m: Measurement) => {
+    const committed = { ...m, isLive: undefined }
+    setLiveMeasurements(prev => prev.filter(x => x.userId !== m.userId))
+    setMeasurements(prev => {
+      const next = [...prev.filter(x => x.userId !== m.userId), committed]
+      if (map) persistMeasurements(next, map.id)
+      return next
+    })
+    broadcastMap({ type: 'MEASUREMENT_ADD', measurement: committed, senderId: user?.id })
+  }, [map, broadcastMap, user?.id, persistMeasurements])
+
+  const handleMeasurementRemoveSelf = useCallback(() => {
+    if (!user?.id) return
+    const uid = user.id
+    setLiveMeasurements(prev => prev.filter(m => m.userId !== uid))
+    setMeasurements(prev => {
+      const next = prev.filter(m => m.userId !== uid)
+      if (map) persistMeasurements(next, map.id)
+      return next
+    })
+    broadcastMap({ type: 'MEASUREMENT_REMOVE', userId: uid, senderId: uid })
+  }, [user?.id, map, broadcastMap, persistMeasurements])
+
+  const handleMeasurementClearAll = useCallback(() => {
+    setLiveMeasurements([])
+    setMeasurements([])
+    if (map) persistMeasurements([], map.id)
+    broadcastMap({ type: 'MEASUREMENT_CLEAR_ALL', senderId: user?.id })
+  }, [map, broadcastMap, user?.id, persistMeasurements])
+
+  const handleMeasurementLive = useCallback((m: Measurement) => {
+    setLiveMeasurements(prev => [...prev.filter(x => x.userId !== m.userId), { ...m, isLive: true }])
+    broadcastMap({ type: 'MEASUREMENT_LIVE', measurement: m, senderId: user?.id })
+  }, [broadcastMap, user?.id])
+
+  // ── "Call everyone here" ──────────────────────────────────────────────────
+  const handleFocusAll = useCallback(() => {
+    if (!map || !effectiveCurrentLayerId || !currentViewport) return
+    broadcastCampaign({
+      type: 'FOCUS_ALL',
+      mapId: map.id,
+      layerId: effectiveCurrentLayerId,
+      scale: currentViewport.scale,
+      panX: currentViewport.x,
+      panY: currentViewport.y,
+      senderId: user?.id,
+    })
+  }, [map, effectiveCurrentLayerId, broadcastCampaign, user?.id, currentViewport])
+
+  // ── Token drop ────────────────────────────────────────────────────────────
   const handleTokenDrop = useCallback(async (charId: string, worldX: number, worldY: number, visionRadius: number | null) => {
     if (!map || !gmCurrentLayer) return
+    const preferredSize = loadPreferredTokenSize(charId, map.defaultTokenSize ?? 1)
     try {
       const res = await api.maps.createToken(campaign.id, map.id, {
         layer_id: gmCurrentLayer.id,
@@ -461,15 +571,20 @@ export function MapTab({ campaign }: MapTabProps) {
         vision_radius: visionRadius,
       }) as { token: MapToken; removedTokenId: string | null; removedTokenMapId: string | null }
 
-      // Evict old token from state if it was on this map
       if (res.removedTokenId && res.removedTokenMapId === map.id) {
         setTokens(prev => prev.filter(t => t.id !== res.removedTokenId))
         broadcastMap({ type: 'TOKEN_REMOVE', tokenId: res.removedTokenId, senderId: user?.id })
       }
 
-      const newToken = res.token
+      const newToken = { ...res.token, size: preferredSize }
       setTokens(prev => prev.some(t => t.id === newToken.id) ? prev : [...prev, newToken])
       broadcastMap({ type: 'TOKEN_ADD', token: newToken, senderId: user?.id })
+
+      // Apply preferred size if different from default
+      if (preferredSize !== 1) {
+        await api.maps.updateToken(campaign.id, map.id, newToken.id, { size: preferredSize })
+        broadcastMap({ type: 'TOKEN_UPDATE', tokenId: newToken.id, data: { size: preferredSize }, senderId: user?.id })
+      }
 
       if (fogEnabled && !npcCharacterIds.includes(charId)) {
         const radius = newToken.visionRadius ?? map.defaultVisionRadius
@@ -489,7 +604,7 @@ export function MapTab({ campaign }: MapTabProps) {
     }
   }, [map, campaign.id, gmCurrentLayer, fogEnabled, npcCharacterIds, broadcastMap, user?.id])
 
-  // ── Token modal ───────────────────────────────────────────────────────────────
+  // ── Token modal ───────────────────────────────────────────────────────────
   const [modalToken, setModalToken] = useState<MapToken | null>(null)
 
   const handleTokenEdit = useCallback((tokenId: string) => {
@@ -497,12 +612,12 @@ export function MapTab({ campaign }: MapTabProps) {
     if (token) setModalToken(token)
   }, [tokens])
 
-  const handleVisionUpdate = useCallback(async (tokenId: string, visionRadius: number | null) => {
+  const handleTokenModalSave = useCallback(async (tokenId: string, visionRadius: number | null, size: number) => {
     if (!map) return
-    setTokens(prev => prev.map(t => t.id === tokenId ? { ...t, visionRadius } : t))
-    broadcastMap({ type: 'TOKEN_UPDATE', tokenId, data: { visionRadius }, senderId: user?.id })
+    setTokens(prev => prev.map(t => t.id === tokenId ? { ...t, visionRadius, size } : t))
+    broadcastMap({ type: 'TOKEN_UPDATE', tokenId, data: { visionRadius, size }, senderId: user?.id })
     try {
-      await api.maps.updateToken(campaign.id, map.id, tokenId, { vision_radius: visionRadius })
+      await api.maps.updateToken(campaign.id, map.id, tokenId, { vision_radius: visionRadius, size })
     } catch { /* keep optimistic */ }
   }, [map, campaign.id, broadcastMap, user?.id])
 
@@ -540,12 +655,13 @@ export function MapTab({ campaign }: MapTabProps) {
     setMap(newMap)
     setShowCreateModal(false)
     setTokens([])
+    setMeasurements([])
     setAllMaps(prev => [...prev.map(m => ({ ...m, isActive: false })), { ...newMap, tokens: [], isActive: true }])
     broadcastCampaign({ type: 'MAP_ACTIVATED', map: newMap })
     setView('canvas')
   }, [broadcastCampaign])
 
-  // ── Map list — load once on mount ─────────────────────────────────────────
+  // ── Map list ──────────────────────────────────────────────────────────────
   useEffect(() => {
     setAllMapsLoading(true)
     api.maps.list(campaign.id)
@@ -562,6 +678,7 @@ export function MapTab({ campaign }: MapTabProps) {
       setMap(newMap)
       setTokens(newMap.tokens ?? [])
       setFogEnabled(newMap.fogEnabled)
+      setMeasurements(newMap.measurements ?? [])
       setAllMaps(prev => prev.map(m => ({ ...m, isActive: m.id === mapId } as MapSummary)))
       broadcastCampaign({ type: 'MAP_ACTIVATED', map: newMap })
     } catch (err) {
@@ -569,8 +686,8 @@ export function MapTab({ campaign }: MapTabProps) {
     }
   }, [campaign.id, broadcastCampaign])
 
-  // Gallery → canvas: GM activates the clicked map; player loads that specific map
   const handleGalleryEnter = useCallback(async (mapId: string) => {
+    setForcedLayerId(null)
     if (campaign.isGm) {
       const target = allMaps.find(m => m.id === mapId)
       if (target && !target.isActive) {
@@ -581,9 +698,9 @@ export function MapTab({ campaign }: MapTabProps) {
         setMap(m)
         setTokens(m?.tokens ?? [])
         if (m) setFogEnabled(m.fogEnabled)
+        if (m?.measurements) setMeasurements(m.measurements ?? [])
       }
     } else {
-      // Player: load the specific map they clicked (may differ from the active map)
       if (!map || map.id !== mapId) {
         try {
           const res = await api.maps.get(campaign.id, mapId)
@@ -591,6 +708,7 @@ export function MapTab({ campaign }: MapTabProps) {
           setMap(m)
           setTokens(m?.tokens ?? [])
           if (m) setFogEnabled(m.fogEnabled)
+          if (m?.measurements) setMeasurements(m.measurements ?? [])
         } catch { /* stay on current map */ }
       }
     }
@@ -606,6 +724,7 @@ export function MapTab({ campaign }: MapTabProps) {
       if (wasActive) {
         setMap(null)
         setTokens([])
+        setMeasurements([])
         broadcastCampaign({ type: 'MAP_DEACTIVATED' })
       }
     } catch (err) {
@@ -623,6 +742,7 @@ export function MapTab({ campaign }: MapTabProps) {
       gridEnabled: updated.gridEnabled,
       gridSize: updated.gridSize,
       defaultVisionRadius: updated.defaultVisionRadius,
+      defaultTokenSize: updated.defaultTokenSize ?? 1,
       visionUnified: updated.visionUnified,
       senderId: user?.id,
     })
@@ -636,7 +756,7 @@ export function MapTab({ campaign }: MapTabProps) {
     )
   }
 
-  // ── Gallery view ────────────────────────────────────────────────────────────
+  // ── Gallery view ──────────────────────────────────────────────────────────
   if (view === 'gallery') {
     return (
       <>
@@ -660,7 +780,7 @@ export function MapTab({ campaign }: MapTabProps) {
     )
   }
 
-  // ── Canvas view ─────────────────────────────────────────────────────────────
+  // ── Canvas view ───────────────────────────────────────────────────────────
   if (!map) {
     return (
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', background: '#04060C' }}>
@@ -683,6 +803,13 @@ export function MapTab({ campaign }: MapTabProps) {
   }
 
   const hasLayers = map.layers.length > 0
+  const hasMeasurements = measurements.length > 0 || liveMeasurements.length > 0
+
+  // Measurement tools available to players too
+  const measurementTools: { id: MapTool; label: string; icon: string }[] = [
+    { id: 'ruler', label: 'Régua', icon: '📏' },
+    { id: 'circle', label: 'Área', icon: '⭕' },
+  ]
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#04060C' }}>
@@ -695,16 +822,19 @@ export function MapTab({ campaign }: MapTabProps) {
           onFogReset={handleFogReset}
           onBackToGallery={() => setView('gallery')}
           onSettings={() => setShowSettings(true)}
+          onFocusAll={handleFocusAll}
+          onMeasurementClearAll={handleMeasurementClearAll}
+          hasMeasurements={hasMeasurements}
         />
       ) : (
         <div style={{
-          display: 'flex', alignItems: 'center',
+          display: 'flex', alignItems: 'center', gap: '0.4rem',
           padding: '0.4rem 0.75rem',
           background: 'rgba(4,6,12,0.92)',
           borderBottom: '1px solid var(--color-border)',
         }}>
           <button
-            onClick={() => setView('gallery')}
+            onClick={() => { setView('gallery'); setForcedLayerId(null) }}
             style={{
               display: 'flex', alignItems: 'center', gap: '0.4rem',
               padding: '0.3rem 0.65rem', borderRadius: 4,
@@ -717,19 +847,51 @@ export function MapTab({ campaign }: MapTabProps) {
             <span>Mapas</span>
           </button>
           <span style={{
-            marginLeft: '0.75rem',
+            marginLeft: '0.35rem',
             fontFamily: 'var(--font-ui)', fontSize: '0.75rem',
             color: 'rgba(255,255,255,0.25)',
           }}>
             {map.title}
           </span>
+          <div style={{ width: 1, height: 18, background: 'var(--color-border)', marginLeft: '0.35rem' }} />
+          {measurementTools.map(t => (
+            <button
+              key={t.id}
+              title={t.label}
+              onClick={() => setTool(prev => prev === t.id ? 'select' : t.id)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.3rem',
+                padding: '0.25rem 0.55rem', borderRadius: 4,
+                background: tool === t.id ? 'rgba(80,200,232,0.15)' : 'rgba(255,255,255,0.04)',
+                border: `1px solid ${tool === t.id ? 'rgba(80,200,232,0.4)' : 'rgba(255,255,255,0.1)'}`,
+                color: tool === t.id ? '#50C8E8' : 'var(--color-text-muted)',
+                fontFamily: 'var(--font-ui)', fontSize: '0.7rem', fontWeight: 600, cursor: 'pointer',
+              }}
+            >
+              <span>{t.icon}</span>
+              <span>{t.label}</span>
+            </button>
+          ))}
+          {hasMeasurements && (
+            <button
+              title="Limpar minha medição"
+              onClick={handleMeasurementRemoveSelf}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.3rem',
+                padding: '0.25rem 0.55rem', borderRadius: 4,
+                background: 'rgba(232,80,48,0.08)', border: '1px solid rgba(232,80,48,0.25)',
+                color: 'rgba(232,80,48,0.8)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem', cursor: 'pointer',
+              }}
+            >
+              <span>✕</span>
+            </button>
+          )}
         </div>
       )}
 
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         {campaign.isGm && (
           <>
-            {/* Desktop panel */}
             <div className="hidden lg:flex" style={{
               width: 220, flexShrink: 0,
               background: 'rgba(6,10,22,0.9)',
@@ -756,7 +918,6 @@ export function MapTab({ campaign }: MapTabProps) {
               />
             </div>
 
-            {/* Mobile panel toggle */}
             <button
               className="lg:hidden"
               onClick={() => setPanelOpen(v => !v)}
@@ -770,7 +931,6 @@ export function MapTab({ campaign }: MapTabProps) {
               ☰
             </button>
 
-            {/* Mobile drawer */}
             {panelOpen && (
               <div
                 onClick={() => setPanelOpen(false)}
@@ -808,7 +968,6 @@ export function MapTab({ campaign }: MapTabProps) {
           </>
         )}
 
-        {/* Canvas area */}
         <div ref={containerRef} style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
           {hasLayers ? (
             <MapCanvas
@@ -826,6 +985,8 @@ export function MapTab({ campaign }: MapTabProps) {
               npcCharacterIds={npcCharacterIds}
               dragOverride={activeDrag}
               localFogPatches={localFogPatches}
+              measurements={measurements}
+              liveMeasurements={liveMeasurements}
               onTokenDrag={handleTokenDrag}
               onTokenMove={handleTokenMove}
               onTokenResize={handleTokenResize}
@@ -837,6 +998,14 @@ export function MapTab({ campaign }: MapTabProps) {
               onDoorAdd={handleDoorAdd}
               onDoorDelete={handleDoorDelete}
               onDoorToggle={handleDoorToggle}
+              onMeasurementAdd={handleMeasurementAdd}
+              onMeasurementRemoveSelf={handleMeasurementRemoveSelf}
+              onMeasurementLive={handleMeasurementLive}
+              viewportOverride={viewportOverride}
+              onViewportChange={(s, x, y) => {
+                setCurrentViewport({ scale: s, x, y })
+                setViewportOverride(null)
+              }}
             />
           ) : (
             <div style={{
@@ -849,7 +1018,6 @@ export function MapTab({ campaign }: MapTabProps) {
             </div>
           )}
 
-          {/* Layer indicator */}
           {gmCurrentLayer && (
             <div style={{
               position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)',
@@ -886,10 +1054,11 @@ export function MapTab({ campaign }: MapTabProps) {
         <MapTokenModal
           character={modalToken.character}
           visionRadius={modalToken.visionRadius}
+          size={modalToken.size}
           sharedWith={modalToken.sharedWith}
           map={map}
           players={campaign.players}
-          onSave={(vr) => handleVisionUpdate(modalToken.id, vr)}
+          onSave={(vr, sz) => handleTokenModalSave(modalToken.id, vr, sz)}
           onShareUpdate={(sw) => handleShareUpdate(modalToken.id, sw)}
           onClose={() => setModalToken(null)}
         />

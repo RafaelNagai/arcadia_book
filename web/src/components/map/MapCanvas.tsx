@@ -1,14 +1,17 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { Stage, Layer, Image as KonvaImage, Line, Group, Rect, Ring, Circle } from 'react-konva'
 import type Konva from 'konva'
-import type { MapLayer, MapToken, GameMap, MapTool, FogPatch } from '@/lib/mapTypes'
+import type { MapLayer, MapToken, GameMap, MapTool, FogPatch, Measurement } from '@/lib/mapTypes'
+import { measureColor } from '@/lib/mapTypes'
 import { computeVisibilityPolygon } from '@/lib/fogOfWar'
 import { MapTokenLayer } from './MapTokenLayer'
 import { MapFogLayer } from './MapFogLayer'
 import { MapWallLayer } from './MapWallLayer'
 import { MapDoorLayer } from './MapDoorLayer'
+import { MapMeasureLayer } from './MapMeasureLayer'
 
 const TOKEN_BASE_RADIUS = 28
+const MEASURE_THROTTLE_MS = 40
 
 // ── SelectionHandle ───────────────────────────────────────────────────────────
 
@@ -73,9 +76,7 @@ function SelectionHandle({ token, scale, onResize }: {
 
 interface MapCanvasProps {
   map: GameMap
-  /** All layers of the map sorted by orderIndex */
   allLayers: MapLayer[]
-  /** The layer the viewer is currently "on" (GM active layer or player's token layer) */
   currentLayerId: string | null
   tokens: MapToken[]
   tool: MapTool
@@ -88,6 +89,10 @@ interface MapCanvasProps {
   npcCharacterIds: string[]
   dragOverride: { tokenId: string; x: number; y: number } | null
   localFogPatches: FogPatch[]
+  measurements: Measurement[]
+  liveMeasurements: Measurement[]
+  viewportOverride?: { scale: number; x: number; y: number } | null
+  onViewportChange?: (scale: number, x: number, y: number) => void
   onTokenDrag?: (tokenId: string, x: number, y: number) => void
   onTokenMove?: (tokenId: string, x: number, y: number) => void
   onTokenResize?: (tokenId: string, size: number) => void
@@ -99,6 +104,9 @@ interface MapCanvasProps {
   onDoorAdd?: (points: Array<{ x: number; y: number }>) => void
   onDoorDelete?: (doorId: string) => void
   onDoorToggle?: (doorId: string) => void
+  onMeasurementAdd?: (m: Measurement) => void
+  onMeasurementRemoveSelf?: () => void
+  onMeasurementLive?: (m: Measurement) => void
 }
 
 function isOnDraggable(node: Konva.Node): boolean {
@@ -125,6 +133,10 @@ export function MapCanvas({
   npcCharacterIds,
   dragOverride,
   localFogPatches,
+  measurements,
+  liveMeasurements,
+  viewportOverride,
+  onViewportChange,
   onTokenDrag,
   onTokenMove,
   onTokenResize,
@@ -136,6 +148,9 @@ export function MapCanvas({
   onDoorAdd,
   onDoorDelete,
   onDoorToggle,
+  onMeasurementAdd,
+  onMeasurementRemoveSelf,
+  onMeasurementLive,
 }: MapCanvasProps) {
   const stageRef = useRef<Konva.Stage>(null)
   const [layerImages, setLayerImages] = useState<Record<string, HTMLImageElement>>({})
@@ -146,10 +161,28 @@ export function MapCanvas({
   const stateRef = useRef({ scale, position })
   stateRef.current = { scale, position }
 
+  // Notify parent of viewport changes (throttled)
+  const lastViewportBroadcast = useRef(0)
+  const onViewportChangeRef = useRef(onViewportChange)
+  onViewportChangeRef.current = onViewportChange
+  useEffect(() => {
+    const now = Date.now()
+    if (now - lastViewportBroadcast.current < 80) return
+    lastViewportBroadcast.current = now
+    onViewportChangeRef.current?.(scale, position.x, position.y)
+  }, [scale, position])
+
+  // Apply viewport override from GM (FOCUS_ALL)
+  useEffect(() => {
+    if (!viewportOverride) return
+    hasFitted.current = true // prevent auto-fit from overriding
+    setScale(viewportOverride.scale)
+    setPosition({ x: viewportOverride.x, y: viewportOverride.y })
+  }, [viewportOverride])
+
   const isPanning = useRef(false)
   const lastPan = useRef({ x: 0, y: 0 })
 
-  // Touch support refs
   const lastPinchDist = useRef<number | null>(null)
   const isTouchPanning = useRef(false)
   const lastTouchPos = useRef({ x: 0, y: 0 })
@@ -162,7 +195,13 @@ export function MapCanvas({
   const [selectedDoorId, setSelectedDoorId] = useState<string | null>(null)
   const [selectedTokenId, setSelectedTokenId] = useState<string | null>(null)
 
-  // Derived layer data
+  // Measurement local state
+  const [measureStart, setMeasureStart] = useState<{ x: number; y: number } | null>(null)
+  const [measurePreview, setMeasurePreview] = useState<{ x: number; y: number } | null>(null)
+  const measureStartRef = useRef<{ x: number; y: number } | null>(null)
+  measureStartRef.current = measureStart
+  const lastMeasureBroadcast = useRef(0)
+
   const sortedLayers = [...allLayers].sort((a, b) => a.orderIndex - b.orderIndex)
   const currentLayerIndex = sortedLayers.findIndex(l => l.id === currentLayerId)
   const currentLayer = currentLayerIndex >= 0 ? sortedLayers[currentLayerIndex] : (sortedLayers[sortedLayers.length - 1] ?? null)
@@ -170,7 +209,6 @@ export function MapCanvas({
     ? sortedLayers.slice(0, currentLayerIndex + 1)
     : sortedLayers.length > 0 ? [sortedLayers[sortedLayers.length - 1]] : []
 
-  // Load images for all layers
   const layerImageUrlsKey = allLayers.map(l => `${l.id}:${l.imageUrl}`).join('|')
   useEffect(() => {
     const cleanup: (() => void)[] = []
@@ -186,13 +224,11 @@ export function MapCanvas({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layerImageUrlsKey])
 
-  // Reset viewport when the map changes (switching between maps)
   useEffect(() => { hasFitted.current = false }, [map.id])
 
-  // Fit the current layer image to the container once on initial load
   const currentLayerImage = currentLayer ? layerImages[currentLayer.id] ?? null : null
   useEffect(() => {
-    if (hasFitted.current || !currentLayerImage || containerWidth === 0 || containerHeight === 0) return
+    if (hasFitted.current || viewportOverride || !currentLayerImage || containerWidth === 0 || containerHeight === 0) return
     hasFitted.current = true
     const fit = Math.min(containerWidth / currentLayerImage.naturalWidth, containerHeight / currentLayerImage.naturalHeight)
     setScale(fit)
@@ -200,23 +236,37 @@ export function MapCanvas({
       x: (containerWidth - currentLayerImage.naturalWidth * fit) / 2,
       y: (containerHeight - currentLayerImage.naturalHeight * fit) / 2,
     })
-  }, [currentLayerImage, containerWidth, containerHeight])
+  }, [currentLayerImage, containerWidth, containerHeight, viewportOverride])
 
+  // Reset drawing state when tool changes
   useEffect(() => {
     if (tool !== 'wall') { setWallStart(null); setWallPreview(null); setSelectedWallId(null) }
     if (tool !== 'door') { setDoorStart(null); setDoorPreview(null); setSelectedDoorId(null) }
-    if (tool !== 'wall' && tool !== 'door') return
+    if (tool !== 'ruler' && tool !== 'circle') { setMeasureStart(null); setMeasurePreview(null) }
+  }, [tool])
+
+  useEffect(() => { setSelectedTokenId(null) }, [tool])
+
+  // ESC key handler for all drawing tools
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key !== 'Escape') return
+      if (tool === 'wall' || tool === 'door') {
         setWallStart(null); setSelectedWallId(null)
         setDoorStart(null); setSelectedDoorId(null)
+      }
+      if (tool === 'ruler' || tool === 'circle') {
+        if (measureStartRef.current) {
+          setMeasureStart(null)
+          setMeasurePreview(null)
+        } else {
+          onMeasurementRemoveSelf?.()
+        }
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [tool])
-
-  useEffect(() => { setSelectedTokenId(null) }, [tool])
+  }, [tool, onMeasurementRemoveSelf])
 
   const getWorldPos = useCallback(() => {
     const stage = stageRef.current
@@ -263,11 +313,29 @@ export function MapCanvas({
     }
     if (tool === 'wall' && isGm) { const wp = getWorldPos(); if (wp) setWallPreview(wp) }
     if (tool === 'door' && isGm) { const wp = getWorldPos(); if (wp) setDoorPreview(wp) }
-  }, [tool, isGm, getWorldPos])
+    if ((tool === 'ruler' || tool === 'circle') && measureStartRef.current) {
+      const wp = getWorldPos()
+      if (!wp) return
+      setMeasurePreview(wp)
+      const now = Date.now()
+      if (now - lastMeasureBroadcast.current >= MEASURE_THROTTLE_MS) {
+        lastMeasureBroadcast.current = now
+        const start = measureStartRef.current
+        onMeasurementLive?.({
+          id: userId ?? 'unknown',
+          userId: userId ?? 'unknown',
+          type: tool,
+          x1: start.x, y1: start.y,
+          x2: wp.x, y2: wp.y,
+          color: measureColor(userId ?? ''),
+          isLive: true,
+        })
+      }
+    }
+  }, [tool, isGm, userId, getWorldPos, onMeasurementLive])
 
   const handleMouseUp = useCallback(() => { isPanning.current = false }, [])
 
-  // ── Touch: pinch-to-zoom + single-finger pan ──────────────────────────────
   const handleTouchStart = useCallback((e: Konva.KonvaEventObject<TouchEvent>) => {
     const touches = e.evt.touches
     if (touches.length === 2) {
@@ -331,6 +399,27 @@ export function MapCanvas({
 
   const handleClick = useCallback((_e: Konva.KonvaEventObject<MouseEvent>) => {
     setSelectedTokenId(null)
+
+    if (tool === 'ruler' || tool === 'circle') {
+      const wp = getWorldPos(); if (!wp) return
+      if (!measureStart) {
+        setMeasureStart(wp)
+      } else {
+        const m: Measurement = {
+          id: userId ?? 'unknown',
+          userId: userId ?? 'unknown',
+          type: tool,
+          x1: measureStart.x, y1: measureStart.y,
+          x2: wp.x, y2: wp.y,
+          color: measureColor(userId ?? ''),
+        }
+        onMeasurementAdd?.(m)
+        setMeasureStart(null)
+        setMeasurePreview(null)
+      }
+      return
+    }
+
     if (!isGm) return
 
     if (tool === 'select') {
@@ -352,7 +441,7 @@ export function MapCanvas({
       if (!doorStart) { setDoorStart(wp) } else { onDoorAdd?.([doorStart, wp]); setDoorStart(null) }
       return
     }
-  }, [tool, isGm, wallStart, selectedWallId, doorStart, selectedDoorId, onWallAdd, onDoorAdd, getWorldPos])
+  }, [tool, isGm, measureStart, userId, wallStart, selectedWallId, doorStart, selectedDoorId, onWallAdd, onDoorAdd, onMeasurementAdd, getWorldPos])
 
   const handleWallEndpointClick = useCallback((point: { x: number; y: number }) => {
     setSelectedWallId(null); setSelectedDoorId(null)
@@ -365,7 +454,6 @@ export function MapCanvas({
     }
   }, [tool, wallStart, doorStart, onWallAdd, onDoorAdd])
 
-  // Vision blocking segments: walls + closed doors
   const closedDoors = (currentLayer?.doors ?? []).filter(d => !d.isOpen)
   const walls = [
     ...(currentLayer?.walls ?? []),
@@ -388,7 +476,6 @@ export function MapCanvas({
     ? visionCircles.map(c => computeVisibilityPolygon({ x: c.x, y: c.y }, c.radius, walls))
     : []
 
-  // For players, only show fog patches from their own characters or shared ones (not other players' exploration)
   const accessibleCharIds = new Set([
     ...myCharacterIds,
     ...tokens.filter(t => userId != null && t.sharedWith.includes(userId ?? '')).map(t => t.characterId),
@@ -398,7 +485,25 @@ export function MapCanvas({
     ? rawFogPatches
     : rawFogPatches.filter(p => p.characterId == null || accessibleCharIds.has(p.characterId))
 
-  // Wall delete HUD position
+  // Build local preview measurement
+  const localPreview: Measurement | null = (measureStart && measurePreview && userId)
+    ? {
+      id: `${userId}-preview`,
+      userId,
+      type: tool as 'ruler' | 'circle',
+      x1: measureStart.x, y1: measureStart.y,
+      x2: measurePreview.x, y2: measurePreview.y,
+      color: measureColor(userId),
+      isLive: true,
+    }
+    : null
+
+  const allMeasurements = [
+    ...measurements,
+    ...liveMeasurements.filter(m => m.userId !== userId),
+    ...(localPreview ? [localPreview] : []),
+  ]
+
   const selectedWall = walls.find(w => w.id === selectedWallId)
   const wallHudPos = selectedWall && selectedWall.points.length >= 2 ? {
     x: ((selectedWall.points[0].x + selectedWall.points[1].x) / 2) * scale + position.x,
@@ -413,7 +518,8 @@ export function MapCanvas({
 
   const stageW = containerWidth || window.innerWidth
   const stageH = containerHeight || window.innerHeight
-  const cursorStyle = tool === 'fog' || tool === 'wall' || tool === 'door' ? 'crosshair' : 'grab'
+  const isMeasuring = tool === 'ruler' || tool === 'circle'
+  const cursorStyle = isMeasuring ? 'crosshair' : (tool === 'fog' || tool === 'wall' || tool === 'door') ? 'crosshair' : 'grab'
 
   return (
     <div
@@ -435,17 +541,11 @@ export function MapCanvas({
         onClick={handleClick}
         style={{ background: '#04060C', cursor: cursorStyle, touchAction: 'none' }}
       >
-        {/*
-         * Per-layer rendering bottom → top.
-         * Z-order per the spec: image layer N, tokens layer N, image layer N+1, tokens layer N+1 …
-         * Lower-layer tokens are non-interactive and filtered by the current vision polygons.
-         */}
         {layersToRender.map(layer => {
           const img = layerImages[layer.id]
           const isCurrent = layer.id === currentLayer?.id
           return (
             <>
-              {/* Layer image */}
               <Layer key={`img-${layer.id}`}>
                 <Group
                   x={position.x} y={position.y}
@@ -456,7 +556,6 @@ export function MapCanvas({
                   ) : (
                     isCurrent && <Rect width={stageW / scale} height={stageH / scale} fill="#0A0F1E" />
                   )}
-                  {/* Dark overlay on lower floors so they don't bleed through */}
                   {!isCurrent && img && (
                     <Rect
                       x={0} y={0}
@@ -478,7 +577,6 @@ export function MapCanvas({
                 </Group>
               </Layer>
 
-              {/* Layer tokens */}
               {isCurrent ? (
                 <MapTokenLayer
                   key={`tok-${layer.id}`}
@@ -516,7 +614,6 @@ export function MapCanvas({
           )
         })}
 
-        {/* Fog of war (current layer only) */}
         {fogEnabled && (
           <MapFogLayer
             enabled={fogEnabled}
@@ -529,7 +626,6 @@ export function MapCanvas({
           />
         )}
 
-        {/* Walls — GM only, current layer */}
         {isGm && (
           <MapWallLayer
             walls={currentLayer?.walls ?? []}
@@ -544,7 +640,6 @@ export function MapCanvas({
           />
         )}
 
-        {/* Doors — GM only, current layer */}
         {isGm && (
           <MapDoorLayer
             doors={currentLayer?.doors ?? []}
@@ -560,7 +655,16 @@ export function MapCanvas({
           />
         )}
 
-        {/* Selection + resize handle */}
+        {/* Measurements — visible to all */}
+        <MapMeasureLayer
+          measurements={allMeasurements}
+          panX={position.x}
+          panY={position.y}
+          scale={scale}
+          gridEnabled={map.gridEnabled}
+          gridSize={map.gridSize}
+        />
+
         {selectedToken && (
           <Layer x={position.x} y={position.y} scaleX={scale} scaleY={scale}>
             <SelectionHandle
@@ -623,7 +727,7 @@ export function MapCanvas({
         </div>
       )}
 
-      {/* Door HUD — toggle open/close (select mode) or delete (door mode) */}
+      {/* Door HUD */}
       {isGm && selectedDoorId && (() => {
         const door = (currentLayer?.doors ?? []).find(d => d.id === selectedDoorId)
         if (!door || door.points.length < 2) return null
@@ -671,6 +775,20 @@ export function MapCanvas({
           </div>
         )
       })()}
+
+      {/* Measurement hint */}
+      {isMeasuring && measureStart && (
+        <div style={{
+          position: 'absolute', bottom: 48, left: '50%', transform: 'translateX(-50%)',
+          padding: '0.25rem 0.65rem', borderRadius: 99,
+          background: 'rgba(4,6,12,0.85)', border: '1px solid rgba(255,255,255,0.1)',
+          backdropFilter: 'blur(8px)',
+          fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: 'rgba(255,255,255,0.45)',
+          pointerEvents: 'none',
+        }}>
+          Clique para fixar · ESC para cancelar
+        </div>
+      )}
     </div>
   )
 }
