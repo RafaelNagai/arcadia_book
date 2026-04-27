@@ -15,6 +15,8 @@ export function MapSettingsPanel({ campaignId, map, onSave, onClose }: Props) {
   const [gridSize, setGridSize] = useState(map.gridSize)
   const [defaultVisionRadius, setDefaultVisionRadius] = useState(map.defaultVisionRadius)
   const [defaultTokenSize, setDefaultTokenSize] = useState(map.defaultTokenSize ?? 1)
+  const [allowPlayerTokenMove, setAllowPlayerTokenMove] = useState(map.allowPlayerTokenMove ?? true)
+  const [allowPlayerDraw, setAllowPlayerDraw] = useState(map.allowPlayerDraw ?? true)
   const [saving, setSaving] = useState(false)
 
   async function handleSave() {
@@ -26,6 +28,8 @@ export function MapSettingsPanel({ campaignId, map, onSave, onClose }: Props) {
         grid_size: gridSize,
         default_vision_radius: defaultVisionRadius,
         default_token_size: defaultTokenSize,
+        allow_player_token_move: allowPlayerTokenMove,
+        allow_player_draw: allowPlayerDraw,
       })
       onSave(res.map as GameMap)
     } catch (err) {
@@ -106,6 +110,16 @@ export function MapSettingsPanel({ campaignId, map, onSave, onClose }: Props) {
             <span>0.25×</span><span>10×</span>
           </div>
         </Field>
+
+        <div style={{ height: 1, background: 'rgba(255,255,255,0.07)' }} />
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', marginBottom: 2 }}>
+            Permissões dos Jogadores
+          </span>
+          <Toggle label="Mover tokens" value={allowPlayerTokenMove} onChange={setAllowPlayerTokenMove} />
+          <Toggle label="Desenhar (régua / área)" value={allowPlayerDraw} onChange={setAllowPlayerDraw} />
+        </div>
 
         <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', paddingTop: '0.25rem' }}>
           <button onClick={onClose} style={cancelBtnStyle}>Cancelar</button>

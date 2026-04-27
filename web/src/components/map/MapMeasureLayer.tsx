@@ -14,13 +14,13 @@ function distPx(m: Measurement): number {
   return Math.sqrt((m.x2 - m.x1) ** 2 + (m.y2 - m.y1) ** 2)
 }
 
+const DEFAULT_BLOCK_PX = 100
+
 function label(m: Measurement, gridEnabled: boolean, gridSize: number): string {
   const px = Math.round(distPx(m))
-  if (gridEnabled && gridSize > 0) {
-    const cells = (px / gridSize).toFixed(1)
-    return `${px}px (${cells} cel)`
-  }
-  return `${px}px`
+  const blockSize = gridEnabled && gridSize > 0 ? gridSize : DEFAULT_BLOCK_PX
+  const blocks = (px / blockSize).toFixed(1)
+  return `${blocks} bl`
 }
 
 function MeasurementShape({ m, scale, gridEnabled, gridSize }: {

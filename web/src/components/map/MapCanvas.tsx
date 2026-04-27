@@ -92,6 +92,8 @@ interface MapCanvasProps {
   measurements: Measurement[]
   liveMeasurements: Measurement[]
   viewportOverride?: { scale: number; x: number; y: number } | null
+  allowPlayerTokenMove?: boolean
+  allowPlayerDraw?: boolean
   onViewportChange?: (scale: number, x: number, y: number) => void
   onTokenDrag?: (tokenId: string, x: number, y: number) => void
   onTokenMove?: (tokenId: string, x: number, y: number) => void
@@ -136,6 +138,8 @@ export function MapCanvas({
   measurements,
   liveMeasurements,
   viewportOverride,
+  allowPlayerTokenMove = true,
+  allowPlayerDraw = true,
   onViewportChange,
   onTokenDrag,
   onTokenMove,
@@ -313,7 +317,7 @@ export function MapCanvas({
     }
     if (tool === 'wall' && isGm) { const wp = getWorldPos(); if (wp) setWallPreview(wp) }
     if (tool === 'door' && isGm) { const wp = getWorldPos(); if (wp) setDoorPreview(wp) }
-    if ((tool === 'ruler' || tool === 'circle') && measureStartRef.current) {
+    if ((tool === 'ruler' || tool === 'circle') && measureStartRef.current && (isGm || allowPlayerDraw)) {
       const wp = getWorldPos()
       if (!wp) return
       setMeasurePreview(wp)
@@ -332,7 +336,7 @@ export function MapCanvas({
         })
       }
     }
-  }, [tool, isGm, userId, getWorldPos, onMeasurementLive])
+  }, [tool, isGm, allowPlayerDraw, userId, getWorldPos, onMeasurementLive])
 
   const handleMouseUp = useCallback(() => { isPanning.current = false }, [])
 
@@ -400,7 +404,7 @@ export function MapCanvas({
   const handleClick = useCallback((_e: Konva.KonvaEventObject<MouseEvent>) => {
     setSelectedTokenId(null)
 
-    if (tool === 'ruler' || tool === 'circle') {
+    if ((tool === 'ruler' || tool === 'circle') && (isGm || allowPlayerDraw)) {
       const wp = getWorldPos(); if (!wp) return
       if (!measureStart) {
         setMeasureStart(wp)
@@ -441,7 +445,7 @@ export function MapCanvas({
       if (!doorStart) { setDoorStart(wp) } else { onDoorAdd?.([doorStart, wp]); setDoorStart(null) }
       return
     }
-  }, [tool, isGm, measureStart, userId, wallStart, selectedWallId, doorStart, selectedDoorId, onWallAdd, onDoorAdd, onMeasurementAdd, getWorldPos])
+  }, [tool, isGm, allowPlayerDraw, measureStart, userId, wallStart, selectedWallId, doorStart, selectedDoorId, onWallAdd, onDoorAdd, onMeasurementAdd, getWorldPos])
 
   const handleWallEndpointClick = useCallback((point: { x: number; y: number }) => {
     setSelectedWallId(null); setSelectedDoorId(null)
@@ -590,6 +594,7 @@ export function MapCanvas({
                   fogEnabled={fogEnabled}
                   visionPolygons={visionPolygons}
                   myCharacterIds={myCharacterIds}
+                  allowPlayerTokenMove={allowPlayerTokenMove}
                   onTokenDrag={onTokenDrag}
                   onTokenMove={onTokenMove}
                   onTokenClick={setSelectedTokenId}
@@ -665,7 +670,7 @@ export function MapCanvas({
           gridSize={map.gridSize}
         />
 
-        {selectedToken && (
+        {selectedToken && (isGm || allowPlayerTokenMove) && (
           <Layer x={position.x} y={position.y} scaleX={scale} scaleY={scale}>
             <SelectionHandle
               token={selectedToken}

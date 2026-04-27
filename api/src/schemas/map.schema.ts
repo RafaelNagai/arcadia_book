@@ -7,6 +7,8 @@ export const CreateMapSchema = z.object({
   vision_unified: z.boolean().default(true),
   default_vision_radius: z.number().int().min(50).max(2000).default(150),
   default_token_size: z.number().min(0.25).max(10).default(1),
+  allow_player_token_move: z.boolean().default(true),
+  allow_player_draw: z.boolean().default(true),
 })
 
 export const UpdateMapSchema = CreateMapSchema.partial()

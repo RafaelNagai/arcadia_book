@@ -80,6 +80,8 @@ export interface GameMap {
   defaultVisionRadius: number
   defaultTokenSize: number
   fogEnabled: boolean
+  allowPlayerTokenMove: boolean
+  allowPlayerDraw: boolean
   measurements: Measurement[]
   createdAt: string
   layers: MapLayer[]

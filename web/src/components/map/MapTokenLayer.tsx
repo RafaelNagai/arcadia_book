@@ -98,6 +98,7 @@ interface MapTokenLayerProps {
   fogEnabled: boolean
   visionPolygons: WallPoint[][]
   myCharacterIds: string[]
+  allowPlayerTokenMove?: boolean
   onTokenDrag?: (tokenId: string, x: number, y: number) => void
   onTokenMove?: (tokenId: string, x: number, y: number) => void
   onTokenClick?: (tokenId: string) => void
@@ -116,6 +117,7 @@ export function MapTokenLayer({
   fogEnabled,
   visionPolygons,
   myCharacterIds,
+  allowPlayerTokenMove = true,
   onTokenDrag,
   onTokenMove,
   onTokenClick,
@@ -135,7 +137,7 @@ export function MapTokenLayer({
   })
 
   const canDrag = (token: MapToken) =>
-    !readOnly && tool === 'select' && (isGm || myCharacterIds.includes(token.characterId))
+    !readOnly && tool === 'select' && (isGm || (allowPlayerTokenMove && myCharacterIds.includes(token.characterId)))
 
   return (
     <Layer

@@ -58,6 +58,8 @@ export class MapsService {
       visionUnified: input.vision_unified,
       defaultVisionRadius: input.default_vision_radius,
       defaultTokenSize: input.default_token_size,
+      allowPlayerTokenMove: input.allow_player_token_move,
+      allowPlayerDraw: input.allow_player_draw,
     })
   }
 
@@ -70,6 +72,8 @@ export class MapsService {
     if (input.vision_unified !== undefined) patch.visionUnified = input.vision_unified
     if (input.default_vision_radius !== undefined) patch.defaultVisionRadius = input.default_vision_radius
     if (input.default_token_size !== undefined) patch.defaultTokenSize = input.default_token_size
+    if (input.allow_player_token_move !== undefined) patch.allowPlayerTokenMove = input.allow_player_token_move
+    if (input.allow_player_draw !== undefined) patch.allowPlayerDraw = input.allow_player_draw
     return this.repo.updateMap(map.id, patch)
   }
 

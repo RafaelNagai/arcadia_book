@@ -744,6 +744,8 @@ export function MapTab({ campaign }: MapTabProps) {
       defaultVisionRadius: updated.defaultVisionRadius,
       defaultTokenSize: updated.defaultTokenSize ?? 1,
       visionUnified: updated.visionUnified,
+      allowPlayerTokenMove: updated.allowPlayerTokenMove ?? true,
+      allowPlayerDraw: updated.allowPlayerDraw ?? true,
       senderId: user?.id,
     })
   }, [broadcastMap, user?.id])
@@ -854,7 +856,7 @@ export function MapTab({ campaign }: MapTabProps) {
             {map.title}
           </span>
           <div style={{ width: 1, height: 18, background: 'var(--color-border)', marginLeft: '0.35rem' }} />
-          {measurementTools.map(t => (
+          {(map.allowPlayerDraw ?? true) && measurementTools.map(t => (
             <button
               key={t.id}
               title={t.label}
@@ -998,6 +1000,8 @@ export function MapTab({ campaign }: MapTabProps) {
               onDoorAdd={handleDoorAdd}
               onDoorDelete={handleDoorDelete}
               onDoorToggle={handleDoorToggle}
+              allowPlayerTokenMove={map.allowPlayerTokenMove ?? true}
+              allowPlayerDraw={map.allowPlayerDraw ?? true}
               onMeasurementAdd={handleMeasurementAdd}
               onMeasurementRemoveSelf={handleMeasurementRemoveSelf}
               onMeasurementLive={handleMeasurementLive}

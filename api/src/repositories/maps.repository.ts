@@ -61,6 +61,8 @@ export class MapsRepository {
     visionUnified: boolean
     defaultVisionRadius: number
     defaultTokenSize: number
+    allowPlayerTokenMove: boolean
+    allowPlayerDraw: boolean
   }) {
     return this.db.map.create({
       data: { campaignId, ...data },
@@ -75,6 +77,8 @@ export class MapsRepository {
     visionUnified: boolean
     defaultVisionRadius: number
     defaultTokenSize: number
+    allowPlayerTokenMove: boolean
+    allowPlayerDraw: boolean
   }>) {
     return this.db.map.update({ where: { id }, data, include: { layers: true } })
   }

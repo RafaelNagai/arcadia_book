@@ -241,6 +241,8 @@ export const api = {
       vision_unified?: boolean
       default_vision_radius?: number
       default_token_size?: number
+      allow_player_token_move?: boolean
+      allow_player_draw?: boolean
     }) =>
       apiFetch<{ map: unknown }>(`/campaigns/${campaignId}/maps/${mapId}`, {
         method: 'PUT',

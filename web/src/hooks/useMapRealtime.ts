@@ -14,7 +14,7 @@ export type MapBroadcastEvent =
   | { type: 'DOOR_ADD'; door: MapDoor; senderId?: string }
   | { type: 'DOOR_DELETE'; doorId: string; layerId: string; senderId?: string }
   | { type: 'DOOR_TOGGLE'; door: MapDoor; senderId?: string }
-  | { type: 'MAP_SETTINGS_UPDATE'; title: string; gridEnabled: boolean; gridSize: number; defaultVisionRadius: number; defaultTokenSize: number; visionUnified: boolean; senderId?: string }
+  | { type: 'MAP_SETTINGS_UPDATE'; title: string; gridEnabled: boolean; gridSize: number; defaultVisionRadius: number; defaultTokenSize: number; visionUnified: boolean; allowPlayerTokenMove: boolean; allowPlayerDraw: boolean; senderId?: string }
   | { type: 'MEASUREMENT_LIVE'; measurement: Measurement; senderId?: string }
   | { type: 'MEASUREMENT_ADD'; measurement: Measurement; senderId?: string }
   | { type: 'MEASUREMENT_REMOVE'; userId: string; senderId?: string }
@@ -38,7 +38,7 @@ interface MapRealtimeHandlers {
   onDoorAdd: (door: MapDoor) => void
   onDoorDelete: (doorId: string, layerId: string) => void
   onDoorToggle: (door: MapDoor) => void
-  onSettingsUpdate: (settings: { title: string; gridEnabled: boolean; gridSize: number; defaultVisionRadius: number; defaultTokenSize: number; visionUnified: boolean }) => void
+  onSettingsUpdate: (settings: { title: string; gridEnabled: boolean; gridSize: number; defaultVisionRadius: number; defaultTokenSize: number; visionUnified: boolean; allowPlayerTokenMove: boolean; allowPlayerDraw: boolean }) => void
   onMeasurementLive: (m: Measurement) => void
   onMeasurementAdd: (m: Measurement) => void
   onMeasurementRemove: (userId: string) => void
@@ -114,6 +114,8 @@ export function useMapRealtime(
             defaultVisionRadius: p.defaultVisionRadius,
             defaultTokenSize: p.defaultTokenSize,
             visionUnified: p.visionUnified,
+            allowPlayerTokenMove: p.allowPlayerTokenMove,
+            allowPlayerDraw: p.allowPlayerDraw,
           })
       })
       .on('broadcast', { event: 'MEASUREMENT_LIVE' }, ({ payload }) => {
