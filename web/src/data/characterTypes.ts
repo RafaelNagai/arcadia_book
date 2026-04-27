@@ -94,6 +94,8 @@ export interface Character {
   id: string
   name: string
   race: string
+  nationality?: string
+  religion?: string
   concept: string
   quote: string
   image: string | null

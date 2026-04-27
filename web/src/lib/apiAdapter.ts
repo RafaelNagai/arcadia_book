@@ -11,6 +11,8 @@ export function mapApiToCharacter(raw: Record<string, unknown>): Character {
     id: raw.id as string,
     name: raw.name as string,
     race: raw.race as string,
+    nationality: (raw.nationality as string | undefined) ?? undefined,
+    religion: (raw.religion as string | undefined) ?? undefined,
     concept: raw.concept as string,
     quote: raw.quote as string,
     image: (raw.imageUrl as string | null) ?? null,
@@ -107,6 +109,8 @@ export function mapCharacterToApi(char: Character): Record<string, unknown> {
   return {
     name: char.name,
     race: char.race,
+    nationality: char.nationality,
+    religion: char.religion,
     concept: char.concept,
     quote: char.quote,
     image_url: char.image,

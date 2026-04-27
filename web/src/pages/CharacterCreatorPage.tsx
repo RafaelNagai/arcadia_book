@@ -42,6 +42,8 @@ export function CharacterCreatorPage() {
       setApiExisting(char)
       setName(char.name)
       setRace(char.race)
+      setNationality(char.nationality ?? '')
+      setReligion(char.religion ?? '')
       setConcept(char.concept)
       setQuote(char.quote)
       setAttrs(char.attributes)
@@ -70,10 +72,12 @@ export function CharacterCreatorPage() {
   const [saving,    setSaving]    = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
 
-  const [name,     setName]     = useState(existing?.name     ?? '')
-  const [race,     setRace]     = useState(existing?.race     ?? '')
-  const [concept,  setConcept]  = useState(existing?.concept  ?? '')
-  const [quote,    setQuote]    = useState(existing?.quote    ?? '')
+  const [name,        setName]        = useState(existing?.name        ?? '')
+  const [race,        setRace]        = useState(existing?.race        ?? '')
+  const [nationality, setNationality] = useState(existing?.nationality ?? '')
+  const [religion,    setReligion]    = useState(existing?.religion    ?? '')
+  const [concept,     setConcept]     = useState(existing?.concept     ?? '')
+  const [quote,       setQuote]       = useState(existing?.quote       ?? '')
   const [attrs,    setAttrs]    = useState<CharacterAttributes>(existing?.attributes ?? EMPTY_ATTRS)
   const [skills,   setSkills]   = useState<CharacterSkills>(existing?.skills ?? EMPTY_SKILLS)
   const [talents,  setTalents]  = useState<string[]>(existing?.talents ?? [])
@@ -127,11 +131,13 @@ export function CharacterCreatorPage() {
       const newHp  = calcHP(attrs.fisico)
       const newSan = calcSanidade(attrs.intelecto, attrs.influencia)
       const character: Character = {
-        id:      isEditing ? existing!.id : generateId(),
-        name:    name.trim()    || 'Sem Nome',
-        race:    race.trim()    || 'Desconhecida',
-        concept: concept.trim(),
-        quote:   quote.trim(),
+        id:          isEditing ? existing!.id : generateId(),
+        name:        name.trim()    || 'Sem Nome',
+        race:        race.trim()    || 'Desconhecida',
+        nationality: nationality.trim() || undefined,
+        religion:    religion.trim()    || undefined,
+        concept:     concept.trim(),
+        quote:       quote.trim(),
         image,
         level:   totalLevel,
         attributes: attrs,
@@ -231,14 +237,16 @@ export function CharacterCreatorPage() {
           >
             {step === 1 && (
               <Step1Identity
-                data={{ name, race, concept, quote }}
+                data={{ name, race, nationality, religion, concept, quote }}
                 image={image}
                 onImageChange={setImage}
                 onChange={(k, v) => {
-                  if (k === 'name')    setName(v)
-                  else if (k === 'race')    setRace(v)
-                  else if (k === 'concept') setConcept(v)
-                  else if (k === 'quote')   setQuote(v)
+                  if (k === 'name')            setName(v)
+                  else if (k === 'race')        setRace(v)
+                  else if (k === 'nationality') setNationality(v)
+                  else if (k === 'religion')    setReligion(v)
+                  else if (k === 'concept')     setConcept(v)
+                  else if (k === 'quote')       setQuote(v)
                 }}
               />
             )}

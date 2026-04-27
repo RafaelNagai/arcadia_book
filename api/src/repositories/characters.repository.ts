@@ -44,6 +44,8 @@ export class CharactersRepository {
         userId,
         name: input.name,
         race: input.race ?? '',
+        nationality: input.nationality ?? null,
+        religion: input.religion ?? null,
         concept: input.concept ?? '',
         quote: input.quote ?? '',
         imageUrl: input.image_url ?? null,

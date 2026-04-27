@@ -7,6 +7,14 @@ export const RACES = [
   'Avaro', 'Anão', 'Anã', 'Orc', 'Outro',
 ]
 
+export const NATIONALITIES = [
+  'Union', 'Britannia', 'Camelot', 'Galahad', 'Norte de Galahad', 'Rubra', 'Outro',
+]
+
+export const RELIGIONS = [
+  'Alfaísta', 'Betaísta', 'Gamaísta', 'Ateu', 'Outro',
+]
+
 export const ELEMENTS = ['Energia', 'Anomalia', 'Paradoxo', 'Astral', 'Cognitivo'] as const
 export type ElementName = typeof ELEMENTS[number]
 

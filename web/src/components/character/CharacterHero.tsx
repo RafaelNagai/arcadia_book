@@ -127,7 +127,7 @@ export function CharacterHero({
         }}
       >
         <div style={{ maxWidth: 680 }}>
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-3 mb-1">
             <span
               className="text-xs uppercase tracking-[0.24em] font-semibold"
               style={{ color: accent.text, fontFamily: "var(--font-ui)" }}
@@ -142,6 +142,29 @@ export function CharacterHero({
               Nível {character.level}
             </span>
           </div>
+          {(character.nationality || character.religion) && (
+            <div className="flex items-center gap-2 mb-2">
+              {character.nationality && (
+                <span
+                  className="text-xs uppercase tracking-[0.16em]"
+                  style={{ color: "rgba(200,220,240,0.45)", fontFamily: "var(--font-ui)" }}
+                >
+                  {character.nationality}
+                </span>
+              )}
+              {character.nationality && character.religion && (
+                <span style={{ color: "rgba(255,255,255,0.12)" }}>·</span>
+              )}
+              {character.religion && (
+                <span
+                  className="text-xs uppercase tracking-[0.16em]"
+                  style={{ color: "rgba(200,220,240,0.45)", fontFamily: "var(--font-ui)" }}
+                >
+                  {character.religion}
+                </span>
+              )}
+            </div>
+          )}
           <h1
             style={{
               fontFamily: "var(--font-display)",

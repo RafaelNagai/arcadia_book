@@ -1,7 +1,7 @@
-import type { Character } from "@/data/characterTypes"
-import { HoneycombGrid } from "./HoneycombGrid"
-import { SectionLabel } from "./CharacterUI"
-import { DefenseStats } from "./DefenseStats"
+import type { Character } from "@/data/characterTypes";
+import { HoneycombGrid } from "./HoneycombGrid";
+import { SectionLabel } from "./CharacterUI";
+import { DefenseStats } from "./DefenseStats";
 
 export function StatsSection({
   character,
@@ -21,31 +21,26 @@ export function StatsSection({
   onDpReset,
   onEdit,
 }: {
-  character: Character
-  accentText: string
-  currentHp: number
-  currentSanidade: number
-  owned: boolean
-  onHpClick: (idx: number) => void
-  onSanidadeClick: (idx: number) => void
-  daBase: number
-  daBonus: number
-  dpBonus: number
-  onDaBaseChange?: (delta: number) => void
-  onDaChange?: (delta: number) => void
-  onDaReset?: () => void
-  onDpChange?: (delta: number) => void
-  onDpReset?: () => void
-  onEdit?: () => void
+  character: Character;
+  accentText: string;
+  currentHp: number;
+  currentSanidade: number;
+  owned: boolean;
+  onHpClick: (idx: number) => void;
+  onSanidadeClick: (idx: number) => void;
+  daBase: number;
+  daBonus: number;
+  dpBonus: number;
+  onDaBaseChange?: (delta: number) => void;
+  onDaChange?: (delta: number) => void;
+  onDaReset?: () => void;
+  onDpChange?: (delta: number) => void;
+  onDpReset?: () => void;
+  onEdit?: () => void;
 }) {
   return (
     <section>
-      <SectionLabel
-        accent={accentText}
-        edits={onEdit ? [{ label: "identidade", fn: onEdit }] : undefined}
-      >
-        Vitalidade
-      </SectionLabel>
+      <SectionLabel accent={accentText}>Vitalidade</SectionLabel>
       <div className="flex flex-wrap gap-12 items-start">
         <HoneycombGrid
           total={character.hp}
@@ -77,5 +72,5 @@ export function StatsSection({
         />
       </div>
     </section>
-  )
+  );
 }

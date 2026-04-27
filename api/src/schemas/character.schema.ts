@@ -31,6 +31,8 @@ const ELEMENTS = ['Energia', 'Anomalia', 'Paradoxo', 'Astral', 'Cognitivo'] as c
 export const CreateCharacterSchema = z.object({
   name: z.string().min(1).max(100),
   race: z.string().max(50).default(''),
+  nationality: z.string().max(100).nullable().optional(),
+  religion: z.string().max(100).nullable().optional(),
   concept: z.string().max(200).default(''),
   quote: z.string().max(500).default(''),
   image_url: z.string().url().nullable().optional(),

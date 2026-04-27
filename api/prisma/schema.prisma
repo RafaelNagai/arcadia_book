@@ -12,6 +12,8 @@ model Character {
   userId          String   @map("user_id") @db.Uuid
   name            String
   race            String   @default("")
+  nationality     String?
+  religion        String?
   concept         String   @default("")
   quote           String   @default("")
   imageUrl        String?  @map("image_url")
