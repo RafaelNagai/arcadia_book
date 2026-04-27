@@ -166,6 +166,12 @@ export function MapCanvas({
   const stateRef = useRef({ scale, position })
   stateRef.current = { scale, position }
 
+  // Mutable refs so the auto-fit effect can read current values without deps
+  const tokensRef = useRef(tokens)
+  tokensRef.current = tokens
+  const myCharacterIdsRef = useRef(myCharacterIds)
+  myCharacterIdsRef.current = myCharacterIds
+
   // Notify parent of viewport changes (throttled)
   const lastViewportBroadcast = useRef(0)
   const onViewportChangeRef = useRef(onViewportChange)
@@ -237,11 +243,25 @@ export function MapCanvas({
     hasFitted.current = true
     const fit = Math.min(containerWidth / currentLayerImage.naturalWidth, containerHeight / currentLayerImage.naturalHeight)
     setScale(fit)
-    setPosition({
-      x: (containerWidth - currentLayerImage.naturalWidth * fit) / 2,
-      y: (containerHeight - currentLayerImage.naturalHeight * fit) / 2,
-    })
-  }, [currentLayerImage, containerWidth, containerHeight, viewportOverride])
+
+    // Center on first relevant token in the current layer; fall back to image center
+    const layerTokens = tokensRef.current.filter(t => t.layerId === currentLayerId)
+    const focusToken = isGm
+      ? layerTokens[0]
+      : layerTokens.find(t => myCharacterIdsRef.current.includes(t.characterId))
+
+    if (focusToken) {
+      setPosition({
+        x: containerWidth / 2 - focusToken.x * fit,
+        y: containerHeight / 2 - focusToken.y * fit,
+      })
+    } else {
+      setPosition({
+        x: (containerWidth - currentLayerImage.naturalWidth * fit) / 2,
+        y: (containerHeight - currentLayerImage.naturalHeight * fit) / 2,
+      })
+    }
+  }, [currentLayerImage, containerWidth, containerHeight, viewportOverride]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Reset drawing state when tool changes
   useEffect(() => {

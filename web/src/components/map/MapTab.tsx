@@ -171,7 +171,9 @@ export function MapTab({ campaign }: MapTabProps) {
     })
     obs.observe(containerRef.current)
     return () => obs.disconnect()
-  }, [])
+    // view and map?.id in deps: the container div only exists in canvas view with a map,
+    // so the observer must be (re)started whenever that div first appears.
+  }, [view, map?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setLoading(true)
