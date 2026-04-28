@@ -448,22 +448,10 @@ export function CreatureListPage() {
     activeImmune.size +
     activeVulnerable.size
 
-  const hasFilters = !!search || advancedFilterCount > 0
-
   function toggle<T>(set: Set<T>, value: T): Set<T> {
     const next = new Set(set)
     next.has(value) ? next.delete(value) : next.add(value)
     return next
-  }
-
-  function clearFilters() {
-    setSearch('')
-    setActiveStyles(new Set())
-    setMinLevel('')
-    setMaxLevel('')
-    setActiveImmune(new Set())
-    setActiveVulnerable(new Set())
-    setFiltersOpen(false)
   }
 
   const inputStyle: React.CSSProperties = {
