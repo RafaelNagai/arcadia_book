@@ -19,7 +19,6 @@ export function StatsSection({
   onDaReset,
   onDpChange,
   onDpReset,
-  onEdit,
 }: {
   character: Character;
   accentText: string;

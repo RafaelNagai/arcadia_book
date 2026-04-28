@@ -8,10 +8,12 @@ import { CharacterCreatorPage } from '@/pages/CharacterCreatorPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { CampaignListPage } from '@/pages/CampaignListPage'
 import { CampaignPage } from '@/pages/CampaignPage'
+import { CreatureListPage } from '@/pages/CreatureListPage'
+import { CreaturePage } from '@/pages/CreaturePage'
 import { AuthProvider } from '@/lib/authContext'
 import { Navbar } from '@/components/layout/Navbar'
 
-const NAVBAR_PATHS = ['/personagens', '/campanhas']
+const NAVBAR_PATHS = ['/personagens', '/campanhas', '/criaturas']
 
 function AppRoutes() {
   const location = useLocation()
@@ -28,6 +30,8 @@ function AppRoutes() {
         <Route path="ficha/:id" element={<CharacterPage />} />
         <Route path="criar-ficha" element={<CharacterCreatorPage />} />
         <Route path="editar-ficha/:id" element={<CharacterCreatorPage />} />
+        <Route path="criaturas" element={<CreatureListPage />} />
+        <Route path="criatura/:slug" element={<CreaturePage />} />
         <Route path="login" element={<LoginPage />} />
         <Route element={<AppShell />}>
           <Route path="capitulo/:slug" element={<ChapterPage />} />
