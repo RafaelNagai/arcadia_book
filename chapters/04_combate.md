@@ -166,8 +166,8 @@ A DP é usada quando o personagem está Indefeso ou falhou na Esquiva.
 O equipamento protege a vida do personagem — mas ele sofre o castigo no lugar dele. **O dano sempre atinge a Durabilidade do item antes de atingir a Vida.**
 
 - **Absorção:** Cada ponto de dano recebido reduz a Durabilidade do item equipado em 1, o jogador pode decidir em qual equipamento é direcionado a redução da durabilidade.
-- **Quebra:** Quando a Durabilidade chega a 0, o item é quebrado e sem possibilidade de reparo. Cada ponto de dano adicional passa direto para a Vida do personagem.
-- **Sacrifício Voluntário:** O personagem pode optar por "não usar" o equipamento num golpe específico para preservá-lo. Nesse caso, perde todos os bônus de DA e efeitos do item naquele ataque. Esta decisão tem que ser feita antes de calcular o dano recebido.
+- **Quebra:** Quando a Durabilidade chega a 0, o item é quebrado e sem possibilidade de reparo. Podendo mitigar até 5 de dano extra do ataque, porém se passar vai receber todo o dano causado na vida do personagem.
+- **Sacrifício Voluntário:** O personagem pode optar por "não usar" o equipamento num golpe específico para preservá-lo. Nesse caso, ele mantem os efeitos e a DA que o item provém.
 
 ---
 

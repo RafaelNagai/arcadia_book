@@ -4,8 +4,11 @@ import { useAuth } from '@/lib/authContext'
 import { useMapRealtime, useCampaignMapChannel } from '@/hooks/useMapRealtime'
 import type { MapBroadcastEvent } from '@/hooks/useMapRealtime'
 import type { CampaignDetail } from '@/data/campaignTypes'
-import type { GameMap, MapToken, MapTool, FogPatch, MapWall, MapDoor, MapSummary, Measurement } from '@/lib/mapTypes'
+import type { GameMap, MapToken, MapTool, FogPatch, MapWall, MapDoor, MapSummary, Measurement, CreatureInstance } from '@/lib/mapTypes'
+import type { Creature } from '@/data/creatureTypes'
 import { computeVisibilityPolygon } from '@/lib/fogOfWar'
+import { creatureSlug as toSlug } from '@/components/creature/constants'
+import { loadCreatureInstances, saveCreatureInstances, loadCreaturePreferredSize } from '@/lib/creatureInstances'
 import { MapCanvas } from './MapCanvas'
 import { MapToolbar } from './MapToolbar'
 import { MapLayerPanel } from './MapLayerPanel'
@@ -130,6 +133,11 @@ export function MapTab({ campaign }: MapTabProps) {
   const [liveMeasurements, setLiveMeasurements] = useState<Measurement[]>([])
   const measureSyncTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  // Creature instances (GM-only, local state + localStorage)
+  const [creatureInstances, setCreatureInstances] = useState<CreatureInstance[]>([])
+  // Pending chars: added to list but not yet placed on canvas
+  const [pendingCharIds, setPendingCharIds] = useState<string[]>([])
+
   // "Call everyone here" — players get forced to a specific layer + viewport
   const [forcedLayerId, setForcedLayerId] = useState<string | null>(null)
   const [viewportOverride, setViewportOverride] = useState<{ scale: number; x: number; y: number } | null>(null)
@@ -184,10 +192,31 @@ export function MapTab({ campaign }: MapTabProps) {
         if (m?.tokens) setTokens(m.tokens)
         if (m) setFogEnabled(m.fogEnabled)
         if (m?.measurements) setMeasurements(m.measurements)
+        if (m) setCreatureInstances(loadCreatureInstances(m.id))
+        if (m) setPendingCharIds(JSON.parse(localStorage.getItem(`arcadia_session_chars_${m.id}`) ?? '[]'))
       })
       .catch(() => setMap(null))
       .finally(() => setLoading(false))
   }, [campaign.id])
+
+  // Persist creature instances and broadcast sync to players whenever they change
+  const creatureSyncTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  useEffect(() => {
+    if (map?.id) saveCreatureInstances(map.id, creatureInstances)
+    if (campaign.isGm && map?.id) {
+      if (creatureSyncTimer.current) clearTimeout(creatureSyncTimer.current)
+      creatureSyncTimer.current = setTimeout(() => {
+        broadcastMap({ type: 'CREATURE_SYNC', instances: creatureInstances, senderId: user?.id })
+      }, 400)
+    }
+  }, [map?.id, creatureInstances]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Persist pending char IDs to localStorage
+  useEffect(() => {
+    if (map?.id) {
+      localStorage.setItem(`arcadia_session_chars_${map.id}`, JSON.stringify(pendingCharIds))
+    }
+  }, [map?.id, pendingCharIds])
 
   // ── Debounced measurement persistence ──────────────────────────────────────
   const persistMeasurements = useCallback((next: Measurement[], mapId: string) => {
@@ -279,6 +308,26 @@ export function MapTab({ campaign }: MapTabProps) {
     onMeasurementClearAll: useCallback(() => {
       setLiveMeasurements([])
       setMeasurements([])
+    }, []),
+
+    onCreatureAdd: useCallback((instance: CreatureInstance) => {
+      setCreatureInstances(prev => prev.some(i => i.instanceId === instance.instanceId) ? prev : [...prev, instance])
+    }, []),
+
+    onCreatureRemove: useCallback((instanceId: string) => {
+      setCreatureInstances(prev => prev.filter(i => i.instanceId !== instanceId))
+    }, []),
+
+    onCreatureMove: useCallback((instanceId: string, x: number, y: number) => {
+      setCreatureInstances(prev => prev.map(i => i.instanceId === instanceId ? { ...i, x, y } : i))
+    }, []),
+
+    onCreatureUpdate: useCallback((instanceId: string, data: Partial<CreatureInstance>) => {
+      setCreatureInstances(prev => prev.map(i => i.instanceId === instanceId ? { ...i, ...data } : i))
+    }, []),
+
+    onCreatureSync: useCallback((instances: CreatureInstance[]) => {
+      setCreatureInstances(instances)
     }, []),
   })
 
@@ -606,6 +655,63 @@ export function MapTab({ campaign }: MapTabProps) {
     }
   }, [map, campaign.id, gmCurrentLayer, fogEnabled, npcCharacterIds, broadcastMap, user?.id])
 
+  // ── Creature instance handlers ────────────────────────────────────────────
+
+  const handleAddPendingChar = useCallback((charId: string) => {
+    setPendingCharIds(prev => prev.includes(charId) ? prev : [...prev, charId])
+  }, [])
+
+  const handleRemovePendingChar = useCallback((charId: string) => {
+    setPendingCharIds(prev => prev.filter(id => id !== charId))
+  }, [])
+
+  const handleAddCreatureToList = useCallback((creature: Creature) => {
+    if (!map) return
+    const slug = toSlug(creature.name)
+    const instance: CreatureInstance = {
+      instanceId: crypto.randomUUID(),
+      mapId: map.id,
+      layerId: gmCurrentLayerId ?? '',
+      x: 0,
+      y: 0,
+      placed: false,
+      creatureSlug: slug,
+      creatureName: creature.name,
+      image: creature.image,
+      maxHp: creature.hp,
+      currentHp: creature.hp,
+      da: creature.da,
+      dp: creature.dp,
+      diceBase: creature.diceBase,
+      attributes: { ...creature.attributes },
+      size: loadCreaturePreferredSize(slug),
+    }
+    setCreatureInstances(prev => [...prev, instance])
+    broadcastMap({ type: 'CREATURE_ADD', instance, senderId: user?.id })
+  }, [map, gmCurrentLayerId, broadcastMap, user?.id])
+
+  const handleCreatureInstancePlace = useCallback((instanceId: string, worldX: number, worldY: number) => {
+    if (!gmCurrentLayerId) return
+    const updates: Partial<CreatureInstance> = { placed: true, x: worldX, y: worldY, layerId: gmCurrentLayerId }
+    setCreatureInstances(prev => prev.map(i => i.instanceId === instanceId ? { ...i, ...updates } : i))
+    broadcastMap({ type: 'CREATURE_UPDATE', instanceId, data: updates, senderId: user?.id })
+  }, [gmCurrentLayerId, broadcastMap, user?.id])
+
+  const handleCreatureInstanceMove = useCallback((instanceId: string, x: number, y: number) => {
+    setCreatureInstances(prev => prev.map(i => i.instanceId === instanceId ? { ...i, x, y } : i))
+    broadcastMap({ type: 'CREATURE_MOVE', instanceId, x, y, senderId: user?.id })
+  }, [broadcastMap, user?.id])
+
+  const handleCreatureInstanceUpdate = useCallback((instanceId: string, updates: Partial<CreatureInstance>) => {
+    setCreatureInstances(prev => prev.map(i => i.instanceId === instanceId ? { ...i, ...updates } : i))
+    broadcastMap({ type: 'CREATURE_UPDATE', instanceId, data: updates, senderId: user?.id })
+  }, [broadcastMap, user?.id])
+
+  const handleCreatureInstanceRemove = useCallback((instanceId: string) => {
+    setCreatureInstances(prev => prev.filter(i => i.instanceId !== instanceId))
+    broadcastMap({ type: 'CREATURE_REMOVE', instanceId, senderId: user?.id })
+  }, [broadcastMap, user?.id])
+
   // ── Token modal ───────────────────────────────────────────────────────────
   const [modalToken, setModalToken] = useState<MapToken | null>(null)
 
@@ -916,9 +1022,17 @@ export function MapTab({ campaign }: MapTabProps) {
                 map={map}
                 tokens={tokens}
                 allChars={allChars}
+                npcIds={new Set(npcCharacterIds)}
+                pendingCharIds={pendingCharIds}
+                creatureInstances={creatureInstances}
                 onTokensChange={setTokens}
                 onBroadcast={handleMapBroadcast}
                 onTokenEdit={handleTokenEdit}
+                onAddPendingChar={handleAddPendingChar}
+                onRemovePendingChar={handleRemovePendingChar}
+                onAddCreatureToList={handleAddCreatureToList}
+                onCreatureInstanceUpdate={handleCreatureInstanceUpdate}
+                onCreatureInstanceRemove={handleCreatureInstanceRemove}
               />
             </div>
 
@@ -962,9 +1076,17 @@ export function MapTab({ campaign }: MapTabProps) {
                     map={map}
                     tokens={tokens}
                     allChars={allChars}
-                    onTokensChange={t => { setTokens(t); setPanelOpen(false) }}
+                    npcIds={new Set(npcCharacterIds)}
+                    pendingCharIds={pendingCharIds}
+                    creatureInstances={creatureInstances}
+                    onTokensChange={t => { setTokens(t) }}
                     onBroadcast={handleMapBroadcast}
                     onTokenEdit={handleTokenEdit}
+                    onAddPendingChar={handleAddPendingChar}
+                    onRemovePendingChar={handleRemovePendingChar}
+                    onAddCreatureToList={handleAddCreatureToList}
+                    onCreatureInstanceUpdate={handleCreatureInstanceUpdate}
+                    onCreatureInstanceRemove={handleCreatureInstanceRemove}
                   />
                 </div>
               </div>
@@ -996,6 +1118,10 @@ export function MapTab({ campaign }: MapTabProps) {
               onTokenResize={handleTokenResize}
               onTokenEdit={handleTokenEdit}
               onTokenDrop={handleTokenDrop}
+              creatureInstances={creatureInstances}
+              onCreatureInstancePlace={handleCreatureInstancePlace}
+              onCreatureInstanceDrag={handleCreatureInstanceMove}
+              onCreatureInstanceMove={handleCreatureInstanceMove}
               onFogReveal={handleFogReveal}
               onWallAdd={handleWallAdd}
               onWallDelete={handleWallDelete}

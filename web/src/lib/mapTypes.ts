@@ -105,6 +105,32 @@ export interface MapSummary {
   tokens: MapToken[]
 }
 
+// ── Creature instances (local-only, stored in localStorage) ──────────────────
+
+export interface CreatureInstance {
+  instanceId: string
+  mapId: string
+  layerId: string
+  x: number
+  y: number
+  placed: boolean  // false = in list but not yet on canvas
+  creatureSlug: string
+  creatureName: string
+  image: string | null
+  maxHp: number
+  currentHp: number
+  da: number
+  dp: number
+  diceBase: string
+  attributes: {
+    fisico: number
+    destreza: number
+    intelecto: number
+    influencia: number
+  }
+  size: number
+}
+
 // ── Measurement color helper ──────────────────────────────────────────────────
 
 const MEASURE_COLORS = ['#E8803A', '#6FC892', '#50C8E8', '#C090F0', '#E8B84B', '#EF4444', '#3B82F6']

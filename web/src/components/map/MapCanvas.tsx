@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { Stage, Layer, Image as KonvaImage, Line, Group, Rect, Ring, Circle } from 'react-konva'
 import type Konva from 'konva'
-import type { MapLayer, MapToken, GameMap, MapTool, FogPatch, Measurement } from '@/lib/mapTypes'
+import type { MapLayer, MapToken, GameMap, MapTool, FogPatch, Measurement, CreatureInstance } from '@/lib/mapTypes'
 import { measureColor } from '@/lib/mapTypes'
 import { computeVisibilityPolygon } from '@/lib/fogOfWar'
 import { pointsToSegments } from '@/lib/wallCollision'
@@ -101,6 +101,11 @@ interface MapCanvasProps {
   onTokenResize?: (tokenId: string, size: number) => void
   onTokenEdit?: (tokenId: string) => void
   onTokenDrop?: (charId: string, worldX: number, worldY: number, visionRadius: number | null) => void
+  creatureInstances?: CreatureInstance[]
+  onCreatureInstancePlace?: (instanceId: string, worldX: number, worldY: number) => void
+  onCreatureInstanceDrag?: (instanceId: string, x: number, y: number) => void
+  onCreatureInstanceMove?: (instanceId: string, x: number, y: number) => void
+  onCreatureInstanceClick?: (instanceId: string) => void
   onFogReveal?: (patch: FogPatch) => void
   onWallAdd?: (points: Array<{ x: number; y: number }>) => void
   onWallDelete?: (wallId: string) => void
@@ -147,6 +152,11 @@ export function MapCanvas({
   onTokenResize,
   onTokenEdit,
   onTokenDrop,
+  creatureInstances = [],
+  onCreatureInstancePlace,
+  onCreatureInstanceDrag,
+  onCreatureInstanceMove,
+  onCreatureInstanceClick,
   onFogReveal,
   onWallAdd,
   onWallDelete,
@@ -411,16 +421,22 @@ export function MapCanvas({
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
-    const charId = e.dataTransfer.getData('charId')
-    if (!charId) return
-    const vrStr = e.dataTransfer.getData('visionRadius')
-    const visionRadius = vrStr !== '' ? Number(vrStr) : null
     const { scale: sc, position: pos } = stateRef.current
     const rect = e.currentTarget.getBoundingClientRect()
     const worldX = (e.clientX - rect.left - pos.x) / sc
     const worldY = (e.clientY - rect.top - pos.y) / sc
+
+    const creatureInstanceId = e.dataTransfer.getData('creatureInstanceId')
+    if (creatureInstanceId) {
+      onCreatureInstancePlace?.(creatureInstanceId, worldX, worldY)
+      return
+    }
+    const charId = e.dataTransfer.getData('charId')
+    if (!charId) return
+    const vrStr = e.dataTransfer.getData('visionRadius')
+    const visionRadius = vrStr !== '' ? Number(vrStr) : null
     onTokenDrop?.(charId, worldX, worldY, visionRadius)
-  }, [onTokenDrop])
+  }, [onTokenDrop, onCreatureInstancePlace])
 
   const handleClick = useCallback((_e: Konva.KonvaEventObject<MouseEvent>) => {
     setSelectedTokenId(null)
@@ -622,9 +638,13 @@ export function MapCanvas({
                   myCharacterIds={myCharacterIds}
                   allowPlayerTokenMove={allowPlayerTokenMove}
                   blockingWalls={blockingWalls}
+                  creatureInstances={creatureInstances}
                   onTokenDrag={onTokenDrag}
                   onTokenMove={onTokenMove}
                   onTokenClick={setSelectedTokenId}
+                  onCreatureInstanceDrag={onCreatureInstanceDrag}
+                  onCreatureInstanceMove={onCreatureInstanceMove}
+                  onCreatureInstanceClick={onCreatureInstanceClick}
                 />
               ) : (
                 <MapTokenLayer

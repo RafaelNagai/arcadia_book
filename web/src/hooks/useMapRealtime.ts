@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/apiClient'
-import type { GameMap, MapLayer, MapToken, MapDoor, FogPatch, Measurement } from '@/lib/mapTypes'
+import type { GameMap, MapLayer, MapToken, MapDoor, FogPatch, Measurement, CreatureInstance } from '@/lib/mapTypes'
 
 // ── Broadcast event types ─────────────────────────────────────────────────────
 
@@ -19,6 +19,11 @@ export type MapBroadcastEvent =
   | { type: 'MEASUREMENT_ADD'; measurement: Measurement; senderId?: string }
   | { type: 'MEASUREMENT_REMOVE'; userId: string; senderId?: string }
   | { type: 'MEASUREMENT_CLEAR_ALL'; senderId?: string }
+  | { type: 'CREATURE_ADD'; instance: CreatureInstance; senderId?: string }
+  | { type: 'CREATURE_REMOVE'; instanceId: string; senderId?: string }
+  | { type: 'CREATURE_MOVE'; instanceId: string; x: number; y: number; senderId?: string }
+  | { type: 'CREATURE_UPDATE'; instanceId: string; data: Partial<CreatureInstance>; senderId?: string }
+  | { type: 'CREATURE_SYNC'; instances: CreatureInstance[]; senderId?: string }
 
 export type CampaignMapEvent =
   | { type: 'MAP_ACTIVATED'; map: GameMap }
@@ -43,6 +48,11 @@ interface MapRealtimeHandlers {
   onMeasurementAdd: (m: Measurement) => void
   onMeasurementRemove: (userId: string) => void
   onMeasurementClearAll: () => void
+  onCreatureAdd: (instance: CreatureInstance) => void
+  onCreatureRemove: (instanceId: string) => void
+  onCreatureMove: (instanceId: string, x: number, y: number) => void
+  onCreatureUpdate: (instanceId: string, data: Partial<CreatureInstance>) => void
+  onCreatureSync: (instances: CreatureInstance[]) => void
 }
 
 export function useMapRealtime(
@@ -137,6 +147,31 @@ export function useMapRealtime(
         const p = payload as MapBroadcastEvent
         if (p.type === 'MEASUREMENT_CLEAR_ALL' && p.senderId !== handlersRef.current.selfId)
           handlersRef.current.onMeasurementClearAll()
+      })
+      .on('broadcast', { event: 'CREATURE_ADD' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'CREATURE_ADD' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onCreatureAdd(p.instance)
+      })
+      .on('broadcast', { event: 'CREATURE_REMOVE' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'CREATURE_REMOVE' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onCreatureRemove(p.instanceId)
+      })
+      .on('broadcast', { event: 'CREATURE_MOVE' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'CREATURE_MOVE' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onCreatureMove(p.instanceId, p.x, p.y)
+      })
+      .on('broadcast', { event: 'CREATURE_UPDATE' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'CREATURE_UPDATE' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onCreatureUpdate(p.instanceId, p.data)
+      })
+      .on('broadcast', { event: 'CREATURE_SYNC' }, ({ payload }) => {
+        const p = payload as MapBroadcastEvent
+        if (p.type === 'CREATURE_SYNC' && p.senderId !== handlersRef.current.selfId)
+          handlersRef.current.onCreatureSync(p.instances)
       })
       .subscribe()
 
