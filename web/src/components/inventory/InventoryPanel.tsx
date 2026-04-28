@@ -72,9 +72,13 @@ export function InventoryPanel({
   useEffect(() => {
     if (!characterId) return;
     if (isApiChar) {
-      api.inventory.get(characterId)
-        .then(res => {
-          const { bags: rawBags, items: rawItems } = res as { bags: ApiRawBag[]; items: ApiRawItem[] };
+      api.inventory
+        .get(characterId)
+        .then((res) => {
+          const { bags: rawBags, items: rawItems } = res as {
+            bags: ApiRawBag[];
+            items: ApiRawItem[];
+          };
           const built = buildInventoryFromApi(rawBags, rawItems);
           setItems(built.items);
           setBags(built.bags);
@@ -130,9 +134,17 @@ export function InventoryPanel({
     updatedBags: InventoryBag[],
   ): Array<{ id: string; sort_order: number; bag_id: string | null }> {
     return [
-      ...baseItems.map((item, idx) => ({ id: item.id, sort_order: idx, bag_id: null })),
-      ...updatedBags.flatMap(bag =>
-        bag.items.map((item, idx) => ({ id: item.id, sort_order: idx, bag_id: bag.id })),
+      ...baseItems.map((item, idx) => ({
+        id: item.id,
+        sort_order: idx,
+        bag_id: null,
+      })),
+      ...updatedBags.flatMap((bag) =>
+        bag.items.map((item, idx) => ({
+          id: item.id,
+          sort_order: idx,
+          bag_id: bag.id,
+        })),
       ),
     ];
   }
@@ -143,29 +155,47 @@ export function InventoryPanel({
     if (!canEdit) return;
     if (isApiChar) {
       try {
-        const res = await api.inventory.createBag(characterId, { name: "Mochila", slots: 4 }) as { bag: ApiRawBag };
-        const newBag: InventoryBag = { id: res.bag.id, name: res.bag.name, slots: res.bag.slots, items: [] };
-        setBags(prev => [...prev, newBag]);
-      } catch { /* ignore */ }
+        const res = (await api.inventory.createBag(characterId, {
+          name: "Mochila",
+          slots: 4,
+        })) as { bag: ApiRawBag };
+        const newBag: InventoryBag = {
+          id: res.bag.id,
+          name: res.bag.name,
+          slots: res.bag.slots,
+          items: [],
+        };
+        setBags((prev) => [...prev, newBag]);
+      } catch {
+        /* ignore */
+      }
     } else {
-      const newBag: InventoryBag = { id: `bag_${Date.now()}`, name: "Mochila", slots: 4, items: [] };
+      const newBag: InventoryBag = {
+        id: `bag_${Date.now()}`,
+        name: "Mochila",
+        slots: 4,
+        items: [],
+      };
       persistBagsLocal([...bags, newBag]);
     }
   }
 
   function deleteBag(bagId: string) {
     if (!canEdit) return;
-    setBags(prev => prev.filter((b) => b.id !== bagId));
+    setBags((prev) => prev.filter((b) => b.id !== bagId));
     if (isApiChar) {
       void api.inventory.deleteBag(characterId, bagId);
     } else {
-      saveBags(characterId, bags.filter(b => b.id !== bagId));
+      saveBags(
+        characterId,
+        bags.filter((b) => b.id !== bagId),
+      );
     }
   }
 
   function renameBag(bagId: string, name: string) {
     if (!canEdit) return;
-    const next = bags.map(b => b.id === bagId ? { ...b, name } : b);
+    const next = bags.map((b) => (b.id === bagId ? { ...b, name } : b));
     setBags(next);
     if (isApiChar) {
       void api.inventory.updateBag(characterId, bagId, { name });
@@ -176,9 +206,11 @@ export function InventoryPanel({
 
   function changeBagSlots(bagId: string, delta: number) {
     if (!canEdit) return;
-    const next = bags.map(b => b.id === bagId ? { ...b, slots: Math.max(1, b.slots + delta) } : b);
+    const next = bags.map((b) =>
+      b.id === bagId ? { ...b, slots: Math.max(1, b.slots + delta) } : b,
+    );
     setBags(next);
-    const bag = next.find(b => b.id === bagId);
+    const bag = next.find((b) => b.id === bagId);
     if (isApiChar && bag) {
       void api.inventory.updateBag(characterId, bagId, { slots: bag.slots });
     } else if (!isApiChar) {
@@ -262,10 +294,14 @@ export function InventoryPanel({
 
       if (activeContainerId === "base") {
         newItems = newSrc;
-        newBags = bags.map((b) => b.id === overContainerId ? { ...b, items: newDst } : b);
+        newBags = bags.map((b) =>
+          b.id === overContainerId ? { ...b, items: newDst } : b,
+        );
       } else if (overContainerId === "base") {
         newItems = newDst;
-        newBags = bags.map((b) => b.id === activeContainerId ? { ...b, items: newSrc } : b);
+        newBags = bags.map((b) =>
+          b.id === activeContainerId ? { ...b, items: newSrc } : b,
+        );
       } else {
         newBags = bags.map((b) => {
           if (b.id === activeContainerId) return { ...b, items: newSrc };
@@ -282,7 +318,10 @@ export function InventoryPanel({
     }
 
     if (isApiChar) {
-      void api.inventory.reorderItems(characterId, buildReorderPayload(newItems, newBags));
+      void api.inventory.reorderItems(
+        characterId,
+        buildReorderPayload(newItems, newBags),
+      );
     }
   }
 
@@ -323,7 +362,9 @@ export function InventoryPanel({
       weight: entry.weight,
       isEquipment: entry.isEquipment,
       maxDurability: entry.isEquipment ? (entry.maxDurability ?? 5) : undefined,
-      currentDurability: entry.isEquipment ? (entry.maxDurability ?? 5) : undefined,
+      currentDurability: entry.isEquipment
+        ? (entry.maxDurability ?? 5)
+        : undefined,
       catalogImage: resolveCatalogImage(entry.image),
       fromCatalog: true,
       catalogSubcategory: entry.subcategory,
@@ -334,22 +375,28 @@ export function InventoryPanel({
     };
 
     if (bagId) {
-      setBags(prev => prev.map(b => b.id === bagId ? { ...b, items: [...b.items, newItem] } : b));
+      setBags((prev) =>
+        prev.map((b) =>
+          b.id === bagId ? { ...b, items: [...b.items, newItem] } : b,
+        ),
+      );
     } else {
-      setItems(prev => [...prev, newItem]);
+      setItems((prev) => [...prev, newItem]);
     }
     setModal(null);
 
     if (isApiChar) {
       try {
-        const res = await api.inventory.createItem(characterId, {
+        const res = (await api.inventory.createItem(characterId, {
           bag_id: bagId ?? null,
           name: entry.name,
           description: entry.description,
           weight: entry.weight,
           is_equipment: entry.isEquipment,
           max_durability: entry.isEquipment ? (entry.maxDurability ?? 5) : null,
-          current_durability: entry.isEquipment ? (entry.maxDurability ?? 5) : null,
+          current_durability: entry.isEquipment
+            ? (entry.maxDurability ?? 5)
+            : null,
           catalog_image: resolveCatalogImage(entry.image) ?? null,
           from_catalog: true,
           catalog_subcategory: entry.subcategory ?? null,
@@ -358,29 +405,50 @@ export function InventoryPanel({
           da: entry.da != null ? String(entry.da) : null,
           effects: entry.effects,
           sort_order: bagId
-            ? (bags.find(b => b.id === bagId)?.items.length ?? 0)
+            ? (bags.find((b) => b.id === bagId)?.items.length ?? 0)
             : items.length,
-        }) as { item: ApiRawItem };
+        })) as { item: ApiRawItem };
         const createdItem = mapApiItemToInventoryItem(res.item);
         if (bagId) {
-          setBags(prev => prev.map(b => b.id === bagId
-            ? { ...b, items: b.items.map(i => i.id === tempId ? createdItem : i) }
-            : b,
-          ));
+          setBags((prev) =>
+            prev.map((b) =>
+              b.id === bagId
+                ? {
+                    ...b,
+                    items: b.items.map((i) =>
+                      i.id === tempId ? createdItem : i,
+                    ),
+                  }
+                : b,
+            ),
+          );
         } else {
-          setItems(prev => prev.map(i => i.id === tempId ? createdItem : i));
+          setItems((prev) =>
+            prev.map((i) => (i.id === tempId ? createdItem : i)),
+          );
         }
       } catch {
         // Revert optimistic update
         if (bagId) {
-          setBags(prev => prev.map(b => b.id === bagId ? { ...b, items: b.items.filter(i => i.id !== tempId) } : b));
+          setBags((prev) =>
+            prev.map((b) =>
+              b.id === bagId
+                ? { ...b, items: b.items.filter((i) => i.id !== tempId) }
+                : b,
+            ),
+          );
         } else {
-          setItems(prev => prev.filter(i => i.id !== tempId));
+          setItems((prev) => prev.filter((i) => i.id !== tempId));
         }
       }
     } else {
       if (bagId) {
-        saveBags(characterId, bags.map(b => b.id === bagId ? { ...b, items: [...b.items, newItem] } : b));
+        saveBags(
+          characterId,
+          bags.map((b) =>
+            b.id === bagId ? { ...b, items: [...b.items, newItem] } : b,
+          ),
+        );
       } else {
         saveInventory(characterId, [...items, newItem]);
       }
@@ -394,15 +462,19 @@ export function InventoryPanel({
     const newItem: InventoryItem = { id: tempId, ...buildItemFromForm(data) };
 
     if (bagId) {
-      setBags(prev => prev.map(b => b.id === bagId ? { ...b, items: [...b.items, newItem] } : b));
+      setBags((prev) =>
+        prev.map((b) =>
+          b.id === bagId ? { ...b, items: [...b.items, newItem] } : b,
+        ),
+      );
     } else {
-      setItems(prev => [...prev, newItem]);
+      setItems((prev) => [...prev, newItem]);
     }
     setModal(null);
 
     if (isApiChar) {
       try {
-        const res = await api.inventory.createItem(characterId, {
+        const res = (await api.inventory.createItem(characterId, {
           bag_id: bagId ?? null,
           name: data.name.trim(),
           description: data.description.trim(),
@@ -413,30 +485,51 @@ export function InventoryPanel({
           image_url: data.image.trim() || null,
           damage: data.damage.trim() || null,
           da: data.da.trim() || null,
-          effects: data.effects.filter(e => e.trim()),
+          effects: data.effects.filter((e) => e.trim()),
           sort_order: bagId
-            ? (bags.find(b => b.id === bagId)?.items.length ?? 0)
+            ? (bags.find((b) => b.id === bagId)?.items.length ?? 0)
             : items.length,
-        }) as { item: ApiRawItem };
+        })) as { item: ApiRawItem };
         const createdItem = mapApiItemToInventoryItem(res.item);
         if (bagId) {
-          setBags(prev => prev.map(b => b.id === bagId
-            ? { ...b, items: b.items.map(i => i.id === tempId ? createdItem : i) }
-            : b,
-          ));
+          setBags((prev) =>
+            prev.map((b) =>
+              b.id === bagId
+                ? {
+                    ...b,
+                    items: b.items.map((i) =>
+                      i.id === tempId ? createdItem : i,
+                    ),
+                  }
+                : b,
+            ),
+          );
         } else {
-          setItems(prev => prev.map(i => i.id === tempId ? createdItem : i));
+          setItems((prev) =>
+            prev.map((i) => (i.id === tempId ? createdItem : i)),
+          );
         }
       } catch {
         if (bagId) {
-          setBags(prev => prev.map(b => b.id === bagId ? { ...b, items: b.items.filter(i => i.id !== tempId) } : b));
+          setBags((prev) =>
+            prev.map((b) =>
+              b.id === bagId
+                ? { ...b, items: b.items.filter((i) => i.id !== tempId) }
+                : b,
+            ),
+          );
         } else {
-          setItems(prev => prev.filter(i => i.id !== tempId));
+          setItems((prev) => prev.filter((i) => i.id !== tempId));
         }
       }
     } else {
       if (bagId) {
-        saveBags(characterId, bags.map(b => b.id === bagId ? { ...b, items: [...b.items, newItem] } : b));
+        saveBags(
+          characterId,
+          bags.map((b) =>
+            b.id === bagId ? { ...b, items: [...b.items, newItem] } : b,
+          ),
+        );
       } else {
         saveInventory(characterId, [...items, newItem]);
       }
@@ -447,9 +540,14 @@ export function InventoryPanel({
     if (modal?.mode !== "edit" || !canEdit) return;
     const { itemId, bagId } = modal;
 
-    const existing = [...items, ...bags.flatMap(b => b.items)].find(i => i.id === itemId);
+    const existing = [...items, ...bags.flatMap((b) => b.items)].find(
+      (i) => i.id === itemId,
+    );
     const newCurrentDurability = data.isEquipment
-      ? Math.min(existing?.currentDurability ?? data.maxDurability, data.maxDurability)
+      ? Math.min(
+          existing?.currentDurability ?? data.maxDurability,
+          data.maxDurability,
+        )
       : undefined;
 
     const updatedFields: Partial<InventoryItem> = {
@@ -462,15 +560,21 @@ export function InventoryPanel({
       image: data.image.trim() || undefined,
       damage: data.damage.trim() || null,
       da: data.da.trim() || null,
-      effects: data.effects.filter(e => e.trim()),
+      effects: data.effects.filter((e) => e.trim()),
     };
 
     function applyUpdate(list: InventoryItem[]) {
-      return list.map(i => i.id === itemId ? { ...i, ...updatedFields } : i);
+      return list.map((i) =>
+        i.id === itemId ? { ...i, ...updatedFields } : i,
+      );
     }
 
     if (bagId) {
-      setBags(prev => prev.map(b => b.id === bagId ? { ...b, items: applyUpdate(b.items) } : b));
+      setBags((prev) =>
+        prev.map((b) =>
+          b.id === bagId ? { ...b, items: applyUpdate(b.items) } : b,
+        ),
+      );
     } else {
       setItems(applyUpdate);
     }
@@ -487,11 +591,16 @@ export function InventoryPanel({
         image_url: data.image.trim() || null,
         damage: data.damage.trim() || null,
         da: data.da.trim() || null,
-        effects: data.effects.filter(e => e.trim()),
+        effects: data.effects.filter((e) => e.trim()),
       });
     } else {
       if (bagId) {
-        saveBags(characterId, bags.map(b => b.id === bagId ? { ...b, items: applyUpdate(b.items) } : b));
+        saveBags(
+          characterId,
+          bags.map((b) =>
+            b.id === bagId ? { ...b, items: applyUpdate(b.items) } : b,
+          ),
+        );
       } else {
         saveInventory(characterId, applyUpdate(items));
       }
@@ -501,11 +610,15 @@ export function InventoryPanel({
   function handleDelete(itemId: string, bagId?: string) {
     if (!canEdit) return;
     if (bagId) {
-      const next = bags.map(b => b.id === bagId ? { ...b, items: b.items.filter(i => i.id !== itemId) } : b);
+      const next = bags.map((b) =>
+        b.id === bagId
+          ? { ...b, items: b.items.filter((i) => i.id !== itemId) }
+          : b,
+      );
       setBags(next);
       if (!isApiChar) saveBags(characterId, next);
     } else {
-      const next = items.filter(i => i.id !== itemId);
+      const next = items.filter((i) => i.id !== itemId);
       setItems(next);
       if (!isApiChar) saveInventory(characterId, next);
     }
@@ -514,26 +627,37 @@ export function InventoryPanel({
     }
   }
 
-  function handleDurabilityChange(itemId: string, delta: number, bagId?: string) {
+  function handleDurabilityChange(
+    itemId: string,
+    delta: number,
+    bagId?: string,
+  ) {
     function applyDelta(list: InventoryItem[]) {
-      return list.map(item => {
+      return list.map((item) => {
         if (item.id !== itemId || !item.isEquipment) return item;
         const maxDur = item.maxDurability ?? 0;
         const cur = item.currentDurability ?? maxDur;
-        return { ...item, currentDurability: Math.max(0, Math.min(maxDur, cur + delta)) };
+        return {
+          ...item,
+          currentDurability: Math.max(0, Math.min(maxDur, cur + delta)),
+        };
       });
     }
 
     let updatedItem: InventoryItem | undefined;
     if (bagId) {
-      const next = bags.map(b => b.id === bagId ? { ...b, items: applyDelta(b.items) } : b);
+      const next = bags.map((b) =>
+        b.id === bagId ? { ...b, items: applyDelta(b.items) } : b,
+      );
       setBags(next);
-      updatedItem = next.find(b => b.id === bagId)?.items.find(i => i.id === itemId);
+      updatedItem = next
+        .find((b) => b.id === bagId)
+        ?.items.find((i) => i.id === itemId);
       if (!isApiChar) saveBags(characterId, next);
     } else {
       const next = applyDelta(items);
       setItems(next);
-      updatedItem = next.find(i => i.id === itemId);
+      updatedItem = next.find((i) => i.id === itemId);
       if (!isApiChar) saveInventory(characterId, next);
     }
 
@@ -559,7 +683,9 @@ export function InventoryPanel({
 
   const editItem =
     modal?.mode === "edit"
-      ? [...items, ...bags.flatMap(b => b.items)].find(i => i.id === modal.itemId)
+      ? [...items, ...bags.flatMap((b) => b.items)].find(
+          (i) => i.id === modal.itemId,
+        )
       : undefined;
 
   const editInitial = editItem
@@ -612,11 +738,10 @@ export function InventoryPanel({
                 top: 0,
                 right: 0,
                 bottom: 0,
-                width: 520,
+                width: 720,
                 maxWidth: "100vw",
                 zIndex: 100,
-                background:
-                  "linear-gradient(180deg, #0A0F1E 0%, #080C18 100%)",
+                background: "linear-gradient(180deg, #0A0F1E 0%, #080C18 100%)",
                 borderLeft: "1px solid rgba(42,58,96,0.7)",
                 display: "flex",
                 flexDirection: "column",
@@ -815,8 +940,15 @@ export function InventoryPanel({
                             key={item.id}
                             item={item}
                             accentColor={accentColor}
-                            onEdit={canEdit ? () => setModal({ mode: "edit", itemId: item.id }) : undefined}
-                            onDelete={canEdit ? () => handleDelete(item.id) : undefined}
+                            onEdit={
+                              canEdit
+                                ? () =>
+                                    setModal({ mode: "edit", itemId: item.id })
+                                : undefined
+                            }
+                            onDelete={
+                              canEdit ? () => handleDelete(item.id) : undefined
+                            }
                             onDurabilityChange={(delta) =>
                               handleDurabilityChange(item.id, delta)
                             }
@@ -829,7 +961,11 @@ export function InventoryPanel({
                         <EmptySlot
                           key={`empty-${i}`}
                           accentColor={accentColor}
-                          onClick={canEdit ? () => setModal({ mode: "create" }) : undefined}
+                          onClick={
+                            canEdit
+                              ? () => setModal({ mode: "create" })
+                              : undefined
+                          }
                         />
                       );
                     })}
@@ -840,12 +976,33 @@ export function InventoryPanel({
                     <BagSection
                       key={bag.id}
                       bag={bag}
-                      onRename={canEdit ? (name) => renameBag(bag.id, name) : undefined}
-                      onChangeSlots={canEdit ? (delta) => changeBagSlots(bag.id, delta) : undefined}
-                      onDeleteBag={canEdit ? () => deleteBag(bag.id) : undefined}
-                      onOpenModal={canEdit ? () => setModal({ mode: "create", bagId: bag.id }) : undefined}
-                      onEdit={canEdit ? (itemId) => setModal({ mode: "edit", itemId, bagId: bag.id }) : undefined}
-                      onDelete={canEdit ? (itemId) => handleDelete(itemId, bag.id) : undefined}
+                      onRename={
+                        canEdit ? (name) => renameBag(bag.id, name) : undefined
+                      }
+                      onChangeSlots={
+                        canEdit
+                          ? (delta) => changeBagSlots(bag.id, delta)
+                          : undefined
+                      }
+                      onDeleteBag={
+                        canEdit ? () => deleteBag(bag.id) : undefined
+                      }
+                      onOpenModal={
+                        canEdit
+                          ? () => setModal({ mode: "create", bagId: bag.id })
+                          : undefined
+                      }
+                      onEdit={
+                        canEdit
+                          ? (itemId) =>
+                              setModal({ mode: "edit", itemId, bagId: bag.id })
+                          : undefined
+                      }
+                      onDelete={
+                        canEdit
+                          ? (itemId) => handleDelete(itemId, bag.id)
+                          : undefined
+                      }
                       onDurabilityChange={(itemId, delta) =>
                         handleDurabilityChange(itemId, delta, bag.id)
                       }
@@ -956,7 +1113,10 @@ export function InventoryPanel({
       </AnimatePresence>
 
       {/* Image zoom overlay — outside motion.div to avoid transform containment */}
-      <ImageZoomOverlay src={zoomedImage} onClose={() => setZoomedImage(null)} />
+      <ImageZoomOverlay
+        src={zoomedImage}
+        onClose={() => setZoomedImage(null)}
+      />
     </>
   );
 }
