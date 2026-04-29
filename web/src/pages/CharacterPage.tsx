@@ -100,6 +100,12 @@ export function CharacterPage() {
 
   const isApiChar = id ? isApiCharacterId(id) : false;
 
+  // Grace period to ignore realtime echoes of our own writes
+  const LOCAL_UPDATE_GRACE_MS = 2500;
+  const lastLocalHpTime = useRef(0);
+  const lastLocalSanTime = useRef(0);
+  const lastLocalStateTime = useRef(0);
+
   useEffect(() => {
     if (!id) {
       setCharLoaded(true);
@@ -203,10 +209,13 @@ export function CharacterPage() {
 
   useCharacterRealtime(isApiChar ? id : undefined, {
     onCharacterUpdate: (data) => {
-      // Realtime payload is snake_case from DB — update display values directly
-      if ("current_hp" in data && data.current_hp != null)
+      const now = Date.now();
+      // Skip realtime echoes of our own writes during grace period
+      if ("current_hp" in data && data.current_hp != null &&
+          now - lastLocalHpTime.current > LOCAL_UPDATE_GRACE_MS)
         setCurrentHp(data.current_hp as number);
-      if ("current_sanidade" in data && data.current_sanidade != null)
+      if ("current_sanidade" in data && data.current_sanidade != null &&
+          now - lastLocalSanTime.current > LOCAL_UPDATE_GRACE_MS)
         setCurrentSanidade(data.current_sanidade as number);
       // Re-fetch full character for other field changes
       if (id) {
@@ -221,7 +230,9 @@ export function CharacterPage() {
       }
     },
     onStateUpdate: (data) => {
-      if (data.pe_checks) {
+      const now = Date.now();
+      const stateGracePassed = now - lastLocalStateTime.current > LOCAL_UPDATE_GRACE_MS;
+      if (data.pe_checks && stateGracePassed) {
         const pe = data.pe_checks;
         setPeChecks({
           fisico: pe.fisico ?? Array(5).fill(false),
@@ -230,8 +241,8 @@ export function CharacterPage() {
           influencia: pe.influencia ?? Array(5).fill(false),
         });
       }
-      if (data.skill_modifiers) setSkillModifiers(data.skill_modifiers);
-      if (data.defense_modifiers) {
+      if (data.skill_modifiers && stateGracePassed) setSkillModifiers(data.skill_modifiers);
+      if (data.defense_modifiers && stateGracePassed) {
         setDaBase(data.defense_modifiers.daBase);
         setDaBonus(data.defense_modifiers.daBonus);
         setDpBonus(data.defense_modifiers.dpBonus);
@@ -311,6 +322,7 @@ export function CharacterPage() {
   /* ── Skill modifiers ──────────────────────────────────────────── */
 
   function handleModifierChange(skillKey: string, delta: number) {
+    lastLocalStateTime.current = Date.now();
     setSkillModifiers((prev) => {
       const next = { ...prev, [skillKey]: (prev[skillKey] ?? 0) + delta };
       if (id) {
@@ -322,6 +334,7 @@ export function CharacterPage() {
   }
 
   function handleModifierReset(skillKey: string) {
+    lastLocalStateTime.current = Date.now();
     setSkillModifiers((prev) => {
       const next = { ...prev };
       delete next[skillKey];
@@ -336,6 +349,7 @@ export function CharacterPage() {
   /* ── Defense modifiers ───────────────────────────────────────── */
 
   function handleDaBaseChange(delta: number) {
+    lastLocalStateTime.current = Date.now();
     setDaBase((prev) => {
       const next = Math.max(0, prev + delta);
       if (id) {
@@ -352,6 +366,7 @@ export function CharacterPage() {
   }
 
   function handleDaChange(delta: number) {
+    lastLocalStateTime.current = Date.now();
     setDaBonus((prev) => {
       const next = prev + delta;
       if (id) {
@@ -368,6 +383,7 @@ export function CharacterPage() {
   }
 
   function handleDaReset() {
+    lastLocalStateTime.current = Date.now();
     setDaBonus(0);
     if (id) {
       if (isApiChar)
@@ -381,6 +397,7 @@ export function CharacterPage() {
   }
 
   function handleDpChange(delta: number) {
+    lastLocalStateTime.current = Date.now();
     setDpBonus((prev) => {
       const next = prev + delta;
       if (id) {
@@ -397,6 +414,7 @@ export function CharacterPage() {
   }
 
   function handleDpReset() {
+    lastLocalStateTime.current = Date.now();
     setDpBonus(0);
     if (id) {
       if (isApiChar)
@@ -412,6 +430,7 @@ export function CharacterPage() {
   /* ── PE checkboxes ────────────────────────────────────────────── */
 
   function handlePeToggle(attr: string, idx: number) {
+    lastLocalStateTime.current = Date.now();
     setPeChecks((prev) => {
       const next = { ...prev, [attr]: [...prev[attr]] };
       next[attr][idx] = !next[attr][idx];
@@ -429,6 +448,7 @@ export function CharacterPage() {
     if (!canEdit || !id) return;
     const next = idx < currentHp ? idx : idx + 1;
     setCurrentHp(next);
+    lastLocalHpTime.current = Date.now();
     if (isApiChar)
       void api.characters.updateCurrentValues(id, {
         current_hp: next,
@@ -441,6 +461,7 @@ export function CharacterPage() {
     if (!canEdit || !id) return;
     const next = idx < currentSanidade ? idx : idx + 1;
     setCurrentSanidade(next);
+    lastLocalSanTime.current = Date.now();
     if (isApiChar)
       void api.characters.updateCurrentValues(id, {
         current_hp: currentHp,

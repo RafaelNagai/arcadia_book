@@ -141,7 +141,7 @@ function AddModal({ type, allChars, npcIds, activeCharIds, creatures, onAddChar,
                   <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.78rem', color: '#EEF4FC', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{char.name}</p>
                   <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6rem', color: acc.text }}>{char.race} · Nv {char.level}</p>
                 </div>
-                <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: accent }}>+ Adicionar</span>
+                <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: accent }}>+</span>
               </button>
             )
           })}
@@ -164,7 +164,7 @@ function AddModal({ type, allChars, npcIds, activeCharIds, creatures, onAddChar,
                 <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.78rem', color: '#F0D0C0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{creature.name}</p>
                 <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6rem', color: 'rgba(240,208,192,0.4)' }}>Nv {creature.levelRange} · HP {creature.hp}</p>
               </div>
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: '#C04030' }}>+ Adicionar</span>
+              <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: '#C04030' }}>+</span>
             </button>
           ))}
         </div>
@@ -499,7 +499,7 @@ export function MapTokenPanel({
               transition: 'all 0.15s',
             }}
           >
-            + Adicionar
+            +
             <span style={{ fontSize: '0.5rem', transform: addMenuOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>▾</span>
           </button>
           {addMenuOpen && (
