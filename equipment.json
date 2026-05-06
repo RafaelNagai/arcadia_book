@@ -65,14 +65,15 @@
     "name": "Espada Gloria",
     "category": "Arma Corpo-a-Corpo",
     "subcategory": "Espada",
-    "tier": "S",
+    "tier": "SS",
     "damage": "3D8 + (3)",
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 4,
     "effects": [
       "Todo ataque feito com sucesso, dobra o multiplicador de queimadura.",
-      "Todo ataque feito com sucesso, causa x1 de Queimadura."
+      "Todo ataque feito com sucesso, causa x1 de Queimadura.",
+      "Consome todos os stacks de QUEIMADO em um raio de 20, causando um unico golpe com o valor total dessas stacks. O portador também recebe esse dano."
     ],
     "description": "Forjada por avaros anciões na ilha que recebeu o proprio nome da espada, ilha de Gloria.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/161e4fba-7e96-4876-b47e-329845c902e0/segments/4:4:1/Lucid_Origin_A_detailed_illustration_of_a_vibrant_ornate_katan_3.jpg"
@@ -745,15 +746,16 @@
     "name": "Armadura Gloria",
     "category": "Equipamento Defensivo",
     "subcategory": "Armadura",
-    "tier": "S",
+    "tier": "SS",
     "damage": null,
     "da": 5,
     "weight": "pesado",
     "isEquipment": true,
     "maxDurability": 7,
     "effects": [
-      "Ao defender, cada dado defendido que mitigar dano, causa x1 Queimadura no alvo atacante.",
-      "Atacantes com queimadura, tem -1 em todos os dados de dano ao realizar um ataque corpo-a-corpo contra Armadura Gloria."
+      "Ao defender golpes Corpo-a-Corpo, se mitigar pelo menos 1 de dano, o alvo recebe 1 de QUEIMADURA. Se mitigar 3 ou mais, ao inves de 1 aplica 4 de QUEIMADURA.",
+      "Atacantes com queimadura, tem -1 em todos os dados de dano ao realizar um ataque corpo-a-corpo contra Armadura Gloria.",
+      "Permite destruir este equipamento para evitar a morte, recuperando todo o HP e Sanidade."
     ],
     "description": "A alta elite dos elfos, utilizam esta armadura para demonstrar poder e soberania.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/2b926caf-2239-40fd-a075-b383e027d0b5/segments/1:1:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_red_c_0.jpg"

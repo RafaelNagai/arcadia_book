@@ -146,7 +146,7 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 **Resistência:** Não é possível resistir à aplicação.
 
 **Cura e redução:**
-- Água, cura mágica ou primeiros socorros: −1 stack por aplicação.
+- Água, cura mágica ou primeiros socorros, ações para apagar o fogo: −X stack por aplicação.
 - Passagem de tempo: −1 stack automaticamente ao final de cada turno.
 
 ---
@@ -155,12 +155,12 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Toxinas que corroem o corpo. Escala com reinfecção.
 
-**Mecânica:** Na primeira vez que o personagem é envenenado, sofre **1 de dano por turno**. A cada vez que é envenenado novamente (mesmo veneno ou diferente), a intensidade sobe em 1: 1 → 2 → 3 → 4 → 5 → 6. O dano de Envenenamento **ignora Durabilidade** — vai diretamente ao HP.
+**Mecânica:** Na primeira vez que o personagem é envenenado, sofre **1 de dano/debuff por turno** dependendo do tipo de veneno. A cada vez que é envenenado novamente (com o mesmo veneno), a intensidade sobe em 1: 1 → 2 → 3 → 4 → 5 → 6. O dano/debuff de Envenenamento **ignora Durabilidade** ou efeitos — o dano de envenenamento vai diretamente ao HP.
 
 **Resistência:** Fortitude — teste bem-sucedido reduz a intensidade em 1.
 
 **Cura e redução:**
-- Antídoto adequado: −1 intensidade.
+- Antídoto adequado: −X intensidade.
 - Cura mágica: remove completamente ou reduz estágios conforme o poder.
 
 ---
