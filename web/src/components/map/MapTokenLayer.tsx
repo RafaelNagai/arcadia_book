@@ -13,6 +13,16 @@ const CREATURE_BG_COLOR = 'rgba(160,48,32,0.25)'
 
 const TOKEN_BASE_RADIUS = 28
 
+// Simulates object-fit: cover for Konva images (no native CSS support)
+function getCoverCrop(img: HTMLImageElement, size: number) {
+  const sw = img.naturalWidth
+  const sh = img.naturalHeight
+  const scale = Math.max(size / sw, size / sh)
+  const cropW = size / scale
+  const cropH = size / scale
+  return { x: (sw - cropW) / 2, y: (sh - cropH) / 2, width: cropW, height: cropH }
+}
+
 function TokenShape({ token, isDraggable, scale, walls, onDrag, onDragEnd, onTokenClick }: {
   token: MapToken
   isDraggable: boolean
@@ -114,6 +124,7 @@ function TokenShape({ token, isDraggable, scale, walls, onDrag, onDragEnd, onTok
           x={-r}
           y={-r}
           cornerRadius={r}
+          crop={getCoverCrop(img, r * 2)}
           listening={false}
         />
       ) : (
@@ -196,7 +207,7 @@ function CreatureTokenShape({ instance, isDraggable, isGm, scale, onDrag, onDrag
       <Ring innerRadius={r} outerRadius={r + 3 / scale} fill={CREATURE_RING_COLOR} opacity={0.85} />
       <Circle radius={r} fill={CREATURE_BG_COLOR} />
       {img ? (
-        <KonvaImage image={img} width={r * 2} height={r * 2} x={-r} y={-r} cornerRadius={r} listening={false} />
+        <KonvaImage image={img} width={r * 2} height={r * 2} x={-r} y={-r} cornerRadius={r} crop={getCoverCrop(img, r * 2)} listening={false} />
       ) : (
         <Text
           text={instance.creatureName[0]?.toUpperCase() ?? '?'}

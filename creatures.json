@@ -40,8 +40,8 @@
     "hp": 40,
     "da": 11,
     "dp": 5,
-    "attributes": { "fisico": 10, "destreza": 10, "intelecto": 10, "influencia": 9 },
-    "immune": ["Anomalia", "Fogo", "Gelo"],
+    "attributes": { "fisico": 8, "destreza": 7, "intelecto": 7, "influencia": 7 },
+    "immune": ["Anomalia"],
     "vulnerable": ["Perfurante", "Veneno"],
     "interactions": [
       { "name": "Camuflagem", "description": "Se estiver em uma floresta ou campo verde, o Dragão da Planície pode se camuflar. Todos devem rodar um teste de PERCEPÇÃO antes de notar sua presença." },
@@ -49,7 +49,7 @@
       { "name": "Fúria", "description": "Quando o Dragão da Planície atinge 50% de sua vida, ele entra em fúria. Ele ganha +2 em todos os seus atributos e suas ações causam dano adicional de 1D6." }
     ],
     "actions": [
-      { "name": "Presas Verdejantes", "description": "Causa XD10 de dano Perfurante, sendo X o FISICO do dragao da Planicie." },
+      { "name": "Presas Verdejantes", "description": "Causa XD12 de dano Perfurante, sendo X o FISICO do dragao da Planicie." },
       { "name": "Voar", "description": "Permite voar, isso dobrar sua ação de Deslocamento." },
       { "name": "Uivo da Planície", "description": "Som gutural em raio de 15m. Vontade (DT 14): falha = Atordoado por 1 turno.", "once": "1× por combate" }
     ],
