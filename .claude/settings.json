@@ -30,7 +30,9 @@
       "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); print\\(f'{len\\(data\\)} creatures:', [c['name'] for c in data]\\)\")",
       "Bash(pkill -f \"vite --port 5174\")",
       "Bash(ls /Users/naga/.claude/skills/ 2>/dev/null || echo \"\\(vazio\\)\")",
-      "Read(//Users/naga/.claude/**)"
+      "Read(//Users/naga/.claude/**)",
+      "Bash(git -C /Users/naga/Documents/arcadia/book diff HEAD -- chapters/)",
+      "Bash(git -C /Users/naga/Documents/arcadia/book status --short -- chapters/)"
     ]
   }
 }

@@ -129,6 +129,20 @@ Os efeitos podem ser qualquer coisa narrativamente coerente: bônus situacionais
 
 ---
 
+### Capacidade de Carga
+
+Cada personagem suporta **12 + (Físico × 3)** pontos de carga antes de ficar sobrecarregado. Use os valores da tabela de pesos acima para somar a carga total dos itens carregados.
+
+| Estado | Condição | Efeito |
+|---|---|---|
+| Normal | Carga ≤ limite | Sem penalidade |
+| Sobrecarga | Carga > limite | Desvantagem em todos os testes |
+| Carga Crítica | Carga > limite × 2 | 2× Desvantagem em todos os testes |
+
+> **Exemplo:** Personagem com Físico 3 tem limite de carga 12 + (3 × 3) = **21**. Carregar 22+ pontos causa Sobrecarga; 43+ causa Carga Crítica.
+
+---
+
 ### Mochilas e Contêineres
 
 Por padrão, cada personagem possui **2 + Físico** slots de inventário. Mochilas e contêineres podem ampliar essa capacidade, adicionando **slots extras** além do limite base.

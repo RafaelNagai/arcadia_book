@@ -51,12 +51,29 @@ Nunca modifique arquivos em `chapters/` para agradar ao site. Sempre ajuste o si
 
 ### Cálculo de HP e Sanidade
 ```
-HP       = 12 + soma de HP_BONUS[1..Físico]
+HP       = 15 + soma de HP_BONUS[1..Físico]
 Sanidade = 15 + soma de SANID_BONUS[1..max(Intelecto, Influência)]
 
-HP_BONUS    = [0, 5, 5, 6, 6, 7, 7, 8, 8, 8, 8...]  (caps em 8)
-SANID_BONUS = [0, 4, 4, 3, 3, 2, 2, 1, 1, 1, 1, 1...]  (caps em 1)
+HP_BONUS    = [0, 4, 4, 3, 3, 2, 2, 2, 2, 2, 2...]  (caps em 2)
+SANID_BONUS = [0, 4, 4, 3, 3, 2, 2, 2, 2, 2, 2...]  (caps em 2)
 ```
+
+Tabela de referência (do capítulo `07_condicoes_e_trauma.md`):
+
+| Atributo | Bônus por ponto | Total |
+|---|---|---|
+| 0  | —  | 15 |
+| 1  | +4 | 19 |
+| 2  | +4 | 23 |
+| 3  | +3 | 26 |
+| 4  | +3 | 29 |
+| 5  | +2 | 31 |
+| 6  | +2 | 33 |
+| 7  | +2 | 35 |
+| 8  | +2 | 37 |
+| 9  | +2 | 39 |
+| 10 | +2 | 41 |
+| 11+ | +2 | … |
 
 ### Capítulos — Mapa de Conteúdo
 

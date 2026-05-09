@@ -13,11 +13,27 @@
 _nenhum item em andamento_
 
 ### A fazer
-_nenhum item planejado_
 
 ---
 
 ## Backlog
+
+### Widgets por Capítulo — Pendentes
+**Origem:** Subtask 5 da auditoria de consistência (2026-05-08)
+
+Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
+
+- [ ] `introducao` — widget de introdução ao mundo / Mar de Nuvens
+- [ ] `arcanismo` — simulador de ritual arcano (5 passos, custo de energia)
+- [ ] `moral` — painel de pool de Moral compartilhado da tripulação
+- [ ] `constelacao-e-navegacao` — calculadora de assinatura de constelação
+- [ ] `interludio` — tracker de ações de downtime
+- [ ] `racas` — galeria comparativa das 6 raças
+- [ ] `regioes` — mapa interativo das nações
+- [ ] `dimensoes` — diagrama dos 4 planos de existência
+- [ ] `religioes` — árvore comparativa das 3 religiões
+
+---
 
 ### Mapa Interativo — Melhorias Futuras
 **Origem:** Perguntas em aberto do PRD original
@@ -33,6 +49,18 @@ _nenhum item planejado_
 ---
 
 ## Concluídos
+
+### Auditoria de Consistência: Livro ↔ Site
+**Origem:** /task auditar se todas as regras do livro (chapters/) estão corretamente aplicadas no sistema
+**Concluída:** 2026-05-08 · **Validator:** APROVADO
+
+- [x] Subtask 1 — SPEC.md corrigido: base=15, HP_BONUS/SANID_BONUS=[0,4,4,3,3,2,2,2,...] — alinhado com `07_condicoes_e_trauma.md`
+- [x] Subtask 2 — `elementos-e-afinidades` movido de order:6 para order:7; todos subsequentes deslocados; orders 1–18 únicos e crescentes
+- [x] Subtask 3 — `maxWeight`, `weightPct`, `overDouble`, `overEncumbered`, `weightColor`, barra de carga e alertas removidos de `InventoryPanel.tsx`; capacidade agora baseada exclusivamente em slots (`2 + Físico`)
+- [x] Subtask 4 — `condicoes-e-trauma` movido de `part: 'O Arcano'` para `part: 'Fundamentos'` com `order: 8`
+- [x] Subtask 5 — `DiceRollerWidget` importado e registrado em `chapterWidgets.tsx` para `'evolucao-e-testes'`
+
+---
 
 ### Mapa Interativo de Campanha
 - [x] Fase 1 — Mapa estático, layers, tokens, drag
