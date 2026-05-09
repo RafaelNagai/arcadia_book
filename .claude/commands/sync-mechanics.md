@@ -2,6 +2,10 @@
 
 Sincroniza os capítulos do livro Arcádia com o manifest do projeto web.
 
+## Contexto do projeto
+
+Antes de iniciar, leia `SPEC.md` para entender a estrutura do projeto, aliases Vite e padrões técnicos. Leia `CLAUDE.md` para as regras de workflow.
+
 ## Quando usar
 
 Execute este comando sempre que:

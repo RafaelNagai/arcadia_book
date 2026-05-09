@@ -2,6 +2,10 @@
 
 Cria um novo widget interativo para um capítulo do livro Arcádia, seguindo os padrões existentes do projeto web.
 
+## Contexto do projeto
+
+Antes de iniciar, leia `SPEC.md` para entender a stack técnica (React 19, TypeScript, Tailwind), estrutura de pastas, padrões de componentes e cores dos elementos. Leia `CLAUDE.md` para as regras de workflow. Após criar o widget, marque-o como concluído no `Sprint.md` se havia uma task correspondente.
+
 ## Quando usar
 
 Execute este comando quando:

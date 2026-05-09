@@ -2,6 +2,10 @@
 
 Verifica se um widget interativo do site está alinhado com o conteúdo do capítulo correspondente no livro.
 
+## Contexto do projeto
+
+Antes de iniciar, leia `SPEC.md` para entender a stack técnica, padrões de componentes e as regras do livro. Leia `CLAUDE.md` para as regras de workflow.
+
 ## Quando usar
 
 Execute este comando quando:
