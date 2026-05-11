@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import type { Creature } from "@/data/creatureTypes";
+import type { Creature, CreatureAttributes } from "@/data/creatureTypes";
 import type { DieType } from "@/components/widgets/DiceRollerWidget";
 import { CreatureRollOverlay } from "./CreatureRollOverlay";
 
@@ -158,6 +158,71 @@ function StatCell({
   );
 }
 
+function AdjustableStatCell({
+  label,
+  value,
+  onAdjust,
+  right = false,
+}: {
+  label: string;
+  value: number;
+  onAdjust: (delta: number) => void;
+  right?: boolean;
+}) {
+  const btnStyle: React.CSSProperties = {
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    border: `1px solid ${C.border}`,
+    background: "transparent",
+    color: "var(--color-text-muted)",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 14,
+    lineHeight: 1,
+    flexShrink: 0,
+    padding: 0,
+  };
+  return (
+    <div
+      className="flex flex-col items-center justify-center py-2 px-2"
+      style={{ borderRight: right ? `1px solid ${C.border}` : "none" }}
+    >
+      <span
+        style={{
+          fontSize: 9,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: "var(--color-text-muted)",
+          fontFamily: "var(--font-ui)",
+          marginBottom: 4,
+        }}
+      >
+        {label}
+      </span>
+      <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+        <button style={btnStyle} onClick={() => onAdjust(-1)}>−</button>
+        <span
+          style={{
+            fontFamily: "Cinzel, serif",
+            fontWeight: 700,
+            fontSize: 17,
+            color: "var(--color-text-primary)",
+            lineHeight: 1,
+            minWidth: 24,
+            textAlign: "center",
+          }}
+        >
+          {value}
+        </span>
+        <button style={btnStyle} onClick={() => onAdjust(+1)}>+</button>
+      </div>
+    </div>
+  );
+}
+
 function ActionCard({
   name,
   description,
@@ -240,7 +305,19 @@ function ActionCard({
 
 export function CreatureDetails({ creature }: Props) {
   const [rollTarget, setRollTarget] = useState<RollTarget | null>(null);
+  const [currentHp, setCurrentHp] = useState<number>(creature.hp);
+  const [currentDa, setCurrentDa] = useState<number>(creature.da);
+  const [currentDp, setCurrentDp] = useState<number>(creature.dp);
+  const [currentAttrs, setCurrentAttrs] = useState<CreatureAttributes>({ ...creature.attributes });
+
   const { count: parsedCount, dieType: parsedDieType } = parseDiceBase(creature.diceBase);
+
+  const adjustAttr = useCallback(
+    (key: keyof CreatureAttributes, delta: number) => {
+      setCurrentAttrs((prev) => ({ ...prev, [key]: prev[key] + delta }));
+    },
+    [],
+  );
 
   const handleAttrClick = useCallback(
     (key: string, value: number) => {
@@ -294,9 +371,9 @@ export function CreatureDetails({ creature }: Props) {
         }}
       >
         <StatCell label="Dados Base" value={creature.diceBase} right />
-        <StatCell label="HP" value={creature.hp} right />
-        <StatCell label="DA" value={creature.da} right />
-        <StatCell label="DP" value={creature.dp} />
+        <AdjustableStatCell label="HP" value={currentHp} onAdjust={(d) => setCurrentHp((v) => v + d)} right />
+        <AdjustableStatCell label="DA" value={currentDa} onAdjust={(d) => setCurrentDa((v) => v + d)} right />
+        <AdjustableStatCell label="DP" value={currentDp} onAdjust={(d) => setCurrentDp((v) => v + d)} />
       </div>
 
       {/* Attributes — clickable */}
@@ -313,10 +390,26 @@ export function CreatureDetails({ creature }: Props) {
         >
           {(["fisico", "destreza", "intelecto", "influencia"] as const).map(
             (key, i) => {
-              const val = creature.attributes[key];
+              const val = currentAttrs[key];
               const sign = val >= 0 ? `+${val}` : String(val);
               const valColor =
                 val > 0 ? C.attrPos : val < 0 ? C.attrNeg : C.attrZero;
+              const adjBtnStyle: React.CSSProperties = {
+                background: "transparent",
+                border: `1px solid ${C.border}`,
+                borderRadius: 4,
+                color: "var(--color-text-muted)",
+                cursor: "pointer",
+                width: 18,
+                height: 18,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 13,
+                lineHeight: 1,
+                flexShrink: 0,
+                padding: 0,
+              };
               return (
                 <button
                   key={key}
@@ -326,7 +419,7 @@ export function CreatureDetails({ creature }: Props) {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    padding: "10px 8px",
+                    padding: "8px 8px 6px",
                     borderRight:
                       i < 3 ? `1px solid ${C.border}` : "none",
                     background: "transparent",
@@ -334,7 +427,7 @@ export function CreatureDetails({ creature }: Props) {
                     borderRadius: 0,
                     cursor: "pointer",
                     transition: "background 0.13s",
-                    gap: 3,
+                    gap: 2,
                   }}
                   onMouseEnter={(e) =>
                     (e.currentTarget.style.background = C.attrHover)
@@ -364,17 +457,38 @@ export function CreatureDetails({ creature }: Props) {
                   >
                     {sign}
                   </span>
-                  <span
-                    style={{
-                      fontSize: 8,
-                      letterSpacing: "0.10em",
-                      textTransform: "uppercase",
-                      color: `${C.attrPos}55`,
-                      fontFamily: "var(--font-ui)",
-                    }}
+                  <div
+                    style={{ display: "flex", alignItems: "center", gap: 6 }}
                   >
-                    rolar
-                  </span>
+                    <span
+                      role="button"
+                      tabIndex={-1}
+                      onClick={(e) => { e.stopPropagation(); adjustAttr(key, -1); }}
+                      style={adjBtnStyle}
+                    >
+                      −
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 8,
+                        letterSpacing: "0.10em",
+                        textTransform: "uppercase",
+                        color: `${C.attrPos}55`,
+                        fontFamily: "var(--font-ui)",
+                        userSelect: "none",
+                      }}
+                    >
+                      rolar
+                    </span>
+                    <span
+                      role="button"
+                      tabIndex={-1}
+                      onClick={(e) => { e.stopPropagation(); adjustAttr(key, +1); }}
+                      style={adjBtnStyle}
+                    >
+                      +
+                    </span>
+                  </div>
                 </button>
               );
             },

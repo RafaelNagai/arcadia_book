@@ -101,7 +101,7 @@ export function CharacterCreatorPage() {
 
   function goNext() { setDirection(1);  setStep(s => s + 1); window.scrollTo({ top: 0 }) }
   function goBack() {
-    if (isSectionEdit) { navigate(`/ficha/${editId}`); return }
+    if (isSectionEdit) { navigate(-1); return }
     if (step === 1)    { navigate(-1); return }
     setDirection(-1); setStep(s => s - 1); window.scrollTo({ top: 0 })
   }

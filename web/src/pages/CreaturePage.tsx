@@ -5,6 +5,9 @@ import type { Creature } from "@/data/creatureTypes";
 import creaturesData from "@creatures";
 import { HoneycombGrid } from "@/components/character/HoneycombGrid";
 import { CreatureDetails } from "@/components/creature/CreatureDetails";
+import { FloatingDiceButton } from "@/components/character/FloatingDiceButton";
+import { DiceLogSidebar } from "@/components/character/DiceLogSidebar";
+import { DiceLogProvider } from "@/lib/diceLog";
 import {
   CREATURE_ACCENT,
   CREATURE_ACCENT_DIM,
@@ -52,7 +55,7 @@ export function CreaturePage() {
           Criatura não encontrada
         </p>
         <button
-          onClick={() => navigate("/criaturas")}
+          onClick={() => navigate(-1)}
           style={{
             background: "none",
             border: "none",
@@ -72,6 +75,7 @@ export function CreaturePage() {
   const styles = getCreatureStyles(creature.style);
 
   return (
+    <DiceLogProvider>
     <div className="min-h-screen" style={{ background: "var(--color-void)" }}>
       {/* ── HERO — full viewport ─────────────────────────────────── */}
       <div
@@ -173,7 +177,7 @@ export function CreaturePage() {
 
         {/* Back button — stays visible while scrolling */}
         <button
-          onClick={() => navigate("/criaturas")}
+          onClick={() => navigate(-1)}
           style={{
             position: "absolute",
             top: 20,
@@ -337,7 +341,10 @@ export function CreaturePage() {
           <CreatureDetails creature={creature} />
         </motion.div>
       </div>
+      <FloatingDiceButton accentColor={CREATURE_ACCENT} />
+      <DiceLogSidebar />
     </div>
+    </DiceLogProvider>
   );
 }
 
