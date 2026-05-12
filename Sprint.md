@@ -50,6 +50,18 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Diagramação: Split de Capítulos Longos em Sub-capítulos
+**Origem:** /task Melhorar a diagramação do livro dividindo capítulos longos em sub-capítulos
+**Adicionada:** 2026-05-12 · **Validator:** APROVADO · **Concluída:** 2026-05-12
+
+- [x] Subtask 1 — Dividir `07_condicoes_e_trauma.md` em três arquivos (`07_vida_e_sanidade.md`, `07_condicoes.md`, `07_traumas.md`)
+- [x] Subtask 2 — Dividir `05_arcanismo.md` em três arquivos (`05_arcanismo.md` core, `05_runas.md`, `05_invocacao.md`)
+- [x] Subtask 3 — Dividir `09_navios.md` em dois arquivos (`09_navios.md` estrutura e `09_combate_naval.md`)
+- [x] Subtask 4 — Adicionar campo `parentSlug?: string` ao tipo `ChapterMeta` e registrar sub-capítulos no manifest com hierarquia correta
+- [x] Subtask 5 — Atualizar `Sidebar.tsx` para renderizar sub-capítulos indentados; corrigido `React.Fragment` com `key` prop
+
+---
+
 ### Cadastro de Criaturas Customizadas
 **Origem:** /task criar sistema completo de cadastro de criaturas: formulário com todos os campos necessários, upload de imagem ou URL, visibilidade pública/privada, e integração com campanhas
 **Adicionada:** 2026-05-11 · **Validator:** APROVADO · **Concluída:** 2026-05-12

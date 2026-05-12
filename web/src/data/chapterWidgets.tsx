@@ -14,7 +14,7 @@ export const CHAPTER_WIDGETS: Record<string, ReactNode> = {
   'personagem':            <CharacterExamplesWidget />,
   'evolucao-e-testes':     <DiceRollerWidget />,
   'combate':               <CombatWidget />,
-  'condicoes-e-trauma':    <TraumaWidget />,
+  'traumas':               <TraumaWidget />,
   'elementos-e-afinidades':<AfinidadeWidget />,
   'bestiario':             <BestiaryWidget />,
   'navios':                <ShipWidget />,

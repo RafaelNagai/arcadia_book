@@ -1,6 +1,7 @@
+import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { PARTS, getChaptersByPart } from '@/data/chapterManifest'
-import type { Part } from '@/data/chapterManifest'
+import type { Part, ChapterMeta } from '@/data/chapterManifest'
 import versionData from '@version'
 
 const PART_NUMBERS: Record<Part, string> = {
@@ -28,6 +29,51 @@ function SearchIcon() {
 interface SidebarProps {
   onClose?: () => void
   onSearchOpen: () => void
+}
+
+function ChapterLink({ chapter, onClose }: { chapter: ChapterMeta; onClose?: () => void }) {
+  const isChild = !!chapter.parentSlug
+  return (
+    <li key={chapter.id}>
+      <NavLink
+        to={`/capitulo/${chapter.slug}`}
+        onClick={onClose}
+        className={({ isActive }) =>
+          [
+            'flex items-center gap-3 py-2 rounded-md text-sm transition-all duration-150',
+            isChild ? 'px-2' : 'px-3',
+            isActive
+              ? 'border-l-2 bg-opacity-20 font-medium'
+              : 'border-l-2 border-transparent hover:bg-opacity-10',
+          ].join(' ')
+        }
+        style={({ isActive }) => ({
+          paddingLeft: isChild ? 28 : undefined,
+          borderLeftColor: isActive ? 'var(--color-arcano)' : 'transparent',
+          backgroundColor: isActive ? 'rgba(200,146,42,0.1)' : undefined,
+          color: isActive ? 'var(--color-arcano-glow)' : isChild ? 'var(--color-text-muted)' : 'var(--color-text-secondary)',
+          fontFamily: 'var(--font-ui)',
+        })}
+      >
+        {isChild ? (
+          <span
+            className="text-xs shrink-0"
+            style={{ color: 'var(--color-text-muted)', opacity: 0.5 }}
+          >
+            └
+          </span>
+        ) : (
+          <span
+            className="text-xs w-5 shrink-0 text-center"
+            style={{ color: 'var(--color-text-muted)' }}
+          >
+            {String(chapter.order).padStart(2, '0')}
+          </span>
+        )}
+        <span style={{ fontSize: isChild ? '0.8rem' : undefined }}>{chapter.title}</span>
+      </NavLink>
+    </li>
+  )
 }
 
 export function Sidebar({ onClose, onSearchOpen }: SidebarProps) {
@@ -76,7 +122,16 @@ export function Sidebar({ onClose, onSearchOpen }: SidebarProps) {
 
       {/* Chapter groups */}
       {PARTS.map(part => {
-        const chapters = getChaptersByPart(part)
+        const allChapters = getChaptersByPart(part)
+        const parents = allChapters.filter(c => !c.parentSlug)
+        const childrenByParent = allChapters.reduce<Record<string, ChapterMeta[]>>((acc, c) => {
+          if (c.parentSlug) {
+            if (!acc[c.parentSlug]) acc[c.parentSlug] = []
+            acc[c.parentSlug].push(c)
+          }
+          return acc
+        }, {})
+
         return (
           <div key={part} className="mb-6">
             <p
@@ -86,35 +141,13 @@ export function Sidebar({ onClose, onSearchOpen }: SidebarProps) {
               Parte {PART_NUMBERS[part]} — {part}
             </p>
             <ul className="space-y-0.5">
-              {chapters.map(chapter => (
-                <li key={chapter.id}>
-                  <NavLink
-                    to={`/capitulo/${chapter.slug}`}
-                    onClick={onClose}
-                    className={({ isActive }) =>
-                      [
-                        'flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all duration-150',
-                        isActive
-                          ? 'border-l-2 bg-opacity-20 font-medium'
-                          : 'border-l-2 border-transparent hover:bg-opacity-10',
-                      ].join(' ')
-                    }
-                    style={({ isActive }) => ({
-                      borderLeftColor: isActive ? 'var(--color-arcano)' : 'transparent',
-                      backgroundColor: isActive ? 'rgba(200,146,42,0.1)' : undefined,
-                      color: isActive ? 'var(--color-arcano-glow)' : 'var(--color-text-secondary)',
-                      fontFamily: 'var(--font-ui)',
-                    })}
-                  >
-                    <span
-                      className="text-xs w-5 shrink-0 text-center"
-                      style={{ color: 'var(--color-text-muted)' }}
-                    >
-                      {String(chapter.order).padStart(2, '0')}
-                    </span>
-                    <span>{chapter.title}</span>
-                  </NavLink>
-                </li>
+              {parents.map(chapter => (
+                <React.Fragment key={chapter.id}>
+                  <ChapterLink chapter={chapter} onClose={onClose} />
+                  {(childrenByParent[chapter.slug] ?? []).map(child => (
+                    <ChapterLink key={child.id} chapter={child} onClose={onClose} />
+                  ))}
+                </React.Fragment>
               ))}
             </ul>
           </div>

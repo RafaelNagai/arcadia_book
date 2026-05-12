@@ -82,49 +82,11 @@ Isso significa que manter altos níveis de Entropia exige um custo contínuo de 
 
 A **Sanidade** representa a saúde mental do personagem — sua capacidade de processar o peso do Arcano, do trauma e das experiências que ultrapassam o limite humano.
 
-> **Valor inicial:** 15 + bônus cumulativo baseado no maior entre Intelecto e Influência (ver tabela no capítulo de Condições e Trauma).
+> **Valor inicial:** 15 + bônus cumulativo baseado no maior entre Intelecto e Influência (ver tabela no capítulo de Vida e Sanidade).
 
 Quando a Sanidade chega a **zero**, o personagem adquire **1 Trauma**. Ao acumular **3 Traumas**, o personagem entra no **Estado de Loucura** — um mini-jogo de sobrevivência mental onde o resultado determina se ele consegue voltar.
 
-> Para a mecânica completa de Traumas, Estado de Loucura e recuperação de Sanidade, consulte o capítulo de **Condições e Trauma**.
-
----
-
-## Runas
-
-As **Runas** são as "palavras" que compõem a frase da magia. São fragmentos de linguagem arcana que o conjurador aprendeu e internalizou — cada uma representando um conceito, uma ação, uma qualidade.
-
-Sem Runas, o Arcano é instável. A magia pode até funcionar, mas com muito mais esforço e menos controle.
-
-### Como Funcionam
-Ao conjurar, o jogador seleciona Runas conhecidas que sejam **narrativamente coerentes** com a intenção declarada. Uma Runa incoerente não soma bônus — e o Mestre pode determinar que atrapalha a conjuração.
-
-Cada Runa aplicada adiciona **+2** fixo ao teste arcano, independente da ordem do slot:
-
-| Runas encaixadas | Bônus total |
-|---|---|
-| 1 runa | +2 |
-| 2 runas | +4 |
-| 3 runas | +6 |
-| 4 runas | +8 |
-| 5 runas | +10 |
-
-O número de Runas que o personagem pode aplicar por conjuração é limitado pelos seus **Slots de Entropia** atuais.
-
-> *Exemplo: Kain conhece as Runas FOGO, DISPARAR e EXPLODIR. Com Entropia 2 (2 slots disponíveis), ele escolhe FOGO + EXPLODIR para conjurar uma esfera incendiária. Bônus total: +2 (1ª runa) + +2 (2ª runa) = **+4** ao teste arcano.*
-
-### Como Aprender Runas
-As Runas são aprendidas durante o jogo — encontradas em artefatos, ensinadas por mestres arcanos, descobertas em ruínas. O Mestre controla o acesso a Runas novas como parte da progressão narrativa.
-
-### Lista de Runas de Referência
-
-As Runas estão organizadas em três categorias. Essa lista não é exaustiva — o Mestre pode introduzir Runas novas conforme a narrativa exigir.
-
-**Verbos:** DISPARAR, EXPLODIR, INVOCAR, PURIFICAR, ABSORVER, PROJETAR, DRENAR, DISSIPAR, CRIAR, DESTRUIR, VINCULAR, LIBERTAR, PENETRAR, REPELIR, TRANSFORMAR, AUMENTAR, DIVIDIR, RESTAURAR, PARAR, REVELAR
-
-**Adjetivos:** ARDENTE, FRIO, VELOZ, DENSO, AGUDO, AMPLO, SILENCIOSO, INVISÍVEL, RAPIDO, SOLIDO, ESCURO, LUMINOSO, PESADO, FRAGMENTADO, PURO, VENENOSO, VASTO, EFÊMERO, INVERTIDO
-
-**Substantivos:** FOGO, GELO, TEMPO, MENTE, BARREIRA, VENENO, SOMBRA, LUZ, VOZ, SANGUE, VENTO, PEDRA, ALMA, VAZIO, CORRENTE, ECO, NÉVOA, RAIO, MEMÓRIA, PORTAL, ALMA, ESPIRITO, CRIATURA, CORRENTE, TEMPO
+> Para a mecânica completa de Traumas, Estado de Loucura e recuperação de Sanidade, consulte o capítulo de **Vida e Sanidade**.
 
 ---
 
@@ -260,71 +222,3 @@ A DT final é uma combinação dos dois pilares. O Mestre escolhe um número den
 | Grande × Complexa | 40+ |
 
 > *Exemplo: "Criar uma barreira de chamas entre nós e os inimigos" — Grandeza Média (cobre uma linha de 3 metros), Complexidade Moderada (forma específica, duração sustentada). DT sugerida: 24–30.*
-
----
-
-## Invocação
-
-Invocar é uma forma específica de conjuração — em vez de moldar o Arcano em energia ou efeito, o conjurador usa o Arcano para **trazer uma entidade para o Plano Finito**.
-
-A entidade invocada pode ser **qualquer coisa que o elemento e a intenção justifiquem narrativamente**. O elemento arcano não limita o que pode ser invocado — ele define *de onde* ou *do quê* a criatura é feita:
-
-| Elemento | O que pode ser invocado |
-|---|---|
-| **Energia** | Construtos de matéria pura — golems de lava, elementais de fogo ou relâmpago, formas de luz solidificada |
-| **Anomalia** | Criaturas reais com características mutadas — um predador com membros extras, um ser que viola as leis do corpo |
-| **Paradoxo** | Cópias distorcidas da realidade — clones do próprio conjurador, ecos temporais de seres, reflexos do que poderia ter existido |
-| **Astral** | Espíritos dos planos, sombras do Reino das Almas, entidades da Rede dos Sonhos ou formas do Mundo das Tintas |
-| **Cognitivo** | Manifestações da mente — medos tomando forma, memórias com corpo, constructos feitos de percepção coletiva |
-
-O Mestre atribui o elemento na conjuração como em qualquer outra magia. A criatura invocada usa as estatísticas de uma entidade do Bestiário ou é criada pelo Mestre com base no que foi descrito.
-
-### Calculando o DT
-
-O DT de uma invocação segue o mesmo sistema de toda conjuração: **Grandeza × Complexidade**.
-
-**Grandeza** define o nível de poder da entidade:
-
-| Grandeza | Tier da Criatura | Nível de Referência |
-|---|---|---|
-| Pequena | Menor | 1 – 10 |
-| Média | Padrão | 11 – 20 |
-| Grande | Elite / Chefe | 20+ |
-
-**Complexidade** escala com as habilidades especiais que a criatura deverá usar:
-
-| Habilidades da criatura além do ataque básico | Complexidade |
-|---|---|
-| Nenhuma | Simples |
-| 1 habilidade especial (ação, reação ou passiva) | Moderada |
-| 2 ou mais habilidades especiais | Complexa |
-
-Combine os dois pilares na tabela de DT da seção anterior para encontrar a faixa do teste.
-
-> *Exemplo: Invocar um Pedroso Menor (Grandeza Pequena) com apenas o Golpe de Pedra básico = Pequena × Simples = DT 12–18. Invocar o mesmo Pedroso com Atropelar + Camuflagem Rochosa = Pequena × Complexa = DT 24+.*
-
----
-
-### Execução e Duração
-
-O tipo de Execução define por quanto tempo a criatura permanece no Plano Finito.
-
-**Rápida:** A criatura aparece, realiza **uma ação imediata** definida no momento da invocação e some. Não pode receber comandos adicionais depois.
-
-**Concentrada:** A criatura persiste enquanto o invocador mantiver o foco.
-- Sempre que o invocador **receber dano**, deve fazer um teste de **Vontade (DT = 10 + dano recebido)** para manter o vínculo ativo.
-- Cada invocação Concentrada adicional ativa ao mesmo tempo aplica **−1D12** (Desvantagem) nesse teste de Vontade.
-- Se o teste falhar, a criatura desaparece imediatamente.
-
-**Maldição:** A criatura é vinculada permanentemente ao invocador — sem necessidade de concentração ou manutenção. Invocações de Maldição são sempre de Complexidade **Complexa**, independente das habilidades da criatura.
-
----
-
-### Comandando a Criatura
-
-A criatura age no **turno dos jogadores**, junto aos aliados.
-
-- Para ordenar que a criatura realize uma **ação específica**, o invocador gasta **1 de suas próprias ações** para comandá-la.
-- Sem receber um comando, a criatura age pelo **instinto dela** — o Mestre usa o campo **Estilo** da ficha da criatura como guia.
-
-> *Uma criatura com Estilo "Agressivo · Predador" sem comando vai atacar o inimigo mais próximo. Uma com Estilo "Territorial" vai posicionar-se entre o invocador e os inimigos. O instinto não é inimigo — mas também não é aliado perfeitamente controlável.*
