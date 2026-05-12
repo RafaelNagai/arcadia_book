@@ -128,28 +128,3 @@ Nenhum desses fragmentos pertenceu a uma única pessoa anterior. O que se conden
 
 A criação artificial de vida — forçar intencionalmente essa condensação para fabricar um ser — está além do que qualquer conjurador já conseguiu realizar. A condensação natural é um mistério que os planos guardam. Forçá-la seria criar, não ressuscitar — e nenhuma mente humana ainda compreendeu como.
 
----
-
-## Astral e os Planos
-
-Para um conjurador com Afinidade ou Antítese no Astral, os três planos além do Material não são apenas conceitos — são fontes de poder que podem ser tocadas intencionalmente.
-
-Cada plano habilita categorias específicas de magia. O Mestre usa essas categorias para classificar intenções astrais da mesma forma que usa os elementos para classificar outras magias. O preço de acessar um plano vai além do custo de Entropia: ele sempre deixa uma marca narrativa.
-
-### Rede dos Sonhos
-
-**O que habilita:** Acesso a memórias — próprias, alheias ou de desconhecidos. Envio de mensagens, visões e pensamentos a longas distâncias. Consulta a conhecimentos esquecidos ou enterrados no passado de alguém.
-
-**A marca:** Cada acesso à Rede deixa um fragmento de outro lugar na mente do conjurador. O Mestre pode introduzir uma memória que não é dele — um rosto desconhecido, uma emoção sem contexto, uma frase em língua estranha que persiste por dias.
-
-### Reino das Almas
-
-**O que habilita:** Comunicação com os mortos. Ataques espirituais que ignoram a DA física, acertando diretamente a vitalidade ou a Sanidade do alvo. Transferência e dreno de energia vital. Percepção de espíritos próximos.
-
-**A marca:** Cada vez que o conjurador alcança o Reino, algo de si permanece lá. O Mestre pode manifestar isso como visões crescentes da própria morte do personagem, presença de espíritos que o reconhecem, ou uma frieza que as pessoas ao redor começam a notar.
-
-### Mundo das Tintas
-
-**O que habilita:** Amplificação ou supressão de emoções em alvos. Manifestação de construtos emocionais — raiva como calor físico, luto como peso opressor, euforia como velocidade. Leitura da memória emocional de um lugar ou objeto.
-
-**A marca:** O conjurador passa a sentir o peso emocional de cada cor ao redor. As cores do mundo carregam sentimentos de quem as colocou ali — e o conjurador começa a manifestá-los involuntariamente, sem filtro e sem controle. Uma emoção ajena pode tornar-se magia antes que ele perceba.

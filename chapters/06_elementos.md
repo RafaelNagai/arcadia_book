@@ -1,4 +1,4 @@
-# Elementos e Afinidades
+# Elementos
 
 > *Você não escolhe o Arcano. O Arcano escolhe o que já estava em você.*
 
@@ -75,14 +75,20 @@ Por sua natureza, magias de Paradoxo **tendem** a alta Complexidade — o Mestre
 
 O **Astral** é emprestar o poder de outro plano.
 
-Magos astrais conseguem migrar e moldar o poder de outro plano ao seu plano atual, normalmente o Plano Material.
-Para cada plano, existe uma interação diferente:
+Magos astrais alcançam os planos que coexistem com o Plano Material e extraem deles uma força que não existe no mundo físico. Cada plano oferece um tipo distinto de poder — e cada acesso cobra, além da Entropia, uma **marca narrativa** que o Mestre aplica sobre o conjurador.
+
 #### Rede dos Sonhos
-Tocar no plano **Rede dos Sonhos** permite acessar memórias e conhecimentos de qualquer pessoa, incorporando suas habilidades e perícias.
-Isso permite, por exemplo, um usuário incorporar os conhecimentos de luta de um antigo guerreiro, aumentando sua perícia de Combate.
+
+**O que permite:** Acessar memórias e conhecimentos de qualquer pessoa — viva ou morta — incorporando temporariamente suas habilidades e perícias. Enviar mensagens, visões e pensamentos a longas distâncias. Consultar sabedorias esquecidas ou enterradas no passado de alguém.
+
+**A marca:** Cada acesso à Rede deixa um fragmento de outro lugar na mente do conjurador. O Mestre pode introduzir uma memória que não é dele — um rosto desconhecido, uma emoção sem contexto, uma frase em língua estranha que persiste por dias.
 
 #### Mundo das Tintas
-Tocar no plano **Mundo das Tintas** precisa encontrar a cor desejada no local que o personagem estiver, e trazer os desejos daquela cor ao Plano Material, sendo algo totalmente aleatorio.
+
+**O que permite:** Amplificar ou suprimir emoções em alvos. Manifestar construtos emocionais com peso físico — raiva como calor, luto como pressão opressora, euforia como velocidade. Ler a memória emocional de um lugar ou objeto.
+
+Para canalizar o poder do Mundo das Tintas, o conjurador precisa encontrar a **cor desejada** no local onde estiver — o que torna o efeito imprevisível.
+
 | Dado | **Cor** | **Intenção** |
 | ---- |---|-------|
 | 1    | Azul | Mover |
@@ -96,13 +102,19 @@ Tocar no plano **Mundo das Tintas** precisa encontrar a cor desejada no local qu
 
 > Quando for **qualquer outra cor**, o conjurador deve rolar **1D6** para definir qual vai ser a intenção da cor sobre aquele alvo.
 
+**A marca:** O conjurador passa a sentir o peso emocional de cada cor ao redor. As cores do mundo carregam os sentimentos de quem as colocou ali — e o conjurador começa a manifestá-los involuntariamente, sem filtro e sem controle. Uma emoção alheia pode tornar-se magia antes que ele perceba.
+
 #### Reino das Almas
-Tocar no plano **Reino das almas** permite conversar e resgatar essas almas estagnadas enquanto esperam para serem esquecidas.
+
+**O que permite:** Comunicar-se com os mortos. Realizar ataques espirituais acertam criaturas intangíveis. Transferir e drenar energia vital. Perceber espíritos próximos. Resgatar almas estagnadas que ainda aguardam dissolução no plano.
+
+**A marca:** Cada vez que o conjurador alcança o Reino, algo de si permanece lá. O Mestre pode manifestar isso como visões crescentes da própria morte do personagem, presença de espíritos que o reconhecem pelo nome, ou uma frieza que as pessoas ao redor começam a notar.
 
 **Exemplos de execução:**
-- Acessar as memórias de um grande mago e conhecer novas runas que o personagem não conhecia.
-- Usar a cor verde e manifestar um enxame de gafanhotos que surgem como tinta verde.
-- Comunicar-se em forma etérea com um aliado a longas distâncias.
+- Incorporar os conhecimentos de luta de um guerreiro morto, aumentando temporariamente a perícia de Combate.
+- Usar a cor verde para manifestar um enxame de gafanhotos surgindo como tinta viva.
+- Enviar uma visão a um aliado distante através da Rede dos Sonhos.
+- Canalizar um espectro do Reino das Almas para atacar diretamente a Sanidade de um alvo.
 
 ---
 
@@ -118,61 +130,6 @@ Este elemento está relacionado à mente, aos sentimentos e aos sentidos. Conjur
 - Alterar a memória de um indivíduo.
 - Fazer com que o inimigo enxergue inúmeros soldados ilusórios.
 - Invocar um senso coletivo de fúria em todos os habitantes de um vilarejo.
-
----
-
-## Afinidade e Antítese
-
-Toda alma em Arcádia carrega uma relação com o Arcano. Não como escolha — como natureza.
-
-A **Afinidade** é o elemento com o qual o personagem tem sintonia natural. O Arcano flui por ele sem resistência, como água descendo um rio que já conhece o caminho.
-
-A **Antítese** é o elemento parasita — um segundo elemento que se impôs ao corpo do personagem, criando uma conexão forçada e instável. O personagem pode usá-lo, mas ele nunca é completamente dócil.
-
-### Bônus Mecânicos
-
-| Relação | Bônus no Teste Arcano |
-|---|---|
-| **Afinidade** | +4 |
-| **Antítese** | +2 |
-
-Esses bônus somam ao resultado arcano sempre que a magia pertencer ao elemento correspondente.
-
-> *Exemplo: Vael tem Afinidade em Cognitivo e Antítese em Energia. Ao lançar uma ilusão (Cognitivo), ganha +4. Ao lançar um feixe elétrico (Energia), ganha +2. Para Anomalia, Paradoxo ou Astral, não recebe bônus de relação.*
-
----
-
-## Determinando Afinidade e Antítese
-
-Na criação do personagem, role **2D6**.
-
-Cada dado determina um elemento pelo resultado. O jogador então **escolhe qual dado representa a Afinidade** e qual representa a Antítese.
-
-| Valor (D6) | Elemento |
-|---|---|
-| 1 | **Astral** — espírito, percepção e transcendência |
-| 2 | **Anomalia** — caos, mutação e alteração da realidade |
-| 3 | **Energia** — força bruta, criação e poder físico |
-| 4 | **Paradoxo** — tempo, espaço e distorção de conceitos |
-| 5 | **Cognitivo** — mente, sentidos e domínio psíquico |
-| 6 | **Livre escolha** — o jogador escolhe qualquer elemento |
-
-### Dados Iguais
-
-Se os dois dados caírem no **mesmo valor**, o personagem possui **Afinidade e Antítese no mesmo elemento** — uma raridade que representa uma conexão arcana extremamente intensa e instável.
-
-Nesse caso, ele recebe **ambos os bônus (+4 e +2 = +6 total)** ao conjurar magias daquele elemento.
-
-Se ambos os dados saírem **6**, o jogador escolhe livremente os dois elementos — podendo escolher o mesmo ou dois diferentes.
-
-> *Carregar o mesmo elemento como Afinidade e Antítese é como ter dois rios correndo em sentidos opostos dentro do mesmo canal. Poderoso. Perigoso. Inevitável.*
-
-### Exemplo de Criação
-
-> Um jogador rola **2D6** e obtém **3 e 5**.
-> Consultando a tabela: **3 → Energia** e **5 → Cognitivo**.
-> Ele decide que sua **Afinidade será Cognitivo** e sua **Antítese será Energia**.
-> Ao conjurar magias da mente, terá +4. Ao conjurar manifestações físicas, terá +2.
 
 ---
 
