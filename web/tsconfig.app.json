@@ -24,10 +24,8 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "baseUrl": ".",
-    "ignoreDeprecations": "6.0",
     "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["./src/*"],
       "@chapters/*": ["../chapters/*"],
       "@oneshots/*": ["../one-shots/*"],
       "@creatures": ["../creatures.json"],

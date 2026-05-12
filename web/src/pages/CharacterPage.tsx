@@ -7,7 +7,7 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import type { DragStartEvent, DragEndEvent } from "@dnd-kit/core";
-import type { Character, Condition, ConditionEffectField } from "@/data/characterTypes";
+import type { Character, Condition } from "@/data/characterTypes";
 import charactersData from "@characters";
 import { InventoryPanel } from "@/components/inventory/InventoryPanel";
 import {

@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import type { Creature } from "@/data/creatureTypes";
 import creaturesData from "@creatures";
-import { HoneycombGrid } from "@/components/character/HoneycombGrid";
 import { CreatureDetails } from "@/components/creature/CreatureDetails";
 import { FloatingDiceButton } from "@/components/character/FloatingDiceButton";
 import { DiceLogSidebar } from "@/components/character/DiceLogSidebar";

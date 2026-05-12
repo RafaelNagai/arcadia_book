@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react'
 import { supabase } from '@/lib/apiClient'
 import type { DiceLogEntry } from '@/lib/diceLog'
+import type { Condition } from '@/data/characterTypes'
 
 export interface CharacterStatePayload {
   pe_checks?: Record<string, boolean[]>
   skill_modifiers?: Record<string, number>
   defense_modifiers?: { daBase: number; daBonus: number; dpBonus: number }
   dice_log?: DiceLogEntry[]
+  conditions?: Condition[]
 }
 
 interface RealtimeHandlers {

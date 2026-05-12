@@ -6,7 +6,7 @@ import { api } from '@/lib/apiClient'
 import { CustomCreatureForm } from '@/components/creature/CustomCreatureForm'
 import type { CustomCreatureFormData } from '@/components/creature/CustomCreatureForm'
 import type { CustomCreature } from '@/data/creatureTypes'
-import { CREATURE_ACCENT, CREATURE_ACCENT_DIM } from '@/components/creature/constants'
+import { CREATURE_ACCENT_DIM } from '@/components/creature/constants'
 
 export function CustomCreatureFormPage() {
   const { id } = useParams<{ id?: string }>()
