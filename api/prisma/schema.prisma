@@ -218,6 +218,7 @@ model CharacterState {
   skillModifiers   Json     @default("{}") @map("skill_modifiers")
   defenseModifiers Json     @default("{\"daBase\":1,\"daBonus\":0,\"dpBonus\":0}") @map("defense_modifiers")
   diceLog          Json     @default("[]") @map("dice_log")
+  conditions       Json     @default("[]")
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
 

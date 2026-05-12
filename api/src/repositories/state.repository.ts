@@ -57,6 +57,17 @@ export class StateRepository {
     })
   }
 
+  updateConditions(
+    characterId: string,
+    userId: string,
+    conditions: unknown[],
+  ): Promise<CharacterState> {
+    return this.db.characterState.update({
+      where: { characterId_userId: { characterId, userId } },
+      data: { conditions: conditions as never },
+    })
+  }
+
   async appendDiceLog(
     characterId: string,
     userId: string,

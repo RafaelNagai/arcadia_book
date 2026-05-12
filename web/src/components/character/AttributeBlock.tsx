@@ -55,6 +55,7 @@ export function AttributeBlock({
   peChecks,
   onPeToggle,
   skillModifiers,
+  conditionEffectMap,
   onModifierChange,
   onModifierReset,
   onSkillTest,
@@ -64,11 +65,15 @@ export function AttributeBlock({
   peChecks: boolean[];
   onPeToggle?: (idx: number) => void;
   skillModifiers: Record<string, number>;
+  conditionEffectMap?: Record<string, number>;
   onModifierChange?: (key: string, delta: number) => void;
   onModifierReset?: (key: string) => void;
   onSkillTest?: (data: SkillTestData) => void;
 }) {
   const [editingSkill, setEditingSkill] = useState<string | null>(null);
+
+  const attrCondEffect = conditionEffectMap?.[group.attr] ?? 0;
+  const attrCondColor = attrCondEffect > 0 ? "#6EC840" : attrCondEffect < 0 ? "#E07070" : undefined;
 
   return (
     <div
@@ -94,9 +99,9 @@ export function AttributeBlock({
         </span>
         <span
           className="font-display font-bold text-2xl"
-          style={{ color: group.color }}
+          style={{ color: attrCondColor ?? group.color }}
         >
-          {character.attributes[group.attr]}
+          {character.attributes[group.attr] + attrCondEffect}
         </span>
       </div>
 
@@ -152,9 +157,11 @@ export function AttributeBlock({
           const val = character.skills[skill.key];
           const hasTalent = character.talents.includes(skill.key);
           const mod = skillModifiers[skill.key] ?? 0;
-          const total = val + mod;
+          const condEffect = conditionEffectMap?.[skill.key] ?? 0;
+          const total = val + mod + condEffect;
           const isEditing = editingSkill === skill.key;
           const modColor = mod > 0 ? "#6EC840" : "#D04040";
+          const condColor = condEffect > 0 ? "#6EC840" : condEffect < 0 ? "#E07070" : undefined;
 
           const smallBtn: React.CSSProperties = {
             width: 20,
@@ -198,7 +205,7 @@ export function AttributeBlock({
                             onSkillTest({
                               skillLabel: skill.label,
                               skillValue: val,
-                              modifier: mod,
+                              modifier: mod + condEffect,
                               hasTalent,
                               defaultAttr: group.attr,
                               attrColor: group.color,
@@ -211,9 +218,10 @@ export function AttributeBlock({
                     }
                     style={{
                       color:
-                        val > 0
+                        condColor ??
+                        (val > 0
                           ? "var(--color-text-secondary)"
-                          : "var(--color-text-muted)",
+                          : "var(--color-text-muted)"),
                       fontFamily: "var(--font-ui)",
                       fontWeight: hasTalent ? 600 : 400,
                       cursor: onSkillTest ? "pointer" : "default",
@@ -234,9 +242,10 @@ export function AttributeBlock({
                       onSkillTest
                         ? (e) => {
                             (e.currentTarget as HTMLElement).style.color =
-                              val > 0
+                              condColor ??
+                              (val > 0
                                 ? "var(--color-text-secondary)"
-                                : "var(--color-text-muted)";
+                                : "var(--color-text-muted)");
                           }
                         : undefined
                     }
@@ -272,9 +281,10 @@ export function AttributeBlock({
                       color:
                         mod !== 0
                           ? modColor
-                          : val > 0
-                            ? "rgba(220,230,245,0.9)"
-                            : "rgba(255,255,255,0.28)",
+                          : condColor ??
+                            (val > 0
+                              ? "rgba(220,230,245,0.9)"
+                              : "rgba(255,255,255,0.28)"),
                       minWidth: 24,
                       textAlign: "right",
                       opacity: isEditing ? 0.6 : 1,

@@ -165,6 +165,12 @@ export const api = {
         body: JSON.stringify({ defense_modifiers: modifiers }),
       }),
 
+    updateConditions: (characterId: string, conditions: unknown[]) =>
+      apiFetch(`/characters/${characterId}/state/conditions`, {
+        method: 'PATCH',
+        body: JSON.stringify({ conditions }),
+      }),
+
     appendDiceLog: (characterId: string, entry: unknown) =>
       apiFetch(`/characters/${characterId}/state/dice-log`, {
         method: 'POST',

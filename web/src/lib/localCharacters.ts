@@ -5,7 +5,7 @@
  * The `owned` flag on Character will map to server-side ownership once auth exists.
  */
 
-import type { Character, InventoryBag, InventoryItem } from '@/data/characterTypes'
+import type { Character, Condition, InventoryBag, InventoryItem } from '@/data/characterTypes'
 
 const STORAGE_KEY = 'arcadia_custom_characters'
 
@@ -194,6 +194,29 @@ export function saveDefenseModifiers(id: string, mods: DefenseModifiers): void {
     const all = raw ? (JSON.parse(raw) as Record<string, DefenseModifiers>) : {}
     all[id] = mods
     localStorage.setItem(DEFENSE_MOD_KEY, JSON.stringify(all))
+  } catch {}
+}
+
+/* ─── Conditions ───────────────────────────────────────────────── */
+
+const CONDITIONS_KEY = 'arcadia_conditions'
+
+export function loadConditions(characterId: string): Condition[] {
+  try {
+    const raw = localStorage.getItem(CONDITIONS_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, Condition[]>) : {}
+    return all[characterId] ?? []
+  } catch {
+    return []
+  }
+}
+
+export function saveConditions(characterId: string, conditions: Condition[]): void {
+  try {
+    const raw = localStorage.getItem(CONDITIONS_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, Condition[]>) : {}
+    all[characterId] = conditions
+    localStorage.setItem(CONDITIONS_KEY, JSON.stringify(all))
   } catch {}
 }
 

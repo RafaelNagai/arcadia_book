@@ -1025,5 +1025,1640 @@
     ],
     "description": "Uma manopla forjada em alta temperatura, com propriedades arcanas proprias. Esta manopla tem o slogan do vilarejo de Pés Altos, e tem o tamanho maior do que deveria. Tem uma letra cravado dentro do manopla: 'Cy.'.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f42b-051f-6a70-bf32-206e1ed4954e/lucid-origin_A_highly_detailed_illustration_of_a_single_mechanical_fantasy_gauntlet_displayed-0.jpg"
+  },
+  {
+    "id": "agulha-sombria",
+    "name": "Agulha Sombria",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Adaga",
+    "tier": "C",
+    "damage": "1D8",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": ["Ao atacar de Furtividade ativa, o alvo não percebe de qual direção o golpe veio."],
+    "description": "Fina como um sussurro. Precisa de apenas um lugar certo.",
+    "image": "assets/images/equipments/equipment_agulha-sombria.jpg"
+  },
+  {
+    "id": "faca-do-cacador",
+    "name": "Faca do Caçador",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Adaga",
+    "tier": "C",
+    "damage": "2D6",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": ["Ao atacar criaturas animais ou bestas, cause +2 de dano adicional."],
+    "description": "Afiada por necessidade, não por arte. As marcas no cabo contam quantas caças.",
+    "image": "assets/images/equipments/equipment_faca-do-cacador.jpg"
+  },
+  {
+    "id": "stilete-imperial",
+    "name": "Stilete Imperial",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Adaga",
+    "tier": "B",
+    "damage": "1D10+1",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": ["O dano desta adaga ignora 3 pontos de DA do alvo."],
+    "description": "Os conselheiros do Imperador de Camelot carregam este estilete. Diplomacia tem seus limites.",
+    "image": "assets/images/equipments/equipment_stilete-imperial.jpg"
+  },
+  {
+    "id": "faca-de-osso",
+    "name": "Faca de Osso",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Adaga",
+    "tier": "D",
+    "damage": "1D6",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": ["Se o portador for de Union, testes de Intimidação ganham +3 com esta faca à vista."],
+    "description": "Esculpida do osso de uma criatura que nunca deveria ter sido caçada.",
+    "image": "assets/images/equipments/equipment_faca-de-osso.jpg"
+  },
+  {
+    "id": "punhal-venenoso",
+    "name": "Punhal Venenoso",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Adaga",
+    "tier": "B",
+    "damage": "2D8",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": ["Ao causar dano, aplica Veneno: o alvo perde 2 de vida por turno durante 3 turnos."],
+    "description": "Fabricado nas vielas de Union por farmacêuticos que não escolhem quem serve.",
+    "image": "assets/images/equipments/equipment_punhal-venenoso.jpg"
+  },
+  {
+    "id": "dente-de-dragao",
+    "name": "Dente de Dragão",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Adaga",
+    "tier": "A",
+    "damage": "3D8",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ao causar dano, aplica x2 de Queimadura.",
+      "Ao realizar um crítico, o alvo recebe +5 de Queimadura adicional."
+    ],
+    "description": "Não é uma metáfora. É literalmente um dente extraído de um dragão vermelho das montanhas de Rubra.",
+    "image": "assets/images/equipments/equipment_dente-de-dragao.jpg"
+  },
+  {
+    "id": "lamina-espectral-da-irmandade",
+    "name": "Lâmina Espectral da Irmandade",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Adaga",
+    "tier": "A",
+    "damage": "2D10+3",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Permite acertar alvos intangíveis.",
+      "Ao matar um alvo, o portador recupera 3 de Sanidade."
+    ],
+    "description": "A Irmandade das Chamas usa estas lâminas como símbolo de iniciação. O ritual de consagração é melhor não descrever.",
+    "image": "assets/images/equipments/equipment_lamina-espectral-da-irmandade.jpg"
+  },
+  {
+    "id": "navalha-relampago",
+    "name": "Navalha Relâmpago",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Adaga",
+    "tier": "S",
+    "damage": "2D12",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Permite realizar dois ataques com esta arma na mesma Ação, com Desvantagem em ambos.",
+      "Ao acertar os dois ataques no mesmo turno, o segundo causa dano dobrado."
+    ],
+    "description": "Os duelos que ela encerrou foram tão rápidos que as testemunhas juraram que o adversário caiu sozinho.",
+    "image": "assets/images/equipments/equipment_navalha-relampago.jpg"
+  },
+  {
+    "id": "punhal-de-cristal-arcano",
+    "name": "Punhal de Cristal Arcano",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Adaga",
+    "tier": "A",
+    "damage": "3D6",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Para cada ponto de Entropia do portador, ganha +1 de dano.",
+      "Ao quebrar (durabilidade 0), libera uma explosão arcana de 5m causando 4D8 de dano."
+    ],
+    "description": "Cristalizado em eltys puro de Britannia. Instável. Poderoso. Ninguém pergunta onde está o ferreiro que a criou.",
+    "image": "assets/images/equipments/equipment_punhal-de-cristal-arcano.jpg"
+  },
+  {
+    "id": "punhal-do-assassino-velado",
+    "name": "Punhal do Assassino Velado",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Adaga",
+    "tier": "B",
+    "damage": "2D8+1",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Ao acertar um crítico, o alvo não consegue gritar por 1 turno.",
+      "Se o portador tiver Furtividade como habilidade treinada, ganha +2 em todos os ataques."
+    ],
+    "description": "Os Velados de Union nunca aparecem duas vezes na mesma forma. Mas o punhal, sempre reconhecido.",
+    "image": "assets/images/equipments/equipment_punhal-do-assassino-velado.jpg"
+  },
+  {
+    "id": "espada-de-treino",
+    "name": "Espada de Treino",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Espada",
+    "tier": "D",
+    "damage": "1D6",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": ["Não pode matar criaturas que já estão com 1 de vida restante."],
+    "description": "Embotada por design. Ainda doi.",
+    "image": "assets/images/equipments/equipment_espada-de-treino.jpg"
+  },
+  {
+    "id": "sabre-pirata",
+    "name": "Sabre Pirata",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Espada",
+    "tier": "C",
+    "damage": "2D8",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": ["Ao atacar um alvo em superfície instável (navio, plataforma flutuante), ganha +3 de Combate."],
+    "description": "Saiu de muitos portos, afundou em nenhum. Cheira a sal e má decisão.",
+    "image": "assets/images/equipments/equipment_sabre-pirata.jpg"
+  },
+  {
+    "id": "lamina-flamejante",
+    "name": "Lâmina Flamejante",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Espada",
+    "tier": "B",
+    "damage": "3D6",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ao causar dano, aplica x1 de Queimadura.",
+      "Ilumina a área de 10m ao redor enquanto desembainhada."
+    ],
+    "description": "Os ferreiros de Rubra banham a lâmina em lava vulcânica durante três dias. O fogo não apaga — ele aprende.",
+    "image": "assets/images/equipments/equipment_lamina-flamejante.jpg"
+  },
+  {
+    "id": "claymore-do-norte",
+    "name": "Claymore do Norte",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Espada",
+    "tier": "B",
+    "damage": "3D10",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": ["Requer duas mãos. Ao acertar um ataque, pode empurrar o alvo 2m em qualquer direção."],
+    "description": "Forjada nos picos congelados de North Galahad. Pesada o suficiente para encerrar argumentos.",
+    "image": "assets/images/equipments/equipment_claymore-do-norte.jpg"
+  },
+  {
+    "id": "espada-do-abismo",
+    "name": "Espada do Abismo",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Espada",
+    "tier": "A",
+    "damage": "4D8",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ataques causam dano arcano, ignorando DA comum.",
+      "Uma vez por combate, invoca uma sombra que realiza um ataque extra idêntico ao anterior."
+    ],
+    "description": "Não pertence a este plano. Nunca pertenceu. Carregá-la é como segurar o vazio com as mãos.",
+    "image": "assets/images/equipments/equipment_espada-do-abismo.jpg"
+  },
+  {
+    "id": "lamina-celestial",
+    "name": "Lâmina Celestial",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Espada",
+    "tier": "A",
+    "damage": "3D10+2",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Causa dano dobrado contra criaturas das trevas e mortos-vivos.",
+      "O portador não pode ser afetado por maldições enquanto a empunha."
+    ],
+    "description": "Consagrada pela deusa Alfa em tempos de guerra. Brilha na presença do mal — o que é conveniente e assustador.",
+    "image": "assets/images/equipments/equipment_lamina-celestial.jpg"
+  },
+  {
+    "id": "espada-dos-ventos",
+    "name": "Espada dos Ventos",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Espada",
+    "tier": "S",
+    "damage": "4D10",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Ataques podem ser realizados à distância de até 5m, lançando um corte de vento.",
+      "Uma vez por turno, esquivar-se de um ataque também empurra o atacante 3m."
+    ],
+    "description": "Criada pelos anciões de Galahad, canalizando as correntes que movem as ilhas. O fio corta o vento antes mesmo de partir.",
+    "image": "assets/images/equipments/equipment_espada-dos-ventos.jpg"
+  },
+  {
+    "id": "lamina-runica",
+    "name": "Lâmina Rúnica",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Espada",
+    "tier": "B",
+    "damage": "3D8+1",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ao conjurar um feitiço, pode realizar um ataque corpo-a-corpo como Ação Bônus.",
+      "Arcanistas ganham +2 em todos os testes de Combate com esta lâmina."
+    ],
+    "description": "Forjada por um ferreiro que era também arcanista. Ele queria que as duas coisas conversassem. Funcionou.",
+    "image": "assets/images/equipments/equipment_lamina-runica.jpg"
+  },
+  {
+    "id": "espada-das-mares",
+    "name": "Espada das Marés",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Espada",
+    "tier": "A",
+    "damage": "4D6+3",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Em ambientes aquáticos, ganha +4 em todos os dados de ataque.",
+      "Uma vez por combate, cria uma onda que empurra todos os inimigos em 10m, 4m para trás (Atletismo dif. 18 para resistir)."
+    ],
+    "description": "Recolhida do fundo de um naufrágio em frente a Union. A ilha afundou; a espada não.",
+    "image": "assets/images/equipments/equipment_espada-das-mares.jpg"
+  },
+  {
+    "id": "lamina-eterna",
+    "name": "Lâmina Eterna",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Espada",
+    "tier": "SS",
+    "damage": "5D10",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 999,
+    "effects": [
+      "Não pode ser destruída por meios não-mágicos.",
+      "Uma vez por sessão, permite reverter a morte do portador, voltando com 5 de vida.",
+      "Todo ataque com crítico causa dano permanente ao alvo, que não pode ser curado por magia."
+    ],
+    "description": "Forjada antes de Camelot, antes de Union, antes de tudo que se lembra. Ninguém sabe quem a fez. Ninguém quer saber.",
+    "image": "assets/images/equipments/equipment_lamina-eterna.jpg"
+  },
+  {
+    "id": "cota-de-malha",
+    "name": "Cota de Malha",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "C",
+    "damage": null,
+    "da": 3,
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 5,
+    "effects": [],
+    "description": "Mil elos de aço interligados. Cada um colocado à mão por algum ferreiro anônimo de Britannia.",
+    "image": "assets/images/equipments/equipment_cota-de-malha.jpg"
+  },
+  {
+    "id": "armadura-de-escamas",
+    "name": "Armadura de Escamas",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "B",
+    "damage": null,
+    "da": 4,
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 6,
+    "effects": ["Reduz em 1 o dano de ataques do tipo cortante."],
+    "description": "Feita das escamas de um lagarto de rocha da Cordilheira de Union. Mais resistente do que parece. Mais pesada também.",
+    "image": "assets/images/equipments/equipment_armadura-de-escamas.jpg"
+  },
+  {
+    "id": "armadura-do-barbaro",
+    "name": "Armadura do Bárbaro",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "B",
+    "damage": null,
+    "da": 3,
+    "weight": "super_pesado",
+    "isEquipment": true,
+    "maxDurability": 6,
+    "effects": [
+      "Ao receber dano superior a 5 em um único golpe, o portador ganha +3 de Combate no próximo ataque.",
+      "Portadores ganham +2 em testes de Atletismo e Fortitude."
+    ],
+    "description": "Ossos, couro, ferro. Os bárbaros de Union não usam armadura para parecer invencíveis — usam para aguentar mais.",
+    "image": "assets/images/equipments/equipment_armadura-do-barbaro.jpg"
+  },
+  {
+    "id": "armadura-das-sombras",
+    "name": "Armadura das Sombras",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "A",
+    "damage": null,
+    "da": 4,
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 7,
+    "effects": [
+      "Em ambientes de pouca luz ou escuridão, ganha +1 de DA adicional.",
+      "Portadores ganham +3 em testes de Furtividade."
+    ],
+    "description": "Tecida com fios de sombra extraídos do Plano Sombrio. Não reflete luz. Não reflete nada.",
+    "image": "assets/images/equipments/equipment_armadura-das-sombras.jpg"
+  },
+  {
+    "id": "armadura-de-tita",
+    "name": "Armadura de Titã",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "S",
+    "damage": null,
+    "da": 7,
+    "weight": "hyper_massivo",
+    "isEquipment": true,
+    "maxDurability": 15,
+    "effects": [
+      "O portador não pode ser empurrado, derrubado ou movido sem consentimento.",
+      "Testes de Furtividade têm Desvantagem automática.",
+      "Ao receber dano, reduza em 3 adicionalmente. Não acumulativo com outras reduções."
+    ],
+    "description": "Criada para os guardas do Templo Central de Camelot. É mais fácil mover a parede do que mover quem a usa.",
+    "image": "assets/images/equipments/equipment_armadura-de-tita.jpg"
+  },
+  {
+    "id": "manto-do-viajante",
+    "name": "Manto do Viajante",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "D",
+    "damage": null,
+    "da": 1,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": ["Portadores ganham +2 em testes de Sobrevivência e Percepção ao ar livre."],
+    "description": "Desgastado por mil estradas. Cada mancha é uma história que o dono prefere não contar.",
+    "image": "assets/images/equipments/equipment_manto-do-viajante.jpg"
+  },
+  {
+    "id": "armadura-runica",
+    "name": "Armadura Rúnica",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "A",
+    "damage": null,
+    "da": 5,
+    "weight": "super_pesado",
+    "isEquipment": true,
+    "maxDurability": 10,
+    "effects": [
+      "Ao conjurar um feitiço, a armadura absorve 1 de Entropia que seria acumulada.",
+      "Ganha +2 de DP contra magias arcanas."
+    ],
+    "description": "Cada runa gravada por um Mestre de Britannia. Leva anos para ser concluída. Protege em dois planos ao mesmo tempo.",
+    "image": "assets/images/equipments/equipment_armadura-runica.jpg"
+  },
+  {
+    "id": "armadura-de-cristal-arcano",
+    "name": "Armadura de Cristal Arcano",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "A",
+    "damage": null,
+    "da": 3,
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 6,
+    "effects": [
+      "Para cada ponto de Entropia, ganha +1 de DA. Máximo de +4.",
+      "Ao atingir 0 de durabilidade, libera uma onda arcana de 8m causando 3D10 de dano."
+    ],
+    "description": "Transparente como vidro, resistente como aço temperado. O arcano dentro dela pulsa como um coração.",
+    "image": "assets/images/equipments/equipment_armadura-de-cristal-arcano.jpg"
+  },
+  {
+    "id": "armadura-das-profundezas",
+    "name": "Armadura das Profundezas",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "B",
+    "damage": null,
+    "da": 4,
+    "weight": "super_pesado",
+    "isEquipment": true,
+    "maxDurability": 8,
+    "effects": [
+      "O portador pode respirar debaixo d'água.",
+      "Em combate aquático, ganha +2 de DA e +2 em testes de Atletismo."
+    ],
+    "description": "Forjada por mergulhadores de Union que desceram longe demais e encontraram algo que os mudou. A armadura veio junto.",
+    "image": "assets/images/equipments/equipment_armadura-das-profundezas.jpg"
+  },
+  {
+    "id": "armadura-do-cacador",
+    "name": "Armadura do Caçador",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "C",
+    "damage": null,
+    "da": 3,
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 5,
+    "effects": ["Portadores ganham +2 em testes de Rastreamento e Percepção contra criaturas."],
+    "description": "Leve o suficiente para correr. Resistente o suficiente para errar. Os caçadores de Union não pedem mais do que isso.",
+    "image": "assets/images/equipments/equipment_armadura-do-cacador.jpg"
+  },
+  {
+    "id": "pistola-improvisada",
+    "name": "Pistola Improvisada",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Pistola",
+    "tier": "D",
+    "damage": "1 dado",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": ["Ao falhar criticamente, a pistola explode causando 1D6 de dano ao portador."],
+    "description": "Funciona. Às vezes. A definição de 'funciona' é generosa.",
+    "image": "assets/images/equipments/equipment_pistola-improvisada.jpg"
+  },
+  {
+    "id": "pistola-de-duelo",
+    "name": "Pistola de Duelo",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Pistola",
+    "tier": "C",
+    "damage": "2 dados",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": ["Se for o primeiro ataque do combate, role com Vantagem."],
+    "description": "Ornamentada, equilibrada, construída para o momento que define reputações em Camelot.",
+    "image": "assets/images/equipments/equipment_pistola-de-duelo.jpg"
+  },
+  {
+    "id": "pistola-automatica",
+    "name": "Pistola Automática",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Pistola",
+    "tier": "B",
+    "damage": "3 dados",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": ["Uma vez por turno, pode gastar 1 Ação Bônus para realizar um segundo disparo com Desvantagem."],
+    "description": "Os engenheiros de Rubra queriam velocidade. Conseguiram. Também conseguiram problemas de supercarga.",
+    "image": "assets/images/equipments/equipment_pistola-automatica.jpg"
+  },
+  {
+    "id": "pistola-de-sinal",
+    "name": "Pistola de Sinal",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Pistola",
+    "tier": "E",
+    "damage": "1 dado",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": ["Ao disparar, cria um sinal luminoso visível a até 2km. Pode cegar alvos adjacentes por 1 turno (Reflexo dif. 10 para evitar)."],
+    "description": "Projetada para pedir socorro. Ninguém diz que não pode ser usada pra outra coisa.",
+    "image": "assets/images/equipments/equipment_pistola-de-sinal.jpg"
+  },
+  {
+    "id": "pistola-arcana-de-rubra",
+    "name": "Pistola Arcana de Rubra",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Pistola",
+    "tier": "B",
+    "damage": "2 dados",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Os tiros desta pistola podem usar munição arcana sem custo adicional de Ação.",
+      "Para cada ponto de Entropia do portador, o disparo causa +1 de dano."
+    ],
+    "description": "Rubra combinou eltys com pólvora. A explosão foi inesperada. O produto final, acidental. E perfeito.",
+    "image": "assets/images/equipments/equipment_pistola-arcana-de-rubra.jpg"
+  },
+  {
+    "id": "pistola-do-cacador",
+    "name": "Pistola do Caçador",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Pistola",
+    "tier": "C",
+    "damage": "2 dados",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": ["Ao atacar uma criatura que o portador rastreou naquele dia, ganha +3 no dano."],
+    "description": "Companheira de campo. Não precisa de precisão cirúrgica — precisa de conhecer o terreno melhor que o alvo.",
+    "image": "assets/images/equipments/equipment_pistola-do-cacador.jpg"
+  },
+  {
+    "id": "pistola-das-sombras",
+    "name": "Pistola das Sombras",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Pistola",
+    "tier": "A",
+    "damage": "3 dados",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Os disparos desta pistola não fazem som.",
+      "Ao atacar de Furtividade ativa, o alvo atingido não percebe a origem do disparo."
+    ],
+    "description": "Forjada nas oficinas clandestinas da Irmandade de Union. Sem barulho. Sem testemunhas. Sem rastro.",
+    "image": "assets/images/equipments/equipment_pistola-das-sombras.jpg"
+  },
+  {
+    "id": "pistola-dupla",
+    "name": "Pistola Dupla",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Pistola",
+    "tier": "A",
+    "damage": "2 dados",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ocupa os dois espaços de mão. Permite disparar em dois alvos diferentes na mesma Ação, com Desvantagem em ambos.",
+      "Ao acertar os dois alvos no mesmo turno, ambos ficam Atordoados por 1 turno."
+    ],
+    "description": "Dois canos. Um gatilho. A matemática da violência simplificada.",
+    "image": "assets/images/equipments/equipment_pistola-dupla.jpg"
+  },
+  {
+    "id": "pistola-metralhadora",
+    "name": "Pistola Metralhadora",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Pistola",
+    "tier": "S",
+    "damage": "5 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Uma vez por turno, pode disparar em rajada: ataca todos os alvos em um cone de 8m. Cada alvo faz Reflexo dif. 20 ou recebe dano completo.",
+      "Ao usar a rajada, a arma recarrega por 1 turno completo."
+    ],
+    "description": "Rubra perguntou: e se a pergunta fosse 'quantos alvos' em vez de 'qual alvo'? Esta foi a resposta.",
+    "image": "assets/images/equipments/equipment_pistola-metralhadora.jpg"
+  },
+  {
+    "id": "pistola-fantasma",
+    "name": "Pistola Fantasma",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Pistola",
+    "tier": "A",
+    "damage": "4 dados",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Os projéteis desta pistola atravessam obstáculos físicos não-mágicos.",
+      "Permite acertar alvos intangíveis."
+    ],
+    "description": "Ninguém sabe como funciona. O fabricante morreu antes de explicar. A pistola continua funcionando.",
+    "image": "assets/images/equipments/equipment_pistola-fantasma.jpg"
+  },
+  {
+    "id": "rifle-de-caca",
+    "name": "Rifle de Caça",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Rifle",
+    "tier": "C",
+    "damage": "3 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": ["Ao atacar criaturas animais ou bestas, cause +2 de dano adicional."],
+    "description": "Padrão das expedições de caça de Union. Durável, preciso, discreto. Faz o que precisa.",
+    "image": "assets/images/equipments/equipment_rifle-de-caca.jpg"
+  },
+  {
+    "id": "rifle-de-assalto",
+    "name": "Rifle de Assalto",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Rifle",
+    "tier": "B",
+    "damage": "4 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Uma vez por turno, pode realizar dois ataques com Desvantagem em ambos como uma única Ação.",
+      "Se mover-se antes de atacar, perde o segundo ataque."
+    ],
+    "description": "Rubra construiu para guerra. Camelot encomendou mil. A guerra acabou; os rifles ficaram.",
+    "image": "assets/images/equipments/equipment_rifle-de-assalto.jpg"
+  },
+  {
+    "id": "rifle-elfico",
+    "name": "Rifle Élfico",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Rifle",
+    "tier": "B",
+    "damage": "3 dados",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "+3 em testes de Precisão ao atacar alvos a mais de 30 metros.",
+      "Não gera som ao disparar em alvos a mais de 40 metros."
+    ],
+    "description": "Os elfos de Galahad não apreciam armas de fogo — mas quando as adotam, as refinam até a perfeição.",
+    "image": "assets/images/equipments/equipment_rifle-elfico.jpg"
+  },
+  {
+    "id": "rifle-de-pressao",
+    "name": "Rifle de Pressão",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Rifle",
+    "tier": "C",
+    "damage": "3 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": ["Ao acertar um alvo, pode empurrá-lo 2m em qualquer direção."],
+    "description": "O impacto é brutal. Os caçadores de grandes criaturas de Union usam para derrubar alvos sem precisar de mira perfeita.",
+    "image": "assets/images/equipments/equipment_rifle-de-pressao.jpg"
+  },
+  {
+    "id": "rifle-flamejante",
+    "name": "Rifle Flamejante",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Rifle",
+    "tier": "A",
+    "damage": "5 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ao causar dano, aplica x2 de Queimadura ao alvo.",
+      "Uma vez por combate, dispara um projétil explosivo que cria uma área de Queimadura de 5m por 1 turno."
+    ],
+    "description": "Os engenheiros de Rubra encheram balas com lava comprimida. Funcionou melhor do que esperavam. Muito melhor.",
+    "image": "assets/images/equipments/equipment_rifle-flamejante.jpg"
+  },
+  {
+    "id": "rifle-sombrio",
+    "name": "Rifle Sombrio",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Rifle",
+    "tier": "A",
+    "damage": "4 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Em condições de pouca luz ou escuridão, ganha +4 em Precisão.",
+      "Os disparos deste rifle não deixam rastros visíveis."
+    ],
+    "description": "Fabricado para operar onde a luz não chega. A Irmandade das Sombras de Union financia as pesquisas de Rubra por motivos que não divulga.",
+    "image": "assets/images/equipments/equipment_rifle-sombrio.jpg"
+  },
+  {
+    "id": "rifle-anti-arcano",
+    "name": "Rifle Anti-Arcano",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Rifle",
+    "tier": "B",
+    "damage": "4 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Causa dano dobrado contra alvos que tenham Entropia acima de 0.",
+      "Ao acertar um alvo arcanista, o alvo perde 1 ponto de Entropia."
+    ],
+    "description": "Desenvolvido por Camelot durante a Purga dos Arcanistas. Cada bala carrega um campo supressor de eltys.",
+    "image": "assets/images/equipments/equipment_rifle-anti-arcano.jpg"
+  },
+  {
+    "id": "rifle-das-nevoas",
+    "name": "Rifle das Névoas",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Rifle",
+    "tier": "A",
+    "damage": "5 dados",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "O projétil passa por névoa, fumaça e neblina sem penalidade.",
+      "Uma vez por combate, ao acertar, o alvo fica cego por 2 turnos."
+    ],
+    "description": "Os exploradores de North Galahad precisavam de algo que funcionasse nas neblinas densas. Rubra entregou. Cobrou muito.",
+    "image": "assets/images/equipments/equipment_rifle-das-nevoas.jpg"
+  },
+  {
+    "id": "rifle-de-gelo",
+    "name": "Rifle de Gelo",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Rifle",
+    "tier": "A",
+    "damage": "5 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ao causar dano, o alvo deve realizar Atletismo ou Fortitude dif. 18 ou fica Enraizado por 2 turnos.",
+      "Em ambientes frios, ganha +2 em todos os dados de ataque."
+    ],
+    "description": "Usa cristais de gelo de North Galahad como projéteis. Ao impactar, o cristal se expande. O resultado é espetacular e brutal.",
+    "image": "assets/images/equipments/equipment_rifle-de-gelo.jpg"
+  },
+  {
+    "id": "rifle-lendario",
+    "name": "Rifle Lendário",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Rifle",
+    "tier": "SS",
+    "damage": "9 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 5,
+    "effects": [
+      "O valor para obter um crítico é reduzido em 2.",
+      "Se o portador não se mover neste turno, o multiplicador de crítico é aumentado em 2.",
+      "Uma vez por sessão, realiza um tiro perfeito: acerta automaticamente o alvo e causa dano máximo."
+    ],
+    "description": "Existe apenas um. O fabricante levou 30 anos. Quando terminou, disse que nunca mais faria outro. Ninguém sabe se isso é modéstia ou arrependimento.",
+    "image": "assets/images/equipments/equipment_rifle-lendario.jpg"
+  },
+  {
+    "id": "arco-curto",
+    "name": "Arco Curto",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Arco",
+    "tier": "D",
+    "damage": "1 dado",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [],
+    "description": "O primeiro arco que qualquer criança aprende a usar nas florestas de Galahad. Pequeno. Honesto.",
+    "image": "assets/images/equipments/equipment_arco-curto.jpg"
+  },
+  {
+    "id": "arco-longo",
+    "name": "Arco Longo",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Arco",
+    "tier": "C",
+    "damage": "2 dados",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": ["+1 em testes de Precisão ao atacar alvos a mais de 15 metros."],
+    "description": "O arco dos guardas de fronteira de Galahad. Longo o suficiente para atingir antes de ser visto.",
+    "image": "assets/images/equipments/equipment_arco-longo.jpg"
+  },
+  {
+    "id": "arco-composto",
+    "name": "Arco Composto",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Arco",
+    "tier": "B",
+    "damage": "3 dados",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": ["+2 em testes de Precisão. O alcance máximo é 20% maior que o de arcos convencionais."],
+    "description": "Engenharia élfica aplicada ao arco de madeira. O resultado é algo que nenhum dos dois concordaria em chamar de seu.",
+    "image": "assets/images/equipments/equipment_arco-composto.jpg"
+  },
+  {
+    "id": "arco-elfico",
+    "name": "Arco Élfico",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Arco",
+    "tier": "B",
+    "damage": "3 dados",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ao realizar um ataque com sucesso, pode gastar a Ação Bônus para disparar uma segunda flecha com Desvantagem.",
+      "Se o portador for Elfo, o segundo disparo não tem Desvantagem."
+    ],
+    "description": "Curvado com resina de árvore-mãe e polido com paciência élfica. Cada arco leva uma geração para amadurecer.",
+    "image": "assets/images/equipments/equipment_arco-elfico.jpg"
+  },
+  {
+    "id": "arco-flamejante",
+    "name": "Arco Flamejante",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Arco",
+    "tier": "A",
+    "damage": "4 dados",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Flechas disparadas por este arco se incendeiam ao voar, causando x1 de Queimadura adicional.",
+      "Uma vez por combate, dispara uma flecha que explode em 5m ao impactar."
+    ],
+    "description": "Encantado pelos ferreiros de Rubra que acreditavam que tudo melhora com fogo. Não estavam errados.",
+    "image": "assets/images/equipments/equipment_arco-flamejante.jpg"
+  },
+  {
+    "id": "arco-das-sombras",
+    "name": "Arco das Sombras",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Arco",
+    "tier": "A",
+    "damage": "4 dados",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Flechas disparadas em pouca luz ou escuridão tornam-se invisíveis em voo.",
+      "Ao atacar de Furtividade ativa, ganha +5 em Precisão."
+    ],
+    "description": "Tecido com trevas solidificadas pelos magos de Britannia. Carregá-lo à luz plena causa um desconforto inexplicável.",
+    "image": "assets/images/equipments/equipment_arco-das-sombras.jpg"
+  },
+  {
+    "id": "arco-lunar",
+    "name": "Arco Lunar",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Arco",
+    "tier": "S",
+    "damage": "5 dados",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Durante a noite, o portador ganha +5 em todos os ataques e o alcance do arco dobra.",
+      "Uma vez por sessão, dispara uma flecha que atravessa todos os alvos em linha reta até 60 metros."
+    ],
+    "description": "Forjado na lua cheia, temperado com luz lunar. Durante o dia é apenas um excelente arco. À noite, é outra coisa.",
+    "image": "assets/images/equipments/equipment_arco-lunar.jpg"
+  },
+  {
+    "id": "arco-da-tempestade",
+    "name": "Arco da Tempestade",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Arco",
+    "tier": "A",
+    "damage": "4 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ao causar dano, o alvo deve realizar Fortitude dif. 18 ou fica Atordoado por 1 turno.",
+      "Uma vez por combate, dispara uma flecha de relâmpago que salta para um segundo alvo adjacente, causando metade do dano."
+    ],
+    "description": "Captura a eletricidade das tempestades sobre os mares de Union. Cada flecha carrega o som do trovão antes de partir.",
+    "image": "assets/images/equipments/equipment_arco-da-tempestade.jpg"
+  },
+  {
+    "id": "arco-de-cristal",
+    "name": "Arco de Cristal",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Arco",
+    "tier": "A",
+    "damage": "3 dados",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Para cada ponto de Entropia, ganha +1 em todos os dados de ataque.",
+      "Ao disparar flechas comuns, cria fragmentos arcanos que causam 1D4 de dano extra."
+    ],
+    "description": "Esculpido em eltys cristalizado de Britannia. Cada flecha disparada amplifica o poder arcano do portador.",
+    "image": "assets/images/equipments/equipment_arco-de-cristal.jpg"
+  },
+  {
+    "id": "arco-lendario-de-galahad",
+    "name": "Arco Lendário de Galahad",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Arco",
+    "tier": "SS",
+    "damage": "6 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 5,
+    "effects": [
+      "Projéteis especiais disparados nunca são destruídos.",
+      "O valor para obter um crítico é reduzido em 2.",
+      "Uma vez por sessão, dispara uma flecha que persegue o alvo por até 3 turnos até acertar, ignorando cobertura."
+    ],
+    "description": "O arco de Galahad que não tem nome — porque o nome é simplesmente 'o arco'. Qualquer arqueiro de Galahad sabe de qual se trata.",
+    "image": "assets/images/equipments/equipment_arco-lendario-de-galahad.jpg"
+  },
+  {
+    "id": "flechas-de-osso",
+    "name": "Flechas de Osso",
+    "category": "Projétil",
+    "subcategory": "Flecha",
+    "tier": "D",
+    "damage": "D4",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [],
+    "description": "Improviso de quem não tem outra opção. Quebram com frequência. Doem mesmo assim.",
+    "image": "assets/images/equipments/equipment_flechas-de-osso.jpg"
+  },
+  {
+    "id": "flechas-explosivas",
+    "name": "Flechas Explosivas",
+    "category": "Projétil",
+    "subcategory": "Flecha",
+    "tier": "A",
+    "damage": "D12",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Ao impactar, explode em 5m de raio causando metade do dano a todos os alvos na área.",
+      "Ao ser consumida, não pode ser recuperada."
+    ],
+    "description": "Rubra encontrou uma maneira de miniaturizar uma bomba. Os arqueiros de Galahad ficaram desconfortáveis. Até usarem.",
+    "image": "assets/images/equipments/equipment_flechas-explosivas.jpg"
+  },
+  {
+    "id": "flechas-de-gelo",
+    "name": "Flechas de Gelo",
+    "category": "Projétil",
+    "subcategory": "Flecha",
+    "tier": "B",
+    "damage": "D8",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": ["Ao causar dano, o alvo deve realizar Atletismo dif. 14 ou fica Enraizado por 1 turno."],
+    "description": "Cultivadas nos campos de gelo de North Galahad. Derretem rápido — precisam ser usadas antes.",
+    "image": "assets/images/equipments/equipment_flechas-de-gelo.jpg"
+  },
+  {
+    "id": "flechas-flamejantes",
+    "name": "Flechas Flamejantes",
+    "category": "Projétil",
+    "subcategory": "Flecha",
+    "tier": "B",
+    "damage": "D8",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Ao causar dano, aplica x1 de Queimadura.",
+      "Incendeiam materiais inflamáveis ao impactar."
+    ],
+    "description": "A ponta envolve trapo embebido em óleo de Rubra. Simples, eficaz, e espetacular durante a noite.",
+    "image": "assets/images/equipments/equipment_flechas-flamejantes.jpg"
+  },
+  {
+    "id": "flechas-de-raio",
+    "name": "Flechas de Raio",
+    "category": "Projétil",
+    "subcategory": "Flecha",
+    "tier": "A",
+    "damage": "D10",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Ao causar dano, o alvo deve realizar Fortitude dif. 16 ou fica Atordoado por 1 turno.",
+      "Ao ser consumida, salta para um alvo adjacente causando metade do dano."
+    ],
+    "description": "Tempestades sobre os mares geram eletricidade que Britannia aprendeu a armazenar em cristais de flecha.",
+    "image": "assets/images/equipments/equipment_flechas-de-raio.jpg"
+  },
+  {
+    "id": "flechas-venenosas",
+    "name": "Flechas Venenosas",
+    "category": "Projétil",
+    "subcategory": "Flecha",
+    "tier": "B",
+    "damage": "D6",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": ["Ao causar dano, aplica Veneno: o alvo perde 2 de vida por turno por 3 turnos."],
+    "description": "Pontas banhadas em extrato de planta carnívora de Galahad. Colher o veneno é mais difícil do que usá-lo.",
+    "image": "assets/images/equipments/equipment_flechas-venenosas.jpg"
+  },
+  {
+    "id": "flechas-sombrias",
+    "name": "Flechas Sombrias",
+    "category": "Projétil",
+    "subcategory": "Flecha",
+    "tier": "A",
+    "damage": "D10",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Ao causar dano, reduz a visão do alvo para 5m por 2 turnos.",
+      "Projéteis especiais — não são destruídos se o Arco das Nervuras for usado."
+    ],
+    "description": "Forjadas com sombra solidificada. Ao impactar, a escuridão que carregam escoa para os olhos do alvo.",
+    "image": "assets/images/equipments/equipment_flechas-sombrias.jpg"
+  },
+  {
+    "id": "flechas-sagradas",
+    "name": "Flechas Sagradas",
+    "category": "Projétil",
+    "subcategory": "Flecha",
+    "tier": "A",
+    "damage": "D10",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Causa dano dobrado contra criaturas das trevas e mortos-vivos.",
+      "Ao acertar, cria um campo de luz de 5m ao redor do alvo por 2 turnos."
+    ],
+    "description": "Consagradas no Templo de Alfa em Camelot. Cada caixa recebe uma bênção individual de um sacerdote. O processo é lento. O resultado, eficaz.",
+    "image": "assets/images/equipments/equipment_flechas-sagradas.jpg"
+  },
+  {
+    "id": "flechas-de-eco",
+    "name": "Flechas de Eco",
+    "category": "Projétil",
+    "subcategory": "Flecha",
+    "tier": "B",
+    "damage": "D6",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Ao impactar qualquer superfície, emite um som que revela a posição de todos em 15m que falhem em Percepção dif. 16.",
+      "Ao causar dano, o alvo fica com Desvantagem em Furtividade por 2 turnos."
+    ],
+    "description": "Britannia experimentou com ressonância acústica em projéteis. O resultado rastreia melhor do que qualquer cão.",
+    "image": "assets/images/equipments/equipment_flechas-de-eco.jpg"
+  },
+  {
+    "id": "flechas-de-aco",
+    "name": "Flechas de Aço",
+    "category": "Projétil",
+    "subcategory": "Flecha",
+    "tier": "C",
+    "damage": "D8",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": ["O dano desta flecha ignora 1 ponto de DA do alvo."],
+    "description": "Fabricadas nos forjas de Britannia com aço de qualidade. Pesam mais, voam mais reto, penetram mais fundo.",
+    "image": "assets/images/equipments/equipment_flechas-de-aco.jpg"
+  },
+  {
+    "id": "balas-de-prata",
+    "name": "Balas de Prata",
+    "category": "Projétil",
+    "subcategory": "Munição",
+    "tier": "B",
+    "damage": "D8",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Causa dano dobrado contra mortos-vivos, licantrópicos e criaturas malditas.",
+      "Criaturas atingidas por estas balas não podem regenerar vida naquele turno."
+    ],
+    "description": "Fundidas com prata pura de Britannia. Caras. Eficazes. Os caçadores de monstros de Union pagam o preço sem reclamar.",
+    "image": "assets/images/equipments/equipment_balas-de-prata.jpg"
+  },
+  {
+    "id": "balas-explosivas",
+    "name": "Balas Explosivas",
+    "category": "Projétil",
+    "subcategory": "Munição",
+    "tier": "A",
+    "damage": "D10",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Ao impactar, explode em 4m de raio causando metade do dano a todos na área.",
+      "Ao ser consumida, não pode ser recuperada."
+    ],
+    "description": "Rubra comprimiu explosivo em uma bala. O teste de campo foi 'acidentalmente' bem sucedido.",
+    "image": "assets/images/equipments/equipment_balas-explosivas.jpg"
+  },
+  {
+    "id": "balas-de-gas",
+    "name": "Balas de Gás",
+    "category": "Projétil",
+    "subcategory": "Munição",
+    "tier": "B",
+    "damage": "D4",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Ao impactar, libera uma nuvem de gás em 4m de raio por 2 turnos. Criaturas na área fazem Fortitude dif. 15 por turno ou ficam Atordoadas.",
+      "Ao ser consumida, não pode ser recuperada."
+    ],
+    "description": "Cápsula de vidro reforçado preenchida com gás paralisante extraído das pântanas de Union.",
+    "image": "assets/images/equipments/equipment_balas-de-gas.jpg"
+  },
+  {
+    "id": "balas-rastreio",
+    "name": "Balas de Rastreio",
+    "category": "Projétil",
+    "subcategory": "Munição",
+    "tier": "C",
+    "damage": "D6",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": ["Ao atingir um alvo, o portador pode rastreá-lo por até 24 horas, conhecendo sua direção geral."],
+    "description": "Os detetives de Union usam para não perder suspeitos. A bala é pequena. Quase imperceptível. Quase.",
+    "image": "assets/images/equipments/equipment_balas-rastreio.jpg"
+  },
+  {
+    "id": "balas-de-eco",
+    "name": "Balas de Eco",
+    "category": "Projétil",
+    "subcategory": "Munição",
+    "tier": "B",
+    "damage": "D8",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Ao causar dano, o alvo fica com Desvantagem em testes de Concentração por 2 turnos.",
+      "Ao impactar, emite uma onda sonora que revela todos em 10m que falhem em Percepção dif. 15."
+    ],
+    "description": "Contém uma runa de amplificação sônica. O som do impacto reverbera nos ossos do alvo.",
+    "image": "assets/images/equipments/equipment_balas-de-eco.jpg"
+  },
+  {
+    "id": "balas-sagradas",
+    "name": "Balas Sagradas",
+    "category": "Projétil",
+    "subcategory": "Munição",
+    "tier": "A",
+    "damage": "D10",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Causa dano dobrado contra mortos-vivos e criaturas das trevas.",
+      "Ao atingir um alvo, cria um campo de luz de 5m ao redor por 2 turnos."
+    ],
+    "description": "Consagradas no Templo de Alfa. Os sacerdotes não aprovam que sejam usadas em revólveres. Mas não param de abençoá-las.",
+    "image": "assets/images/equipments/equipment_balas-sagradas.jpg"
+  },
+  {
+    "id": "balas-de-vacuo",
+    "name": "Balas de Vácuo",
+    "category": "Projétil",
+    "subcategory": "Munição",
+    "tier": "A",
+    "damage": "D8",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Ao impactar, cria um vácuo local que puxa todos a até 5m em direção ao ponto de impacto (Atletismo dif. 17 para resistir).",
+      "Alvos puxados para juntos sofrem 1D6 de dano de colisão."
+    ],
+    "description": "Britannia experimentou com física dimensional. O resultado foi uma bala que desafia a direção do espaço.",
+    "image": "assets/images/equipments/equipment_balas-de-vacuo.jpg"
+  },
+  {
+    "id": "balas-fantasmas",
+    "name": "Balas Fantasmas",
+    "category": "Projétil",
+    "subcategory": "Munição",
+    "tier": "A",
+    "damage": "D6",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Atravessam obstáculos físicos não-mágicos.",
+      "Permite acertar alvos intangíveis."
+    ],
+    "description": "Forjadas com material espectral extraído de fantasmas de Britannia. O processo é eticamente questionável em múltiplos aspectos.",
+    "image": "assets/images/equipments/equipment_balas-fantasmas.jpg"
+  },
+  {
+    "id": "balas-de-trovao",
+    "name": "Balas de Trovão",
+    "category": "Projétil",
+    "subcategory": "Munição",
+    "tier": "A",
+    "damage": "D10",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Ao causar dano, o alvo deve realizar Fortitude dif. 18 ou fica Atordoado por 1 turno.",
+      "Ao impactar, emite um trovão que pode ser ouvido em 500m de raio."
+    ],
+    "description": "Carregadas com energia de relâmpago comprimida. O disparo soa como um trovão. Os inimigos aprendem rápido o que isso significa.",
+    "image": "assets/images/equipments/equipment_balas-de-trovao.jpg"
+  },
+  {
+    "id": "balas-malditas",
+    "name": "Balas Malditas",
+    "category": "Projétil",
+    "subcategory": "Munição",
+    "tier": "S",
+    "damage": "D12",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Ao causar dano, aplica uma Maldição ao alvo: perde 2 de vida e 1 de Sanidade por turno por 5 turnos.",
+      "A Maldição só pode ser removida por um Arcanista com Vontade dif. 22.",
+      "O portador perde 1 de Sanidade ao carregar estas balas."
+    ],
+    "description": "Ninguém sabe de onde vieram. Apareceram numa loja de Britannia embrulhadas em papel negro. O dono não sobreviveu para explicar.",
+    "image": "assets/images/equipments/equipment_balas-malditas.jpg"
+  },
+  {
+    "id": "alabarda-do-norte",
+    "name": "Alabarda do Norte",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Alabarda",
+    "tier": "B",
+    "damage": "3D10",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Requer duas mãos. Possui alcance de 3m.",
+      "Ao atacar, pode atingir todos os inimigos em arco de 180° na frente do portador. Cada inimigo adicional sofre Desvantagem no ataque."
+    ],
+    "description": "As guardas da fronteira norte de Galahad carregam estas alabardas há gerações. O frio não dobra o cabo.",
+    "image": "assets/images/equipments/equipment_alabarda-do-norte.jpg"
+  },
+  {
+    "id": "foice-das-sombras",
+    "name": "Foice das Sombras",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Foice",
+    "tier": "A",
+    "damage": "4D8",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Requer duas mãos. Possui alcance de 3m.",
+      "Ao matar um inimigo, o portador recupera 3 de vida.",
+      "Criaturas atingidas não podem se curar por magia naquele turno."
+    ],
+    "description": "A foice que os Ceifadores de Union usam. Dizem que colhe mais do que grãos. Os rumores são verdadeiros.",
+    "image": "assets/images/equipments/equipment_foice-das-sombras.jpg"
+  },
+  {
+    "id": "martelo-de-guerra",
+    "name": "Martelo de Guerra",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Martelo",
+    "tier": "C",
+    "damage": "3D8",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": ["Requer duas mãos. Ao acertar um ataque, pode tentar derrubar o alvo (Atletismo contestado)."],
+    "description": "Padrão dos soldados de infantaria de Camelot durante guerras de cerco. Funciona igualmente bem em muros e em pessoas.",
+    "image": "assets/images/equipments/equipment_martelo-de-guerra.jpg"
+  },
+  {
+    "id": "grande-machado-de-britannia",
+    "name": "Grande Machado de Britannia",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Machado",
+    "tier": "B",
+    "damage": "4D10",
+    "weight": "super_pesado",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Requer duas mãos. Ao atacar, cause dano adicional igual ao número de dados que saíram com valor máximo.",
+      "Anões de Britannia ganham Vantagem ao atacar com esta arma."
+    ],
+    "description": "Forjado pelos anões mais velhos de Britannia. Ninguém faz machados como eles fazem. Ninguém precisaria de algo tão grande — mas os anões discordam.",
+    "image": "assets/images/equipments/equipment_grande-machado-de-britannia.jpg"
+  },
+  {
+    "id": "lanca-de-gelo",
+    "name": "Lança de Gelo",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Lança",
+    "tier": "A",
+    "damage": "3D12",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ao causar dano, o alvo deve realizar Atletismo ou Fortitude dif. 17 ou fica Enraizado por 2 turnos.",
+      "Ao ser arremessada, dissolve-se ao impactar e não pode ser recuperada."
+    ],
+    "description": "Solidificada do gelo eterno de North Galahad. Nunca derrete. Exceto ao impactar algo vivo — então dissolve completamente.",
+    "image": "assets/images/equipments/equipment_lanca-de-gelo.jpg"
+  },
+  {
+    "id": "mangual-do-guerreiro",
+    "name": "Mangual do Guerreiro",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Mangual",
+    "tier": "B",
+    "damage": "3D8",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ataques com esta arma ignoram bônus de DA concedidos por escudos.",
+      "Ao acertar um alvo com escudo, reduz a DA do escudo em 1 permanentemente."
+    ],
+    "description": "Os guerreiros mercenários de Union desenvolveram esta arma especificamente para acabar com a vantagem de quem usa escudo.",
+    "image": "assets/images/equipments/equipment_mangual-do-guerreiro.jpg"
+  },
+  {
+    "id": "clava-dos-gigantes",
+    "name": "Clava dos Gigantes",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Maça",
+    "tier": "A",
+    "damage": "5D8",
+    "weight": "super_pesado",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Requer duas mãos. Ao acertar, pode tentar derrubar ou empurrar o alvo 3m (Fortitude dif. 20 para resistir).",
+      "Ao acertar um alvo derrubado, o ataque causa dano dobrado."
+    ],
+    "description": "Encontrada nas ruínas de uma fortaleza de gigantes destruída há séculos. Ninguém sabe como chegou a Union. Ninguém conseguia levantá-la antes.",
+    "image": "assets/images/equipments/equipment_clava-dos-gigantes.jpg"
+  },
+  {
+    "id": "lanca-fantasma",
+    "name": "Lança Fantasma",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Lança",
+    "tier": "A",
+    "damage": "4D6+4",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Permite acertar alvos intangíveis.",
+      "Pode ser arremessada e retorna automaticamente à mão do portador no próximo turno.",
+      "Ataques ignoram bônus de DA provenientes de escudos e armaduras físicas."
+    ],
+    "description": "Não pertence completamente a este plano. A ponta atravessa o material como se fosse névoa — e o que ela toca, sente da mesma forma.",
+    "image": "assets/images/equipments/equipment_lanca-fantasma.jpg"
+  },
+  {
+    "id": "martelo-do-trovao",
+    "name": "Martelo do Trovão",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Martelo",
+    "tier": "S",
+    "damage": "5D10",
+    "weight": "super_pesado",
+    "isEquipment": true,
+    "maxDurability": 5,
+    "effects": [
+      "Requer duas mãos. Ao acertar, todos os inimigos em 5m fazem Fortitude dif. 20 ou ficam Atordoados por 1 turno.",
+      "Uma vez por combate, ao golpear o chão, cria uma onda de choque de 10m que derruba todos que falharem em Atletismo dif. 22."
+    ],
+    "description": "O trovão do impacto pode ser ouvido de quilômetros. Foi assim que rastrearam o portador pelo inimigo — e assim que ele acabou com o exército que o cercou.",
+    "image": "assets/images/equipments/equipment_martelo-do-trovao.jpg"
+  },
+  {
+    "id": "grande-lanca-imperial",
+    "name": "Grande Lança Imperial",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Lança",
+    "tier": "B",
+    "damage": "3D10",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Requer duas mãos. Possui alcance de 4m.",
+      "Ao usar como ação de defesa, ganha +3 de DA contra alvos que se movam em direção ao portador naquele turno."
+    ],
+    "description": "A lança cerimonial dos Imperiais de Camelot se tornou funcional por necessidade. O cerimonial ficou no nome.",
+    "image": "assets/images/equipments/equipment_grande-lanca-imperial.jpg"
+  },
+  {
+    "id": "amuleto-de-protecao",
+    "name": "Amuleto de Proteção",
+    "category": "Acessório",
+    "subcategory": "Amuleto",
+    "tier": "C",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": ["Ganha +1 de DA."],
+    "description": "Um simples talismã de pedra gravada. Os mercadores de Union vendem aos milhares. A maioria é falsificação. Mas alguns funcionam.",
+    "image": "assets/images/equipments/equipment_amuleto-de-protecao.jpg"
+  },
+  {
+    "id": "amuleto-da-velocidade",
+    "name": "Amuleto da Velocidade",
+    "category": "Acessório",
+    "subcategory": "Amuleto",
+    "tier": "B",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "O portador ganha +3m de movimento por turno.",
+      "Ganha +2 em testes de Esquiva."
+    ],
+    "description": "Encantado por arcanistas de Galahad. O fio do colar parece vibrar mesmo parado.",
+    "image": "assets/images/equipments/equipment_amuleto-da-velocidade.jpg"
+  },
+  {
+    "id": "amuleto-da-vida",
+    "name": "Amuleto da Vida",
+    "category": "Acessório",
+    "subcategory": "Amuleto",
+    "tier": "B",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Ao início de cada turno, recupera 1 de vida se o portador estiver abaixo da metade do HP máximo.",
+      "Uma vez por sessão, ao cair a 0 de vida, o amuleto quebra e recupera 5 de vida."
+    ],
+    "description": "Imbuído com energia vital extraída de árvores ancestrais de Galahad. Pulsa levemente quando perto de cura.",
+    "image": "assets/images/equipments/equipment_amuleto-da-vida.jpg"
+  },
+  {
+    "id": "amuleto-arcano",
+    "name": "Amuleto Arcano",
+    "category": "Acessório",
+    "subcategory": "Amuleto",
+    "tier": "A",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ganha +3 em testes de Conjuração.",
+      "Uma vez por sessão, conjure um feitiço de custo de Ação sem gastar a Ação principal."
+    ],
+    "description": "Uma joia de eltys puro que ressoa com o fluxo arcano. Arcanistas sentem o poder antes mesmo de tocá-lo.",
+    "image": "assets/images/equipments/equipment_amuleto-arcano.jpg"
+  },
+  {
+    "id": "amuleto-das-sombras",
+    "name": "Amuleto das Sombras",
+    "category": "Acessório",
+    "subcategory": "Amuleto",
+    "tier": "B",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ganha +4 em testes de Furtividade.",
+      "Em ambientes de pouca luz, o portador se move sem fazer barulho automaticamente."
+    ],
+    "description": "Forjado na escuridão por mãos que nunca foram vistas. Foi encontrado em um beco de Union sem explicação.",
+    "image": "assets/images/equipments/equipment_amuleto-das-sombras.jpg"
+  },
+  {
+    "id": "amuleto-do-dragao",
+    "name": "Amuleto do Dragão",
+    "category": "Acessório",
+    "subcategory": "Amuleto",
+    "tier": "A",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "O portador é imune a x1 de Queimadura por turno.",
+      "Ataques de fogo recebem -3 de dano.",
+      "Uma vez por combate, pode soprar uma chama de 5m que causa 3D6 de dano e aplica x2 de Queimadura."
+    ],
+    "description": "Extraído de uma escama do último dragão vermelho de Rubra. O dragão não consentiu. O resultado foi... custoso.",
+    "image": "assets/images/equipments/equipment_amuleto-do-dragao.jpg"
+  },
+  {
+    "id": "amuleto-de-galahad",
+    "name": "Amuleto de Galahad",
+    "category": "Acessório",
+    "subcategory": "Amuleto",
+    "tier": "A",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Ganha +3 em testes de Precisão.",
+      "O valor para obter um crítico em ataques à distância é reduzido em 1.",
+      "Projéteis disparados com este amuleto equipado percorrem 20% mais distância."
+    ],
+    "description": "Dado pelo Grão-Arqueiro de Galahad aos seus alunos mais dedicados. Não é herança — é mérito.",
+    "image": "assets/images/equipments/equipment_amuleto-de-galahad.jpg"
+  },
+  {
+    "id": "amuleto-do-abismo",
+    "name": "Amuleto do Abismo",
+    "category": "Acessório",
+    "subcategory": "Amuleto",
+    "tier": "S",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 5,
+    "effects": [
+      "Para cada ponto de Entropia, ganha +2 em todos os testes arcanos.",
+      "O portador pode acumular até 2 pontos a mais de Entropia sem sofrer as penalidades.",
+      "Uma vez por sessão, drena 3 de Entropia de um alvo em contato, absorvendo-a: próximo teste com Vantagem."
+    ],
+    "description": "Caído de uma fissura dimensional durante a Grande Ruptura. Quem estuda o Paradoxo sente a atração. Quem o estuda demais, não resiste.",
+    "image": "assets/images/equipments/equipment_amuleto-do-abismo.jpg"
+  },
+  {
+    "id": "amuleto-da-lua",
+    "name": "Amuleto da Lua",
+    "category": "Acessório",
+    "subcategory": "Amuleto",
+    "tier": "A",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Durante a noite, todos os atributos do portador ganham +2.",
+      "Durante o dia, o portador tem -1 em Percepção.",
+      "Uma vez por noite, o portador pode ver no escuro perfeito por 1 hora."
+    ],
+    "description": "Criado pelos monges lunares de Galahad que estudavam os ciclos celestes por gerações. O portador percebe o efeito antes de entender o porquê.",
+    "image": "assets/images/equipments/equipment_amuleto-da-lua.jpg"
+  },
+  {
+    "id": "amuleto-da-eternidade",
+    "name": "Amuleto da Eternidade",
+    "category": "Acessório",
+    "subcategory": "Amuleto",
+    "tier": "SS",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 999,
+    "effects": [
+      "O portador não envelhece enquanto o usa.",
+      "Uma vez por sessão, ao ser morto, o amuleto reverte o tempo 1 turno para o portador, anulando a morte. O amuleto perde 10 de durabilidade.",
+      "Se destruído, libera uma explosão temporal de 10m causando 10D10 de dano e envelhecendo todos os atingidos 10 anos."
+    ],
+    "description": "Não existe registro de quando foi criado. Os Cronistas de Britannia tentaram datá-lo e chegaram a resultados diferentes a cada tentativa.",
+    "image": "assets/images/equipments/equipment_amuleto-da-eternidade.jpg"
   }
 ]

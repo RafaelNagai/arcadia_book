@@ -50,6 +50,18 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Sistema de Condições na Ficha de Personagem
+**Origem:** /task Implementar sistema de Condições na ficha de personagem
+**Adicionada:** 2026-05-11 · **Validator:** APROVADO · **Concluída:** 2026-05-11
+
+- [x] Subtask 1 — Definir tipo `Condition` e `ConditionEffect` em `characterTypes.ts` e adicionar campo `conditions?: Condition[]` ao tipo `Character`
+- [x] Subtask 2 — Criar componente `ConditionsSection.tsx` com visão jogador (ícones + tooltip) e visão GM (popup add/remove com picker de ícone, nome, descrição, modo avançado com campos afetados e valor numérico)
+- [x] Subtask 3 — Integrar `ConditionsSection` na `StatsSection.tsx` (ao lado da Sanidade) e conectar handlers de add/remove em `CharacterPage.tsx` com `canEdit`/`isGmOfCampaign`
+- [x] Subtask 4 — Persistir condições no localStorage (`localCharacters.ts`: `loadConditions`/`saveConditions` em chave `arcadia_conditions`) e via API (`apiClient.ts`: endpoint `state/conditions`)
+- [x] Subtask 5 — Aplicar feedback visual de buff (verde) / nerf (vermelho) nos campos afetados de `SkillsSection`, `DefenseStats` e `StatsSection` lendo `conditions` do personagem
+
+---
+
 ### Auditoria de Consistência: Livro ↔ Site
 **Origem:** /task auditar se todas as regras do livro (chapters/) estão corretamente aplicadas no sistema
 **Concluída:** 2026-05-08 · **Validator:** APROVADO

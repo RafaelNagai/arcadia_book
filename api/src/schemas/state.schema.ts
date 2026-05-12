@@ -27,3 +27,7 @@ export const DiceLogEntrySchema = z
 export const AppendDiceLogSchema = z.object({
   entry: DiceLogEntrySchema,
 })
+
+export const ConditionsSchema = z.object({
+  conditions: z.array(z.record(z.unknown())),
+})

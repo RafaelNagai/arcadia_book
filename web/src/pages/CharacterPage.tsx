@@ -1,5 +1,5 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   motion,
   useScroll,
@@ -7,7 +7,7 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import type { DragStartEvent, DragEndEvent } from "@dnd-kit/core";
-import type { Character } from "@/data/characterTypes";
+import type { Character, Condition, ConditionEffectField } from "@/data/characterTypes";
 import charactersData from "@characters";
 import { InventoryPanel } from "@/components/inventory/InventoryPanel";
 import {
@@ -20,6 +20,8 @@ import {
   saveSkillModifiers,
   loadDefenseModifiers,
   saveDefenseModifiers,
+  loadConditions,
+  saveConditions,
 } from "@/lib/localCharacters";
 import { useAuth } from "@/lib/authContext";
 import { api } from "@/lib/apiClient";
@@ -97,6 +99,7 @@ export function CharacterPage() {
   const [daBase, setDaBase] = useState(1);
   const [daBonus, setDaBonus] = useState(0);
   const [dpBonus, setDpBonus] = useState(0);
+  const [conditions, setConditions] = useState<Condition[]>([]);
 
   const isApiChar = id ? isApiCharacterId(id) : false;
 
@@ -145,6 +148,7 @@ export function CharacterPage() {
           setDaBonus(dm.daBonus ?? 0);
           setDpBonus(dm.dpBonus ?? 0);
           setInitialDiceLog((s.diceLog as DiceLogEntry[]) ?? []);
+          setConditions((s.conditions as Condition[]) ?? []);
           const pub = (raw.isPublic as boolean) ?? false;
           setIsPublic(pub);
           if (pub && raw.userId !== user?.id) setHistoriaExpanded(true);
@@ -173,6 +177,7 @@ export function CharacterPage() {
         setDaBase(dm.daBase);
         setDaBonus(dm.daBonus);
         setDpBonus(dm.dpBonus);
+        setConditions(loadConditions(id));
       }
       setCharLoaded(true);
     }
@@ -248,6 +253,7 @@ export function CharacterPage() {
         setDpBonus(data.defense_modifiers.dpBonus);
       }
       if (data.dice_log) diceLogSetterRef.current?.(data.dice_log);
+      if (data.conditions && stateGracePassed) setConditions(data.conditions as Condition[]);
     },
     onInventoryChange: async () => {
       if (!id) return;
@@ -442,6 +448,30 @@ export function CharacterPage() {
     });
   }
 
+  /* ── Conditions ──────────────────────────────────────────────── */
+
+  function handleAddCondition(c: Condition) {
+    setConditions((prev) => {
+      const next = [...prev, c];
+      if (id) {
+        if (isApiChar) void api.state.updateConditions(id, next);
+        else saveConditions(id, next);
+      }
+      return next;
+    });
+  }
+
+  function handleRemoveCondition(condId: string) {
+    setConditions((prev) => {
+      const next = prev.filter((c) => c.id !== condId);
+      if (id) {
+        if (isApiChar) void api.state.updateConditions(id, next);
+        else saveConditions(id, next);
+      }
+      return next;
+    });
+  }
+
   /* ── HP / Sanidade clicks ─────────────────────────────────────── */
 
   function handleHpClick(idx: number) {
@@ -524,6 +554,33 @@ export function CharacterPage() {
       setIsPublic(!next);
     }
   }
+
+  const danoCondSuffix = useMemo<string>(() => {
+    let suffix = ''
+    for (const cond of conditions) {
+      for (const eff of cond.effects ?? []) {
+        if (eff.field === 'dano' && typeof eff.value === 'string') {
+          const v = eff.value.trim()
+          // "(+N)" or "(-N)" → "+(N)" or "-(N)" for parseDamage
+          const normalized = v.replace(/^\(([+-])(\d+)\)$/, '$1($2)')
+          if (normalized.match(/^[+-][\d(]/)) suffix += normalized
+        }
+      }
+    }
+    return suffix
+  }, [conditions])
+
+  const conditionEffectMap = useMemo<Record<string, number>>(() => {
+    const map: Record<string, number> = {}
+    for (const cond of conditions) {
+      for (const eff of cond.effects ?? []) {
+        if (eff.field !== 'dano' && typeof eff.value === 'number') {
+          map[eff.field] = (map[eff.field] ?? 0) + eff.value
+        }
+      }
+    }
+    return map
+  }, [conditions])
 
   /* ── Loading / Not found ─────────────────────────────────────── */
 
@@ -698,6 +755,10 @@ export function CharacterPage() {
             onDpChange={canEdit ? handleDpChange : undefined}
             onDpReset={canEdit ? handleDpReset : undefined}
             onEdit={canEdit ? () => goEdit(1) : undefined}
+            conditions={conditions}
+            isGm={isGmOfCampaign}
+            onAddCondition={isGmOfCampaign ? handleAddCondition : undefined}
+            onRemoveCondition={isGmOfCampaign ? handleRemoveCondition : undefined}
           />
 
           <SkillsSection
@@ -705,6 +766,7 @@ export function CharacterPage() {
             accentText={accent.text}
             peChecks={peChecks}
             skillModifiers={skillModifiers}
+            conditionEffectMap={conditionEffectMap}
             onPeToggle={canEdit ? handlePeToggle : undefined}
             onModifierChange={canEdit ? handleModifierChange : undefined}
             onModifierReset={canEdit ? handleModifierReset : undefined}
@@ -1145,7 +1207,7 @@ export function CharacterPage() {
         {/* ── Damage roll overlay ───────────────────────────── */}
         {pendingDamageRoll && (
           <DamageRollOverlay
-            damageStr={pendingDamageRoll.damageStr}
+            damageStr={pendingDamageRoll.damageStr + danoCondSuffix}
             equipmentName={pendingDamageRoll.equipmentName}
             onClose={() => setPendingDamageRoll(null)}
           />

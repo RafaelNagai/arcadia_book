@@ -1,4 +1,4 @@
-import type { Character, InventoryBag, InventoryItem, WeightCategory } from '@/data/characterTypes'
+import type { Character, Condition, InventoryBag, InventoryItem, WeightCategory } from '@/data/characterTypes'
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -33,6 +33,7 @@ export function mapApiToCharacter(raw: Record<string, unknown>): Character {
     antecedentes: (raw.antecedentes as string[]) ?? [],
     historia: (raw.historia as string | undefined) ?? undefined,
     campaign: (raw.campaign as Character['campaign']) ?? null,
+    conditions: (raw.conditions as Condition[] | undefined) ?? undefined,
   }
 }
 

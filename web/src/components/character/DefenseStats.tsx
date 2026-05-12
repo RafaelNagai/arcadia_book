@@ -64,6 +64,7 @@ export function DefenseStats({
   daBase,
   daBonus,
   dpBonus,
+  conditionEffectMap,
   onDaBaseChange,
   onDaChange,
   onDaReset,
@@ -73,6 +74,7 @@ export function DefenseStats({
   daBase: number
   daBonus: number
   dpBonus: number
+  conditionEffectMap?: Record<string, number>
   onDaBaseChange?: (delta: number) => void
   onDaChange?: (delta: number) => void
   onDaReset?: () => void
@@ -81,8 +83,16 @@ export function DefenseStats({
 }) {
   const [editing, setEditing] = useState<"da" | "dp" | null>(null)
 
-  const da = calcDaTotal(daBase, daBonus)
-  const dp = calcDpTotal(da, dpBonus)
+  const daCondBase = conditionEffectMap?.daBase ?? 0
+  const daCondBonus = conditionEffectMap?.daBonus ?? 0
+  const dpCondBonus = conditionEffectMap?.dpBonus ?? 0
+  const da = calcDaTotal(daBase + daCondBase, daBonus + daCondBonus)
+  const dp = calcDpTotal(da, dpBonus + dpCondBonus)
+
+  const daCondEffect = daCondBase + daCondBonus
+  const dpCondEffect = dpCondBonus
+  const daCondColor = daCondEffect > 0 ? "#6EC840" : daCondEffect < 0 ? "#E07070" : undefined
+  const dpCondColor = dpCondEffect > 0 ? "#6EC840" : dpCondEffect < 0 ? "#E07070" : undefined
 
   return (
     <div>
@@ -155,9 +165,8 @@ export function DefenseStats({
                 color:
                   daBonus !== 0
                     ? modColor(daBonus)
-                    : da > 0
-                      ? "#EEF4FC"
-                      : "rgba(255,255,255,0.28)",
+                    : daCondColor ??
+                      (da > 0 ? "#EEF4FC" : "rgba(255,255,255,0.28)"),
                 opacity: editing === "da" ? 0.6 : 1,
                 transition: "opacity 0.15s",
               }}
@@ -256,9 +265,8 @@ export function DefenseStats({
                 color:
                   dpBonus !== 0
                     ? modColor(dpBonus)
-                    : dp > 0
-                      ? "#EEF4FC"
-                      : "rgba(255,255,255,0.28)",
+                    : dpCondColor ??
+                      (dp > 0 ? "#EEF4FC" : "rgba(255,255,255,0.28)"),
                 opacity: editing === "dp" ? 0.6 : 1,
                 transition: "opacity 0.15s",
               }}

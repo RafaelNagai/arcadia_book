@@ -51,6 +51,16 @@ export class StateService {
     return this.repo.updateDefenseModifiers(characterId, stateUserId, modifiers)
   }
 
+  async updateConditions(
+    characterId: string,
+    userId: string,
+    conditions: unknown[],
+  ): Promise<CharacterState> {
+    const stateUserId = await this.resolveStateUserId(characterId, userId)
+    await this.repo.findOrCreate(characterId, stateUserId)
+    return this.repo.updateConditions(characterId, stateUserId, conditions)
+  }
+
   async appendDiceLog(
     characterId: string,
     userId: string,

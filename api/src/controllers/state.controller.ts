@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify'
 import { StateService } from '../services/state.service.js'
 import {
   AppendDiceLogSchema,
+  ConditionsSchema,
   DefenseModifiersSchema,
   PeChecksSchema,
   SkillModifiersSchema,
@@ -39,6 +40,14 @@ export async function stateController(fastify: FastifyInstance) {
     const { id } = UUIDParamSchema.parse(req.params)
     const { defense_modifiers } = DefenseModifiersSchema.parse(req.body)
     const state = await svc.updateDefenseModifiers(id, req.user!.id, defense_modifiers)
+    return reply.send({ state })
+  })
+
+  fastify.patch('/conditions', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id } = UUIDParamSchema.parse(req.params)
+    const { conditions } = ConditionsSchema.parse(req.body)
+    const state = await svc.updateConditions(id, req.user!.id, conditions)
     return reply.send({ state })
   })
 

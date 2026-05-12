@@ -1,3 +1,24 @@
+export type ConditionEffectField =
+  | 'fortitude' | 'vontade' | 'atletismo' | 'combate'
+  | 'furtividade' | 'precisao' | 'acrobacia' | 'reflexo'
+  | 'percepcao' | 'intuicao' | 'investigacao' | 'conhecimento'
+  | 'empatia' | 'dominacao' | 'persuasao' | 'performance'
+  | 'fisico' | 'destreza' | 'intelecto' | 'influencia'
+  | 'hpMax' | 'sanidadeMax' | 'daBase' | 'daBonus' | 'dpBonus'
+  | 'peso' | 'slots' | 'arcano'
+
+export type ConditionEffect =
+  | { field: Exclude<ConditionEffectField, 'dano'>; value: number }
+  | { field: 'dano'; value: string }
+
+export interface Condition {
+  id: string
+  name: string
+  icon: string
+  description: string
+  effects: ConditionEffect[]
+}
+
 export type WeightCategory =
   | 'nulo'
   | 'super_leve'
@@ -119,4 +140,5 @@ export interface Character {
   antecedentes: string[]
   historia?: string
   campaign?: { id: string; title: string; role: 'player' | 'npc' } | null
+  conditions?: Condition[]
 }
