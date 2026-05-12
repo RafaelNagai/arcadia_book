@@ -235,6 +235,23 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 ---
 
+### Cura durante o Interlúdio
+
+No **Interlúdio**, personagens podem dedicar ações para tratar condições ativas. A tabela abaixo define o que é necessário para remover cada condição fora de combate:
+
+| Condição | Ação necessária | Teste | Recurso |
+|---|---|---|---|
+| **Queimado** | Ação Rápida | Nenhum | Água ou curativo básico (remove todos os stacks) |
+| **Envenenamento** | Ação Longa | Conhecimento (DT = 10 + intensidade atual) | Antídoto adequado ao veneno |
+| **Sangramento** | Ação Rápida | Fortitude DT 12 | Atadura ou torniquete (remove todos os stacks) |
+| **Fratura leve** | Ação Longa | Nenhum | Imobilização + descanso (remove 1 penalidade) |
+| **Fratura grave** | Ação Longa | Conhecimento DT 15 | Cirurgia ou cura mágica (remove completamente) |
+| **Atordoado** | — | — | Desaparece automaticamente ao fim do combate |
+| **Congelado** | Ação Rápida | Nenhum | Calor, fogo ou bebida quente (remove todos os stacks) |
+| **Paralisado** | Ação Rápida | Atletismo DT 14 | — (falha: tenta de novo na próxima ação) |
+
+> Cura mágica (conjuração Arcana com intenção de cura) remove qualquer condição imediatamente, sem teste, com custo de Entropia proporcional à gravidade.
+
 ### Para o Mestre
 
 > Use condições para contar histórias, não apenas para punir. Uma queimadura mal tratada pode virar gancho narrativo. Seja claro com os jogadores sobre como curar cada condição e quais recursos são necessários. Permita usos criativos de perícias: **Conhecimento** para identificar um veneno, **Investigação** para montar um antídoto improvisado.

@@ -136,10 +136,16 @@ O dano em Arcádia não funciona como uma subtração direta de pontos de vida. 
 A DA é o **valor mínimo** que um dado de dano precisa tirar para causar 1 ponto de dano.
 
 - **Base:** Todo personagem começa com **DA 1** — sem armadura, qualquer resultado de dado causa dano.
-- **Múltiplos itens defensivos:** Quando o personagem usa mais de um item defensivo simultaneamente (armadura, escudo, manto, capacete), vale sempre o **maior DA** entre eles. A exceção são itens cujo efeito especial descreve um bônus aditivo (ex: *"+2 DA"*) — nesses casos, o valor é somado ao DA mais alto. Itens que simplesmente definem um valor (ex: *"DA 4"*) não se acumulam entre si.
+- **Múltiplos itens defensivos:** Quando o personagem usa mais de um item defensivo simultaneamente (armadura, escudo, manto, capacete), vale sempre o **maior DA** entre eles. A exceção são itens cujo efeito especial descreve um bônus aditivo (ex: *"+2 DA"*) — nesses casos, o valor é somado ao DA mais alto. Os bônus aditivos são **cumulativos entre si**. Itens que simplesmente definem um valor (ex: *"DA 4"*) não se acumulam entre si.
 - **Durabilidade compartilhada:** Quando múltiplos itens estão equipados, **todos** têm sua Durabilidade consumida simultaneamente ao receber dano — independente de qual deles define o DA.
 
-> *Exemplo: Se sua DA é 4 e o inimigo ataca com 6D6, cada dado que resultar em 4 ou mais causa 1 ponto de dano. Se o inimigo tirar [1, 3, 4, 5, 6, 2], os dados [4, 5, 6] passam — 3 pontos de dano.*
+> **Exemplo de stacking de DA:**
+> Lira equipa três itens: Armadura Tier B (DA 4), Escudo Tier C (DA 3) e um Manto com efeito especial *"+1 DA"*, além de um amuleto arcano com efeito *"+2 DA"*.
+> - O maior DA base é **4** (Armadura). O Escudo tem DA 3 — como é menor, é ignorado.
+> - Os bônus aditivos somam ao maior: +1 (Manto) + +2 (Amuleto) = **+3**.
+> - **DA final de Lira: 4 + 3 = 7.**
+
+> *Exemplo de uso em combate: Se sua DA é 4 e o inimigo ataca com 6D6, cada dado que resultar em 4 ou mais causa 1 ponto de dano. Se o inimigo tirar [1, 3, 4, 5, 6, 2], os dados [4, 5, 6] passam — 3 pontos de dano.*
 
 ### Defesa Passiva (DP)
 

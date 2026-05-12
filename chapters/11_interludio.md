@@ -130,6 +130,8 @@ Após completar a Fase B, o artesão pode tentar enriquecer o item com efeitos e
 
 Role **2D12 + Conhecimento** quantas vezes quiser. Cada resultado **≥ 20** permite adicionar **um efeito** da lista abaixo ao item forjado.
 
+O artesão pode **parar voluntariamente a qualquer momento** após um sucesso — o item fica com os efeitos acumulados até então, sem risco de perda.
+
 **Ao primeiro fracasso**, o processo encerra: o item **quebra** e todos os recursos são perdidos. Não é possível tentar novamente para esta forja.
 
 | Efeito |

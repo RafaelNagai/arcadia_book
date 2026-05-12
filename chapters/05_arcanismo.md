@@ -61,14 +61,13 @@ A **Entropia** representa o quão fundo o personagem mergulhou no Arcano. Não �
 Cada nível de Entropia concede **1 Slot de Runa**. Mais Entropia = mais Runas aplicáveis por conjuração = magias mais poderosas e precisas.
 
 ### Como Aumentar a Entropia
-Para subir um nível de Entropia e ganhar um slot adicional, o personagem deve **sacrificar Sanidade**. O custo é igual ao valor do **novo nível em D12**:
+Para subir um nível de Entropia e ganhar um slot adicional, o personagem deve **sacrificar Sanidade**. O custo é sempre o mesmo: **1D12**, independente do nível atual de Entropia.
 
 | Subindo para | Custo |
 |---|---|
-| Entropia 1 | Rola 1D12 — perde esse valor de Sanidade |
-| Entropia 2 | Rola 2D12 — perde esse valor de Sanidade |
-| Entropia 3 | Rola 3D12 — perde esse valor de Sanidade |
-| Entropia N | Rola ND12 — perde esse valor de Sanidade |
+| Qualquer nível | Rola 1D12 — perde esse valor de Sanidade |
+
+> *Cada passo mais fundo custa o mesmo — mas os danos acumulados nunca somem.*
 
 > *O Arcano não é gratuito. Cada camada mais funda que você abre em si mesmo deixa uma cicatriz na alma.*
 
