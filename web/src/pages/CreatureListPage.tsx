@@ -17,6 +17,31 @@ import { api } from '@/lib/apiClient'
 
 const CREATURES = creaturesData as Creature[]
 
+function buildFilter(
+  q: string,
+  activeStyles: Set<string>,
+  minLvl: number | null,
+  maxLvl: number | null,
+  activeImmune: Set<string>,
+  activeVulnerable: Set<string>,
+): (c: Creature) => boolean {
+  return (c) => {
+    if (q && !c.name.toLowerCase().includes(q) && !c.lore.toLowerCase().includes(q)) return false
+    if (activeStyles.size > 0) {
+      const cStyles = new Set(getCreatureStyles(c.style))
+      if (![...activeStyles].some(s => cStyles.has(s))) return false
+    }
+    if (minLvl !== null || maxLvl !== null) {
+      const [cMin, cMax] = parseLevelRange(c.levelRange)
+      if (minLvl !== null && cMax < minLvl) return false
+      if (maxLvl !== null && cMin > maxLvl) return false
+    }
+    if (activeImmune.size > 0 && ![...activeImmune].some(i => c.immune.includes(i))) return false
+    if (activeVulnerable.size > 0 && ![...activeVulnerable].some(v => c.vulnerable.includes(v))) return false
+    return true
+  }
+}
+
 /* ─── Summary card shown in the list grid ────────────────────────── */
 
 function CreatureSummaryCard({ creature, index }: { creature: Creature; index: number }) {
@@ -490,6 +515,7 @@ export function CreatureListPage() {
   const [activeImmune, setActiveImmune] = useState<Set<string>>(new Set())
   const [activeVulnerable, setActiveVulnerable] = useState<Set<string>>(new Set())
   const [customCreatures, setCustomCreatures] = useState<CustomCreature[]>([])
+  const [publicCreatures, setPublicCreatures] = useState<CustomCreature[]>([])
 
   useEffect(() => {
     document.title = 'Bestiário — Arcádia'
@@ -497,55 +523,60 @@ export function CreatureListPage() {
   }, [])
 
   useEffect(() => {
-    if (!user) { setCustomCreatures([]); return }
+    if (!user) {
+      setCustomCreatures([])
+      api.customCreatures.listPublic()
+        .then(res => setPublicCreatures(res.creatures))
+        .catch(() => {})
+      return
+    }
     api.customCreatures.list()
       .then(res => setCustomCreatures(res.creatures))
+      .catch(() => {})
+    api.customCreatures.listPublic()
+      .then(res => setPublicCreatures(res.creatures.filter(c => c.userId !== user.id)))
       .catch(() => {})
   }, [user])
 
   const allStyles = useMemo(() => {
     const s = new Set<string>()
     CREATURES.forEach(c => getCreatureStyles(c.style).forEach(t => s.add(t)))
+    customCreatures.forEach(c => getCreatureStyles(c.style).forEach(t => s.add(t)))
+    publicCreatures.forEach(c => getCreatureStyles(c.style).forEach(t => s.add(t)))
     return Array.from(s).sort()
-  }, [])
+  }, [customCreatures, publicCreatures])
 
   const allImmune = useMemo(() => {
     const s = new Set<string>()
     CREATURES.forEach(c => c.immune.forEach(i => s.add(i)))
+    customCreatures.forEach(c => c.immune.forEach(i => s.add(i)))
+    publicCreatures.forEach(c => c.immune.forEach(i => s.add(i)))
     return Array.from(s).sort()
-  }, [])
+  }, [customCreatures, publicCreatures])
 
   const allVulnerable = useMemo(() => {
     const s = new Set<string>()
     CREATURES.forEach(c => c.vulnerable.forEach(v => s.add(v)))
+    customCreatures.forEach(c => c.vulnerable.forEach(v => s.add(v)))
+    publicCreatures.forEach(c => c.vulnerable.forEach(v => s.add(v)))
     return Array.from(s).sort()
-  }, [])
+  }, [customCreatures, publicCreatures])
 
-  const filtered = useMemo(() => {
-    const q = search.toLowerCase()
-    const minLvl = minLevel !== '' ? parseInt(minLevel) : null
-    const maxLvl = maxLevel !== '' ? parseInt(maxLevel) : null
+  const predicate = useMemo(
+    () => buildFilter(
+      search.toLowerCase(),
+      activeStyles,
+      minLevel !== '' ? parseInt(minLevel, 10) : null,
+      maxLevel !== '' ? parseInt(maxLevel, 10) : null,
+      activeImmune,
+      activeVulnerable,
+    ),
+    [search, activeStyles, minLevel, maxLevel, activeImmune, activeVulnerable],
+  )
 
-    return CREATURES.filter(c => {
-      if (q && !c.name.toLowerCase().includes(q) && !c.lore.toLowerCase().includes(q)) return false
-
-      if (activeStyles.size > 0) {
-        const cStyles = new Set(getCreatureStyles(c.style))
-        if (![...activeStyles].some(s => cStyles.has(s))) return false
-      }
-
-      if (minLvl !== null || maxLvl !== null) {
-        const [cMin, cMax] = parseLevelRange(c.levelRange)
-        if (minLvl !== null && cMax < minLvl) return false
-        if (maxLvl !== null && cMin > maxLvl) return false
-      }
-
-      if (activeImmune.size > 0 && ![...activeImmune].some(i => c.immune.includes(i))) return false
-      if (activeVulnerable.size > 0 && ![...activeVulnerable].some(v => c.vulnerable.includes(v))) return false
-
-      return true
-    })
-  }, [search, activeStyles, minLevel, maxLevel, activeImmune, activeVulnerable])
+  const filtered = useMemo(() => CREATURES.filter(predicate), [predicate])
+  const filteredCustom = useMemo(() => customCreatures.filter(predicate), [predicate, customCreatures])
+  const filteredPublic = useMemo(() => publicCreatures.filter(predicate), [predicate, publicCreatures])
 
   const advancedFilterCount =
     activeStyles.size +
@@ -904,27 +935,49 @@ export function CreatureListPage() {
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: CREATURE_ACCENT_GLOW, marginBottom: '1rem', paddingBottom: '0.35rem', borderBottom: `1px solid ${CREATURE_ACCENT_DIM}` }}>
               Minhas Criaturas
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {customCreatures.map((creature, i) => (
-                <CustomCreatureSummaryCard key={creature.id} creature={creature} index={i} />
-              ))}
-            </div>
+            {filteredCustom.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {filteredCustom.map((creature, i) => (
+                  <CustomCreatureSummaryCard key={creature.id} creature={creature} index={i} />
+                ))}
+              </div>
+            ) : (
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.78rem', color: 'var(--color-text-muted)', padding: '1rem 0' }}>
+                Nenhuma das suas criaturas corresponde ao filtro.
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Public creatures from other users */}
+        {publicCreatures.length > 0 && (
+          <div style={{ marginBottom: '2rem' }}>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(160,48,32,0.55)', marginBottom: '1rem', paddingBottom: '0.35rem', borderBottom: `1px solid ${CREATURE_ACCENT_DIM}` }}>
+              Criaturas da Comunidade
+            </p>
+            {filteredPublic.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {filteredPublic.map((creature, i) => (
+                  <CustomCreatureSummaryCard key={creature.id} creature={creature} index={i} />
+                ))}
+              </div>
+            ) : (
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.78rem', color: 'var(--color-text-muted)', padding: '1rem 0' }}>
+                Nenhuma criatura pública corresponde ao filtro.
+              </p>
+            )}
           </div>
         )}
 
         {/* Results count */}
-        <p
-          style={{
-            fontFamily: 'var(--font-ui)',
-            fontSize: '0.7rem',
-            color: 'var(--color-text-muted)',
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            marginBottom: '1.25rem',
-          }}
-        >
-          {filtered.length} {filtered.length === 1 ? 'criatura encontrada' : 'criaturas encontradas'}
-        </p>
+        {(() => {
+          const total = filtered.length + filteredCustom.length + filteredPublic.length
+          return (
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.7rem', color: 'var(--color-text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
+              {total} {total === 1 ? 'criatura encontrada' : 'criaturas encontradas'}
+            </p>
+          )
+        })()}
 
         {/* Grid */}
         {filtered.length === 0 ? (
