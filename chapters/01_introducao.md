@@ -69,9 +69,9 @@ E o fracasso? O fracasso não é um fim. É um degrau.
 
 ## As Camadas da Realidade
 
-Para entender Arcádia completamente, é preciso saber que o **Plano Finito** não está sozinho. A realidade possui camadas — dimensões paralelas que se cruzam suavemente, se influenciam e, às vezes, se sangram umas nas outras.
+Para entender Arcádia completamente, é preciso saber que o **Plano Material** não está sozinho. A realidade possui camadas — dimensões paralelas que se cruzam suavemente, se influenciam e, às vezes, se sangram umas nas outras.
 
-### O Plano Finito
+### O Plano Material
 Onde os navios voam sobre um mar de nuvens. É a camada da matéria, do peso e das consequências físicas. É onde a maioria das histórias começa — e onde a maioria dos corpos cai.
 
 > *Aqui, a dor é real. O vento é real. E a morte, mais real do que qualquer outra coisa.*
@@ -87,9 +87,9 @@ Onde as emoções pintam o céu e alteram a física. Neste plano, sentimentos t�
 > *Uma cor carrega mais do que você pode ver, carrega todo o sentimento de quem a pintou.*
 
 ### O Reino das Almas
-O eco daqueles que já partiram, flutuando no silêncio. Não é um paraíso nem um inferno — é um arquivo. As almas permanecem ali enquanto ainda forem lembradas por alguém no Plano Finito. Quando o último ser vivo esquece, a alma se dissolve.
+O eco daqueles que já partiram, flutuando no silêncio. Não é um paraíso nem um inferno — é um arquivo. As almas permanecem ali enquanto ainda forem lembradas por alguém no Plano Material. Quando o último ser vivo esquece, a alma se dissolve.
 
-> *O reino das almas é a sombra do plano Finito.*
+> *O reino das almas é a sombra do Plano Material.*
 
 ---
 

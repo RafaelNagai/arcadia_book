@@ -92,7 +92,7 @@ Quando a Sanidade chega a **zero**, o personagem adquire **1 Trauma**. Ao acumul
 
 ## Execução Arcana
 
-A forma como o conjurador libera a energia determina **quanto tempo a magia permanece** no Plano Finito e **quanto custa em ações**.
+A forma como o conjurador libera a energia determina **quanto tempo a magia permanece** no Plano Material e **quanto custa em ações**.
 
 ### Rápida
 A magia é um lampejo — ocorre instantaneamente e se dissipa.

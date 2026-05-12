@@ -1,6 +1,6 @@
 # Invocação
 
-Invocar é uma forma específica de conjuração — em vez de moldar o Arcano em energia ou efeito, o conjurador usa o Arcano para **trazer uma entidade para o Plano Finito**.
+Invocar é uma forma específica de conjuração — em vez de moldar o Arcano em energia ou efeito, o conjurador usa o Arcano para **trazer uma entidade para o Plano Material**.
 
 A entidade invocada pode ser **qualquer coisa que o elemento e a intenção justifiquem narrativamente**. O elemento arcano não limita o que pode ser invocado — ele define *de onde* ou *do quê* a criatura é feita:
 
@@ -44,7 +44,7 @@ Combine os dois pilares na tabela de DT do capítulo de Arcanismo para encontrar
 
 ## Execução e Duração
 
-O tipo de Execução define por quanto tempo a criatura permanece no Plano Finito.
+O tipo de Execução define por quanto tempo a criatura permanece no Plano Material.
 
 **Rápida:** A criatura aparece, realiza **uma ação imediata** definida no momento da invocação e some. Não pode receber comandos adicionais depois.
 

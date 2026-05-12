@@ -75,14 +75,14 @@ Por sua natureza, magias de Paradoxo **tendem** a alta Complexidade — o Mestre
 
 O **Astral** é emprestar o poder de outro plano.
 
-Magos astrais conseguem migrar e moldar o poder de outro plano ao seu plano atual, normalmente o plano Finito.
+Magos astrais conseguem migrar e moldar o poder de outro plano ao seu plano atual, normalmente o Plano Material.
 Para cada plano, existe uma interação diferente:
 #### Rede dos Sonhos
 Tocar no plano **Rede dos Sonhos** permite acessar memórias e conhecimentos de qualquer pessoa, incorporando suas habilidades e perícias.
 Isso permite, por exemplo, um usuário incorporar os conhecimentos de luta de um antigo guerreiro, aumentando sua perícia de Combate.
 
 #### Mundo das Tintas
-Tocar no plano **Mundo das Tintas** precisa encontrar a cor desejada no local que o personagem estiver, e trazer os desejos daquela cor ao plano Finito, sendo algo totalmente aleatorio.
+Tocar no plano **Mundo das Tintas** precisa encontrar a cor desejada no local que o personagem estiver, e trazer os desejos daquela cor ao Plano Material, sendo algo totalmente aleatorio.
 | Dado | **Cor** | **Intenção** |
 | ---- |---|-------|
 | 1    | Azul | Mover |
