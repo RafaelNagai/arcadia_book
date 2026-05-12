@@ -50,6 +50,18 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Cadastro de Criaturas Customizadas
+**Origem:** /task criar sistema completo de cadastro de criaturas: formulário com todos os campos necessários, upload de imagem ou URL, visibilidade pública/privada, e integração com campanhas
+**Adicionada:** 2026-05-11 · **Validator:** APROVADO · **Concluída:** 2026-05-12
+
+- [x] Subtask 1 — Modelo `CustomCreature` no Prisma + backend completo (repository → service → controller → routes): CRUD em `/api/v1/custom-creatures`, upload em `/api/v1/custom-creatures/upload-image`, validação Zod, ownership check no service
+- [x] Subtask 2 — Tipo `CustomCreature` em `creatureTypes.ts` e todas as funções de API client (`list`, `listPublic`, `get`, `create`, `update`, `delete`, `setVisibility`, `uploadImage`)
+- [x] Subtask 3 — `CustomCreatureForm.tsx` com todos os campos, listas dinâmicas para `interactions`/`actions`/`reactions`/`variants`/`immune`/`vulnerable`, toggle público/privado, campo de imagem (upload ou URL)
+- [x] Subtask 4 — `CustomCreatureFormPage.tsx`, rotas `/criaturas/nova` e `/criaturas/:id/editar` em `App.tsx`, botão "Nova Criatura" em `CreatureListPage.tsx`, seção "Minhas Criaturas"
+- [x] Subtask 5 — Integração no `MapTokenPanel.tsx`: criaturas customizadas buscadas via `api.customCreatures.list()`, exibidas com badge "Custom" na modal de adição
+
+---
+
 ### Sistema de Condições na Ficha de Personagem
 **Origem:** /task Implementar sistema de Condições na ficha de personagem
 **Adicionada:** 2026-05-11 · **Validator:** APROVADO · **Concluída:** 2026-05-11

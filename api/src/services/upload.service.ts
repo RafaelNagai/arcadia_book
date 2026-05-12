@@ -83,10 +83,48 @@ export class UploadService {
     await this.db.storage.from(env.SUPABASE_STORAGE_BUCKET).remove(paths)
   }
 
+  async uploadCreatureImage(
+    userId: string,
+    creatureId: string,
+    buffer: Buffer,
+    mimeType: string,
+    originalName: string,
+  ): Promise<string> {
+    const maxBytes = env.MAX_IMAGE_SIZE_MB * 1024 * 1024
+    if (buffer.byteLength > maxBytes) {
+      throw new ValidationError(`Imagem deve ter no máximo ${env.MAX_IMAGE_SIZE_MB}MB`)
+    }
+
+    const allowed = ['image/jpeg', 'image/png', 'image/webp']
+    if (!allowed.includes(mimeType)) {
+      throw new ValidationError('Formato inválido. Use JPEG, PNG ou WebP')
+    }
+
+    const ext = originalName.split('.').pop() ?? 'jpg'
+    const path = `${userId}/${creatureId}/${Date.now()}.${ext}`
+
+    const { error } = await this.db.storage
+      .from(env.SUPABASE_CREATURE_BUCKET)
+      .upload(path, buffer, { contentType: mimeType, upsert: true })
+
+    if (error) throw new ValidationError(`Erro no upload: ${error.message}`)
+
+    const { data } = this.db.storage.from(env.SUPABASE_CREATURE_BUCKET).getPublicUrl(path)
+    return data.publicUrl
+  }
+
+  async deleteCreatureFolder(userId: string, creatureId: string): Promise<void> {
+    const folder = `${userId}/${creatureId}`
+    const { data } = await this.db.storage.from(env.SUPABASE_CREATURE_BUCKET).list(folder)
+    if (!data || data.length === 0) return
+    const paths = data.map(f => `${folder}/${f.name}`)
+    await this.db.storage.from(env.SUPABASE_CREATURE_BUCKET).remove(paths)
+  }
+
   /** Deletes a file given its Supabase public URL. Tries both buckets automatically. No-op if URL doesn't match either. */
   async deleteImageByUrl(url: string): Promise<void> {
     if (!url) return
-    for (const bucket of [env.SUPABASE_STORAGE_BUCKET, env.SUPABASE_MAP_STORAGE_BUCKET]) {
+    for (const bucket of [env.SUPABASE_STORAGE_BUCKET, env.SUPABASE_MAP_STORAGE_BUCKET, env.SUPABASE_CREATURE_BUCKET]) {
       const marker = `/object/public/${bucket}/`
       const idx = url.indexOf(marker)
       if (idx !== -1) {

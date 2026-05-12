@@ -10,6 +10,8 @@ import { CampaignListPage } from '@/pages/CampaignListPage'
 import { CampaignPage } from '@/pages/CampaignPage'
 import { CreatureListPage } from '@/pages/CreatureListPage'
 import { CreaturePage } from '@/pages/CreaturePage'
+import { CustomCreaturePage } from '@/pages/CustomCreaturePage'
+import { CustomCreatureFormPage } from '@/pages/CustomCreatureFormPage'
 import { AuthProvider } from '@/lib/authContext'
 import { Navbar } from '@/components/layout/Navbar'
 
@@ -31,6 +33,9 @@ function AppRoutes() {
         <Route path="criar-ficha" element={<CharacterCreatorPage />} />
         <Route path="editar-ficha/:id" element={<CharacterCreatorPage />} />
         <Route path="criaturas" element={<CreatureListPage />} />
+        <Route path="criaturas/nova" element={<CustomCreatureFormPage />} />
+        <Route path="criaturas/:id/editar" element={<CustomCreatureFormPage />} />
+        <Route path="criatura/custom/:id" element={<CustomCreaturePage />} />
         <Route path="criatura/:slug" element={<CreaturePage />} />
         <Route path="login" element={<LoginPage />} />
         <Route element={<AppShell />}>

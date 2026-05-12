@@ -1,17 +1,38 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '@/lib/apiClient'
 import { getAccent } from '@/components/character/types'
 import type { MapBroadcastEvent } from '@/hooks/useMapRealtime'
 import type { CampaignChar } from '@/data/campaignTypes'
 import type { GameMap, MapToken, CreatureInstance } from '@/lib/mapTypes'
-import type { Creature } from '@/data/creatureTypes'
+import type { Creature, CustomCreature } from '@/data/creatureTypes'
 import { creatureSlug } from '@/components/creature/constants'
 import { saveCreaturePreferredSize } from '@/lib/creatureInstances'
 import creaturesData from '@creatures'
 import { MapTokenModal } from './MapTokenModal'
 
-const ALL_CREATURES = creaturesData as Creature[]
+const STATIC_CREATURES = creaturesData as Creature[]
+
+function customToCreature(c: CustomCreature): Creature {
+  return {
+    name: c.name,
+    levelRange: c.levelRange,
+    style: c.style,
+    image: c.imageUrl ?? c.image,
+    lore: c.lore,
+    diceBase: c.diceBase,
+    hp: c.hp,
+    da: c.da,
+    dp: c.dp,
+    attributes: c.attributes,
+    immune: c.immune,
+    vulnerable: c.vulnerable,
+    interactions: c.interactions,
+    actions: c.actions,
+    reactions: c.reactions,
+    variants: c.variants,
+  }
+}
 
 interface MapTokenPanelProps {
   campaignId: string
@@ -62,12 +83,13 @@ function GroupHeader({ label, count, open, onToggle }: {
 
 // ── Add modal ─────────────────────────────────────────────────────────────────
 
-function AddModal({ type, allChars, npcIds, activeCharIds, creatures, onAddChar, onAddCreature, onClose }: {
+function AddModal({ type, allChars, npcIds, activeCharIds, creatures, customCreatures, onAddChar, onAddCreature, onClose }: {
   type: 'char' | 'npc' | 'creature'
   allChars: CampaignChar[]
   npcIds: Set<string>
   activeCharIds: Set<string>
   creatures: Creature[]
+  customCreatures: CustomCreature[]
   onAddChar: (charId: string) => void
   onAddCreature: (creature: Creature) => void
   onClose: () => void
@@ -83,9 +105,14 @@ function AddModal({ type, allChars, npcIds, activeCharIds, creatures, onAddChar,
     return true
   })
 
-  const availableCreatures = type === 'creature'
+  const customAsCreatures = customCreatures.map(c => ({ creature: customToCreature(c), isCustom: true, id: c.id }))
+  const staticFiltered = type === 'creature'
     ? creatures.filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()))
     : []
+  const customFiltered = type === 'creature'
+    ? customAsCreatures.filter(c => !search || c.creature.name.toLowerCase().includes(search.toLowerCase()))
+    : []
+  const availableCreatures = staticFiltered
 
   const title = type === 'char' ? 'Adicionar Personagem' : type === 'npc' ? 'Adicionar NPC' : 'Adicionar Criatura'
   const accent = type === 'creature' ? '#A03020' : 'var(--color-arcano)'
@@ -146,6 +173,30 @@ function AddModal({ type, allChars, npcIds, activeCharIds, creatures, onAddChar,
             )
           })}
 
+          {type === 'creature' && customFiltered.map(({ creature, id }) => (
+            <button
+              key={`custom-${id}`}
+              onClick={() => onAddCreature(creature)}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.5rem 0.6rem', borderRadius: 5, background: 'rgba(160,48,32,0.04)', border: '1px solid rgba(160,48,32,0.25)', cursor: 'pointer', textAlign: 'left', width: '100%' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = accentBg; (e.currentTarget as HTMLButtonElement).style.borderColor = accentBorder }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(160,48,32,0.04)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(160,48,32,0.25)' }}
+            >
+              <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'rgba(160,48,32,0.2)', border: '2px solid rgba(160,48,32,0.5)', overflow: 'hidden', flexShrink: 0 }}>
+                {creature.image
+                  ? <img src={creature.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  : <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', color: '#A03020', fontFamily: 'var(--font-display)', fontSize: '0.8rem' }}>{creature.name[0]}</span>
+                }
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.78rem', color: '#F0D0C0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{creature.name}</p>
+                  <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.5rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#C04030', background: 'rgba(160,48,32,0.2)', border: '1px solid rgba(160,48,32,0.4)', borderRadius: 3, padding: '0.05rem 0.3rem', flexShrink: 0 }}>Custom</span>
+                </div>
+                <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6rem', color: 'rgba(240,208,192,0.4)' }}>Nv {creature.levelRange} · HP {creature.hp}</p>
+              </div>
+              <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: '#C04030' }}>+</span>
+            </button>
+          ))}
           {type === 'creature' && availableCreatures.map(creature => (
             <button
               key={creatureSlug(creature.name)}
@@ -199,6 +250,13 @@ export function MapTokenPanel({
   const [addMenuOpen, setAddMenuOpen] = useState(false)
   const [addModalType, setAddModalType] = useState<'char' | 'npc' | 'creature' | null>(null)
   const [expandedCreatureId, setExpandedCreatureId] = useState<string | null>(null)
+  const [customCreatures, setCustomCreatures] = useState<CustomCreature[]>([])
+
+  useEffect(() => {
+    api.customCreatures.list()
+      .then(res => setCustomCreatures(res.creatures))
+      .catch(() => {})
+  }, [])
 
   const [playersOpen, setPlayersOpen] = useState(true)
   const [npcsOpen, setNpcsOpen] = useState(true)
@@ -585,7 +643,8 @@ export function MapTokenPanel({
           allChars={allChars}
           npcIds={npcIds}
           activeCharIds={activeCharIds}
-          creatures={ALL_CREATURES}
+          creatures={STATIC_CREATURES}
+          customCreatures={customCreatures}
           onAddChar={(charId) => { onAddPendingChar(charId); setAddModalType(null) }}
           onAddCreature={(creature) => { onAddCreatureToList(creature); setAddModalType(null) }}
           onClose={() => setAddModalType(null)}

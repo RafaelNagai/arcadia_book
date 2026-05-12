@@ -42,3 +42,12 @@ export interface Creature {
   reactions: CreatureAction[]
   variants: CreatureVariant[]
 }
+
+export interface CustomCreature extends Creature {
+  id: string
+  userId: string
+  isPublic: boolean
+  imageUrl?: string | null
+  createdAt: string
+  updatedAt: string
+}

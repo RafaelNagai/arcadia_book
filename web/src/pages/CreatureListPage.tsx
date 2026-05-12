@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import type { Creature } from '@/data/creatureTypes'
+import type { Creature, CustomCreature } from '@/data/creatureTypes'
 import creaturesData from '@creatures'
 import {
   CREATURE_ACCENT,
@@ -12,6 +12,8 @@ import {
   parseLevelRange,
   getCreatureStyles,
 } from '@/components/creature/constants'
+import { useAuth } from '@/lib/authContext'
+import { api } from '@/lib/apiClient'
 
 const CREATURES = creaturesData as Creature[]
 
@@ -381,9 +383,105 @@ function FilterChip({
   )
 }
 
+/* ─── Custom creature card ────────────────────────────────────────── */
+
+function CustomCreatureSummaryCard({ creature, index }: { creature: CustomCreature; index: number }) {
+  const navigate = useNavigate()
+  const styles = getCreatureStyles(creature.style)
+  const imageUrl = creature.imageUrl ?? creature.image
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: index * 0.07 }}
+    >
+      <div
+        className="rounded-sm overflow-hidden cursor-pointer group relative"
+        style={{
+          background: 'rgba(10,6,4,0.98)',
+          border: `1px solid ${CREATURE_ACCENT_DIM}`,
+          boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+          transition: 'border-color 0.2s, box-shadow 0.2s',
+        }}
+        onClick={() => navigate(`/criatura/custom/${creature.id}`)}
+        onMouseEnter={e => {
+          const el = e.currentTarget as HTMLDivElement
+          el.style.borderColor = CREATURE_ACCENT
+          el.style.boxShadow = `0 8px 40px rgba(0,0,0,0.7), 0 0 24px rgba(160,48,32,0.22)`
+        }}
+        onMouseLeave={e => {
+          const el = e.currentTarget as HTMLDivElement
+          el.style.borderColor = CREATURE_ACCENT_DIM
+          el.style.boxShadow = '0 4px 24px rgba(0,0,0,0.5)'
+        }}
+      >
+        <div style={{ height: 200, position: 'relative', overflow: 'hidden' }}>
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={creature.name}
+              className="transition-transform duration-500 group-hover:scale-105"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center' }}
+            />
+          ) : (
+            <div
+              style={{
+                width: '100%', height: '100%',
+                background: `linear-gradient(135deg, rgba(80,20,10,0.55) 0%, rgba(12,4,2,0.98) 100%)`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative',
+              }}
+            >
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '7rem', color: CREATURE_ACCENT, opacity: 0.12, userSelect: 'none', lineHeight: 1 }}>
+                {creature.name[0]}
+              </span>
+            </div>
+          )}
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '65%', background: 'linear-gradient(to top, rgba(10,6,4,0.98) 0%, transparent 100%)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: 10, right: 10, display: 'flex', gap: '0.35rem' }}>
+            <span style={{ background: 'rgba(10,6,4,0.82)', border: `1px solid ${CREATURE_ACCENT}`, borderRadius: 4, padding: '0.2rem 0.55rem', backdropFilter: 'blur(6px)', fontFamily: 'var(--font-ui)', fontSize: '0.58rem', color: CREATURE_ACCENT_GLOW, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              Custom
+            </span>
+          </div>
+        </div>
+        <div className="px-4 pb-4 -mt-8 relative">
+          <div className="flex flex-wrap gap-1 mb-2">
+            {styles.map(s => (
+              <span key={s} style={{ fontFamily: 'var(--font-ui)', fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 700, color: CREATURE_ACCENT_GLOW, background: 'rgba(160,48,32,0.12)', border: `1px solid rgba(160,48,32,0.3)`, borderRadius: 3, padding: '0.12rem 0.4rem' }}>
+                {s}
+              </span>
+            ))}
+          </div>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.35rem', color: '#F0D0C0', letterSpacing: '0.03em', marginBottom: '0.75rem' }}>
+            {creature.name}
+          </h3>
+          <div className="grid grid-cols-4 gap-1 mb-3">
+            {[
+              { label: 'HP', value: creature.hp },
+              { label: 'DA', value: creature.da },
+              { label: 'DP', value: creature.dp },
+              { label: 'Dados', value: creature.diceBase },
+            ].map(s => (
+              <div key={s.label} className="flex flex-col items-center" style={{ background: CREATURE_SECTION_BG, borderRadius: 3, padding: '0.3rem 0.2rem', border: `1px solid ${CREATURE_ACCENT_DIM}` }}>
+                <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: '#F0D0C0', lineHeight: 1 }}>{s.value}</p>
+                <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.52rem', color: 'var(--color-text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: 3 }}>{s.label}</p>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider transition-opacity duration-200 opacity-40 group-hover:opacity-100" style={{ color: CREATURE_ACCENT_GLOW, fontFamily: 'var(--font-ui)' }}>
+            Ver ficha completa →
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 /* ─── Main page ───────────────────────────────────────────────────── */
 
 export function CreatureListPage() {
+  const navigate = useNavigate()
+  const { user } = useAuth()
   const [search, setSearch] = useState('')
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [activeStyles, setActiveStyles] = useState<Set<string>>(new Set())
@@ -391,11 +489,19 @@ export function CreatureListPage() {
   const [maxLevel, setMaxLevel] = useState('')
   const [activeImmune, setActiveImmune] = useState<Set<string>>(new Set())
   const [activeVulnerable, setActiveVulnerable] = useState<Set<string>>(new Set())
+  const [customCreatures, setCustomCreatures] = useState<CustomCreature[]>([])
 
   useEffect(() => {
     document.title = 'Bestiário — Arcádia'
     window.scrollTo({ top: 0 })
   }, [])
+
+  useEffect(() => {
+    if (!user) { setCustomCreatures([]); return }
+    api.customCreatures.list()
+      .then(res => setCustomCreatures(res.creatures))
+      .catch(() => {})
+  }, [user])
 
   const allStyles = useMemo(() => {
     const s = new Set<string>()
@@ -530,6 +636,28 @@ export function CreatureListPage() {
           >
             Fichas completas das criaturas que habitam o Mar de Nuvens e as ilhas flutuantes de Arcádia.
           </p>
+          {user && (
+            <button
+              onClick={() => navigate('/criaturas/nova')}
+              style={{
+                marginTop: '1.25rem',
+                padding: '0.55rem 1.2rem',
+                borderRadius: 4,
+                background: CREATURE_ACCENT,
+                border: `1px solid ${CREATURE_ACCENT}`,
+                color: '#F0D0C0',
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.78rem',
+                fontWeight: 700,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                transition: 'opacity 0.15s',
+              }}
+            >
+              + Nova Criatura
+            </button>
+          )}
         </div>
       </div>
 
@@ -769,6 +897,20 @@ export function CreatureListPage() {
             )}
           </AnimatePresence>
         </div>
+
+        {/* Custom creatures section */}
+        {customCreatures.length > 0 && (
+          <div style={{ marginBottom: '2rem' }}>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: CREATURE_ACCENT_GLOW, marginBottom: '1rem', paddingBottom: '0.35rem', borderBottom: `1px solid ${CREATURE_ACCENT_DIM}` }}>
+              Minhas Criaturas
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {customCreatures.map((creature, i) => (
+                <CustomCreatureSummaryCard key={creature.id} creature={creature} index={i} />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Results count */}
         <p

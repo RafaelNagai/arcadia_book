@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import type { CampaignChar, CampaignSummary, CampaignDetail } from '@/data/campaignTypes'
 import type { MapSummary, Measurement } from '@/lib/mapTypes'
+import type { CustomCreature } from '@/data/creatureTypes'
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string
@@ -350,6 +351,55 @@ export const api = {
 
     toggleDoor: (campaignId: string, mapId: string, layerId: string, doorId: string) =>
       apiFetch<{ door: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/doors/${doorId}/toggle`, { method: 'PATCH' }),
+  },
+
+  // ── Custom Creatures ─────────────────────────────────────────────────────────
+
+  customCreatures: {
+    list: () => apiFetch<{ creatures: CustomCreature[] }>('/custom-creatures'),
+
+    listPublic: () => apiFetch<{ creatures: CustomCreature[] }>('/custom-creatures/public'),
+
+    get: (id: string) => apiFetch<{ creature: CustomCreature }>(`/custom-creatures/${id}`),
+
+    create: (data: unknown) =>
+      apiFetch<{ creature: CustomCreature }>('/custom-creatures', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+
+    update: (id: string, data: unknown) =>
+      apiFetch<{ creature: CustomCreature }>(`/custom-creatures/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+
+    delete: (id: string) => apiFetch(`/custom-creatures/${id}`, { method: 'DELETE' }),
+
+    setVisibility: (id: string, isPublic: boolean) =>
+      apiFetch<{ creature: CustomCreature }>(`/custom-creatures/${id}/visibility`, {
+        method: 'PATCH',
+        body: JSON.stringify({ is_public: isPublic }),
+      }),
+
+    uploadImage: async (creatureId: string, file: File): Promise<{ url: string }> => {
+      const token = await getToken()
+      const form = new FormData()
+      form.append('creatureId', creatureId)
+      form.append('file', file)
+
+      const headers: Record<string, string> = {}
+      if (token) headers['Authorization'] = `Bearer ${token}`
+
+      const res = await fetch(`${API_BASE}/custom-creatures/upload-image`, {
+        method: 'POST',
+        headers,
+        body: form,
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json?.error?.message ?? 'Erro no upload')
+      return json as { url: string }
+    },
   },
 
   // ── Upload ──────────────────────────────────────────────────────────────────

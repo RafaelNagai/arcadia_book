@@ -210,6 +210,32 @@ model MapToken {
   @@map("map_tokens")
 }
 
+model CustomCreature {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  name         String
+  levelRange   String   @default("1") @map("level_range")
+  style        String   @default("")
+  imageUrl     String?  @map("image_url")
+  lore         String   @default("")
+  diceBase     String   @default("2D6") @map("dice_base")
+  hp           Int      @default(10)
+  da           Int      @default(1)
+  dp           Int      @default(1)
+  attributes   Json     @default("{\"fisico\":1,\"destreza\":1,\"intelecto\":1,\"influencia\":1}")
+  immune       String[]
+  vulnerable   String[]
+  interactions Json     @default("[]")
+  actions      Json     @default("[]")
+  reactions    Json     @default("[]")
+  variants     Json     @default("[]")
+  isPublic     Boolean  @default(false) @map("is_public")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("custom_creatures")
+}
+
 model CharacterState {
   id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   characterId      String   @map("character_id") @db.Uuid
