@@ -14,8 +14,6 @@ _nenhum item em andamento_
 
 ### A fazer
 
----
-
 ## Backlog
 
 ### Widgets por Capítulo — Pendentes
@@ -49,6 +47,16 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 ---
 
 ## Concluídos
+
+### Vercel Analytics — Integração no Entry Point React
+**Origem:** /task adicionar Vercel Analytics ao projeto web — instalar @vercel/analytics e integrar no entry point React de forma estruturada
+**Adicionada:** 2026-05-12 · **Validator:** APROVADO · **Concluída:** 2026-05-12
+
+- [x] Subtask 1 — Instalar a dependência `@vercel/analytics` no projeto web
+- [x] Subtask 2 — Adicionar o componente `<Analytics />` no entry point `main.tsx`
+- [x] Subtask 3 — Verificar que o build de produção compila sem erros após a integração
+
+---
 
 ### Diagramação: Split de Capítulos Longos em Sub-capítulos
 **Origem:** /task Melhorar a diagramação do livro dividindo capítulos longos em sub-capítulos

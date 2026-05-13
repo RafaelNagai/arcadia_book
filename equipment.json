@@ -1009,7 +1009,7 @@
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/c36eb43f-2e7d-49d6-82af-b81017592fa0/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_crown_2.jpg"
   },
   {
-    "id": "lanca-do-transpasse",
+    "id": "manopla-do-gigante",
     "name": "Manopla do Gigante",
     "category": "Arma Corpo-a-Corpo",
     "subcategory": "Manopla",
@@ -2460,8 +2460,8 @@
     "image": "assets/images/equipments/equipment_lanca-fantasma.jpg"
   },
   {
-    "id": "martelo-do-trovao",
-    "name": "Martelo do Trovão",
+    "id": "rompe-magna",
+    "name": "Rompe Magna",
     "category": "Arma Corpo-a-Corpo",
     "subcategory": "Martelo",
     "tier": "S",
@@ -2475,7 +2475,7 @@
       "Para cada 10 pontos do peso atual, causa 1 de dano ao realizar um ataque."
     ],
     "description": "O trovão do impacto pode ser ouvido de quilômetros. Foi assim que rastrearam o portador pelo inimigo — e assim que ele acabou com o exército que o cercou.",
-    "image": "assets/images/equipments/equipment_martelo-do-trovao.jpg"
+    "image": "assets/images/equipments/equipment_rompe_magna.jpg"
   },
   {
     "id": "grande-lanca-imperial",
@@ -2612,8 +2612,8 @@
     "image": "assets/images/equipments/equipment_amuleto-galahadiano.jpg"
   },
   {
-    "id": "amuleto-do-abismo",
-    "name": "Amuleto do Abismo",
+    "id": "amuleto-entropico",
+    "name": "Amuleto Entropico",
     "category": "Acessório",
     "subcategory": "Amuleto",
     "tier": "S",
@@ -2625,8 +2625,8 @@
       "Para cada ponto de Entropia, ganha +1 em todos os dados de dano arcano.",
       "A entropia 1 e 2, não tem penalidade para alcançar. Se o amuleto for removido com entropia maior que 2, o portador recebe 5D12 de Sanidade."
     ],
-    "description": "Caído de uma fissura dimensional durante a Grande Ruptura. Quem estuda o Paradoxo sente a atração. Quem o estuda demais, não resiste.",
-    "image": "assets/images/equipments/equipment_amuleto-do-abismo.jpg"
+    "description": "Um aventureiro criou este amuleto com materiais vindo de outra dimensão, ele não sabia as consequencias de seus atos, mas ele criou um paradoxo vivo.",
+    "image": "assets/images/equipments/equipment_amuleto-entropico.jpg"
   },
   {
     "id": "amuleto-da-lua",
@@ -2647,8 +2647,8 @@
     "image": "assets/images/equipments/equipment_amuleto-da-lua.jpg"
   },
   {
-    "id": "amuleto-da-eternidade",
-    "name": "Amuleto da Eternidade",
+    "id": "lagrima-de-deus",
+    "name": "Lagrima de Deus",
     "category": "Acessório",
     "subcategory": "Amuleto",
     "tier": "SS",
@@ -2664,7 +2664,240 @@
       "Uma vez por turno, permite sacrificar 5 de durabilidade para restaurar 5 de vida.",
       "Este item não pode ser restaurado(recuperar durabilidade)."
     ],
-    "description": "Não existe registro de quando foi criado. Os Cronistas de Britannia tentaram datá-lo e chegaram a resultados diferentes a cada tentativa.",
-    "image": "assets/images/equipments/equipment_amuleto-da-eternidade.jpg"
+    "description": "Um artefato tão antigo, datado antes da era da expansão, que acreditam que seja a origem da imortalidade dos Elfos. Mitos contam que deus entregou este item a aquele que fez ele chorar.",
+    "image": "assets/images/equipments/equipment_lagrima-de-deus.jpg"
+  },
+  {
+    "id": "livro-gramatico",
+    "name": "Livro Gramatico",
+    "category": "Acessório",
+    "subcategory": "Livro",
+    "tier": "C",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Permite usar a runa de Planta."
+    ],
+    "description": "Um livro que contem o conhecimento sobre a grama e plantas, feito por um antigo arcanista vegano.",
+    "image": "assets/images/equipments/equipment_livro-gramatico.jpg"
+  },
+  {
+    "id": "livro-ardente",
+    "name": "Livro Ardente",
+    "category": "Acessório",
+    "subcategory": "Livro",
+    "tier": "C",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Permite usar a runa de Fogo."
+    ],
+    "description": "Um livro escrito por um dragão, é o que foi vendido na loja.",
+    "image": "assets/images/equipments/equipment_livro-ardente.jpg"
+  },
+  {
+    "id": "livro-soprante",
+    "name": "Livro Soprante",
+    "category": "Acessório",
+    "subcategory": "Livro",
+    "tier": "C",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Permite usar a runa de Vento."
+    ],
+    "description": "Um livro caiu dos ceus, é o que dizem os piratas que venderam ela.",
+    "image": "assets/images/equipments/equipment_livro-soprante.jpg"
+  },
+  {
+    "id": "livro-passa-tempo",
+    "name": "Livro Passa-Tempo",
+    "category": "Acessório",
+    "subcategory": "Livro",
+    "tier": "B",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Permite usar a runa de Tempo."
+    ],
+    "description": "Ao abrir o livro, consegue se ouvir o som do tic-tac.",
+    "image": "assets/images/equipments/equipment_livro-passa-tempo.jpg"
+  },
+  {
+    "id": "livro-logo-ali",
+    "name": "Livro logo-ali",
+    "category": "Acessório",
+    "subcategory": "Livro",
+    "tier": "B",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Permite usar a runa de Teleporte."
+    ],
+    "description": "O livro foi escrito em outra dimensão, permitindo carregar certas caracteristicas do mago que lhe forjou.",
+    "image": "assets/images/equipments/equipment_livro_logo_ali.jpg"
+  },
+  {
+    "id": "livro-do-sumico",
+    "name": "Livro do Sumiço",
+    "category": "Acessório",
+    "subcategory": "Livro",
+    "tier": "A",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Permite usar a runa de Invisibilidade.",
+      "Magias relacionadas a esconder ou ocultar, ganham mais +2 de bonus."
+    ],
+    "description": "Um louco dizia ter escrito um livro invisivel, até que no dia da sua morte este livro apareceu em suas mãos.",
+    "image": "assets/images/equipments/equipment_livro-do-sumico.jpg"
+  },
+  {
+    "id": "livro-do-sumico",
+    "name": "Livro do Sumiço",
+    "category": "Acessório",
+    "subcategory": "Livro",
+    "tier": "A",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Permite usar a runa de Area.",
+      "Magias do elemento Energia, ganham mais +1 de bonus."
+    ],
+    "description": "Um louco dizia ter escrito um livro invisivel, até que no dia da sua morte este livro apareceu em suas mãos.",
+    "image": "assets/images/equipments/equipment_livro-do-sumico.jpg"
+  },
+  {
+    "id": "livro-da-blindagem",
+    "name": "Livro da Blindagem",
+    "category": "Acessório",
+    "subcategory": "Livro",
+    "tier": "S",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Permite usar a runa de Metal e Escudo.",
+      "Magias de Antitese ganham +2 de bonus.",
+      "Se o portador tiver 3 ou mais livros no inventario, ganha +1 de DP."
+    ],
+    "description": "Um mago que tinha medo de morrer, colocou toda a sua sabedoria para se proteger de tudo e todos. Quando exercitos de Galahad tentou invadir Camelot, este mago sobreviveu a uma chuva de 1000 flechas em sua direção.",
+    "image": "assets/images/equipments/equipment_livro-da-blindagem.jpg"
+  },
+  {
+    "id": "diario-de-Navah",
+    "name": "Diario de Navah",
+    "category": "Acessório",
+    "subcategory": "Livro",
+    "tier": "SS",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Permite usar a runa de Movimento e Flutuação.",
+      "Para cada livro que o portador tiver no inventario, ganha +3 em testes de arcano.",
+      "Não pode ser destruido por equipamentos materiais.",
+      "Se tentar ler esse livro, o personagem deve realizar um teste de Vontade (dif. 35), se nao passar ganha um Trauma."
+    ],
+    "description": "Um diario simples, parece ter sido feito a mão. Uma pena não para de escrever a historia de Navah, enquanto ele estiver vivo.",
+    "image": "assets/images/equipments/equipment_diario_de_navah.jpg"
+  },
+  {
+    "id": "faca-solenimente",
+    "name": "Faca SoleniMENTE",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Adaga",
+    "tier": "S",
+    "damage": "3D8+5",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Esta arma é fundida e acoplada no braço, perdendo o braço no processo. É necessario ter um braço, pelo menos, para sacrificar e usar este equipamento. Esta equipamento se torna parte do personagem. Não pode ser removido, portanto que remova o membro acoplado.",
+      "O portador deste equipamento, obtem 'Fobia de Honestidade', deve rolar um teste de Vontade(dif. 20), se não passar deve realizar alguma ação contra o ato de honestidade.",
+      "Este equipamento da dano Bruto e Cortante.",
+      "+1 de DP",
+      "Permite sacrificar outro membro do portador, até chegar no coração, para regenerar a durabilidade desse equipamento."
+    ],
+    "description": "Uma faca enferrujada, com um cabo talhado e um sensor para colocar a digital. Mercadores tem medo desse item, dizem que foi o demonio a quem criou, amaldiçoando quem o empunhar.",
+    "image": "assets/images/equipments/equipment_faca_solenimente.jpg"
+  },
+  {
+    "id": "pirulas-do-gigante",
+    "name": "Pirulas do Gigante",
+    "category": "Acessório",
+    "subcategory": "Comestivel",
+    "tier": "A",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": false,
+    "effects": [
+      "Uso unico. É consumido apos ser usado.",
+      "Aumenta em +5 o atributo FISICO.",
+      "Aumenta em +5 todos os dados de dano.",
+      "Perde -5 em INTELECTO, se ficar com zero ou menos, o individuo se torna incontrolavel atacando qualquer um perto, dura 10 turnos."
+    ],
+    "description": "Uma pirula de capsula, que serve como anabolizante para o individuo que o ingerir. Esta é uma fração da pirula que o grande Rei Thenomad usou em suas batalhas.",
+    "image": "assets/images/equipments/equipment_pirula_do_gigante.jpg"
+  },
+  {
+    "id": "monoculo_de_guanjhi",
+    "name": "Monoculo de Guanjhi",
+    "category": "Acessório",
+    "subcategory": "Comestivel",
+    "tier": "B",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": false,
+    "effects": [
+      "+2 em testes de Percepção.",
+      "Uma vez por combate, permite fazer um teste de Percepção(dif. 25) para descobrir a vida atual do alvo."
+    ],
+    "description": "Ghanjhi foi um grande explorador, que acabou criando uma loja de oculos. Porem sua marca apenas ficou famosa após um dos grandes reis, Elih, usar um monoculo feito por ele.",
+    "image": "assets/images/equipments/equipment_monoculo_de_guanjhi.jpg"
+  },
+  {
+    "id": "baralho_do_destino",
+    "name": "Baralho do Destino",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Baralho",
+    "tier": "SS",
+    "damage": "D12",
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": "2",
+    "effects": [
+      "Sempre que atacar com sucesso, role 1D10 para causar um efeito especial:",
+      "1: Não faz nada.",
+      "2: Cura 2D6 de VIDA do alvo.",
+      "3: Remove 1 condição negativa do alvo.",
+      "4: Cria uma cortina de fumaça de 10m",
+      "5: Empurra o alvo até 10m para qualquer direção.",
+      "6: Aplica 3 de Sangramento.",
+      "7: Aplica 4 Queimadura.",
+      "8: Remove 1 de Entropia do alvo.",
+      "9: Enraiza o alvo por 1 turno.",
+      "10: Atordoa o alvo por 1 turno.",
+      "11: Causa 5 de dano, ignora a DA.",
+      "12: Causa 8D20 de dano."
+    ],
+    "description": "Um dos grande rei, Dagdir, forjou este baralho para ajudar a escolher seu destino. Ele era um pessoa com bastante azar, mas este baralho que lhe garantir salvar a cidade de Herion.",
+    "image": "assets/images/equipments/equipment_baralho_do_destino.jpg"
   }
 ]
