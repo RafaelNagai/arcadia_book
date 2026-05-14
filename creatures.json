@@ -85,5 +85,59 @@
       { "name": "Mobilidade", "description": "Apenas depois de alcançar 7 DESTREZA, ele pode usar essa habilidade para ESQUIVAR com 3D12 + DESTREZA." }
     ],
     "variants": []
+  },
+  {
+    "name": "Vinhavora",
+    "levelRange": "30 – 40",
+    "style": "Neutro · Carnivora · Predador",
+    "image": "/assets/images/creatures/creature_vinhavora.jpg",
+    "lore": "Vinhavoras são normalmente encontradas em florestas de mata densa, onde ela pode se camuflar. Elas são plantas parasitas, que se anexam em alguma planta para as controlarem. As Vinhavoras ficam adormecidas durante o dia, deixando suas raízes espalhadas esperando suas presas caírem nela para ela atacar.",
+    "diceBase": "3D6",
+    "hp": 40,
+    "da": 4,
+    "dp": 3,
+    "attributes": { "fisico": 4, "destreza": 4, "intelecto": 0, "influencia": 0 },
+    "immune": [],
+    "vulnerable": ["Cortante"],
+    "interactions": [
+      { "name": "Vinhas Sanguessugas", "description": "Uma vez por combate, permite a vinhavora trocar de hospedeiro e recuperar 2D12+5 de VIDA." },
+      { "name": "Orfã de Hospedeiro", "description": "Desidratar a vinhavora, fará com que ela saia da sua planta hospedeira e tentará achar outra planta saudável para parasitar. Enquanto estiver fora da sua planta hospedeira, ela terá apenas 5 de vida." }
+    ],
+    "actions": [
+      { "name": "Vinhas Agarradoras", "description": "Causa 3D8 em todos em volta, em um raio de 10m. Todos afetados devem rodar um teste de ATLETISMO (dif. 18), se falharem ficaram imobilizados." },
+      { "name": "Chicote de Vinha", "description": "Causa 5D6 de dano Cortante." },
+      { "name": "Esporos", "description": "Escolhe um alvo e ele terá que fazer um teste de FORTITUDE(dif. 20), se falhar, este alvo estarã com DESVANTAGEM em todos os testes enquanto estiver infectado com ESPORO.", "once": "1 vez por combate" }
+    ],
+    "reactions": [
+      { "name": "Maleavel", "description": "Usa a DP para defender, porem o atacante corpo-a-corpo rola um teste de FORTITUDE(dif. 14) para nao sofrer o status de ESPORO." },
+      { "name": "Defender", "description": "Permite defender com a DA." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Goblin Explorador",
+    "levelRange": "10 – 20",
+    "style": "Agressivo · Curioso",
+    "image": "/assets/images/creatures/creature_goblin_explorador.jpg",
+    "lore": "Normalmente andam sozinhos, eles são responsaveis por coletar informações para o bando. ",
+    "diceBase": "2D6",
+    "hp": 8,
+    "da": 2,
+    "dp": 1,
+    "attributes": { "fisico": 2, "destreza": 1, "intelecto": 0, "influencia": 0 },
+    "immune": [],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Curioso", "description": "Ele pode tentar furtivamente invadir acampamentos dos jogadores, se feito com sucesso ele vai roubar 1 item aleatorio de um jogador." }
+    ],
+    "actions": [
+      { "name": "Apunhalar", "description": "Causa 3D8+1 de dano Cortante", "once": "Estiver nas costas" },
+      { "name": "Esfaquear", "description": "Causa 2D8 de dano Cortante." }
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com a DA." },
+      { "name": "Esquivar", "description": "Permite esquivar usando 3D6." }
+    ],
+    "variants": []
   }
 ]
