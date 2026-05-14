@@ -119,7 +119,7 @@
     "levelRange": "10 – 20",
     "style": "Agressivo · Curioso",
     "image": "/assets/images/creatures/creature_goblin_explorador.jpg",
-    "lore": "Normalmente andam sozinhos, eles são responsaveis por coletar informações para o bando. ",
+    "lore": "Normalmente andam sozinhos, eles são responsaveis por coletar informações para o bando.",
     "diceBase": "2D6",
     "hp": 8,
     "da": 2,
@@ -131,12 +131,39 @@
       { "name": "Curioso", "description": "Ele pode tentar furtivamente invadir acampamentos dos jogadores, se feito com sucesso ele vai roubar 1 item aleatorio de um jogador." }
     ],
     "actions": [
-      { "name": "Apunhalar", "description": "Causa 3D8+1 de dano Cortante", "once": "Estiver nas costas" },
-      { "name": "Esfaquear", "description": "Causa 2D8 de dano Cortante." }
+      { "name": "Apunhalar", "description": "Causa 3D6+1 de dano Cortante", "once": "Estiver nas costas" },
+      { "name": "Esfaquear", "description": "Causa 2D6 de dano Cortante." }
     ],
     "reactions": [
       { "name": "Defender", "description": "Permite defender com a DA." },
       { "name": "Esquivar", "description": "Permite esquivar usando 3D6." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Goblin Saqueador",
+    "levelRange": "20 – 30",
+    "style": "Agressivo",
+    "image": "/assets/images/creatures/creature_goblin_saqueador.jpg",
+    "lore": "",
+    "diceBase": "3D6",
+    "hp": 12,
+    "da": 4,
+    "dp": 2,
+    "attributes": { "fisico": 4, "destreza": 4, "intelecto": 0, "influencia": 0 },
+    "immune": [],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Lider Caido", "description": "Normalmente eles atacam em bandos, um deles é sempre nomeado um lider, se esse lider cair em combate os demais goblins saqueadores vão fugir." },
+      { "name": "Ataque em Bando", "description": "Para cada goblin saqueador atacando o mesmo alvo, o modificador de critico é reduzido em 1." }
+    ],
+    "actions": [
+      { "name": "Apunhalar", "description": "Causa 4D8+3 de dano Cortante", "once": "Estiver nas costas" },
+      { "name": "Esfaquear", "description": "Causa 3D8 de dano Cortante." }
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com a DA." },
+      { "name": "Esquivar", "description": "Permite esquivar usando 3D8+4." }
     ],
     "variants": []
   }
