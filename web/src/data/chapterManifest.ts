@@ -24,8 +24,8 @@ export const PARTS: Part[] = [
 ]
 
 export const CHAPTERS: ChapterMeta[] = [
-  { id: '00_timeline',                slug: 'timeline',                title: 'Timeline',                 part: 'O Mundo',                order: 5,   subtitle: 'As cinco eras de Fragnéia' },
-  { id: '00_origem',                  slug: 'origem',                  title: 'Origem do Universo',       part: 'O Mundo',                order: 6,   subtitle: 'Conceito, Essências e os Planos da existência' },
+  { id: '00_timeline',                slug: 'timeline',                title: 'Timeline',                 part: 'O Mundo',                order: 121,   subtitle: 'As cinco eras de Fragnéia' },
+  { id: '00_origem',                  slug: 'origem',                  title: 'Origem do Universo',       part: 'O Mundo',                order: 122,   subtitle: 'Conceito, Essências e os Planos da existência' },
   { id: '01_introducao',              slug: 'introducao',              title: 'Introdução',               part: 'Fundamentos',            order: 10,  subtitle: 'O Mar de Nuvens aguarda' },
   { id: '02_personagem',              slug: 'personagem',              title: 'Personagem',               part: 'Fundamentos',            order: 20,  subtitle: 'Quem você é nesse mundo' },
   { id: '07_vida_e_sanidade',         slug: 'vida-e-sanidade',         title: 'Vida e Sanidade',          part: 'Fundamentos',            order: 21,  subtitle: 'HP, Sanidade e crise mental', parentSlug: 'personagem' },
@@ -33,12 +33,12 @@ export const CHAPTERS: ChapterMeta[] = [
   { id: '03_evolucao_e_testes',       slug: 'evolucao-e-testes',       title: 'Evolução e Testes',        part: 'Fundamentos',            order: 30,  subtitle: 'Como o destino é testado' },
   { id: '04_combate',                 slug: 'combate',                 title: 'Combate',                  part: 'Fundamentos',            order: 40,  subtitle: 'A arte de sobreviver' },
   { id: '16_equipamentos',            slug: 'equipamentos',            title: 'Item e Equipamento',       part: 'Fundamentos',            order: 50,  subtitle: 'Armas, armaduras e o catálogo do Mar de Nuvens' },
-  { id: '05_arcanismo',               slug: 'arcanismo',               title: 'Arcanismo',                part: 'O Arcano',               order: 60,  subtitle: 'O poder tem um preço' },
+  { id: '05_arcanismo',               slug: 'arcanismo',               title: 'Arcanismo',                part: 'O Arcano',               order: 70,  subtitle: 'O poder tem um preço' },
   { id: '05_runas',                   slug: 'runas',                   title: 'Runas',                    part: 'O Arcano',               order: 61,  subtitle: 'As palavras da magia', parentSlug: 'arcanismo' },
   { id: '05_invocacao',               slug: 'invocacao',               title: 'Invocação',                part: 'O Arcano',               order: 62,  subtitle: 'Trazendo entidades ao Plano Material', parentSlug: 'arcanismo' },
-  { id: '06_elementos',               slug: 'elementos',               title: 'Elementos',                part: 'O Arcano',               order: 70,  subtitle: 'Cinco forças, um destino' },
-  { id: '06_afinidades',              slug: 'afinidades',              title: 'Afinidade e Antítese',     part: 'O Arcano',               order: 71,  subtitle: 'A relação que o Arcano escolhe por você' },
-  { id: '07_condicoes',               slug: 'condicoes',               title: 'Condições',                part: 'Fundamentos',            order: 80,  subtitle: 'Efeitos que persistem no corpo e na mente' },
+  { id: '06_elementos',               slug: 'elementos',               title: 'Elementos',                part: 'O Arcano',               order: 80,  subtitle: 'Cinco forças, um destino' },
+  { id: '06_afinidades',              slug: 'afinidades',              title: 'Afinidade e Antítese',     part: 'O Arcano',               order: 81,  subtitle: 'A relação que o Arcano escolhe por você' },
+  { id: '07_condicoes',               slug: 'condicoes',               title: 'Condições',                part: 'Fundamentos',            order: 60,  subtitle: 'Efeitos que persistem no corpo e na mente' },
   { id: '08_moral',                   slug: 'moral',                   title: 'Moral',                    part: 'O Navio e a Tripulação', order: 90,  subtitle: 'O espírito da tripulação' },
   { id: '09_navios',                  slug: 'navios',                  title: 'Navios',                   part: 'O Navio e a Tripulação', order: 100, subtitle: 'Sua casa nos céus' },
   { id: '09_combate_naval',           slug: 'combate-naval',           title: 'Combate Naval',            part: 'O Navio e a Tripulação', order: 101, subtitle: 'Batalhas nos céus', parentSlug: 'navios' },
