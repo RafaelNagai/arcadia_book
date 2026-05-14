@@ -12,6 +12,7 @@ export default defineConfig({
       '@ships': resolve(__dirname, '../ships.json'),
       '@characters': resolve(__dirname, '../characters.json'),
       '@equipment': resolve(__dirname, '../equipment.json'),
+      '@timeline': resolve(__dirname, '../timeline.json'),
       '@version': resolve(__dirname, '../version.json'),
       '@': resolve(__dirname, './src'),
     },

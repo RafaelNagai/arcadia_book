@@ -1,0 +1,167 @@
+[
+  {
+    "id": "pe-conceito",
+    "era": "Período Existencial",
+    "title": "O Conceito Surge",
+    "description": "O Conceito emergiu como uma força da natureza buscando respostas da sua propria existencia.",
+    "year": "1/-10000",
+    "isVisible": false
+  },
+  {
+    "id": "pe-inocencia",
+    "era": "Período Existencial",
+    "title": "Inocência e Caos se Manifestam",
+    "description": "Inocência, a primeira essência, surge como o impulso de explorar o desconhecido. Da insistência da Inocência criar planos vazios nasce o Caos — força da Criação. Juntas, essas essências iniciam o ciclo de criação.",
+    "year": "1/-9000",
+    "isVisible": false
+  },
+  {
+    "id": "pe-Fragnéia",
+    "era": "Período Existencial",
+    "title": "Fragnéia é Criada",
+    "description": "O Caos preenche o vazio criado pela Inocência e materializa Fragnéia, um unico grande continente, no plano Material. O Caos dá um proposito para os outros Plano, usando esses planos para serem a engrenagem do ciclo da vida.",
+    "year": "1/-5000",
+    "isVisible": false
+  },
+  {
+    "id": "ez-raca-zero",
+    "era": "Era Zero",
+    "title": "A Primeira Raça é Criada",
+    "description": "Surge a Raça Zero — os primeiros seres inteligentes de Fragnéia, conhecidos como Morganianos. Imortais, com uma mente em colmeia conectada a uma única vontade: evoluir.",
+    "year": "1/-1000",
+    "isVisible": false
+  },
+  {
+    "id": "ez-experimentos",
+    "era": "Era Zero",
+    "title": "Experimentos — Novas Raças",
+    "description": "Movidos pela individualidade, os Morganianos se separam em Elfos, Humanos e Orcs.",
+    "year": "1/-900",
+    "isVisible": false
+  },
+  {
+    "id": "ez-anoes",
+    "era": "Era Zero",
+    "title": "Primeiras Raças se Diversificam",
+    "description": "O primeiro conflito entre indivíduos cria o conceito de individualidade. O Caos responde: para cada grupo dividido, particularidades únicas emergem. As raças começam a desenvolver culturas e identidades próprias.",
+    "year": "1/-865",
+    "isVisible": false
+  },
+  {
+    "id": "ea-espalhamento",
+    "era": "Era Expansão",
+    "title": "O Grande Espalhamento",
+    "description": "O conceito de separar se tornou tão forte, que fragmentou o grande continente em inumeras ilhas, que no futuro se tornariam as nações. Todas as raças se espalham por Fragnéia. O conceito de separação acelera o surgimento de identidades culturais únicas. Union, Britannia, Nobre, Canelot, Galahad e Nubra começam a tomar forma como territórios.",
+    "year": "1/1",
+    "isVisible": false
+  },
+  {
+    "id": "ea-nacoes",
+    "era": "Era Expansão",
+    "title": "Formação das Primeiras Nações",
+    "description": "As raças se organizam em territórios com culturas distintas. Canelot emerge como potência crescente. As regiões desenvolvem sistemas próprios de governo, comércio e identidade — a política de Fragnéia começa a tomar forma.",
+    "year": "50/800",
+    "isVisible": true
+  },
+  {
+    "id": "ea-avaro",
+    "era": "Era Expansão",
+    "title": "Primeiro Avaro Registrado",
+    "description": "O primeiro Avaro com registro histórico documentado emerge nas crônicas de Fragnéia. Humanoides com características animalescas únicas, os Avaros são reconhecidos formalmente como raça com identidade própria.",
+    "year": "92/1540",
+    "isVisible": true
+  },
+  {
+    "id": "ei-guerra",
+    "era": "Era Imperial",
+    "title": "Começa a Guerra Imperial",
+    "description": "Os humanos quando foram governados por um imperador chamado Artorius, foram o primeiro grande império a quase dominar toda a Fragnéia. Camelot se tornou o Pais mais poderoso, e dominou principalmente os países vizinhos, Britannia e Rubra.   Muitos Anões e Orcs foram escravizados ou mortos enquanto os humanos marchavam para dominar as novas regiões. Muitos deles tiveram que se adaptar ou fugir para sobreviver. Os Anões se esconderam em cavernas ou dutos que eles mesmo faziam, para evitar o conflito. Futuramente, eles se acostumaram e continuaram criando cidades e toda uma arquitetura própria. Enquanto os Orcs fugiram, atravessando a grande cordilheira de montanhas ao norte, que permitiu a eles a chegarem um local pantanosa sem habitantes, onde eles começaram um novo País chamado Union. Union seria futuramente conhecida por aceitar qualquer raça dentro do País, sem preconceito a sua fisionomia ou espécie. Mas que consideram os seus feitos o principal para nomear uma pessoa.  Os elfos foram um dos poucos Países a resistirem e enfrentarem as investidas dos humanos. Galahad por ter grandes árvores e uma mata densa davam uma vantagem a eles quando o combate se estendia dentro do seu território. Nesta mesma época, uma grande cidade perto da capital chamada Zohad, foi totalmente dizimada. E apenas poucos elfos sobreviveram, porém ele tinha uma pele azulada. Este individuo tentou conviver novamente com os Elfos durante um tempo, porém sofreu muitos abusos e maus tratos por acreditarem que ele era o responsavel pela catastrofe. Depois de um tempo, ele e suas gerações, se refugiaram nas montanhas formando a norte de Galahad, que futuramente proclamaram um novo País a Flagnéia. Artorius reivindicava que foi ele quem destruiu toda aquela cidade de Zohad, aumentando a moral do seu exércitos e seguidores.",
+    "year": "33/1842",
+    "isVisible": true
+  },
+  {
+    "id": "ei-pragas",
+    "era": "Era Imperial",
+    "title": "Criação do Vírus Las Pragas",
+    "description": "Em desespero pela guerra, alquimistas imperiais criam Las Pragas — um vírus arcano devastador capaz de matar em massa. O preço humano dessa arma assombra gerações. Seu uso marca o momento mais sombrio da Guerra Imperial, fazendo cair o apoio que outras facções e aliados tinham com o atual Imperador Artorious.",
+    "year": "44/2305",
+    "isVisible": true
+  },
+  {
+    "id": "ei-elfos-noturnos",
+    "era": "Era Imperial",
+    "title": "Surgimento dos Elfos Noturnos",
+    "description": "Um grupo de Elfos realiza um ritual desesperado para criar uma nova entidade de guerra. O experimento falha e destrói toda uma cidade élfica. Os poucos sobreviventes têm suas peles tingidas de azul-escuro — tornando-se os Elfos Noturnos.",
+    "year": "60/2800",
+    "isVisible": true
+  },
+  {
+    "id": "ei-amarlosso",
+    "era": "Era Imperial",
+    "title": "Morte de Artorious",
+    "description": "Artorious criou uma organização chamada tabula, para realizar missões secretas para ele. Porem quando eles souberam do plano dele de conectar a mente de todos através da rede dos sonhos, para que todos entendessem a dor do proximo, eles decidiram parar ele. Matando ele enquanto ele estava se preparando para realizar o ritual na rede dos sonhos. Apos a morte de Artorious a tavula resolveu operar nas sombras para impedir futuros ditadores. Camelot decide fazer um tratado para cessar a guerra.",
+    "year": "87/3252",
+    "isVisible": true
+  },
+  {
+    "id": "ei-zohar",
+    "era": "Era Imperial",
+    "title": "Tratado do Zohar",
+    "description": "Os humanos fizeram um trato de paz com os Elfos, conhecido como o tratado de Zohad, em memoria a todos que foram perdidos naquela metropole e cessar a guerra imperial.",
+    "year": "1/X1",
+    "isVisible": true
+  },
+  {
+    "id": "ezo-pragas-ressurge",
+    "era": "Era Zohar",
+    "title": "Las Pragas Ressurge",
+    "description": "Onna descobriu sobre o virus Las Pragas para sugar o arcano de todos os habitantes de Herion, porem 3 herois impediram isso. Ela queria ressuscitar o seu antepassado, Artorious. Os 3 foram considerandos os grandes 3 reis lendários que salvaram Herion. Eles restabeleceram a cidade e cada um seguiu caminhos separados se tornando Reis de seus respectivas cidades. Eli, Dagdir e TheNomad",
+    "year": "89/X312",
+    "isRpgCampaign": true,
+    "isVisible": true
+  },
+  {
+    "id": "ezo-grande-guerra",
+    "era": "Era Zohar",
+    "title": "A Grande Guerra",
+    "description": "Navarro e Navah descobrem que seu pai, era na verdade Artorious que ia transferindo sua alma para os seus parentes para garantir vida eterna. Para impedir ele, eles reunem todos os piratas de todas as regiões. Depois de uma batalha intensa, eles conseguem derrotar o pai dele porem ele consegue fazer o ritual sem perceber no Navah e na esposa de Navarro, a Scarlet. Porem como Scarlet nao era do mesmo sangue, ela acaba morrendo no processo, so que o Navah usando seus poderes de Paradoxo, consegue mante-la viva parando o tempo em sua volta. Navarro promete achar uma forma de salvar ela. Conforme o tempo foi passando o fragmento de Artorious foi corrompendo Navah aos poucos e a partir dali ele começou a fazer pesquisas para achar uma forma de trazer a Scarlet de volta, e ele pode voltar 100%. Porque o Navah esta com apenas 50% dele, e nao é capaz de dominar o corpo, apenas influenciar. Nessa epoca, Scarlet estava gravida se poucas semanas. E ela ja tinha outro filho, de 2 anos.",
+    "year": "12/X1101",
+    "isVisible": true
+  },
+  {
+    "id": "ezo-orleans",
+    "era": "Era Zohar",
+    "title": "Orfanato",
+    "description": "Um grupo de GMs(Guarda Magica) vão investigar um orfanato, sobre um assassinato. E acabam descobrindo um experimento secreto em crianças, para criarem uma entidade controlada. Porem neste orfanato existia uma criança chamada Loren que perde um braço no evento, e sua irmã morre. Kayeb, um dos agentes, vira uma entidade com a alma de todas as crianças dentro de seu corpo, após salvar a alma de todas que morreram sacrificadas no ritual para criar essa entidade.",
+    "year": "42/X1120",
+    "isRpgCampaign": true,
+    "isVisible": true
+  },
+  {
+    "id": "ezo-scarlet",
+    "era": "Era Zohar",
+    "title": "Scarlet",
+    "description": "A campanha Scarlet tem início — intrigas políticas e segredos arcanos ameaçam a estabilidade de Fragnéia. Uma organização desconhecida opera nas sombras das principais nações.",
+    "year": "11/X1125",
+    "isRpgCampaign": true,
+    "isVisible": false
+  },
+  {
+    "id": "ezo-imperial-legiao",
+    "era": "Era Zohar",
+    "title": "Imperial e Legião",
+    "description": "Remanescentes do antigo Império de Canelot e uma Legião emergente disputam poder nas sombras. O fantasma da Guerra Imperial ressurge nas políticas do presente.",
+    "year": "25/X1125",
+    "isRpgCampaign": true,
+    "isVisible": false
+  },
+  {
+    "id": "ezo-invasao-olia",
+    "era": "Era Zohar",
+    "title": "Invasão e Olia",
+    "description": "Uma invasão externa ameaça Olia. Os aventureiros são convocados para conter o avanço inimigo enquanto as nações debatem se devem ou não honrar o Tratado do Zohar.",
+    "year": "90/X1125",
+    "isRpgCampaign": true,
+    "isVisible": false
+  }
+]

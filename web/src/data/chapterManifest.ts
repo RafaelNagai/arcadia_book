@@ -24,6 +24,8 @@ export const PARTS: Part[] = [
 ]
 
 export const CHAPTERS: ChapterMeta[] = [
+  { id: '00_timeline',                slug: 'timeline',                title: 'Timeline',                 part: 'O Mundo',                order: 5,   subtitle: 'As cinco eras de Fragnéia' },
+  { id: '00_origem',                  slug: 'origem',                  title: 'Origem do Universo',       part: 'O Mundo',                order: 6,   subtitle: 'Conceito, Essências e os Planos da existência' },
   { id: '01_introducao',              slug: 'introducao',              title: 'Introdução',               part: 'Fundamentos',            order: 10,  subtitle: 'O Mar de Nuvens aguarda' },
   { id: '02_personagem',              slug: 'personagem',              title: 'Personagem',               part: 'Fundamentos',            order: 20,  subtitle: 'Quem você é nesse mundo' },
   { id: '07_vida_e_sanidade',         slug: 'vida-e-sanidade',         title: 'Vida e Sanidade',          part: 'Fundamentos',            order: 21,  subtitle: 'HP, Sanidade e crise mental', parentSlug: 'personagem' },

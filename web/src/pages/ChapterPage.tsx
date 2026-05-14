@@ -82,19 +82,21 @@ export function ChapterPage() {
 
             {/* Interactive widget for this chapter (if any) */}
             {slug && CHAPTER_WIDGETS[slug] && (
-              <div className="mt-16">
-                <div
-                  className="flex items-center gap-3 mb-6"
-                  style={{ borderTop: '1px solid var(--color-border)', paddingTop: '2rem' }}
-                >
-                  <span style={{ color: 'var(--color-arcano)', fontSize: '0.9rem' }}>◈</span>
-                  <p
-                    className="text-xs uppercase tracking-widest font-ui font-semibold"
-                    style={{ color: 'var(--color-arcano-dim)' }}
+              <div className={content ? 'mt-16' : ''}>
+                {content && (
+                  <div
+                    className="flex items-center gap-3 mb-6"
+                    style={{ borderTop: '1px solid var(--color-border)', paddingTop: '2rem' }}
                   >
-                    Aprenda na Prática
-                  </p>
-                </div>
+                    <span style={{ color: 'var(--color-arcano)', fontSize: '0.9rem' }}>◈</span>
+                    <p
+                      className="text-xs uppercase tracking-widest font-ui font-semibold"
+                      style={{ color: 'var(--color-arcano-dim)' }}
+                    >
+                      Aprenda na Prática
+                    </p>
+                  </div>
+                )}
                 {CHAPTER_WIDGETS[slug]}
               </div>
             )}

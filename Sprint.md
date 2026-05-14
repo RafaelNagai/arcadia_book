@@ -48,6 +48,18 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Timeline Histórica e Origem do Universo
+**Origem:** /task criar página de Timeline interativa com eventos históricos em JSON e página de Origem do Universo
+**Adicionada:** 2026-05-13 · **Executor:** CONCLUÍDO · **Concluída:** 2026-05-13
+
+- [x] Subtask 1 — Criar os arquivos de conteúdo (`chapters/00_timeline.md` e `chapters/00_origem.md`) com o texto lore das eras e dos conceitos cosmológicos
+- [x] Subtask 2 — Criar `web/src/data/timelineEvents.ts` com os eventos históricos tipados em JSON (campos: id, era, title, description, year; formato de ano: `dia/ano` onde `X` = pós-Era Imperial)
+- [x] Subtask 3 — Criar `web/src/components/widgets/TimelineWidget.tsx`: linha do tempo vertical interativa com filtro por era (Período Existencial, Era Zero, Era Expansão, Era Imperial, Era Zohar), expandindo card de evento ao clicar
+- [x] Subtask 4 — Registrar os dois novos capítulos em `chapterManifest.ts` (part: 'O Mundo', orders 5 e 6) e adicionar `TimelineWidget` e `OrigemWidget` em `chapterWidgets.tsx`
+- [x] Subtask 5 — Criar `web/src/components/widgets/OrigemWidget.tsx`: painel de navegação por abas (Conceito, Inocência, Caos, Essências, Planos, Raças, Deuses, Regiões, Religiões) com visual consistente com o design system
+
+---
+
 ### Vercel Analytics — Integração no Entry Point React
 **Origem:** /task adicionar Vercel Analytics ao projeto web — instalar @vercel/analytics e integrar no entry point React de forma estruturada
 **Adicionada:** 2026-05-12 · **Validator:** APROVADO · **Concluída:** 2026-05-12

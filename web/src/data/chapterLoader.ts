@@ -32,5 +32,5 @@ for (const [path, content] of Object.entries(oneShotModules)) {
 }
 
 export function getChapterContent(id: string): string {
-  return chapterContent[id] ?? `# Capítulo não encontrado\n\nO capítulo "${id}" não foi localizado.`
+  return chapterContent[id] ?? ''
 }
