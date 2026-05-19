@@ -192,15 +192,15 @@ function ArcanoEntry({ e }: { e: ArcanoLogEntry }) {
           {bonusParts.join(' • ')}
         </p>
       )}
-      {e.allDiceResults.length > 0 && (
+      {(e.allDiceResults ?? []).length > 0 && (
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', alignItems: 'center' }}>
-          {e.allDiceResults.map((v, i) => (
+          {(e.allDiceResults ?? []).map((v, i) => (
             <DiceChip key={i} value={v} chosen={true} />
           ))}
         </div>
       )}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 2 }}>
-        {Object.entries(e.modifierResults).map(([k, res]) => {
+        {Object.entries(e.modifierResults ?? {}).map(([k, res]) => {
           const stateInfo = res.specialState ? STATE_META[res.specialState] : null
           return (
             <div key={k} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
