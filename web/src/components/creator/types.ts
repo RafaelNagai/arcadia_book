@@ -84,7 +84,7 @@ export const EMPTY_SKILLS: CharacterSkills = {
 }
 
 export const EMPTY_ATTRS: CharacterAttributes = {
-  fisico: 0, destreza: 0, intelecto: 0, influencia: 0,
+  fisico: 0, destreza: 0, intelecto: 0, influencia: 0, arcano: 0,
 }
 
 export const STEPS = [

@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import type { Character, CharacterSkills, CharacterAttributes } from '@/data/characterTypes'
+import type { Character, CharacterSkills, CharacterAttributes, CharacterModificadores, EntropiaMarca } from '@/data/characterTypes'
 import { saveCustomCharacter, generateId, getCustomCharacter, calcHP, calcSanidade } from '@/lib/localCharacters'
 import { useAuth } from '@/lib/authContext'
 import { api } from '@/lib/apiClient'
@@ -14,6 +14,8 @@ import { Step3Skills }   from '@/components/creator/Step3Skills'
 import { Step4Arcano }   from '@/components/creator/Step4Arcano'
 import { Step5History }  from '@/components/creator/Step5History'
 import { Step6Historia } from '@/components/creator/Step6Historia'
+
+const EMPTY_MODS: CharacterModificadores = { potencia: 0, complexidade: 0, forma: 0, controle: 0 }
 
 function dataUrlToFile(dataUrl: string, filename: string): File {
   const [header, data] = dataUrl.split(',')
@@ -52,7 +54,8 @@ export function CharacterCreatorPage() {
       setAfinidade(char.afinidade)
       setAntitese(char.antitese)
       setEntropia(char.entropia)
-      setRunas(char.runas)
+      setArcano((char.attributes.arcano) ?? 0)
+      setModificadores(char.modificadores ?? EMPTY_MODS)
       setAntecedentes(char.antecedentes)
       setTraumas(char.traumas)
       setHistoria(char.historia ?? '')
@@ -81,10 +84,11 @@ export function CharacterCreatorPage() {
   const [attrs,    setAttrs]    = useState<CharacterAttributes>(existing?.attributes ?? EMPTY_ATTRS)
   const [skills,   setSkills]   = useState<CharacterSkills>(existing?.skills ?? EMPTY_SKILLS)
   const [talents,  setTalents]  = useState<string[]>(existing?.talents ?? [])
-  const [afinidade,  setAfinidade]  = useState(existing?.afinidade  ?? '')
-  const [antitese,   setAntitese]   = useState(existing?.antitese   ?? '')
-  const [entropia,   setEntropia]   = useState(existing?.entropia   ?? 0)
-  const [runas,      setRunas]      = useState<string[]>(existing?.runas      ?? [])
+  const [afinidade,    setAfinidade]    = useState(existing?.afinidade ?? '')
+  const [antitese,     setAntitese]     = useState(existing?.antitese  ?? '')
+  const [entropia,     setEntropia]     = useState(existing?.entropia  ?? 0)
+  const [arcano,       setArcano]       = useState(existing?.attributes.arcano ?? 0)
+  const [modificadores, setModificadores] = useState<CharacterModificadores>(existing?.modificadores ?? EMPTY_MODS)
   const [antecedentes, setAntecedentes] = useState<string[]>(existing?.antecedentes ?? [])
   const [traumas,    setTraumas]    = useState<string[]>(existing?.traumas    ?? [])
   const [historia,   setHistoria]   = useState(existing?.historia   ?? '')
@@ -114,11 +118,12 @@ export function CharacterCreatorPage() {
   function handleTalentToggle(k: string) {
     setTalents(prev => prev.includes(k) ? prev.filter(t => t !== k) : [...prev, k])
   }
-  const handleArcanoChange = useCallback((k: string, v: string | number | string[]) => {
-    if (k === 'afinidade') setAfinidade(v as string)
-    else if (k === 'antitese')  setAntitese(v as string)
-    else if (k === 'entropia')  setEntropia(v as number)
-    else if (k === 'runas')     setRunas(v as string[])
+  const handleArcanoChange = useCallback((k: string, v: string | number | CharacterModificadores) => {
+    if (k === 'afinidade')     setAfinidade(v as string)
+    else if (k === 'antitese') setAntitese(v as string)
+    else if (k === 'entropia') setEntropia(v as number)
+    else if (k === 'arcano')   setArcano(v as number)
+    else if (k === 'modificadores') setModificadores(v as CharacterModificadores)
   }, [])
 
   /* ── Save ─────────────────────────────────────────────────────── */
@@ -140,7 +145,7 @@ export function CharacterCreatorPage() {
         quote:       quote.trim(),
         image,
         level:   totalLevel,
-        attributes: attrs,
+        attributes: { ...attrs, arcano },
         skills,
         talents,
         hp:       newHp,
@@ -151,7 +156,8 @@ export function CharacterCreatorPage() {
         afinidade:  afinidade  || 'Energia',
         antitese:   antitese   || 'Anomalia',
         entropia,
-        runas,
+        modificadores,
+        marcas:     existing?.marcas ?? [] as EntropiaMarca[],
         traumas,
         antecedentes,
         historia: historia.trim() || undefined,
@@ -267,7 +273,8 @@ export function CharacterCreatorPage() {
                 afinidade={afinidade}
                 antitese={antitese}
                 entropia={entropia}
-                runas={runas}
+                arcano={arcano}
+                modificadores={modificadores}
                 onChange={handleArcanoChange}
               />
             )}

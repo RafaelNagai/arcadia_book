@@ -2,7 +2,8 @@ import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ELEMENTS, ELEMENT_COLORS, D6_MAP, d6 } from './types'
 import type { ElementName } from './types'
-import { Field, Stepper, TagInput, SectionDivider } from './CreatorUI'
+import type { CharacterModificadores } from '@/data/characterTypes'
+import { Field, Stepper, SectionDivider } from './CreatorUI'
 
 interface DiceRollState {
   dice: [number, number]
@@ -10,9 +11,20 @@ interface DiceRollState {
   swapped: boolean
 }
 
-export function Step4Arcano({ afinidade, antitese, entropia, runas, onChange }: {
-  afinidade: string; antitese: string; entropia: number; runas: string[]
-  onChange: (k: string, v: string | number | string[]) => void
+export function Step4Arcano({
+  afinidade,
+  antitese,
+  entropia,
+  arcano,
+  modificadores,
+  onChange,
+}: {
+  afinidade: string
+  antitese: string
+  entropia: number
+  arcano: number
+  modificadores: CharacterModificadores
+  onChange: (k: string, v: string | number | CharacterModificadores) => void
 }) {
   const [diceRoll, setDiceRoll] = useState<DiceRollState | null>(null)
   const [rolling, setRolling] = useState(false)
@@ -58,6 +70,10 @@ export function Step4Arcano({ afinidade, antitese, entropia, runas, onChange }: 
   const resolvedEl0 = diceRoll ? (diceRoll.swapped ? diceRoll.picks[1] : diceRoll.picks[0]) : null
   const resolvedEl1 = diceRoll ? (diceRoll.swapped ? diceRoll.picks[0] : diceRoll.picks[1]) : null
   const diceReady = resolvedEl0 && resolvedEl1
+
+  function handleModificador(key: keyof CharacterModificadores, v: number) {
+    onChange('modificadores', { ...modificadores, [key]: v })
+  }
 
   return (
     <div className="space-y-6">
@@ -139,14 +155,15 @@ export function Step4Arcano({ afinidade, antitese, entropia, runas, onChange }: 
                 <div className="space-y-2">
                   <div className="flex gap-2">
                     {([
-                      { label: 'Afinidade +4', el: resolvedEl0! },
-                      { label: 'Antítese +2',  el: resolvedEl1! },
-                    ] as { label: string; el: ElementName }[]).map(({ label, el }) => {
+                      { label: 'Afinidade', hint: 'sem penalidade', el: resolvedEl0! },
+                      { label: 'Antítese',  hint: '−10 nos testes', el: resolvedEl1! },
+                    ] as { label: string; hint: string; el: ElementName }[]).map(({ label, hint, el }) => {
                       const ac = ELEMENT_COLORS[el]
                       return (
                         <div key={label} className="flex-1 rounded-sm px-3 py-2" style={{ background: ac.bg, border: `1px solid ${ac.border}` }}>
                           <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: ac.text, opacity: 0.75 }}>{label}</p>
                           <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', color: ac.text }}>{el}</p>
+                          <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.55rem', color: ac.text, opacity: 0.6 }}>{hint}</p>
                         </div>
                       )
                     })}
@@ -167,13 +184,21 @@ export function Step4Arcano({ afinidade, antitese, entropia, runas, onChange }: 
       {/* ── Manual override ─────────────────────────────── */}
       <SectionDivider label="Ou escolha manualmente" />
 
-      <Field label="Afinidade" hint="+4 em testes arcanos com este elemento">
+      <Field label="Afinidade" hint="Elemento natural — sem penalidade nos testes">
         <div className="flex flex-wrap gap-2">
           {ELEMENTS.map(el => {
             const ac = ELEMENT_COLORS[el]; const active = afinidade === el
             return (
               <button key={el} onClick={() => onChange('afinidade', el)}
-                style={{ padding: '0.4rem 0.9rem', borderRadius: 4, cursor: 'pointer', transition: 'all 0.15s', background: active ? ac.bg : 'rgba(255,255,255,0.03)', border: `1px solid ${active ? ac.border : 'rgba(255,255,255,0.1)'}`, color: active ? ac.text : 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                style={{
+                  padding: '0.4rem 0.9rem', borderRadius: 4, cursor: 'pointer', transition: 'all 0.15s',
+                  background: active ? ac.bg : 'rgba(255,255,255,0.03)',
+                  border: `1px solid ${active ? ac.border : 'rgba(255,255,255,0.1)'}`,
+                  color: active ? ac.text : 'var(--color-text-muted)',
+                  fontFamily: 'var(--font-ui)', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase',
+                  boxShadow: active ? `0 0 12px ${ac.border}` : 'none',
+                  fontWeight: active ? 700 : 400,
+                }}>
                 {el}
               </button>
             )
@@ -181,13 +206,21 @@ export function Step4Arcano({ afinidade, antitese, entropia, runas, onChange }: 
         </div>
       </Field>
 
-      <Field label="Antítese" hint="+2 em testes arcanos com este elemento. Pode ser o mesmo que a Afinidade.">
+      <Field label="Antítese" hint="Elemento parasita — −10 nos testes arcanos">
         <div className="flex flex-wrap gap-2">
           {ELEMENTS.map(el => {
             const ac = ELEMENT_COLORS[el]; const active = antitese === el
             return (
               <button key={el} onClick={() => onChange('antitese', el)}
-                style={{ padding: '0.4rem 0.9rem', borderRadius: 4, cursor: 'pointer', transition: 'all 0.15s', background: active ? ac.bg : 'rgba(255,255,255,0.03)', border: `1px solid ${active ? ac.border : 'rgba(255,255,255,0.1)'}`, color: active ? ac.text : 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                style={{
+                  padding: '0.4rem 0.9rem', borderRadius: 4, cursor: 'pointer', transition: 'all 0.15s',
+                  background: active ? ac.bg : 'rgba(255,255,255,0.03)',
+                  border: `1px solid ${active ? ac.border : 'rgba(255,255,255,0.1)'}`,
+                  color: active ? ac.text : 'var(--color-text-muted)',
+                  fontFamily: 'var(--font-ui)', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase',
+                  boxShadow: active ? `0 0 12px ${ac.border}` : 'none',
+                  fontWeight: active ? 700 : 400,
+                }}>
                 {el}
               </button>
             )
@@ -195,13 +228,85 @@ export function Step4Arcano({ afinidade, antitese, entropia, runas, onChange }: 
         </div>
       </Field>
 
-      <Field label="Entropia" hint="Cada nível concede 1 slot de Runa">
-        <Stepper value={entropia} min={0} onChange={v => onChange('entropia', v)} color="#B060D0" />
-      </Field>
+      <SectionDivider label="Arcano e Modificadores" />
 
-      <Field label="Runas" hint="Pressione Enter ou clique em Adicionar">
-        <TagInput tags={runas} onChange={v => onChange('runas', v)} placeholder="Ex: Ígnea, Véu, Impulso…" />
-      </Field>
+      {/* Arcano card — roxo destacado */}
+      <div
+        style={{
+          padding: '1.25rem',
+          borderRadius: 4,
+          background: 'linear-gradient(135deg, rgba(80,20,140,0.18) 0%, rgba(4,10,20,0.9) 100%)',
+          border: '1px solid rgba(140,60,200,0.28)',
+        }}
+        className="space-y-4"
+      >
+        <Field label="Arcano" hint="5º atributo — cresce apenas por experiência narrativa">
+          <Stepper value={arcano} min={0} onChange={v => onChange('arcano', v)} color="#B060D0" />
+        </Field>
+
+        <Field label="Entropia" hint="Abertura ao Caos — 0 a 5. Bônus = Arcano × Entropia">
+          <Stepper value={entropia} min={0} onChange={v => onChange('entropia', Math.min(5, v))} color="#B060D0" />
+        </Field>
+
+        {/* Summary line */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.75rem',
+            alignItems: 'center',
+            paddingTop: '0.5rem',
+            borderTop: '1px solid rgba(140,60,200,0.18)',
+            flexWrap: 'wrap',
+          }}
+        >
+          {[
+            { label: 'Arcano', value: arcano },
+            { label: 'Entropia', value: entropia },
+            { label: 'Bônus', value: arcano * entropia, prefix: '+' },
+          ].map(({ label, value, prefix }) => (
+            <span
+              key={label}
+              style={{
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.7rem',
+                color: 'rgba(220,160,255,0.85)',
+                letterSpacing: '0.05em',
+              }}
+            >
+              <span style={{ color: 'rgba(255,255,255,0.35)' }}>{label} </span>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: '#D080F0' }}>
+                {prefix}{value}
+              </span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <SectionDivider label="Modificadores" />
+
+      <div
+        style={{
+          padding: '1.25rem',
+          borderRadius: 4,
+          background: 'linear-gradient(135deg, rgba(80,20,140,0.18) 0%, rgba(4,10,20,0.9) 100%)',
+          border: '1px solid rgba(140,60,200,0.28)',
+        }}
+        className="space-y-3"
+      >
+        <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: 'var(--color-text-muted)', letterSpacing: '0.08em' }}>
+          Crescem com PE — igual às perícias. A cada 5 no teste: Potência +1D12 dano/cura · Complexidade +1 stack.
+        </p>
+        {([
+          { key: 'potencia',     label: 'Potência',     hint: 'A cada 5 → +1D12 dano ou +1 HP curado' },
+          { key: 'complexidade', label: 'Complexidade',  hint: 'A cada 5 → +1 stack de condição' },
+          { key: 'forma',        label: 'Forma',         hint: 'Modelagem, direção e área da magia' },
+          { key: 'controle',     label: 'Controle',      hint: 'Precisão, estabilidade e duração' },
+        ] as { key: keyof CharacterModificadores; label: string; hint: string }[]).map(({ key, label, hint }) => (
+          <Field key={key} label={label} hint={hint}>
+            <Stepper value={modificadores[key]} min={0} onChange={v => handleModificador(key, v)} color="#B060D0" />
+          </Field>
+        ))}
+      </div>
     </div>
   )
 }

@@ -1,46 +1,37 @@
 import { useState } from "react"
-import {
-  DndContext,
-  DragOverlay,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  type DragStartEvent,
-  type DragEndEvent,
-} from "@dnd-kit/core"
 import type { Character } from "@/data/characterTypes"
 import { ELEMENT_DATA } from "./types"
 import type { Accent } from "./types"
 import { SectionLabel } from "./CharacterUI"
-import { DraggableRuna, EntropiaDisplay } from "./EntropiaDisplay"
+import { EntropiaDisplay } from "./EntropiaDisplay"
 import { ArcaneTestOverlay } from "./ArcaneTestOverlay"
+
+const MODIFICADORES = [
+  { key: "potencia",     label: "Potência",     desc: "Dano · Cura" },
+  { key: "complexidade", label: "Complexidade",  desc: "Stacks · Condições" },
+  { key: "forma",        label: "Forma",         desc: "Área · Direção" },
+  { key: "controle",     label: "Controle",      desc: "Precisão · Duração" },
+] as const
 
 export function ArcanoSection({
   character,
   accent,
   antAccent,
-  slottedRunas,
-  draggingRuna,
-  onDragStart,
-  onDragEnd,
-  onRemoveRuna,
   onEdit,
+  onEntropiaChange,
+  onModificadorChange,
 }: {
   character: Character
   accent: Accent
   antAccent: Accent
-  slottedRunas: (string | null)[]
-  draggingRuna: string | null
-  onDragStart: (event: DragStartEvent) => void
-  onDragEnd: (event: DragEndEvent) => void
-  onRemoveRuna: (slotIdx: number) => void
   onEdit?: () => void
+  onEntropiaChange?: (newValue: number) => void
+  onModificadorChange?: (key: string, delta: number) => void
 }) {
   const [arcaneTest, setArcaneTest] = useState(false)
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
-  )
+  const arcano = character.attributes.arcano
+  const entropiaBonus = arcano * character.entropia
 
   return (
     <section>
@@ -48,6 +39,7 @@ export function ArcanoSection({
         Arcano
       </SectionLabel>
       <div className="space-y-3">
+
         {/* Afinidade + Antítese */}
         <div className="grid grid-cols-2 gap-3">
           <div
@@ -72,14 +64,14 @@ export function ArcanoSection({
               </p>
               <span
                 style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 700,
-                  fontSize: "1.5rem",
-                  color: accent.text,
-                  lineHeight: 1,
+                  fontFamily: "var(--font-ui)",
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.1em",
+                  color: `${accent.text}99`,
+                  textTransform: "uppercase",
                 }}
               >
-                +4
+                sem penalidade
               </span>
             </div>
             <p
@@ -129,12 +121,12 @@ export function ArcanoSection({
                 style={{
                   fontFamily: "var(--font-display)",
                   fontWeight: 700,
-                  fontSize: "1.5rem",
+                  fontSize: "1.1rem",
                   color: antAccent.text,
                   lineHeight: 1,
                 }}
               >
-                +2
+                −10
               </span>
             </div>
             <p
@@ -161,6 +153,146 @@ export function ArcanoSection({
           </div>
         </div>
 
+        {/* Arcano attribute + Modificadores */}
+        <div
+          style={{
+            padding: "1.25rem",
+            borderRadius: 4,
+            background: "linear-gradient(135deg, rgba(80,20,140,0.18) 0%, rgba(4,10,20,0.9) 100%)",
+            border: "1px solid rgba(140,60,200,0.28)",
+          }}
+        >
+          {/* Arcano attribute value */}
+          <div className="flex items-center justify-between mb-4">
+            <p
+              style={{
+                fontFamily: "var(--font-ui)",
+                fontSize: "0.6rem",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                color: "rgba(205,146,234,0.83)",
+              }}
+            >
+              Atributo Arcano
+            </p>
+            <div className="flex items-center gap-2">
+              <span
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 700,
+                  fontSize: "1.6rem",
+                  color: "#EEF4FC",
+                  lineHeight: 1,
+                }}
+              >
+                {arcano}
+              </span>
+              {entropiaBonus > 0 && (
+                <span
+                  style={{
+                    fontFamily: "var(--font-ui)",
+                    fontSize: "0.65rem",
+                    color: "#D080F0",
+                    letterSpacing: "0.05em",
+                  }}
+                >
+                  ×{character.entropia} = +{entropiaBonus}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Modificadores grid */}
+          <div className="grid grid-cols-2 gap-2">
+            {MODIFICADORES.map(({ key, label, desc }) => {
+              const score = character.modificadores?.[key] ?? 0
+              return (
+                <div
+                  key={key}
+                  className="flex items-center justify-between px-3 py-2 rounded-sm"
+                  style={{
+                    background: "rgba(160,60,220,0.08)",
+                    border: "1px solid rgba(160,60,220,0.2)",
+                  }}
+                >
+                  <div>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-ui)",
+                        fontWeight: 600,
+                        fontSize: "0.68rem",
+                        color: "rgba(220,160,255,0.9)",
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {label}
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-ui)",
+                        fontSize: "0.55rem",
+                        color: "rgba(255,255,255,0.3)",
+                        letterSpacing: "0.05em",
+                      }}
+                    >
+                      {desc}
+                    </p>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                    {onModificadorChange && (
+                      <button
+                        onClick={() => onModificadorChange(key, -1)}
+                        disabled={score <= 0}
+                        style={{
+                          width: 18, height: 18, borderRadius: 3,
+                          border: "1px solid rgba(160,60,220,0.3)",
+                          background: "transparent",
+                          color: score > 0 ? "rgba(180,90,240,0.7)" : "rgba(255,255,255,0.15)",
+                          cursor: score > 0 ? "pointer" : "not-allowed",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          fontSize: 14, lineHeight: 1, padding: 0,
+                          opacity: score > 0 ? 1 : 0.35,
+                        }}
+                      >
+                        −
+                      </button>
+                    )}
+                    <span
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontWeight: 700,
+                        fontSize: "1.4rem",
+                        color: score > 0 ? "#D080F0" : "rgba(255,255,255,0.2)",
+                        lineHeight: 1,
+                        minWidth: 20,
+                        textAlign: "center",
+                      }}
+                    >
+                      {score}
+                    </span>
+                    {onModificadorChange && (
+                      <button
+                        onClick={() => onModificadorChange(key, +1)}
+                        style={{
+                          width: 18, height: 18, borderRadius: 3,
+                          border: "1px solid rgba(160,60,220,0.3)",
+                          background: "transparent",
+                          color: "rgba(180,90,240,0.7)",
+                          cursor: "pointer",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          fontSize: 14, lineHeight: 1, padding: 0,
+                        }}
+                      >
+                        +
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
         {/* Arcane roll button */}
         <button
           onClick={() => setArcaneTest(true)}
@@ -181,89 +313,23 @@ export function ArcanoSection({
           🎲 Rolar Arcano
         </button>
 
-        {/* Entropia + Runas */}
-        <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd}>
-          <div
-            style={{
-              padding: "1.25rem",
-              borderRadius: 4,
-              background:
-                "linear-gradient(135deg, rgba(80,20,140,0.18) 0%, rgba(4,10,20,0.9) 100%)",
-              border: "1px solid rgba(140,60,200,0.28)",
-            }}
-          >
-            <EntropiaDisplay
-              value={character.entropia}
-              slottedRunas={slottedRunas}
-              draggingRuna={draggingRuna}
-              onRemoveRuna={onRemoveRuna}
-            />
-          </div>
-
-          {character.runas.length > 0 && (
-            <div
-              style={{
-                padding: "1.25rem",
-                borderRadius: 4,
-                background: "rgba(4,10,20,0.7)",
-                border: "1px solid rgba(160,60,210,0.2)",
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "var(--font-ui)",
-                  fontSize: "0.6rem",
-                  letterSpacing: "0.2em",
-                  color: "rgba(205,146,234,0.83)",
-                  textTransform: "uppercase",
-                  marginBottom: "0.75rem",
-                }}
-              >
-                Runas Conhecidas
-                <span
-                  style={{
-                    color: "rgba(255,255,255,0.4)",
-                    marginLeft: "0.5rem",
-                    textTransform: "none",
-                    letterSpacing: 0,
-                    fontSize: "0.55rem",
-                  }}
-                >
-                  — arraste para os slots
-                </span>
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {character.runas.map((runa) => (
-                  <DraggableRuna
-                    key={runa}
-                    runa={runa}
-                    isSlotted={slottedRunas.includes(runa)}
-                    isDraggingThis={draggingRuna === runa}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          <DragOverlay>
-            {draggingRuna ? (
-              <div
-                className="inline-flex items-center px-3 py-1.5 rounded-sm text-xs font-semibold uppercase tracking-wider"
-                style={{
-                  color: "#E0A8FF",
-                  background: "rgba(140,40,220,0.95)",
-                  border: "1px solid rgba(200,120,255,0.8)",
-                  fontFamily: "var(--font-ui)",
-                  boxShadow: "0 4px 24px rgba(160,60,240,0.6)",
-                  cursor: "grabbing",
-                  userSelect: "none",
-                }}
-              >
-                {draggingRuna}
-              </div>
-            ) : null}
-          </DragOverlay>
-        </DndContext>
+        {/* Entropia + Marcas */}
+        <div
+          style={{
+            padding: "1.25rem",
+            borderRadius: 4,
+            background:
+              "linear-gradient(135deg, rgba(80,20,140,0.18) 0%, rgba(4,10,20,0.9) 100%)",
+            border: "1px solid rgba(140,60,200,0.28)",
+          }}
+        >
+          <EntropiaDisplay
+            value={character.entropia}
+            arcano={arcano}
+            marcas={character.marcas ?? []}
+            onEntropiaChange={onEntropiaChange}
+          />
+        </div>
       </div>
 
       {arcaneTest && (
@@ -271,7 +337,8 @@ export function ArcanoSection({
           afinidade={character.afinidade}
           antitese={character.antitese}
           entropia={character.entropia}
-          slottedRunas={slottedRunas}
+          arcano={arcano}
+          modificadores={character.modificadores ?? { potencia: 0, complexidade: 0, forma: 0, controle: 0 }}
           onClose={() => setArcaneTest(false)}
         />
       )}

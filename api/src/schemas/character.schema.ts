@@ -5,6 +5,20 @@ const AttributesSchema = z.object({
   destreza: z.number().int().min(0).max(99),
   intelecto: z.number().int().min(0).max(99),
   influencia: z.number().int().min(0).max(99),
+  arcano: z.number().int().min(0).max(99).default(0),
+})
+
+const ModificadoresSchema = z.object({
+  potencia:     z.number().int().min(0).max(99).default(0),
+  complexidade: z.number().int().min(0).max(99).default(0),
+  forma:        z.number().int().min(0).max(99).default(0),
+  controle:     z.number().int().min(0).max(99).default(0),
+})
+
+const EntropiaMarcaSchema = z.object({
+  d20Result:      z.number().int().min(1).max(20),
+  entropiaLevel:  z.number().int().min(0).max(5),
+  permanent:      z.boolean(),
 })
 
 const SkillsSchema = z.object({
@@ -45,7 +59,8 @@ export const CreateCharacterSchema = z.object({
   afinidade: z.enum(ELEMENTS).or(z.literal('')).default(''),
   antitese: z.enum(ELEMENTS).or(z.literal('')).default(''),
   entropia: z.number().int().min(0).max(5).default(0),
-  runas: z.array(z.string()).default([]),
+  modificadores: ModificadoresSchema.default({ potencia: 0, complexidade: 0, forma: 0, controle: 0 }),
+  marcas: z.array(EntropiaMarcaSchema).default([]),
   traumas: z.array(z.string()).default([]),
   antecedentes: z.array(z.string()).default([]),
   historia: z.string().nullable().optional(),

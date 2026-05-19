@@ -14,6 +14,14 @@ _nenhum item em andamento_
 
 ### A fazer
 
+### Sistema Arcano Completo na Ficha de Personagem
+**Origem:** /task Implementar sistema Arcano completo na ficha de personagem
+**Adicionada:** 2026-05-19
+
+- [ ] Subtask 2 — Rodar migração Prisma para remover campo `runas` e adicionar `modificadores` (Json) + `marcas` (Json) no modelo `Character`, e atualizar `characters.json` removendo o campo `runas` de todas as fichas de exemplo
+  - **Critério de aceite:** `npx prisma migrate dev` executa sem erro; `characters.json` não contém mais o campo `runas`; fichas existentes no banco não perdem dados (migration com default `{}` e `[]`)
+  - **Arquivos:** `api/prisma/schema.prisma`, `characters.json`
+
 ## Backlog
 
 ### Widgets por Capítulo — Pendentes
@@ -47,6 +55,17 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 ---
 
 ## Concluídos
+
+### Sistema Arcano Completo na Ficha de Personagem — Subtasks 1, 3, 4, 5
+**Origem:** /task Implementar sistema Arcano completo na ficha de personagem
+**Adicionada:** 2026-05-19 · **Validator:** APROVADO · **Concluída:** 2026-05-19
+
+- [x] Subtask 1 — Corrigir null handling em `apiAdapter.ts` para `attributes.arcano` — spread com `arcano: attr?.arcano ?? 0`
+- [x] Subtask 3 — Entropia editável na ficha com dots clicáveis (0–5), sync via API e localStorage, grace period `lastLocalEntropiaTime`
+- [x] Subtask 4 — Step4Arcano com card roxo, linha de resumo "Arcano X · Entropia Y · Bônus +Z"
+- [x] Subtask 5 — ArcaneConfigPanel redesenhado com DndContext, pool de tokens D12 (roxos) e bônus (dourados), dropzones por modificador, fallback +/- preservado
+
+---
 
 ### Timeline Histórica e Origem do Universo
 **Origem:** /task criar página de Timeline interativa com eventos históricos em JSON e página de Origem do Universo

@@ -11,7 +11,8 @@
       "fisico": 3,
       "destreza": 3,
       "intelecto": 2,
-      "influencia": 4
+      "influencia": 4,
+      "arcano": 2
     },
     "skills": {
       "fortitude": 3,
@@ -37,7 +38,8 @@
     "afinidade": "Energia",
     "antitese": "Paradoxo",
     "entropia": 1,
-    "runas": ["Ígnea", "Impulso"],
+    "modificadores": { "potencia": 3, "complexidade": 2, "forma": 2, "controle": 1 },
+    "marcas": [],
     "traumas": ["Cicatrizes do Mar de Sangue"],
     "antecedentes": ["Pirata", "Marinheira", "Nobre Caída"]
   },
@@ -53,7 +55,8 @@
       "fisico": 1,
       "destreza": 4,
       "intelecto": 4,
-      "influencia": 3
+      "influencia": 3,
+      "arcano": 3
     },
     "skills": {
       "fortitude": 1,
@@ -79,7 +82,11 @@
     "afinidade": "Anomalia",
     "antitese": "Cognitivo",
     "entropia": 3,
-    "runas": ["Véu", "Lâmina Oculta", "Eco do Vazio"],
+    "modificadores": { "potencia": 2, "complexidade": 4, "forma": 3, "controle": 3 },
+    "marcas": [
+      { "d20Result": 8, "entropiaLevel": 2, "permanent": false },
+      { "d20Result": 3, "entropiaLevel": 3, "permanent": false }
+    ],
     "traumas": ["Delírio Arcano Grau 2", "Paranoia Crônica"],
     "antecedentes": ["Espiã de Guilda", "Contrabandista", "Cartógrafa"]
   },
@@ -95,7 +102,8 @@
       "fisico": 5,
       "destreza": 2,
       "intelecto": 2,
-      "influencia": 1
+      "influencia": 1,
+      "arcano": 0
     },
     "skills": {
       "fortitude": 3,
@@ -121,7 +129,8 @@
     "afinidade": "Astral",
     "antitese": "Energia",
     "entropia": 0,
-    "runas": [],
+    "modificadores": { "potencia": 0, "complexidade": 0, "forma": 0, "controle": 0 },
+    "marcas": [],
     "traumas": ["Fobia de Altura", "Mão Esquerda Mecânica"],
     "antecedentes": ["Mercenário", "Ferreiro", "Soldado Imperial"]
   }

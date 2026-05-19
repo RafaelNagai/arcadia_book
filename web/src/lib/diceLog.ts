@@ -29,20 +29,23 @@ export interface SkillLogEntry extends BaseEntry {
   specialState: SpecialState
 }
 
+export interface ArcanoModResult {
+  score: number
+  dice: number[]
+  total: number
+  specialState: SpecialState
+}
+
 export interface ArcanoLogEntry extends BaseEntry {
   type: 'arcano'
   selectedElement: string
   afinidade: string
   antitese: string
+  entropiaBonus: number
   elementBonus: number
-  runaBonus: number
-  totalBonus: number
-  slottedRunasNames: string[]
-  results: number[]
-  chosenIndices: number[]
-  diceSum: number
-  finalResult: number
-  specialState: SpecialState
+  allocation: Record<string, number>
+  modifierResults: Record<string, ArcanoModResult>
+  allDiceResults: number[]
 }
 
 export interface DamageLogEntry extends BaseEntry {

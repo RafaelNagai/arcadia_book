@@ -173,33 +173,45 @@ function SkillEntry({ e }: { e: SkillLogEntry }) {
   )
 }
 
+const MOD_LABEL: Record<string, string> = {
+  potencia: 'Potência', complexidade: 'Complexidade', forma: 'Forma', controle: 'Controle',
+}
+
 function ArcanoEntry({ e }: { e: ArcanoLogEntry }) {
   const badge = TYPE_BADGE.arcano
-  const chosenSet = new Set(e.chosenIndices)
-  const stateInfo = e.specialState ? STATE_META[e.specialState] : null
   const elemColor = getAccent(e.selectedElement).text
 
   const bonusParts: string[] = []
-  if (e.elementBonus > 0) bonusParts.push(`${e.selectedElement} +${e.elementBonus}`)
-  if (e.runaBonus > 0) bonusParts.push(`Runas +${e.runaBonus}`)
-
-  const runaLabel = e.slottedRunasNames.length > 0
-    ? `(${e.slottedRunasNames.join(', ')})`
-    : ''
+  if (e.entropiaBonus > 0) bonusParts.push(`Entropia +${e.entropiaBonus}`)
+  if (e.elementBonus < 0) bonusParts.push(`Antítese −10`)
 
   return (
     <EntryShell badge={badge} title={e.selectedElement} titleColor={elemColor} timestamp={e.timestamp}>
       {bonusParts.length > 0 && (
         <p style={{ fontFamily: 'var(--font-ui)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: '0.04em' }}>
-          {bonusParts.join(' • ')}{runaLabel ? ` ${runaLabel}` : ''}
+          {bonusParts.join(' • ')}
         </p>
       )}
-      <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', alignItems: 'center' }}>
-        {e.results.map((v, i) => (
-          <DiceChip key={i} value={v} chosen={chosenSet.has(i)} />
-        ))}
+      {e.allDiceResults.length > 0 && (
+        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', alignItems: 'center' }}>
+          {e.allDiceResults.map((v, i) => (
+            <DiceChip key={i} value={v} chosen={true} />
+          ))}
+        </div>
+      )}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 2 }}>
+        {Object.entries(e.modifierResults).map(([k, res]) => {
+          const stateInfo = res.specialState ? STATE_META[res.specialState] : null
+          return (
+            <div key={k} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
+              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 9, color: 'rgba(180,90,240,0.7)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                {MOD_LABEL[k] ?? k}
+              </span>
+              <ResultRow value={res.total} stateInfo={stateInfo} />
+            </div>
+          )
+        })}
       </div>
-      <ResultRow value={e.finalResult} stateInfo={stateInfo} />
     </EntryShell>
   )
 }
@@ -385,10 +397,9 @@ export function DiceLogSidebar() {
   }, [isLogOpen])
 
   return createPortal(
-    <AnimatePresence>
-      {isLogOpen && (
-        <>
-          {/* Backdrop */}
+    <>
+      <AnimatePresence>
+        {isLogOpen && (
           <motion.div
             key="log-backdrop"
             initial={{ opacity: 0 }}
@@ -403,8 +414,11 @@ export function DiceLogSidebar() {
               zIndex: 9000,
             }}
           />
+        )}
+      </AnimatePresence>
 
-          {/* Panel */}
+      <AnimatePresence>
+        {isLogOpen && (
           <motion.div
             key="log-panel"
             initial={{ x: '100%' }}
@@ -536,9 +550,9 @@ export function DiceLogSidebar() {
               )}
             </div>
           </motion.div>
-        </>
-      )}
-    </AnimatePresence>,
+        )}
+      </AnimatePresence>
+    </>,
     document.body,
   )
 }

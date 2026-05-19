@@ -109,6 +109,20 @@ export interface CharacterAttributes {
   destreza: number
   intelecto: number
   influencia: number
+  arcano: number
+}
+
+export interface CharacterModificadores {
+  potencia: number
+  complexidade: number
+  forma: number
+  controle: number
+}
+
+export interface EntropiaMarca {
+  d20Result: number
+  entropiaLevel: number
+  permanent: boolean
 }
 
 export interface Character {
@@ -135,7 +149,8 @@ export interface Character {
   afinidade: string
   antitese: string
   entropia: number
-  runas: string[]
+  modificadores: CharacterModificadores
+  marcas: EntropiaMarca[]
   traumas: string[]
   antecedentes: string[]
   historia?: string

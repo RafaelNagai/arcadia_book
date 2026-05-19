@@ -28,7 +28,8 @@ model Character {
   afinidade       String   @default("")
   antitese        String   @default("")
   entropia        Int      @default(0)
-  runas           String[]
+  modificadores   Json     @default("{}")
+  marcas          Json     @default("[]")
   traumas         String[]
   antecedentes    String[]
   historia        String?

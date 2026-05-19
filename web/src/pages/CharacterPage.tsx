@@ -6,7 +6,6 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-import type { DragStartEvent, DragEndEvent } from "@dnd-kit/core";
 import type { Character, Condition } from "@/data/characterTypes";
 import charactersData from "@characters";
 import { InventoryPanel } from "@/components/inventory/InventoryPanel";
@@ -14,6 +13,7 @@ import {
   getCustomCharacter,
   isOwnedCharacter,
   saveCurrentValues,
+  saveCustomCharacter,
   loadPeChecks,
   savePeChecks,
   loadSkillModifiers,
@@ -88,10 +88,6 @@ export function CharacterPage() {
 
   const [currentHp, setCurrentHp] = useState(0);
   const [currentSanidade, setCurrentSanidade] = useState(0);
-  const [slottedRunas, setSlottedRunas] = useState<(string | null)[]>(
-    Array(5).fill(null),
-  );
-  const [draggingRuna, setDraggingRuna] = useState<string | null>(null);
   const [peChecks, setPeChecks] = useState<Record<string, boolean[]>>(EMPTY_PE);
   const [skillModifiers, setSkillModifiers] = useState<Record<string, number>>(
     {},
@@ -295,36 +291,6 @@ export function CharacterPage() {
     window.scrollTo({ top: 0 });
   }, [id]);
 
-  /* ── Runa DnD ─────────────────────────────────────────────────── */
-
-  function handleDragStart(event: DragStartEvent) {
-    setDraggingRuna(String(event.active.id).replace("runa-", ""));
-  }
-
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-    setDraggingRuna(null);
-    if (!over || !character) return;
-    const runaName = String(active.id).replace("runa-", "");
-    const slotIdx = parseInt(String(over.id).replace("slot-", ""), 10);
-    if (isNaN(slotIdx) || slotIdx >= character.entropia) return;
-    setSlottedRunas((prev) => {
-      const next = [...prev];
-      const prevSlot = next.indexOf(runaName);
-      if (prevSlot !== -1) next[prevSlot] = null;
-      next[slotIdx] = runaName;
-      return next;
-    });
-  }
-
-  function handleRemoveRuna(slotIdx: number) {
-    setSlottedRunas((prev) => {
-      const next = [...prev];
-      next[slotIdx] = null;
-      return next;
-    });
-  }
-
   /* ── Skill modifiers ──────────────────────────────────────────── */
 
   function handleModifierChange(skillKey: string, delta: number) {
@@ -470,6 +436,38 @@ export function CharacterPage() {
       }
       return next;
     });
+  }
+
+  /* ── Entropia ────────────────────────────────────────────────── */
+
+  const lastLocalEntropiaTime = useRef(0);
+
+  function handleEntropiaChange(newValue: number) {
+    if (!canEdit || !id || !character) return;
+    lastLocalEntropiaTime.current = Date.now();
+    setCharacter((prev) => prev ? { ...prev, entropia: newValue } : prev);
+    if (isApiChar) {
+      void api.characters.update(id, { entropia: newValue });
+    } else {
+      const updated = { ...character, entropia: newValue };
+      saveCustomCharacter(updated);
+    }
+  }
+
+  /* ── Arcano modifier bonuses ────────────────────────────────── */
+
+  function handleModificadorArcanoChange(key: string, delta: number) {
+    if (!canEdit || !id || !character) return;
+    const mods = character.modificadores ?? { potencia: 0, complexidade: 0, forma: 0, controle: 0 };
+    const cur = (mods as Record<string, number>)[key] ?? 0;
+    const next = Math.max(0, cur + delta);
+    const updated = { ...mods, [key]: next } as typeof mods;
+    setCharacter((prev) => prev ? { ...prev, modificadores: updated } : prev);
+    if (isApiChar) {
+      void api.characters.update(id, { modificadores: updated });
+    } else {
+      saveCustomCharacter({ ...character, modificadores: updated });
+    }
   }
 
   /* ── HP / Sanidade clicks ─────────────────────────────────────── */
@@ -779,12 +777,9 @@ export function CharacterPage() {
             character={character}
             accent={accent}
             antAccent={antAccent}
-            slottedRunas={slottedRunas}
-            draggingRuna={draggingRuna}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-            onRemoveRuna={handleRemoveRuna}
             onEdit={canEdit ? () => goEdit(4) : undefined}
+            onEntropiaChange={canEdit ? handleEntropiaChange : undefined}
+            onModificadorChange={canEdit ? handleModificadorArcanoChange : undefined}
           />
 
           {/* Antecedentes + Traumas */}

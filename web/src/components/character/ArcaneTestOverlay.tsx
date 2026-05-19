@@ -6,7 +6,9 @@ import {
   useRef,
   Suspense,
 } from "react";
+import type { CharacterModificadores } from "@/data/characterTypes";
 import { useDiceLog } from "@/lib/diceLog";
+import type { ArcanoModResult } from "@/lib/diceLog";
 import { createPortal } from "react-dom";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
@@ -21,12 +23,10 @@ import { getAccent } from "./types";
 import {
   type SpecialState,
   detectSpecialState,
-  getChosenIndices,
   ParticleLayer,
   STATE_META,
-  SpecialBanner,
 } from "./ArcaneStates";
-import { ArcaneConfigPanel } from "./ArcaneConfigPanel";
+import { ArcaneConfigPanel, type ModKey, MOD_KEYS, MOD_LABELS } from "./ArcaneConfigPanel";
 
 /* ────────────────────────────────────────────────────────────────
    Types
@@ -38,11 +38,35 @@ export interface ArcaneTestData {
   afinidade: string;
   antitese: string;
   entropia: number;
-  slottedRunas: (string | null)[];
+  arcano: number;
+  modificadores: CharacterModificadores;
 }
 
 interface ArcaneTestOverlayProps extends ArcaneTestData {
   onClose: () => void;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Helpers
+   ──────────────────────────────────────────────────────────────── */
+
+const STATE_PRIORITY: Record<NonNullable<SpecialState>, number> = {
+  milagre:      4,
+  desastre:     3,
+  critico:      2,
+  falha_critica: 1,
+};
+
+function highestState(states: SpecialState[]): SpecialState {
+  let best: SpecialState = null;
+  let bestP = 0;
+  for (const s of states) {
+    if (s && STATE_PRIORITY[s] > bestP) {
+      best = s;
+      bestP = STATE_PRIORITY[s];
+    }
+  }
+  return best;
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -52,135 +76,122 @@ interface ArcaneTestOverlayProps extends ArcaneTestData {
 export function ArcaneTestOverlay({
   afinidade,
   antitese,
-  entropia: _entropia,
-  slottedRunas,
+  entropia,
+  arcano,
+  modificadores,
   onClose,
 }: ArcaneTestOverlayProps) {
   const { addEntry } = useDiceLog();
   const [phase, setPhase] = useState<Phase>("config");
   const [selectedElement, setSelectedElement] = useState<string>(afinidade);
-  const [diceCount, setDiceCount] = useState(2);
-  const [results, setResults] = useState<number[]>([]);
+  const [modResults, setModResults] = useState<Record<ModKey, ArcanoModResult> | null>(null);
+  const [allDiceResults, setAllDiceResults] = useState<number[]>([]);
   const [sceneKey, setSceneKey] = useState(0);
+  const [diceToRoll, setDiceToRoll] = useState(0);
   const shakeControls = useAnimation();
   const shookRef = useRef(false);
 
-  // ── Bonus computation ────────────────────────────────────────
-  const afinidadeBonus = selectedElement === afinidade ? 4 : 0;
-  const antiteseBonus = selectedElement === antitese ? 2 : 0;
-  const elementBonus = afinidadeBonus + antiteseBonus;
-  const runaCount = slottedRunas.filter((r) => r !== null).length;
-  const runaBonus = runaCount * 2;
-  const totalBonus = elementBonus + runaBonus;
+  // Refs hold the allocation snapshot set when user clicks Roll
+  const rollingAllocRef = useRef<Record<ModKey, number>>({ potencia: 0, complexidade: 0, forma: 0, controle: 0 });
+  const rollingEAllocRef = useRef<Record<ModKey, number>>({ potencia: 0, complexidade: 0, forma: 0, controle: 0 });
 
+  const entropiaBonus = arcano * entropia;
+  const elementBonus = selectedElement === antitese ? -10 : 0;
   const typeColor = getAccent(selectedElement).text;
 
-  // ── Dice / results ────────────────────────────────────────────
   const diceRequest = useMemo<DiceRollRequest[]>(
-    () => (diceCount > 0 ? [{ dieType: 12, count: diceCount }] : []),
-    [diceCount],
+    () => (diceToRoll > 0 ? [{ dieType: 12, count: diceToRoll }] : []),
+    [diceToRoll],
   );
 
-  const usedCount = Math.min(2, results.length);
-  const chosenIndices = useMemo(
-    () => getChosenIndices(results, usedCount),
-    [results, usedCount],
-  );
-  const chosenValues = useMemo(
-    () => results.filter((_, i) => chosenIndices.has(i)),
-    [results, chosenIndices],
-  );
-  const specialState = useMemo<SpecialState>(
-    () => detectSpecialState(chosenValues),
-    [chosenValues],
-  );
-  const diceSum = chosenValues.reduce((a, b) => a + b, 0);
-  const finalResult = diceSum + totalBonus;
-
-  const resultColor = !specialState
-    ? typeColor
-    : STATE_META[specialState].color;
-  const resultGlow = !specialState
-    ? typeColor + "88"
-    : STATE_META[specialState].glow;
+  // ── Global special state (highest across all modifiers) ───────
+  const globalSpecialState = useMemo<SpecialState>(() => {
+    if (!modResults) return null;
+    return highestState(MOD_KEYS.map((k) => modResults[k].specialState));
+  }, [modResults]);
 
   useEffect(() => {
-    const fn = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+    const fn = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", fn);
     return () => window.removeEventListener("keydown", fn);
   }, [onClose]);
 
   useEffect(() => {
-    if (
-      phase === "settled" &&
-      specialState === "desastre" &&
-      !shookRef.current
-    ) {
+    if (phase === "settled" && globalSpecialState === "desastre" && !shookRef.current) {
       shookRef.current = true;
       shakeControls.start({
         x: [0, -14, 14, -10, 10, -6, 6, -3, 3, 0],
         transition: { duration: 0.7, ease: "easeInOut" },
       });
     }
-  }, [phase, specialState, shakeControls]);
+  }, [phase, globalSpecialState, shakeControls]);
 
-  const handleRoll = useCallback(() => {
-    if (diceCount === 0) return;
+  // ── Roll handler — receives final allocation from the config panel ───
+  const handleRoll = useCallback((alloc: Record<ModKey, number>, eAlloc: Record<ModKey, number>) => {
+    rollingAllocRef.current = alloc;
+    rollingEAllocRef.current = eAlloc;
+    setDiceToRoll(MOD_KEYS.reduce((s, k) => s + alloc[k], 0));
     shookRef.current = false;
     setSceneKey((k) => k + 1);
     setPhase("rolling");
-  }, [diceCount]);
+  }, []);
 
-  const handleAllSettled = useCallback((vals: number[]) => {
-    setResults(vals);
-    setPhase("settled");
-    // Compute log data directly from vals (state hasn't propagated yet)
-    const usedN      = Math.min(2, vals.length);
-    const chosenIdx  = getChosenIndices(vals, usedN);
-    const chosenVals = vals.filter((_, i) => chosenIdx.has(i));
-    const ss         = detectSpecialState(chosenVals);
-    const dSum       = chosenVals.reduce((a, b) => a + b, 0);
-    addEntry({
-      type: "arcano",
-      selectedElement,
-      afinidade,
-      antitese,
-      elementBonus,
-      runaBonus,
-      totalBonus,
-      slottedRunasNames: slottedRunas.filter((r): r is string => r !== null),
-      results: vals,
-      chosenIndices: [...chosenIdx],
-      diceSum: dSum,
-      finalResult: dSum + totalBonus,
-      specialState: ss,
-    });
-  }, [addEntry, selectedElement, afinidade, antitese, elementBonus, runaBonus, totalBonus, slottedRunas]);
+  const handleAllSettled = useCallback(
+    (vals: number[]) => {
+      const alloc = rollingAllocRef.current;
+      const eAlloc = rollingEAllocRef.current;
+      let idx = 0;
+      const results = {} as Record<ModKey, ArcanoModResult>;
+      for (const k of MOD_KEYS) {
+        const n = alloc[k];
+        const dice = vals.slice(idx, idx + n);
+        idx += n;
+        const ss = detectSpecialState(dice);
+        const diceSum = dice.reduce((a, b) => a + b, 0);
+        const score = modificadores[k] ?? 0;
+        const bonus = eAlloc[k];
+        results[k] = {
+          dice,
+          score,
+          total: diceSum + score + bonus + elementBonus,
+          specialState: ss,
+        };
+      }
+      setModResults(results);
+      setAllDiceResults(vals);
+      setPhase("settled");
+
+      addEntry({
+        type: "arcano",
+        selectedElement,
+        afinidade,
+        antitese,
+        entropiaBonus,
+        elementBonus,
+        allocation: { ...alloc },
+        modifierResults: results as Record<string, ArcanoModResult>,
+        allDiceResults: vals,
+      });
+    },
+    [modificadores, elementBonus, selectedElement, afinidade, antitese, entropiaBonus, addEntry],
+  );
 
   return createPortal(
     <AnimatePresence>
       <motion.div
         animate={shakeControls}
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 9998,
-          overflow: "hidden",
-        }}
+        style={{ position: "fixed", inset: 0, zIndex: 9998, overflow: "hidden" }}
       >
         {/* ── CONFIG ── */}
         {phase === "config" && (
           <ArcaneConfigPanel
             afinidade={afinidade}
             antitese={antitese}
+            arcano={arcano}
+            entropia={entropia}
             selectedElement={selectedElement}
             onSelectElement={setSelectedElement}
-            diceCount={diceCount}
-            onDiceCountChange={(fn) => setDiceCount(fn)}
-            runaCount={runaCount}
-            runaBonus={runaBonus}
+            modificadores={modificadores}
             onRoll={handleRoll}
             onClose={onClose}
           />
@@ -208,26 +219,19 @@ export function ArcaneTestOverlay({
                 camera={{ position: [0, 11, 3.5], fov: 50, near: 0.5, far: 80 }}
                 shadows
                 gl={{ antialias: true, alpha: true }}
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "transparent",
-                }}
+                style={{ position: "absolute", inset: 0, background: "transparent" }}
               >
                 <CameraSetup />
                 <Suspense fallback={null}>
                   <Physics gravity={[0, PHYSICS.gravity, 0]}>
-                    <DiceScene
-                      dice={diceRequest}
-                      onAllSettled={handleAllSettled}
-                    />
+                    <DiceScene dice={diceRequest} onAllSettled={handleAllSettled} />
                   </Physics>
                 </Suspense>
               </Canvas>
             </div>
 
-            {phase === "settled" && specialState && (
-              <ParticleLayer state={specialState} />
+            {phase === "settled" && globalSpecialState && (
+              <ParticleLayer state={globalSpecialState} />
             )}
 
             <AnimatePresence>
@@ -255,9 +259,9 @@ export function ArcaneTestOverlay({
               )}
             </AnimatePresence>
 
-            {/* Result panel */}
+            {/* ── Result panel ── */}
             <AnimatePresence>
-              {phase === "settled" && results.length > 0 && (
+              {phase === "settled" && modResults && (
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -269,185 +273,141 @@ export function ArcaneTestOverlay({
                     left: 0,
                     right: 0,
                     zIndex: 5,
-                    background:
-                      "linear-gradient(to top, rgba(2,4,14,0.98) 0%, rgba(2,4,14,0.90) 70%, transparent 100%)",
-                    padding: "20px 24px 36px",
+                    background: "linear-gradient(to top, rgba(2,4,14,0.98) 0%, rgba(2,4,14,0.90) 70%, transparent 100%)",
+                    padding: "16px 16px 32px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    gap: 12,
+                    gap: 10,
                   }}
                 >
-                  {specialState && <SpecialBanner state={specialState} />}
-
-                  {/* Dice bubbles */}
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: 8,
-                      flexWrap: "wrap",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    {results.map((v, i) => {
-                      const isChosen = chosenIndices.has(i);
-                      const isSpec12 = isChosen && v === 12;
-                      const isSpec1 = isChosen && v === 1;
-                      const col = isSpec12
-                        ? "#ffd700"
-                        : isSpec1
-                          ? "#ff4050"
-                          : isChosen
-                            ? "#a0c8f8"
-                            : "rgba(100,120,150,0.4)";
-                      return (
+                  {/* All dice rolled */}
+                  {allDiceResults.length > 0 && (
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" }}>
+                      {allDiceResults.map((v, i) => (
                         <motion.div
                           key={i}
                           initial={{ opacity: 0, scale: 0.4 }}
-                          animate={{ opacity: 1, scale: isChosen ? 1.0 : 0.78 }}
-                          transition={{
-                            delay: i * 0.07 + 0.15,
-                            type: "spring",
-                            stiffness: 300,
-                          }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: i * 0.07 + 0.1, type: "spring", stiffness: 300 }}
                           style={{
-                            position: "relative",
-                            width: isChosen ? 46 : 36,
-                            height: isChosen ? 46 : 36,
-                            borderRadius: 9,
-                            border: `${isChosen ? 2 : 1}px solid ${col}`,
+                            width: 36, height: 36, borderRadius: 8,
+                            border: `1px solid ${v === 12 ? "#ffd700" : v === 1 ? "#ff4050" : "rgba(100,120,150,0.5)"}`,
                             background: "rgba(8,14,30,0.95)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
+                            display: "flex", alignItems: "center", justifyContent: "center",
                             fontFamily: "Cinzel, serif",
-                            fontSize: isChosen ? 20 : 15,
-                            fontWeight: 700,
-                            color: col,
-                            boxShadow: isChosen
-                              ? `0 0 ${isSpec12 || isSpec1 ? 24 : 12}px ${col}66`
-                              : "none",
-                            opacity: isChosen ? 1 : 0.45,
+                            fontSize: 16, fontWeight: 700,
+                            color: v === 12 ? "#ffd700" : v === 1 ? "#ff4050" : "#a0c8f8",
+                            boxShadow: v === 12 ? "0 0 14px #ffd70066" : v === 1 ? "0 0 14px #ff405066" : "none",
                           }}
                         >
                           {v}
-                          {!isChosen && (
-                            <div
-                              style={{
-                                position: "absolute",
-                                inset: 0,
-                                borderRadius: 9,
-                                background: "rgba(0,0,0,0.35)",
-                              }}
-                            />
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Per-modifier result cards — 2×2 grid */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: 8,
+                      width: "100%",
+                      maxWidth: 480,
+                    }}
+                  >
+                    {MOD_KEYS.map((k, i) => {
+                      const res = modResults[k];
+                      const ss = res.specialState;
+                      const ssColor = ss ? STATE_META[ss].color : typeColor;
+                      const hasDice = res.dice.length > 0;
+                      return (
+                        <motion.div
+                          key={k}
+                          initial={{ opacity: 0, scale: 0.85 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.2 + i * 0.07, type: "spring", stiffness: 280, damping: 22 }}
+                          style={{
+                            background: "rgba(4,8,20,0.97)",
+                            border: `1px solid ${ss ? ssColor + "66" : "rgba(180,90,240,0.25)"}`,
+                            borderRadius: 10,
+                            padding: "10px 12px",
+                            boxShadow: ss ? `0 0 20px ${ssColor}22` : "none",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 5,
+                          }}
+                        >
+                          {/* Modifier name */}
+                          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                            <p style={{ fontFamily: "var(--font-ui)", fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(180,90,240,0.7)", lineHeight: 1 }}>
+                              {MOD_LABELS[k]}
+                            </p>
+                            {ss && (
+                              <span style={{ fontFamily: "var(--font-ui)", fontSize: 7, letterSpacing: "0.12em", textTransform: "uppercase", color: ssColor, background: ssColor + "22", border: `1px solid ${ssColor}44`, borderRadius: 3, padding: "1px 5px" }}>
+                                {STATE_META[ss].label}
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Dice chips for this modifier */}
+                          {hasDice && (
+                            <div style={{ display: "flex", gap: 4 }}>
+                              {res.dice.map((v, di) => (
+                                <div
+                                  key={di}
+                                  style={{
+                                    width: 26, height: 26, borderRadius: 5,
+                                    border: `1px solid ${v === 12 ? "#ffd700" : v === 1 ? "#ff4050" : "rgba(100,120,160,0.5)"}`,
+                                    background: "rgba(8,14,30,0.95)",
+                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                    fontFamily: "Cinzel, serif", fontSize: 12, fontWeight: 700,
+                                    color: v === 12 ? "#ffd700" : v === 1 ? "#ff4050" : "#a0c8f8",
+                                    boxShadow: v === 12 ? "0 0 8px #ffd70066" : v === 1 ? "0 0 8px #ff405066" : "none",
+                                  }}
+                                >
+                                  {v}
+                                </div>
+                              ))}
+                            </div>
                           )}
+
+                          {/* Total */}
+                          <motion.p
+                            animate={ss === "milagre" ? { textShadow: [`0 0 20px ${ssColor}`, `0 0 50px ${ssColor}`, `0 0 20px ${ssColor}`] } : {}}
+                            transition={{ duration: 1.2, repeat: Infinity }}
+                            style={{
+                              fontFamily: "Cinzel, serif",
+                              fontWeight: 800,
+                              fontSize: hasDice ? 32 : 24,
+                              lineHeight: 1,
+                              color: ss ? ssColor : hasDice ? "#EEF4FC" : "rgba(255,255,255,0.45)",
+                              textShadow: ss ? `0 0 20px ${ssColor}55` : "none",
+                            }}
+                          >
+                            {res.total}
+                          </motion.p>
+
+                          {/* Breakdown hint */}
+                          <p style={{ fontFamily: "var(--font-ui)", fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: "0.03em", lineHeight: 1.3 }}>
+                            {(() => {
+                              const bonus = rollingEAllocRef.current[k];
+                              const bonusPart = bonus > 0 ? ` + ${bonus}` : "";
+                              const elPart = elementBonus < 0 ? ` − 10` : "";
+                              return hasDice
+                                ? `${res.dice.reduce((a,b)=>a+b,0)} + ${res.score}${bonusPart}${elPart}`
+                                : `${res.score}${bonusPart}${elPart} (sem dado)`;
+                            })()}
+                          </p>
                         </motion.div>
                       );
                     })}
                   </div>
 
-                  {/* Result card */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.85 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{
-                      delay: 0.35,
-                      type: "spring",
-                      stiffness: 280,
-                      damping: 22,
-                    }}
-                    style={{
-                      background: "rgba(4,8,20,0.97)",
-                      border: `2px solid ${resultColor}55`,
-                      borderRadius: 14,
-                      padding: "16px 32px",
-                      textAlign: "center",
-                      boxShadow: `0 0 40px ${resultGlow}33`,
-                      minWidth: 260,
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 6,
-                        marginBottom: 8,
-                        fontFamily: "var(--font-ui)",
-                        fontSize: 11,
-                        color: "var(--color-text-muted)",
-                        letterSpacing: "0.08em",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      <span style={{ color: "#a0c8f8" }}>
-                        {chosenValues.join(" + ")}
-                      </span>
-                      {elementBonus > 0 && (
-                        <>
-                          <span>+</span>
-                          <span style={{ color: typeColor }}>
-                            {selectedElement} +{elementBonus}
-                          </span>
-                        </>
-                      )}
-                      {runaBonus > 0 && (
-                        <>
-                          <span>+</span>
-                          <span style={{ color: "#d0a8f8" }}>
-                            Runas +{runaBonus}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                    <motion.p
-                      animate={
-                        specialState === "milagre"
-                          ? {
-                              textShadow: [
-                                `0 0 40px ${resultGlow}`,
-                                `0 0 90px ${resultGlow}, 0 0 150px ${resultGlow}`,
-                                `0 0 40px ${resultGlow}`,
-                              ],
-                            }
-                          : {}
-                      }
-                      transition={{ duration: 1.2, repeat: Infinity }}
-                      style={{
-                        fontFamily: "Cinzel, serif",
-                        fontWeight: 800,
-                        fontSize: 72,
-                        lineHeight: 1,
-                        color: resultColor,
-                        textShadow: `0 0 40px ${resultGlow}`,
-                      }}
-                    >
-                      {finalResult}
-                    </motion.p>
-                    <p
-                      style={{
-                        fontFamily: "var(--font-ui)",
-                        fontSize: 10,
-                        letterSpacing: "0.14em",
-                        color: "var(--color-text-muted)",
-                        marginTop: 6,
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      resultado arcano
-                    </p>
-                  </motion.div>
-
                   <p
                     onClick={onClose}
-                    style={{
-                      fontFamily: "var(--font-ui)",
-                      fontSize: 10,
-                      color: "rgba(255,255,255,0.22)",
-                      letterSpacing: "0.1em",
-                      cursor: "pointer",
-                    }}
+                    style={{ fontFamily: "var(--font-ui)", fontSize: 10, color: "rgba(255,255,255,0.22)", letterSpacing: "0.1em", cursor: "pointer", marginTop: 2 }}
                   >
                     ESC · clique para fechar
                   </p>
@@ -456,19 +416,7 @@ export function ArcaneTestOverlay({
             </AnimatePresence>
 
             {phase === "rolling" && (
-              <p
-                style={{
-                  position: "absolute",
-                  top: 20,
-                  right: 24,
-                  zIndex: 2,
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: 11,
-                  letterSpacing: "0.1em",
-                  color: "rgba(255,255,255,0.18)",
-                  pointerEvents: "none",
-                }}
-              >
+              <p style={{ position: "absolute", top: 20, right: 24, zIndex: 2, fontFamily: "Inter, sans-serif", fontSize: 11, letterSpacing: "0.1em", color: "rgba(255,255,255,0.18)", pointerEvents: "none" }}>
                 ESC para fechar
               </p>
             )}
