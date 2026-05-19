@@ -225,14 +225,14 @@ export function ArcanoSection({
                 onClick={() => setArcaneTest(true)}
                 style={{
                   background: accent.bg,
-                  border: `1px solid ${accent.text}44`,
+                  border: `1px solid ${arcanoColor}44`,
                   borderRadius: 4,
                   padding: "0.5rem 1rem",
                   fontFamily: "var(--font-ui)",
-                  fontSize: "0.65rem",
+                  fontSize: "0.85rem",
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
-                  color: accent.text,
+                  color: arcanoColor,
                   cursor: "pointer",
                   width: "100%",
                 }}

@@ -212,11 +212,17 @@ export function CharacterPage() {
     onCharacterUpdate: (data) => {
       const now = Date.now();
       // Skip realtime echoes of our own writes during grace period
-      if ("current_hp" in data && data.current_hp != null &&
-          now - lastLocalHpTime.current > LOCAL_UPDATE_GRACE_MS)
+      if (
+        "current_hp" in data &&
+        data.current_hp != null &&
+        now - lastLocalHpTime.current > LOCAL_UPDATE_GRACE_MS
+      )
         setCurrentHp(data.current_hp as number);
-      if ("current_sanidade" in data && data.current_sanidade != null &&
-          now - lastLocalSanTime.current > LOCAL_UPDATE_GRACE_MS)
+      if (
+        "current_sanidade" in data &&
+        data.current_sanidade != null &&
+        now - lastLocalSanTime.current > LOCAL_UPDATE_GRACE_MS
+      )
         setCurrentSanidade(data.current_sanidade as number);
       // Re-fetch full character for other field changes
       if (id) {
@@ -232,7 +238,8 @@ export function CharacterPage() {
     },
     onStateUpdate: (data) => {
       const now = Date.now();
-      const stateGracePassed = now - lastLocalStateTime.current > LOCAL_UPDATE_GRACE_MS;
+      const stateGracePassed =
+        now - lastLocalStateTime.current > LOCAL_UPDATE_GRACE_MS;
       if (data.pe_checks && stateGracePassed) {
         const pe = data.pe_checks;
         setPeChecks({
@@ -242,14 +249,16 @@ export function CharacterPage() {
           influencia: pe.influencia ?? Array(5).fill(false),
         });
       }
-      if (data.skill_modifiers && stateGracePassed) setSkillModifiers(data.skill_modifiers);
+      if (data.skill_modifiers && stateGracePassed)
+        setSkillModifiers(data.skill_modifiers);
       if (data.defense_modifiers && stateGracePassed) {
         setDaBase(data.defense_modifiers.daBase);
         setDaBonus(data.defense_modifiers.daBonus);
         setDpBonus(data.defense_modifiers.dpBonus);
       }
       if (data.dice_log) diceLogSetterRef.current?.(data.dice_log);
-      if (data.conditions && stateGracePassed) setConditions(data.conditions as Condition[]);
+      if (data.conditions && stateGracePassed)
+        setConditions(data.conditions as Condition[]);
     },
     onInventoryChange: async () => {
       if (!id) return;
@@ -445,7 +454,7 @@ export function CharacterPage() {
   function handleEntropiaChange(newValue: number) {
     if (!canEdit || !id || !character) return;
     lastLocalEntropiaTime.current = Date.now();
-    setCharacter((prev) => prev ? { ...prev, entropia: newValue } : prev);
+    setCharacter((prev) => (prev ? { ...prev, entropia: newValue } : prev));
     if (isApiChar) {
       void api.characters.update(id, { entropia: newValue });
     } else {
@@ -460,7 +469,10 @@ export function CharacterPage() {
     const bonusKey = `arcano_${key}`;
     lastLocalStateTime.current = Date.now();
     setSkillModifiers((prev) => {
-      const next = { ...prev, [bonusKey]: Math.max(0, (prev[bonusKey] ?? 0) + delta) };
+      const next = {
+        ...prev,
+        [bonusKey]: Math.max(0, (prev[bonusKey] ?? 0) + delta),
+      };
       if (id) {
         if (isApiChar) void api.state.updateSkillModifiers(id, next);
         else if (id) saveSkillModifiers(id, next);
@@ -553,31 +565,31 @@ export function CharacterPage() {
   }
 
   const danoCondSuffix = useMemo<string>(() => {
-    let suffix = ''
+    let suffix = "";
     for (const cond of conditions) {
       for (const eff of cond.effects ?? []) {
-        if (eff.field === 'dano' && typeof eff.value === 'string') {
-          const v = eff.value.trim()
+        if (eff.field === "dano" && typeof eff.value === "string") {
+          const v = eff.value.trim();
           // "(+N)" or "(-N)" → "+(N)" or "-(N)" for parseDamage
-          const normalized = v.replace(/^\(([+-])(\d+)\)$/, '$1($2)')
-          if (normalized.match(/^[+-][\d(]/)) suffix += normalized
+          const normalized = v.replace(/^\(([+-])(\d+)\)$/, "$1($2)");
+          if (normalized.match(/^[+-][\d(]/)) suffix += normalized;
         }
       }
     }
-    return suffix
-  }, [conditions])
+    return suffix;
+  }, [conditions]);
 
   const conditionEffectMap = useMemo<Record<string, number>>(() => {
-    const map: Record<string, number> = {}
+    const map: Record<string, number> = {};
     for (const cond of conditions) {
       for (const eff of cond.effects ?? []) {
-        if (eff.field !== 'dano' && typeof eff.value === 'number') {
-          map[eff.field] = (map[eff.field] ?? 0) + eff.value
+        if (eff.field !== "dano" && typeof eff.value === "number") {
+          map[eff.field] = (map[eff.field] ?? 0) + eff.value;
         }
       }
     }
-    return map
-  }, [conditions])
+    return map;
+  }, [conditions]);
 
   /* ── Loading / Not found ─────────────────────────────────────── */
 
@@ -698,7 +710,7 @@ export function CharacterPage() {
         />
 
         {/* ── SHEET ─────────────────────────────────────────── */}
-        <div className="max-w-4xl mx-auto px-6 py-16 space-y-12">
+        <div className="max-w-5xl mx-auto px-6 py-16 space-y-12">
           {/* Identidade */}
           {(character.nationality || character.religion || canEdit) && (
             <section>
@@ -755,7 +767,9 @@ export function CharacterPage() {
             conditions={conditions}
             isGm={isGmOfCampaign}
             onAddCondition={isGmOfCampaign ? handleAddCondition : undefined}
-            onRemoveCondition={isGmOfCampaign ? handleRemoveCondition : undefined}
+            onRemoveCondition={
+              isGmOfCampaign ? handleRemoveCondition : undefined
+            }
           />
 
           <SkillsSection
@@ -778,12 +792,14 @@ export function CharacterPage() {
             antAccent={antAccent}
             onEdit={canEdit ? () => goEdit(4) : undefined}
             onEntropiaChange={canEdit ? handleEntropiaChange : undefined}
-            onModificadorChange={canEdit ? handleModificadorArcanoChange : undefined}
+            onModificadorChange={
+              canEdit ? handleModificadorArcanoChange : undefined
+            }
             arcanoModifierBonuses={{
-              potencia:     skillModifiers['arcano_potencia']     ?? 0,
-              complexidade: skillModifiers['arcano_complexidade'] ?? 0,
-              forma:        skillModifiers['arcano_forma']        ?? 0,
-              controle:     skillModifiers['arcano_controle']     ?? 0,
+              potencia: skillModifiers["arcano_potencia"] ?? 0,
+              complexidade: skillModifiers["arcano_complexidade"] ?? 0,
+              forma: skillModifiers["arcano_forma"] ?? 0,
+              controle: skillModifiers["arcano_controle"] ?? 0,
             }}
           />
 
