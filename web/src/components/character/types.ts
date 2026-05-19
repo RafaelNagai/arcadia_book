@@ -1,11 +1,11 @@
 export type Accent = { text: string; bg: string; glow: string };
 
 export const ELEMENT_COLORS: Record<string, Accent> = {
-  Energia:   { text: "#E8803A", bg: "rgba(200,90,32,0.18)",   glow: "rgba(232,128,58,0.45)"  },
-  Anomalia:  { text: "#6FC892", bg: "rgba(42,155,111,0.18)",  glow: "rgba(111,200,146,0.45)" },
-  Paradoxo:  { text: "#50C8E8", bg: "rgba(32,143,168,0.18)",  glow: "rgba(80,200,232,0.45)"  },
-  Astral:    { text: "#C090F0", bg: "rgba(107,63,160,0.18)",  glow: "rgba(192,144,240,0.45)" },
-  Cognitivo: { text: "#E8B84B", bg: "rgba(200,146,42,0.18)",  glow: "rgba(232,184,75,0.45)"  },
+  Energia:   { text: "#fe8d42", bg: "rgba(200, 91, 32, 0.15)",   glow: "rgba(232,128,58,0.45)"  },
+  Anomalia:  { text: "#6FC892", bg: "rgba(42,155,111,0.15)",  glow: "rgba(111,200,146,0.45)" },
+  Paradoxo:  { text: "#50C8E8", bg: "rgba(32,143,168,0.15)",  glow: "rgba(80,200,232,0.45)"  },
+  Astral:    { text: "#C090F0", bg: "rgba(107,63,160,0.15)",  glow: "rgba(192,144,240,0.45)" },
+  Cognitivo: { text: "#E8B84B", bg: "rgba(200,146,42,0.15)",  glow: "rgba(232,184,75,0.45)"  },
 };
 
 export const DEFAULT_ACCENT: Accent = {

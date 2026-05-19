@@ -1,52 +1,53 @@
-import type { EntropiaMarca } from "@/data/characterTypes"
+import type { EntropiaMarca } from "@/data/characterTypes";
 
-const D20_NAMES: Record<number, { name: string; type: 'negative' | 'narrative' | 'mixed' | 'positive' }> = {
-  1:  { name: "Eco Arcano",           type: "negative"  },
-  2:  { name: "Drenagem Ampliada",    type: "negative"  },
-  3:  { name: "Fragilidade Mental",   type: "negative"  },
-  4:  { name: "Desgaste Físico",      type: "negative"  },
-  5:  { name: "Vulnerabilidade Elemental", type: "negative" },
-  6:  { name: "Fome Arcana",          type: "negative"  },
-  7:  { name: "Atração Indesejada",   type: "negative"  },
-  8:  { name: "Memória Fragmentada",  type: "negative"  },
-  9:  { name: "Instabilidade Passiva",type: "narrative" },
-  10: { name: "Marca Visível",        type: "narrative" },
-  11: { name: "Sonhos do Arcano",     type: "narrative" },
-  12: { name: "Voz do Elemento",      type: "narrative" },
-  13: { name: "Presença Arcana",      type: "mixed"     },
-  14: { name: "Consumo Acelerado",    type: "mixed"     },
-  15: { name: "Toque Arcano",         type: "mixed"     },
-  16: { name: "Visão Dupla",          type: "mixed"     },
-  17: { name: "Afinidade Aguçada",    type: "positive"  },
-  18: { name: "Resistência Elemental",type: "positive"  },
-  19: { name: "Clareza Arcana",       type: "positive"  },
-  20: { name: "Dom do Abismo",        type: "positive"  },
-}
+const D20_NAMES: Record<
+  number,
+  { name: string; type: "negative" | "narrative" | "mixed" | "positive" }
+> = {
+  1: { name: "Eco Arcano", type: "negative" },
+  2: { name: "Drenagem Ampliada", type: "negative" },
+  3: { name: "Fragilidade Mental", type: "negative" },
+  4: { name: "Desgaste Físico", type: "negative" },
+  5: { name: "Vulnerabilidade Elemental", type: "negative" },
+  6: { name: "Fome Arcana", type: "negative" },
+  7: { name: "Atração Indesejada", type: "negative" },
+  8: { name: "Memória Fragmentada", type: "negative" },
+  9: { name: "Instabilidade Passiva", type: "narrative" },
+  10: { name: "Marca Visível", type: "narrative" },
+  11: { name: "Sonhos do Arcano", type: "narrative" },
+  12: { name: "Voz do Elemento", type: "narrative" },
+  13: { name: "Presença Arcana", type: "mixed" },
+  14: { name: "Consumo Acelerado", type: "mixed" },
+  15: { name: "Toque Arcano", type: "mixed" },
+  16: { name: "Visão Dupla", type: "mixed" },
+  17: { name: "Afinidade Aguçada", type: "positive" },
+  18: { name: "Resistência Elemental", type: "positive" },
+  19: { name: "Clareza Arcana", type: "positive" },
+  20: { name: "Dom do Abismo", type: "positive" },
+};
 
 const TYPE_COLOR: Record<string, string> = {
   negative: "#F07070",
   narrative: "#90B8E0",
   mixed: "#D0A830",
   positive: "#70C890",
-}
+};
+
+const arcanoColor = "#70d9ff";
 
 export function EntropiaDisplay({
   value,
-  arcano,
   marcas,
   onEntropiaChange,
 }: {
-  value: number
-  arcano: number
-  marcas: EntropiaMarca[]
-  onEntropiaChange?: (newValue: number) => void
+  value: number;
+  marcas: EntropiaMarca[];
+  onEntropiaChange?: (newValue: number) => void;
 }) {
-  const entropiaBonus = arcano * value
-
   function handleDotClick(dotIndex: number) {
-    if (!onEntropiaChange) return
-    const next = dotIndex < value ? dotIndex : dotIndex + 1
-    onEntropiaChange(Math.min(5, Math.max(0, next)))
+    if (!onEntropiaChange) return;
+    const next = dotIndex < value ? dotIndex : dotIndex + 1;
+    onEntropiaChange(Math.min(5, Math.max(0, next)));
   }
 
   return (
@@ -55,7 +56,10 @@ export function EntropiaDisplay({
         <div className="flex items-center gap-3">
           <p
             className="text-xs font-semibold uppercase tracking-[0.2em]"
-            style={{ color: "rgba(180,100,220,0.85)", fontFamily: "var(--font-ui)" }}
+            style={{
+              color: arcanoColor,
+              fontFamily: "var(--font-ui)",
+            }}
           >
             Entropia
           </p>
@@ -75,32 +79,6 @@ export function EntropiaDisplay({
             / 5
           </span>
         </div>
-
-        <div className="text-right">
-          <p
-            style={{
-              fontFamily: "var(--font-ui)",
-              fontSize: "0.55rem",
-              letterSpacing: "0.15em",
-              color: "rgba(255,255,255,0.55)",
-              textTransform: "uppercase",
-              marginBottom: 2,
-            }}
-          >
-            Bônus de Arcano
-          </p>
-          <p
-            style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 700,
-              fontSize: "1.4rem",
-              color: entropiaBonus > 0 ? "#D080F0" : "rgba(255,255,255,0.38)",
-              lineHeight: 1,
-            }}
-          >
-            {entropiaBonus > 0 ? `+${entropiaBonus}` : "—"}
-          </p>
-        </div>
       </div>
 
       {/* Entropia dots */}
@@ -113,11 +91,12 @@ export function EntropiaDisplay({
               width: 28,
               height: 28,
               borderRadius: "50%",
-              background: i < value
-                ? "linear-gradient(135deg, rgba(180,80,240,0.8) 0%, rgba(120,40,200,0.9) 100%)"
-                : "rgba(255,255,255,0.05)",
-              border: `1px solid ${i < value ? "rgba(200,100,255,0.6)" : "rgba(255,255,255,0.1)"}`,
-              boxShadow: i < value ? "0 0 10px rgba(160,80,220,0.5)" : "none",
+              background:
+                i < value
+                  ? `linear-gradient(135deg, ${arcanoColor} 0%, ${arcanoColor} 100%)`
+                  : "rgba(255,255,255,0.05)",
+              border: `1px solid ${i < value ? arcanoColor : "rgba(255,255,255,0.2)"}`,
+              boxShadow: i < value ? `0 0 10px ${arcanoColor}CC` : "none",
               transition: "all 0.2s",
               cursor: onEntropiaChange ? "pointer" : "default",
             }}
@@ -128,9 +107,12 @@ export function EntropiaDisplay({
       {value === 0 && (
         <p
           className="text-xs"
-          style={{ color: "rgba(255,255,255,0.40)", fontFamily: "var(--font-ui)" }}
+          style={{
+            color: "rgba(255,255,255,0.40)",
+            fontFamily: "var(--font-ui)",
+          }}
         >
-          Sem Entropia ativa
+          Não esta exposto ao Arcano
         </p>
       )}
 
@@ -151,8 +133,8 @@ export function EntropiaDisplay({
           </p>
           <div className="flex flex-col gap-1.5">
             {marcas.map((marca, i) => {
-              const info = D20_NAMES[marca.d20Result]
-              const col = info ? TYPE_COLOR[info.type] : "#aaa"
+              const info = D20_NAMES[marca.d20Result];
+              const col = info ? TYPE_COLOR[info.type] : "#aaa";
               return (
                 <div
                   key={i}
@@ -215,11 +197,11 @@ export function EntropiaDisplay({
                     )}
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

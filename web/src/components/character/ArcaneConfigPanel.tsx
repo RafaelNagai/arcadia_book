@@ -18,12 +18,17 @@ import type { CharacterModificadores } from "@/data/characterTypes";
 const ALL_ELEMENTS = ["Energia", "Anomalia", "Paradoxo", "Astral", "Cognitivo"];
 
 export type ModKey = keyof CharacterModificadores;
-export const MOD_KEYS: ModKey[] = ["potencia", "complexidade", "forma", "controle"];
+export const MOD_KEYS: ModKey[] = [
+  "potencia",
+  "complexidade",
+  "forma",
+  "controle",
+];
 export const MOD_LABELS: Record<ModKey, string> = {
-  potencia:     "Potência",
+  potencia: "Potência",
   complexidade: "Complexidade",
-  forma:        "Forma",
-  controle:     "Controle",
+  forma: "Forma",
+  controle: "Controle",
 };
 
 type TokenLoc = "pool" | ModKey;
@@ -36,7 +41,10 @@ interface ArcaneConfigPanelProps {
   selectedElement: string;
   onSelectElement: (el: string) => void;
   modificadores: CharacterModificadores;
-  onRoll: (allocation: Record<ModKey, number>, entropiaAllocation: Record<ModKey, number>) => void;
+  onRoll: (
+    allocation: Record<ModKey, number>,
+    entropiaAllocation: Record<ModKey, number>,
+  ) => void;
   onClose: () => void;
 }
 
@@ -53,7 +61,8 @@ function DragToken({
   label: string;
   size?: number;
 }) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ id });
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({ id });
   return (
     <div
       ref={setNodeRef}
@@ -87,7 +96,15 @@ function DragToken({
   );
 }
 
-function TokenVisual({ color, label, size = 36 }: { color: string; label: string; size?: number }) {
+function TokenVisual({
+  color,
+  label,
+  size = 36,
+}: {
+  color: string;
+  label: string;
+  size?: number;
+}) {
   return (
     <div
       style={{
@@ -156,7 +173,6 @@ export function ArcaneConfigPanel({
   const isAnti = selectedElement === antitese;
   const elementBonus = isAnti ? -10 : 0;
   const typeColor = getAccent(selectedElement).text;
-  const entropiaBonus = arcano * entropia;
 
   // Stable IDs for all tokens
   const diceIds = useMemo<["d12-0", "d12-1"]>(() => ["d12-0", "d12-1"], []);
@@ -176,7 +192,12 @@ export function ArcaneConfigPanel({
 
   // Derived allocation from token positions
   const allocation = useMemo<Record<ModKey, number>>(() => {
-    const a: Record<ModKey, number> = { potencia: 0, complexidade: 0, forma: 0, controle: 0 };
+    const a: Record<ModKey, number> = {
+      potencia: 0,
+      complexidade: 0,
+      forma: 0,
+      controle: 0,
+    };
     for (const id of diceIds) {
       const loc = tokenLoc[id];
       if (loc && loc !== "pool") a[loc]++;
@@ -185,7 +206,12 @@ export function ArcaneConfigPanel({
   }, [tokenLoc, diceIds]);
 
   const entropiaAllocation = useMemo<Record<ModKey, number>>(() => {
-    const a: Record<ModKey, number> = { potencia: 0, complexidade: 0, forma: 0, controle: 0 };
+    const a: Record<ModKey, number> = {
+      potencia: 0,
+      complexidade: 0,
+      forma: 0,
+      controle: 0,
+    };
     for (const id of bonusIds) {
       const loc = tokenLoc[id];
       if (loc && loc !== "pool") a[loc] += arcano;
@@ -217,7 +243,9 @@ export function ArcaneConfigPanel({
 
     // D12: max 2 per modifier (can't exceed 2 total anyway since only 2 exist)
     if (id.startsWith("d12-") && newLoc !== "pool") {
-      const diceAlreadyThere = diceIds.filter((did) => did !== id && tokenLoc[did] === newLoc).length;
+      const diceAlreadyThere = diceIds.filter(
+        (did) => did !== id && tokenLoc[did] === newLoc,
+      ).length;
       if (diceAlreadyThere >= 2) return;
     }
 
@@ -266,8 +294,11 @@ export function ArcaneConfigPanel({
           transition: "border-color 0.2s, box-shadow 0.2s",
         }}
       >
-        <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-
+        <DndContext
+          sensors={sensors}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
           {/* Header */}
           <div
             style={{
@@ -280,29 +311,63 @@ export function ArcaneConfigPanel({
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ fontFamily: "Cinzel, serif", fontSize: 18, fontWeight: 700, color: "var(--color-text-primary)" }}>
+              <span
+                style={{
+                  fontFamily: "Cinzel, serif",
+                  fontSize: 18,
+                  fontWeight: 700,
+                  color: "var(--color-text-primary)",
+                }}
+              >
                 Teste Arcano
-              </span>
-              <span style={{ fontFamily: "var(--font-ui)", fontSize: 9, letterSpacing: "0.2em", color: "rgba(205,146,234,0.7)", textTransform: "uppercase" }}>
-                2D12
               </span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                <span style={{ fontFamily: "var(--font-ui)", fontSize: 9, color: "var(--color-text-muted)", letterSpacing: "0.06em" }}>
-                  dados
+                <span
+                  style={{
+                    fontFamily: "var(--font-ui)",
+                    fontSize: 9,
+                    color: "var(--color-text-muted)",
+                    letterSpacing: "0.06em",
+                  }}
+                >
+                  base
                 </span>
-                <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 20, color: remaining > 0 ? "#D080F0" : "rgba(255,255,255,0.25)", lineHeight: 1 }}>
+                <span
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 800,
+                    fontSize: 20,
+                    color: remaining > 0 ? "#D080F0" : "rgba(255,255,255,0.25)",
+                    lineHeight: 1,
+                  }}
+                >
                   {remaining}
                 </span>
               </div>
-              {entropiaBonus > 0 && (
+              {entropia > 0 && (
                 <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                  <span style={{ fontFamily: "var(--font-ui)", fontSize: 9, color: "var(--color-text-muted)", letterSpacing: "0.06em" }}>
-                    bônus
+                  <span
+                    style={{
+                      fontFamily: "var(--font-ui)",
+                      fontSize: 9,
+                      color: "var(--color-text-muted)",
+                      letterSpacing: "0.06em",
+                    }}
+                  >
+                    entropia
                   </span>
-                  <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 20, color: "#C8922A", lineHeight: 1 }}>
-                    +{entropiaBonus}
+                  <span
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 800,
+                      fontSize: 20,
+                      color: "#C8922A",
+                      lineHeight: 1,
+                    }}
+                  >
+                    {entropia}
                   </span>
                 </div>
               )}
@@ -311,7 +376,16 @@ export function ArcaneConfigPanel({
 
           {/* Token pool */}
           <div style={{ marginBottom: 16 }}>
-            <p style={{ fontFamily: "var(--font-ui)", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: 8 }}>
+            <p
+              style={{
+                fontFamily: "var(--font-ui)",
+                fontSize: 10,
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: "var(--color-text-muted)",
+                marginBottom: 8,
+              }}
+            >
               Arraste para os modificadores
             </p>
             <DropZone
@@ -330,15 +404,35 @@ export function ArcaneConfigPanel({
             >
               {diceIds.map((id) =>
                 tokenLoc[id] === "pool" ? (
-                  <DragToken key={id} id={id} color="#D080F0" label="D12" size={40} />
+                  <DragToken
+                    key={id}
+                    id={id}
+                    color="#D080F0"
+                    label="D12"
+                    size={40}
+                  />
                 ) : null,
               )}
               {entropia > 0 && (
                 <>
-                  <div style={{ width: 1, height: 36, background: "rgba(255,255,255,0.08)", margin: "0 2px", flexShrink: 0 }} />
+                  <div
+                    style={{
+                      width: 1,
+                      height: 36,
+                      background: "rgba(255,255,255,0.08)",
+                      margin: "0 2px",
+                      flexShrink: 0,
+                    }}
+                  />
                   {bonusIds.map((id) =>
                     tokenLoc[id] === "pool" ? (
-                      <DragToken key={id} id={id} color="#C8922A" label={`+${arcano}`} size={36} />
+                      <DragToken
+                        key={id}
+                        id={id}
+                        color="#C8922A"
+                        label={`+${arcano}`}
+                        size={36}
+                      />
                     ) : null,
                   )}
                 </>
@@ -348,10 +442,25 @@ export function ArcaneConfigPanel({
 
           {/* Element picker */}
           <div style={{ marginBottom: 16 }}>
-            <p style={{ fontFamily: "var(--font-ui)", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: 8 }}>
+            <p
+              style={{
+                fontFamily: "var(--font-ui)",
+                fontSize: 10,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "var(--color-text-muted)",
+                marginBottom: 8,
+              }}
+            >
               Elemento
             </p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 5 }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(5, 1fr)",
+                gap: 5,
+              }}
+            >
               {ALL_ELEMENTS.map((el) => {
                 const acc = getAccent(el);
                 const isElemAfin = el === afinidade;
@@ -367,22 +476,61 @@ export function ArcaneConfigPanel({
                       padding: "7px 3px",
                       borderRadius: 7,
                       border: `1px solid ${active ? acc.text : canUse ? "var(--color-border)" : "rgba(255,255,255,0.04)"}`,
-                      background: active ? acc.text + "22" : canUse ? "rgba(255,255,255,0.02)" : "transparent",
+                      background: active
+                        ? acc.text + "22"
+                        : canUse
+                          ? "rgba(255,255,255,0.02)"
+                          : "transparent",
                       cursor: canUse ? "pointer" : "not-allowed",
                       boxShadow: active ? `0 0 10px ${acc.text}33` : "none",
                       transition: "all 0.12s",
-                      display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 3,
                       opacity: canUse ? 1 : 0.2,
                     }}
                   >
-                    <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 9, color: active ? acc.text : canUse ? "var(--color-text-secondary)" : "rgba(255,255,255,0.2)", lineHeight: 1.2, textAlign: "center" }}>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontWeight: 700,
+                        fontSize: 9,
+                        color: active
+                          ? acc.text
+                          : canUse
+                            ? "var(--color-text-secondary)"
+                            : "rgba(255,255,255,0.2)",
+                        lineHeight: 1.2,
+                        textAlign: "center",
+                      }}
+                    >
                       {el}
                     </span>
-                    <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 11, color: active ? acc.text : acc.text + (canUse ? "88" : "22"), lineHeight: 1 }}>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontWeight: 800,
+                        fontSize: 11,
+                        color: active
+                          ? acc.text
+                          : acc.text + (canUse ? "88" : "22"),
+                        lineHeight: 1,
+                      }}
+                    >
                       {isElemAnti ? "−10" : isElemAfin ? "—" : "✕"}
                     </span>
                     {(isElemAfin || isElemAnti) && (
-                      <span style={{ fontFamily: "var(--font-ui)", fontSize: 7, letterSpacing: "0.08em", color: acc.text + (active ? "cc" : "66"), textTransform: "uppercase", lineHeight: 1 }}>
+                      <span
+                        style={{
+                          fontFamily: "var(--font-ui)",
+                          fontSize: 7,
+                          letterSpacing: "0.08em",
+                          color: acc.text + (active ? "cc" : "66"),
+                          textTransform: "uppercase",
+                          lineHeight: 1,
+                        }}
+                      >
                         {isElemAfin ? "Afin" : "Anti"}
                       </span>
                     )}
@@ -394,7 +542,16 @@ export function ArcaneConfigPanel({
 
           {/* Modifier drop zones */}
           <div style={{ marginBottom: 16 }}>
-            <p style={{ fontFamily: "var(--font-ui)", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: 8 }}>
+            <p
+              style={{
+                fontFamily: "var(--font-ui)",
+                fontSize: 10,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "var(--color-text-muted)",
+                marginBottom: 8,
+              }}
+            >
               Modificadores
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
@@ -414,31 +571,77 @@ export function ArcaneConfigPanel({
                     style={{
                       padding: "8px 10px",
                       borderRadius: 8,
-                      background: isActive ? "rgba(160,80,240,0.12)" : "rgba(255,255,255,0.03)",
+                      background: isActive
+                        ? "rgba(160,80,240,0.12)"
+                        : "rgba(255,255,255,0.03)",
                       border: `1px solid ${isActive ? "rgba(180,90,240,0.4)" : "rgba(255,255,255,0.07)"}`,
                       transition: "all 0.15s",
                     }}
                   >
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div
+                      style={{ display: "flex", alignItems: "center", gap: 8 }}
+                    >
                       {/* Name + formula */}
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <p style={{ fontFamily: "var(--font-ui)", fontWeight: 600, fontSize: 11, color: isActive ? "rgba(220,160,255,0.95)" : "var(--color-text-secondary)", lineHeight: 1, marginBottom: 2 }}>
+                        <p
+                          style={{
+                            fontFamily: "var(--font-ui)",
+                            fontWeight: 600,
+                            fontSize: 11,
+                            color: isActive
+                              ? "rgba(220,160,255,0.95)"
+                              : "var(--color-text-secondary)",
+                            lineHeight: 1,
+                            marginBottom: 2,
+                          }}
+                        >
                           {MOD_LABELS[k]}
                         </p>
-                        <p style={{ fontFamily: "var(--font-ui)", fontSize: 10, color: "var(--color-text-muted)", letterSpacing: "0.03em" }}>
-                          {score}{eAlloc > 0 ? ` + ${eAlloc}` : ""}{elementBonus < 0 ? " − 10" : ""} = {total}
-                          {alloc > 0 && <span style={{ color: "#D080F0" }}> + {alloc}D12</span>}
+                        <p
+                          style={{
+                            fontFamily: "var(--font-ui)",
+                            fontSize: 10,
+                            color: "var(--color-text-muted)",
+                            letterSpacing: "0.03em",
+                          }}
+                        >
+                          {total}
+                          {alloc > 0 && (
+                            <span style={{ color: "#D080F0" }}>
+                              {" "}
+                              + {alloc}D12
+                            </span>
+                          )}
                         </p>
                       </div>
 
                       {/* Tokens sitting inside this modifier */}
                       {(diceInMod.length > 0 || bonusInMod.length > 0) && (
-                        <div style={{ display: "flex", gap: 4, flexWrap: "wrap", justifyContent: "flex-end" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: 4,
+                            flexWrap: "wrap",
+                            justifyContent: "flex-end",
+                          }}
+                        >
                           {diceInMod.map((id) => (
-                            <DragToken key={id} id={id} color="#D080F0" label="D12" size={30} />
+                            <DragToken
+                              key={id}
+                              id={id}
+                              color="#D080F0"
+                              label="D12"
+                              size={30}
+                            />
                           ))}
                           {bonusInMod.map((id) => (
-                            <DragToken key={id} id={id} color="#C8922A" label={`+${arcano}`} size={28} />
+                            <DragToken
+                              key={id}
+                              id={id}
+                              color="#C8922A"
+                              label={`+${arcano}`}
+                              size={28}
+                            />
                           ))}
                         </div>
                       )}
@@ -454,13 +657,19 @@ export function ArcaneConfigPanel({
             onClick={() => onRoll(allocation, entropiaAllocation)}
             disabled={totalDice === 0}
             style={{
-              width: "100%", padding: "11px 0", borderRadius: 8,
+              width: "100%",
+              padding: "11px 0",
+              borderRadius: 8,
               border: `1px solid ${totalDice > 0 ? typeColor : "var(--color-border)"}`,
               background: totalDice > 0 ? typeColor + "28" : "transparent",
               color: totalDice > 0 ? typeColor : "var(--color-text-muted)",
-              fontFamily: "var(--font-ui)", fontWeight: 800, fontSize: 13,
-              letterSpacing: "0.22em", cursor: totalDice === 0 ? "not-allowed" : "pointer",
-              opacity: totalDice === 0 ? 0.4 : 1, transition: "all 0.15s",
+              fontFamily: "var(--font-ui)",
+              fontWeight: 800,
+              fontSize: 13,
+              letterSpacing: "0.22em",
+              cursor: totalDice === 0 ? "not-allowed" : "pointer",
+              opacity: totalDice === 0 ? 0.4 : 1,
+              transition: "all 0.15s",
               boxShadow: totalDice > 0 ? `0 0 18px ${typeColor}44` : "none",
             }}
           >
@@ -469,11 +678,16 @@ export function ArcaneConfigPanel({
           <button
             onClick={onClose}
             style={{
-              marginTop: 8, width: "100%", padding: "6px 0",
-              background: "transparent", border: "none",
+              marginTop: 8,
+              width: "100%",
+              padding: "6px 0",
+              background: "transparent",
+              border: "none",
               color: "var(--color-text-muted)",
-              fontSize: 11, fontFamily: "var(--font-ui)",
-              cursor: "pointer", letterSpacing: "0.1em",
+              fontSize: 11,
+              fontFamily: "var(--font-ui)",
+              cursor: "pointer",
+              letterSpacing: "0.1em",
             }}
           >
             cancelar
@@ -481,10 +695,13 @@ export function ArcaneConfigPanel({
 
           <DragOverlay>
             {activeId ? (
-              <TokenVisual color={activeColor} label={activeLabel} size={activeSize} />
+              <TokenVisual
+                color={activeColor}
+                label={activeLabel}
+                size={activeSize}
+              />
             ) : null}
           </DragOverlay>
-
         </DndContext>
       </motion.div>
     </motion.div>
