@@ -20,6 +20,7 @@ export function ArcanoSection({
   onEdit,
   onEntropiaChange,
   onModificadorChange,
+  arcanoModifierBonuses,
 }: {
   character: Character
   accent: Accent
@@ -27,11 +28,21 @@ export function ArcanoSection({
   onEdit?: () => void
   onEntropiaChange?: (newValue: number) => void
   onModificadorChange?: (key: string, delta: number) => void
+  arcanoModifierBonuses?: { potencia: number; complexidade: number; forma: number; controle: number }
 }) {
   const [arcaneTest, setArcaneTest] = useState(false)
 
   const arcano = character.attributes.arcano
   const entropiaBonus = arcano * character.entropia
+
+  const bonuses = arcanoModifierBonuses ?? { potencia: 0, complexidade: 0, forma: 0, controle: 0 }
+
+  const modWithBonuses = {
+    potencia:     (character.modificadores?.potencia     ?? 0) + bonuses.potencia,
+    complexidade: (character.modificadores?.complexidade ?? 0) + bonuses.complexidade,
+    forma:        (character.modificadores?.forma        ?? 0) + bonuses.forma,
+    controle:     (character.modificadores?.controle     ?? 0) + bonuses.controle,
+  }
 
   return (
     <section>
@@ -205,17 +216,20 @@ export function ArcanoSection({
           {/* Modificadores grid */}
           <div className="grid grid-cols-2 gap-2">
             {MODIFICADORES.map(({ key, label, desc }) => {
-              const score = character.modificadores?.[key] ?? 0
+              const base  = character.modificadores?.[key] ?? 0
+              const bonus = (bonuses as Record<string, number>)[key] ?? 0
+              const total = base + bonus
               return (
                 <div
                   key={key}
-                  className="flex items-center justify-between px-3 py-2 rounded-sm"
+                  className="px-3 py-2 rounded-sm"
                   style={{
                     background: "rgba(160,60,220,0.08)",
                     border: "1px solid rgba(160,60,220,0.2)",
                   }}
                 >
-                  <div>
+                  {/* Top row: name + value */}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: onModificadorChange ? 4 : 0 }}>
                     <p
                       style={{
                         fontFamily: "var(--font-ui)",
@@ -227,6 +241,33 @@ export function ArcanoSection({
                     >
                       {label}
                     </p>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: 3 }}>
+                      <span
+                        style={{
+                          fontFamily: "var(--font-display)",
+                          fontWeight: 700,
+                          fontSize: "1.4rem",
+                          color: total > 0 ? "#D080F0" : "rgba(255,255,255,0.2)",
+                          lineHeight: 1,
+                        }}
+                      >
+                        {base}
+                      </span>
+                      {bonus > 0 && (
+                        <>
+                          <span style={{ fontFamily: "var(--font-ui)", fontSize: "0.65rem", color: "#C8922A", fontWeight: 700 }}>
+                            +{bonus}
+                          </span>
+                          <span style={{ fontFamily: "var(--font-ui)", fontSize: "0.55rem", color: "rgba(255,255,255,0.3)" }}>
+                            ={total}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Bottom row: desc + bonus controls */}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <p
                       style={{
                         fontFamily: "var(--font-ui)",
@@ -237,54 +278,45 @@ export function ArcanoSection({
                     >
                       {desc}
                     </p>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                     {onModificadorChange && (
-                      <button
-                        onClick={() => onModificadorChange(key, -1)}
-                        disabled={score <= 0}
-                        style={{
-                          width: 18, height: 18, borderRadius: 3,
-                          border: "1px solid rgba(160,60,220,0.3)",
-                          background: "transparent",
-                          color: score > 0 ? "rgba(180,90,240,0.7)" : "rgba(255,255,255,0.15)",
-                          cursor: score > 0 ? "pointer" : "not-allowed",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: 14, lineHeight: 1, padding: 0,
-                          opacity: score > 0 ? 1 : 0.35,
-                        }}
-                      >
-                        −
-                      </button>
-                    )}
-                    <span
-                      style={{
-                        fontFamily: "var(--font-display)",
-                        fontWeight: 700,
-                        fontSize: "1.4rem",
-                        color: score > 0 ? "#D080F0" : "rgba(255,255,255,0.2)",
-                        lineHeight: 1,
-                        minWidth: 20,
-                        textAlign: "center",
-                      }}
-                    >
-                      {score}
-                    </span>
-                    {onModificadorChange && (
-                      <button
-                        onClick={() => onModificadorChange(key, +1)}
-                        style={{
-                          width: 18, height: 18, borderRadius: 3,
-                          border: "1px solid rgba(160,60,220,0.3)",
-                          background: "transparent",
-                          color: "rgba(180,90,240,0.7)",
-                          cursor: "pointer",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: 14, lineHeight: 1, padding: 0,
-                        }}
-                      >
-                        +
-                      </button>
+                      <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
+                        <span style={{ fontFamily: "var(--font-ui)", fontSize: "0.5rem", color: "#C8922A", letterSpacing: "0.08em", textTransform: "uppercase", opacity: 0.8 }}>
+                          bônus
+                        </span>
+                        <button
+                          onClick={() => onModificadorChange(key, -1)}
+                          disabled={bonus <= 0}
+                          style={{
+                            width: 16, height: 16, borderRadius: 3,
+                            border: "1px solid rgba(200,146,42,0.35)",
+                            background: "transparent",
+                            color: bonus > 0 ? "#C8922A" : "rgba(255,255,255,0.15)",
+                            cursor: bonus > 0 ? "pointer" : "not-allowed",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            fontSize: 13, lineHeight: 1, padding: 0,
+                            opacity: bonus > 0 ? 1 : 0.3,
+                          }}
+                        >
+                          −
+                        </button>
+                        <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.9rem", color: bonus > 0 ? "#C8922A" : "rgba(255,255,255,0.2)", minWidth: 14, textAlign: "center" }}>
+                          {bonus}
+                        </span>
+                        <button
+                          onClick={() => onModificadorChange(key, +1)}
+                          style={{
+                            width: 16, height: 16, borderRadius: 3,
+                            border: "1px solid rgba(200,146,42,0.35)",
+                            background: "transparent",
+                            color: "#C8922A",
+                            cursor: "pointer",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            fontSize: 13, lineHeight: 1, padding: 0,
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -338,7 +370,7 @@ export function ArcanoSection({
           antitese={character.antitese}
           entropia={character.entropia}
           arcano={arcano}
-          modificadores={character.modificadores ?? { potencia: 0, complexidade: 0, forma: 0, controle: 0 }}
+          modificadores={modWithBonuses}
           onClose={() => setArcaneTest(false)}
         />
       )}

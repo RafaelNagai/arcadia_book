@@ -454,20 +454,19 @@ export function CharacterPage() {
     }
   }
 
-  /* ── Arcano modifier bonuses ────────────────────────────────── */
+  /* ── Arcano modifier bonuses (stored in skillModifiers with arcano_ prefix) ── */
 
   function handleModificadorArcanoChange(key: string, delta: number) {
-    if (!canEdit || !id || !character) return;
-    const mods = character.modificadores ?? { potencia: 0, complexidade: 0, forma: 0, controle: 0 };
-    const cur = (mods as Record<string, number>)[key] ?? 0;
-    const next = Math.max(0, cur + delta);
-    const updated = { ...mods, [key]: next } as typeof mods;
-    setCharacter((prev) => prev ? { ...prev, modificadores: updated } : prev);
-    if (isApiChar) {
-      void api.characters.update(id, { modificadores: updated });
-    } else {
-      saveCustomCharacter({ ...character, modificadores: updated });
-    }
+    const bonusKey = `arcano_${key}`;
+    lastLocalStateTime.current = Date.now();
+    setSkillModifiers((prev) => {
+      const next = { ...prev, [bonusKey]: Math.max(0, (prev[bonusKey] ?? 0) + delta) };
+      if (id) {
+        if (isApiChar) void api.state.updateSkillModifiers(id, next);
+        else if (id) saveSkillModifiers(id, next);
+      }
+      return next;
+    });
   }
 
   /* ── HP / Sanidade clicks ─────────────────────────────────────── */
@@ -780,6 +779,12 @@ export function CharacterPage() {
             onEdit={canEdit ? () => goEdit(4) : undefined}
             onEntropiaChange={canEdit ? handleEntropiaChange : undefined}
             onModificadorChange={canEdit ? handleModificadorArcanoChange : undefined}
+            arcanoModifierBonuses={{
+              potencia:     skillModifiers['arcano_potencia']     ?? 0,
+              complexidade: skillModifiers['arcano_complexidade'] ?? 0,
+              forma:        skillModifiers['arcano_forma']        ?? 0,
+              controle:     skillModifiers['arcano_controle']     ?? 0,
+            }}
           />
 
           {/* Antecedentes + Traumas */}
