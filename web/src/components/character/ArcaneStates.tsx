@@ -22,10 +22,10 @@ export function detectSpecialState(chosen: number[]): SpecialState {
   const anyOne = chosen.some((v) => v === 1);
   // 12 e 1 no mesmo modificador se anulam — nenhum estado especial
   if (anyTwelve && anyOne) return null;
-  // Milagre e Desastre exigem exatamente 2 dados (ambos os D12 alocados)
+  // Milagre e Desastre exigem ambos os dados escolhidos iguais a 12 ou 1
   if (chosen.length === 2) {
-    if (anyTwelve) return "milagre";
-    if (anyOne) return "desastre";
+    if (chosen.every((v) => v === 12)) return "milagre";
+    if (chosen.every((v) => v === 1)) return "desastre";
   }
   if (anyTwelve) return "critico";
   if (anyOne) return "falha_critica";
