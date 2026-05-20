@@ -2765,23 +2765,6 @@
     "image": "assets/images/equipments/equipment_livro-do-sumico.jpg"
   },
   {
-    "id": "livro-do-sumico",
-    "name": "Livro do Sumiço",
-    "category": "Acessório",
-    "subcategory": "Livro",
-    "tier": "A",
-    "damage": null,
-    "weight": "leve",
-    "isEquipment": true,
-    "maxDurability": 1,
-    "effects": [
-      "Ao conjurar com intenção de efeito em área (explosão, onda, campo), ganha +5 no resultado do modificador Forma.",
-      "Ao conjurar com o elemento Energia, ganha +1 no resultado de todos os modificadores."
-    ],
-    "description": "Um louco dizia ter escrito um livro invisivel, até que no dia da sua morte este livro apareceu em suas mãos.",
-    "image": "assets/images/equipments/equipment_livro-do-sumico.jpg"
-  },
-  {
     "id": "livro-da-blindagem",
     "name": "Livro da Blindagem",
     "category": "Acessório",
