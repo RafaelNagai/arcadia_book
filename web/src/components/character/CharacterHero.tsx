@@ -8,10 +8,12 @@ export function CharacterHero({
   character,
   accent,
   scrollY,
+  onEdit,
 }: {
   character: Character
   accent: Accent
   scrollY: MotionValue<number>
+  onEdit?: () => void
 }) {
   const heroImgY     = useTransform(scrollY, [0, 900], [0, -220])
   const heroContentY = useTransform(scrollY, [0, 600], [0, 90])
@@ -179,17 +181,39 @@ export function CharacterHero({
           >
             {character.name}
           </h1>
-          <p
-            className="text-sm font-semibold mb-3"
-            style={{
-              color: accent.text,
-              fontFamily: "var(--font-ui)",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-            }}
-          >
-            {character.concept}
-          </p>
+          <div className="flex items-center gap-3 mb-3">
+            <p
+              className="text-sm font-semibold"
+              style={{
+                color: accent.text,
+                fontFamily: "var(--font-ui)",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+              }}
+            >
+              {character.concept}
+            </p>
+            {onEdit && (
+              <button
+                onClick={onEdit}
+                style={{
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  borderRadius: 4,
+                  color: "rgba(255,255,255,0.45)",
+                  fontFamily: "var(--font-ui)",
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  cursor: "pointer",
+                  padding: "0.25rem 0.6rem",
+                  flexShrink: 0,
+                }}
+              >
+                ✎
+              </button>
+            )}
+          </div>
           <p
             style={{
               fontFamily: "var(--font-body)",

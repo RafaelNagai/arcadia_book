@@ -707,46 +707,11 @@ export function CharacterPage() {
           character={character}
           accent={accent}
           scrollY={scrollY}
+          onEdit={canEdit ? () => goEdit(1) : undefined}
         />
 
         {/* ── SHEET ─────────────────────────────────────────── */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-16 space-y-8 sm:space-y-12">
-          {/* Identidade */}
-          {(character.nationality || character.religion || canEdit) && (
-            <section>
-              <SectionLabel
-                accent={accent.text}
-                onEdit={canEdit ? () => goEdit(1) : undefined}
-              >
-                Identidade
-              </SectionLabel>
-              <div className="flex flex-wrap gap-2">
-                {character.nationality && (
-                  <Tag color="rgba(160,200,240,0.9)" bg="rgba(32,80,160,0.12)">
-                    {character.nationality}
-                  </Tag>
-                )}
-                {character.religion && (
-                  <Tag color="rgba(192,160,240,0.9)" bg="rgba(100,60,180,0.12)">
-                    {character.religion}
-                  </Tag>
-                )}
-                {!character.nationality && !character.religion && canEdit && (
-                  <p
-                    style={{
-                      fontFamily: "var(--font-ui)",
-                      fontSize: "0.8rem",
-                      color: "var(--color-text-muted)",
-                      fontStyle: "italic",
-                    }}
-                  >
-                    Nenhuma nacionalidade ou religião definida.
-                  </p>
-                )}
-              </div>
-            </section>
-          )}
-
           <StatsSection
             character={character}
             accentText={accent.text}
