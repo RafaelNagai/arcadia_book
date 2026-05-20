@@ -61,7 +61,7 @@ export function ArcanoSection({
         Arcano
       </SectionLabel>
       <div className="space-y-3">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Arcano attribute + Modificadores */}
           <div className="flex flex-col">
             <p

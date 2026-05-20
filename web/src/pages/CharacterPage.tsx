@@ -710,7 +710,7 @@ export function CharacterPage() {
         />
 
         {/* ── SHEET ─────────────────────────────────────────── */}
-        <div className="max-w-5xl mx-auto px-6 py-16 space-y-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-16 space-y-8 sm:space-y-12">
           {/* Identidade */}
           {(character.nationality || character.religion || canEdit) && (
             <section>
@@ -804,7 +804,7 @@ export function CharacterPage() {
           />
 
           {/* Antecedentes + Traumas */}
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <section>
               <SectionLabel
                 accent={accent.text}

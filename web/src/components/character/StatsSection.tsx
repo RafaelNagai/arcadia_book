@@ -63,7 +63,7 @@ export function StatsSection({
   return (
     <section>
       <SectionLabel accent={accentText}>Vitalidade</SectionLabel>
-      <div className="flex flex-wrap gap-12 items-start">
+      <div className="flex flex-wrap gap-6 sm:gap-12 items-start">
         <HoneycombGrid
           total={character.hp + (conditionEffectMap.hpMax ?? 0)}
           current={currentHp}
