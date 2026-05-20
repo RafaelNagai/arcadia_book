@@ -102,9 +102,9 @@ A **Entropia** representa o quanto o personagem abriu os portões da criação �
 
 ### O Que a Entropia Faz
 
-Cada ponto de Entropia concede um **bônus adicional** alocável livremente entre os modificadores da magia. O valor desse bônus é igual ao atributo **Arcano** do personagem.
+Cada ponto de Entropia concede um **token de bônus** no valor do atributo **Arcano** do personagem, que pode ser alocado em qualquer modificador. Os tokens não podem ser divididos — cada token é alocado inteiro a um único modificador.
 
-> Entropia 3 com Arcano 4: o personagem tem +12 para distribuir entre os modificadores.
+> Entropia 3 com Arcano 4: o personagem tem **3 tokens de +4** para distribuir entre os modificadores. Pode colocar os três no mesmo modificador (+12) ou dividi-los como quiser, sempre em blocos de 4.
 
 Quanto mais alto o nível de Entropia, mais poderosas as magias — e mais devastadoras as consequências de falhar.
 
@@ -155,12 +155,13 @@ Funciona igual às perícias — os D12s alocados num modificador determinam os 
 
 | Resultado nos dados | Efeito |
 |---|---|
-| Um dado natural **1** | Falha crítica — consequência proporcional ao nível de Entropia |
+| Um dado natural **1** | O bônus ainda é somado. Se o resultado atingir a DT do Mestre → **Sucesso Parcial**; se não atingir → **Falha Crítica** com consequência proporcional à Entropia |
 | Um dado natural **12** | Crítico — dano ou efeito dobrado |
 | Dois dados naturais **12** | Milagre — dano ou efeito triplicado |
 | Dois dados naturais **1** | Desastre — consequência catastrófica proporcional à Entropia |
+| **12** e **1** no mesmo modificador | Anulam-se — sem estado especial |
 
-> Milagre e Desastre só são possíveis quando o jogador concentra ambos os D12s em um único modificador.
+> Milagre e Desastre só são possíveis quando o jogador concentra ambos os D12s em um único modificador. Com apenas 1 dado alocado, 12 = Crítico e 1 = possível Falha Crítica.
 
 ---
 
@@ -169,7 +170,7 @@ Funciona igual às perícias — os D12s alocados num modificador determinam os 
 Todo conjurador possui dois elementos: sua **Afinidade** e sua **Antítese**.
 
 - **Afinidade**: o elemento natural do personagem. Sem penalidade.
-- **Antítese**: o elemento parasita que habita o personagem. **−10 no resultado do teste.**
+- **Antítese**: o elemento parasita que habita o personagem. **−10 no resultado de cada modificador testado.**
 
 O personagem **só pode conjurar com esses dois elementos**. Não é uma questão de dificuldade — é de natureza. A essência do Caos em cada ser tem sua própria cor, e às vezes carrega um eco de outra natureza. Usar esse eco é possível, mas custoso.
 

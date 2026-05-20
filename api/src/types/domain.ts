@@ -43,7 +43,6 @@ export interface Character {
   afinidade: string
   antitese: string
   entropia: number
-  runas: string[]
   traumas: string[]
   antecedentes: string[]
   historia: string | null

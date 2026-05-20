@@ -34,7 +34,6 @@ export const CHAPTERS: ChapterMeta[] = [
   { id: '04_combate',                 slug: 'combate',                 title: 'Combate',                  part: 'Fundamentos',            order: 40,  subtitle: 'A arte de sobreviver' },
   { id: '16_equipamentos',            slug: 'equipamentos',            title: 'Item e Equipamento',       part: 'Fundamentos',            order: 50,  subtitle: 'Armas, armaduras e o catálogo do Mar de Nuvens' },
   { id: '05_arcanismo',               slug: 'arcanismo',               title: 'Arcanismo',                part: 'O Arcano',               order: 70,  subtitle: 'O poder tem um preço' },
-  { id: '05_runas',                   slug: 'runas',                   title: 'Runas',                    part: 'O Arcano',               order: 61,  subtitle: 'As palavras da magia', parentSlug: 'arcanismo' },
   { id: '05_invocacao',               slug: 'invocacao',               title: 'Invocação',                part: 'O Arcano',               order: 62,  subtitle: 'Trazendo entidades ao Plano Material', parentSlug: 'arcanismo' },
   { id: '06_elementos',               slug: 'elementos',               title: 'Elementos',                part: 'O Arcano',               order: 80,  subtitle: 'Cinco forças, um destino' },
   { id: '06_afinidades',              slug: 'afinidades',              title: 'Afinidade e Antítese',     part: 'O Arcano',               order: 81,  subtitle: 'A relação que o Arcano escolhe por você' },

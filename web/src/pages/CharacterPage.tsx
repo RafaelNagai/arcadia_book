@@ -53,6 +53,7 @@ const EMPTY_PE = {
   destreza: Array(5).fill(false) as boolean[],
   intelecto: Array(5).fill(false) as boolean[],
   influencia: Array(5).fill(false) as boolean[],
+  arcano: Array(5).fill(false) as boolean[],
 };
 
 export function CharacterPage() {
@@ -132,6 +133,7 @@ export function CharacterPage() {
             destreza: pe.destreza ?? Array(5).fill(false),
             intelecto: pe.intelecto ?? Array(5).fill(false),
             influencia: pe.influencia ?? Array(5).fill(false),
+            arcano: pe.arcano ?? Array(5).fill(false),
           });
           setSkillModifiers((s.skillModifiers as Record<string, number>) ?? {});
           const dm =
@@ -167,6 +169,7 @@ export function CharacterPage() {
           destreza: saved.destreza ?? Array(5).fill(false),
           intelecto: saved.intelecto ?? Array(5).fill(false),
           influencia: saved.influencia ?? Array(5).fill(false),
+          arcano: saved.arcano ?? Array(5).fill(false),
         });
         setSkillModifiers(loadSkillModifiers(id));
         const dm = loadDefenseModifiers(id);
@@ -461,6 +464,22 @@ export function CharacterPage() {
       const updated = { ...character, entropia: newValue };
       saveCustomCharacter(updated);
     }
+  }
+
+  /* ── Arcano modifier PE checkboxes ─────────────────────────── */
+
+  function handleArcanoPeToggle(idx: number) {
+    lastLocalStateTime.current = Date.now();
+    setPeChecks((prev) => {
+      const arr = [...(prev["arcano"] ?? Array(5).fill(false))];
+      arr[idx] = !arr[idx];
+      const next = { ...prev, arcano: arr };
+      if (id) {
+        if (isApiChar) void api.state.updatePeChecks(id, next);
+        else savePeChecks(id, next);
+      }
+      return next;
+    });
   }
 
   /* ── Arcano modifier bonuses (stored in skillModifiers with arcano_ prefix) ── */
@@ -766,6 +785,8 @@ export function CharacterPage() {
               forma: skillModifiers["arcano_forma"] ?? 0,
               controle: skillModifiers["arcano_controle"] ?? 0,
             }}
+            arcanoPeChecks={peChecks["arcano"] ?? Array(5).fill(false)}
+            onArcanoPeToggle={canEdit ? handleArcanoPeToggle : undefined}
           />
 
           {/* Antecedentes + Traumas */}

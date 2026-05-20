@@ -21,6 +21,8 @@ export function ArcanoSection({
   onEntropiaChange,
   onModificadorChange,
   arcanoModifierBonuses,
+  arcanoPeChecks,
+  onArcanoPeToggle,
 }: {
   character: Character;
   accent: Accent;
@@ -34,6 +36,8 @@ export function ArcanoSection({
     forma: number;
     controle: number;
   };
+  arcanoPeChecks?: boolean[];
+  onArcanoPeToggle?: (idx: number) => void;
 }) {
   const [arcaneTest, setArcaneTest] = useState(false);
 
@@ -76,6 +80,57 @@ export function ArcanoSection({
             >
               Modificadores Arcano
             </p>
+            {/* PE row — shared across all modifiers */}
+            <div
+              className="flex items-center gap-1.5 px-1"
+              style={{
+                borderTop: "1px solid rgba(60,220,217,0.12)",
+                paddingTop: 12,
+                paddingBottom: 12,
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "var(--font-ui)",
+                  fontSize: "0.5rem",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "rgba(200,210,230,0.55)",
+                }}
+              >
+                PE
+              </span>
+              {(arcanoPeChecks ?? Array(5).fill(false)).map(
+                (checked: boolean, i: number) => (
+                  <button
+                    key={i}
+                    onClick={
+                      onArcanoPeToggle ? () => onArcanoPeToggle(i) : undefined
+                    }
+                    style={{
+                      width: 16,
+                      height: 16,
+                      borderRadius: 3,
+                      background: checked
+                        ? `${arcanoColor}33`
+                        : "rgba(255,255,255,0.06)",
+                      border: `1px solid ${checked ? arcanoColor + "CC" : "rgba(200,210,230,0.35)"}`,
+                      color: checked ? arcanoColor : "rgba(200,210,230,0.35)",
+                      fontSize: "0.55rem",
+                      lineHeight: 1,
+                      cursor: onArcanoPeToggle ? "pointer" : "default",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 0,
+                      flexShrink: 0,
+                    }}
+                  >
+                    {checked ? "✦" : "✧"}
+                  </button>
+                ),
+              )}
+            </div>
             {/* Modificadores grid */}
             <div className="grid grid-cols-1 gap-2">
               {MODIFICADORES.map(({ key, label }) => {
