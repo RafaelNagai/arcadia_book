@@ -8,20 +8,20 @@ Toda alma em Arcádia carrega uma relação com o Arcano. Não como escolha — 
 
 A **Afinidade** é o elemento com o qual o personagem tem sintonia natural. O Arcano flui por ele sem resistência, como água descendo um rio que já conhece o caminho.
 
-A **Antítese** é o elemento parasita — um segundo elemento que se impôs ao corpo do personagem, criando uma conexão forçada e instável. O personagem pode usá-lo, mas ele nunca é completamente dócil.
+A **Antítese** é o segundo vínculo arcano do personagem — em geral um elemento diferente da Afinidade, imposto ao corpo de forma forçada e instável. Em casos raros, Afinidade e Antítese recaem sobre o mesmo elemento, criando uma **Dupla Conexão**: uma intensidade arcana fora do comum. O personagem pode usar o elemento da Antítese, mas ele nunca é completamente dócil.
 
 ---
 
 ## Bônus Mecânicos
 
-| Relação | Bônus no Teste Arcano |
+| Relação | Efeito no Teste Arcano |
 |---|---|
-| **Afinidade** | +4 |
-| **Antítese** | +2 |
+| **Afinidade** | Sem modificador |
+| **Antítese** | −10 |
 
-Esses bônus somam ao resultado arcano sempre que a magia pertencer ao elemento correspondente.
+A Afinidade não concede bônus numérico — ela representa fluidez natural, não vantagem. A Antítese impõe −10 ao resultado por ser uma conexão instável e forçada. Quando Afinidade e Antítese são o mesmo elemento, veja **Dados Iguais** abaixo.
 
-> *Exemplo: Vael tem Afinidade em Cognitivo e Antítese em Energia. Ao lançar uma ilusão (Cognitivo), ganha +4. Ao lançar um feixe elétrico (Energia), ganha +2. Para Anomalia, Paradoxo ou Astral, não recebe bônus de relação.*
+> *Exemplo: Vael tem Afinidade em Cognitivo e Antítese em Energia. Ao lançar uma ilusão (Cognitivo), não recebe modificador de relação. Ao lançar um feixe elétrico (Energia), sofre −10. Para Anomalia, Paradoxo ou Astral, também não há modificador de relação.*
 
 ---
 
@@ -44,7 +44,7 @@ Cada dado determina um elemento pelo resultado. O jogador então **escolhe qual 
 
 Se os dois dados caírem no **mesmo valor**, o personagem possui **Afinidade e Antítese no mesmo elemento** — uma raridade que representa uma conexão arcana extremamente intensa e instável.
 
-Nesse caso, ele recebe **ambos os bônus (+4 e +2 = +6 total)** ao conjurar magias daquele elemento.
+Nesse caso, a penalidade de Antítese é **substituída por um bônus de +10** ao conjurar magias daquele elemento — a intensidade da dupla conexão supera a instabilidade.
 
 Se ambos os dados saírem **6**, o jogador escolhe livremente os dois elementos — podendo escolher o mesmo ou dois diferentes.
 
@@ -55,4 +55,4 @@ Se ambos os dados saírem **6**, o jogador escolhe livremente os dois elementos 
 > Um jogador rola **2D6** e obtém **3 e 5**.
 > Consultando a tabela: **3 → Energia** e **5 → Cognitivo**.
 > Ele decide que sua **Afinidade será Cognitivo** e sua **Antítese será Energia**.
-> Ao conjurar magias da mente, terá +4. Ao conjurar manifestações físicas, terá +2.
+> Ao conjurar magias da mente (Afinidade), não recebe modificador de relação. Ao conjurar manifestações físicas (Antítese), sofre −10.

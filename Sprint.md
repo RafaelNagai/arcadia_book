@@ -14,6 +14,8 @@ _nenhum item em andamento_
 
 ### A fazer
 
+---
+
 ### Sistema Arcano Completo na Ficha de Personagem
 **Origem:** /task Implementar sistema Arcano completo na ficha de personagem
 **Adicionada:** 2026-05-19
@@ -55,6 +57,17 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 ---
 
 ## Concluídos
+
+### Bug: Afinidade=Antítese — Bônus e Exibição na Ficha
+**Origem:** /task corrigir bug de afinidade=antítese: quando os dois são o mesmo elemento, o bônus deve ser +10 (não -10). Adicionar essa regra no livro (chapters/). Na ficha do personagem, exibir apenas um único bloco para o elemento quando afinidade e antítese são iguais.
+**Adicionada:** 2026-05-19 · **Validator:** APROVADO · **Concluída:** 2026-05-19
+
+- [x] Subtask 1 — `chapters/06_afinidades.md`: seção "Dados Iguais" reescrita para declarar explicitamente que os bônus individuais (+4 e +2) são substituídos pelo bônus único de +10
+- [x] Subtask 2 — `ArcaneConfigPanel.tsx` e `ArcaneTestOverlay.tsx`: `elementBonus` retorna `10` quando `afinidade === antitese && selectedElement === afinidade`, `0` caso contrário
+- [x] Subtask 3 — `ArcanoSection.tsx`: 1 card com badge "+10" quando `afinidade === antitese`; 2 cards em grid quando diferentes
+- [x] Subtask 4 — `AfinidadeWidget.tsx`: bloco Dupla Conexão exibe "+2" para Antítese e "+10" como total; cálculo coerente com a tabela base do livro
+
+---
 
 ### Sistema Arcano Completo na Ficha de Personagem — Subtasks 1, 3, 4, 5
 **Origem:** /task Implementar sistema Arcano completo na ficha de personagem

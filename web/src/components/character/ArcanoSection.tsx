@@ -321,7 +321,7 @@ export function ArcanoSection({
               </div>
             </div>
             {/* Afinidade + Antítese */}
-            <div className="grid grid-cols-2">
+            {character.afinidade === character.antitese ? (
               <div
                 style={{
                   padding: "1.2rem",
@@ -338,8 +338,19 @@ export function ArcanoSection({
                       textTransform: "uppercase",
                     }}
                   >
-                    Afinidade
+                    Afinidade · Antítese
                   </p>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                      fontSize: "1.1rem",
+                      color: accent.text,
+                      lineHeight: 1,
+                    }}
+                  >
+                    +10
+                  </span>
                 </div>
                 <p
                   style={{
@@ -363,60 +374,104 @@ export function ArcanoSection({
                   {ELEMENT_DATA[character.afinidade]?.essence ?? ""}
                 </p>
               </div>
-
-              <div
-                style={{
-                  padding: "1.25rem",
-                  background: `linear-gradient(135deg, ${antAccent.bg} 0%, ${antAccent.glow} 100%)`,
-                }}
-              >
-                <div className="flex items-start justify-between mb-3">
+            ) : (
+              <div className="grid grid-cols-2">
+                <div
+                  style={{
+                    padding: "1.2rem",
+                    background: `linear-gradient(135deg, ${accent.bg} 0%, ${accent.glow} 100%)`,
+                  }}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <p
+                      style={{
+                        fontFamily: "var(--font-ui)",
+                        fontSize: "0.55rem",
+                        letterSpacing: "0.2em",
+                        color: "rgba(255,255,255,0.65)",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Afinidade
+                    </p>
+                  </div>
                   <p
-                    style={{
-                      fontFamily: "var(--font-ui)",
-                      fontSize: "0.55rem",
-                      letterSpacing: "0.2em",
-                      color: "rgba(255,255,255,0.65)",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    Antítese
-                  </p>
-                  <span
                     style={{
                       fontFamily: "var(--font-display)",
                       fontWeight: 700,
-                      fontSize: "1.1rem",
-                      color: antAccent.text,
-                      lineHeight: 1,
+                      fontSize: "1.05rem",
+                      color: accent.text,
+                      marginBottom: "0.3rem",
                     }}
                   >
-                    −10
-                  </span>
+                    {character.afinidade}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: "0.75rem",
+                      color: "var(--color-text-secondary)",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {ELEMENT_DATA[character.afinidade]?.essence ?? ""}
+                  </p>
                 </div>
-                <p
+
+                <div
                   style={{
-                    fontFamily: "var(--font-display)",
-                    fontWeight: 700,
-                    fontSize: "1.05rem",
-                    color: antAccent.text,
-                    marginBottom: "0.3rem",
+                    padding: "1.25rem",
+                    background: `linear-gradient(135deg, ${antAccent.bg} 0%, ${antAccent.glow} 100%)`,
                   }}
                 >
-                  {character.antitese}
-                </p>
-                <p
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "0.75rem",
-                    color: "var(--color-text-secondary)",
-                    fontStyle: "italic",
-                  }}
-                >
-                  {ELEMENT_DATA[character.antitese]?.essence ?? ""}
-                </p>
+                  <div className="flex items-start justify-between mb-3">
+                    <p
+                      style={{
+                        fontFamily: "var(--font-ui)",
+                        fontSize: "0.55rem",
+                        letterSpacing: "0.2em",
+                        color: "rgba(255,255,255,0.65)",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Antítese
+                    </p>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontWeight: 700,
+                        fontSize: "1.1rem",
+                        color: antAccent.text,
+                        lineHeight: 1,
+                      }}
+                    >
+                      −10
+                    </span>
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 700,
+                      fontSize: "1.05rem",
+                      color: antAccent.text,
+                      marginBottom: "0.3rem",
+                    }}
+                  >
+                    {character.antitese}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: "0.75rem",
+                      color: "var(--color-text-secondary)",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {ELEMENT_DATA[character.antitese]?.essence ?? ""}
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
             {/* Entropia + Marcas */}
             <div
               style={{

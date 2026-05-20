@@ -836,7 +836,7 @@
     "maxDurability": 6,
     "effects": [
       "Para cada nivel de entropia, o escudo ganha +1 de DA. Acumulando até no maximo 5.",
-      "Caso defenda todos os dados de ataque, permite utilizar uma magia arcana com Desvantagem naquele momento, sem custo de ação. Pode ser usado 1 vez por turno."
+      "Caso defenda todos os dados de ataque recebidos no turno, o portador pode conjurar imediatamente usando apenas 1D12 na pool de dados (em vez de 2D12), sem gastar Ação. Pode ser usado 1 vez por turno."
     ],
     "description": "Não é feito de cristal, mas de pura energia arcana. O nome vem do brilho azul que emite ao aparar um golpe forte demais.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/6dc075f2-fcb8-4049-9483-82c2ff8b5a9c/segments/2:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_intan_1.jpg"
@@ -901,7 +901,7 @@
     "maxDurability": 3,
     "effects": [
       "+1 DP contra arcano.",
-      "Imunidade a feitiços de manipulação de Cognitivos."
+      "Imunidade a conjurações do elemento Cognitivo com efeito de manipulação mental."
     ],
     "description": "Gravado com runas de bloqueio mental — uma escolha sábia num mundo onde arcanistas miram na cabeça.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f3fb-e7f0-6140-bd61-c4f293504cc0/lucid-origin_A_highly_detailed_illustration_of_a_full-head_arcane_fantasy_helmet_shaped_into_-1.jpg"
@@ -917,7 +917,7 @@
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 1,
-    "effects": ["Ao conjurar um feitiço com Dificuldade ≤ 10, role com Vantagem no teste de Conjuração."],
+    "effects": ["Ao conjurar com todos os modificadores exigidos tendo score ≤ 10, adicione 1D12 extra à sua pool de dados para esta conjuração."],
     "description": "Todo arcanista começa com um. Poucos guardam o primeiro.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/ef53a010-8a10-41b2-a2b9-09ac267ea255/segments/1:1:1/Lucid_Origin_A_detailed_illustration_of_a_magical_staff_displa_0.jpg"
   },
@@ -932,7 +932,7 @@
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 2,
-    "effects": ["Uma vez por sessão, ao gerar Entropia, absorva 1 ponto no cajado em vez de acumulá-la na Sanidade."],
+    "effects": ["Uma vez por sessão, ao aumentar a Entropia voluntariamente, ignore a rolagem de Marca — nenhuma Modificação é recebida naquele aumento."],
     "description": "Magos que temem o desconhecido, temem perder a sanidade ao obter poder do conhecimento arcano, este cajado os guiava.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/ffb10008-622e-4580-b303-7d793f9785df/segments/3:4:1/Lucid_Origin_A_detailed_illustration_of_a_magical_staff_displa_2.jpg"
   },
@@ -948,8 +948,8 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Para cada ponto de Entropia, ganha +2 no resultado final da conjuração do arcano.",
-      "Para cada runa alocada para a conjuração do arcano, ganha +1 em todos os dados de dano."
+      "Para cada ponto de Entropia, ganha +2 no resultado de todos os modificadores nesta conjuração.",
+      "Para cada D12 alocado no modificador de Potência, ganha +1 em todos os dados de dano arcano."
     ],
     "description": "Talhado de um fragmento dimensional. Parte de sua madeira não pertence ao Plano Infinito.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/a0f4248d-b1cb-4a0c-a27b-4e2e7fd8149d/segments/4:4:1/Lucid_Origin_A_detailed_illustration_of_a_curved_magical_staff_3.jpg"
@@ -966,7 +966,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Enquanto possuir o cajado, permite ganhar as runas TELEPORTE e MOVIMENTO.",
+      "Enquanto possuir este cajado, intenções de teleporte e deslocamento arcano não exigem o modificador Forma — o Mestre trata esse aspecto como automaticamente atendido.",
       "Uma vez por combate, ao defender usando Cajado Dimensional, permite redirecionar o dano para outro alvo em combate. O alvo é randomico, definido entre quem tirar o menor valor em 1D6."
     ],
     "description": "Este cajado não veio do plano infinito, pouco se sabe, mas a joia na ponta do cajado é uma mini-dimensão.",
@@ -984,7 +984,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Todo tipo de magia arcana, causa x1 queimadura no alvo."
+      "Toda conjuração arcana que cause dano aplica 1 stack de Queimadura ao alvo."
     ],
     "description": "Isto não é um cajado, mas são presas de uma formiga vulcanica que permitem vincular ao arcano uma propriedade incineraria.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/0716a582-79a0-411e-a7d9-80c28d5c0fa8/segments/4:4:1/Lucid_Origin_A_detailed_illustration_of_a_magical_staff_displa_3.jpg"
@@ -1001,9 +1001,9 @@
     "isEquipment": true,
     "maxDurability": 30,
     "effects": [
-      "Ganha +10 em magias que contém a runa de GELO.",
-      "Uma vez por turno, permite usar uma magia que contém a runa de gelo sem gastar uma AÇÃO.",
-      "A cada magia realizada com a Soberania Gelida, perde 1 de Sanidade. Porém se houver uma falha critica, o personagem perde 12 de sanidade. Se houver um desastre, o personagem ganha um trauma relacionado."
+      "Ao conjurar com intenção de frio, gelo ou congelamento, ganha +10 no resultado de todos os modificadores.",
+      "Uma vez por turno, o portador pode realizar uma conjuração de intenção glacial sem gastar Ação.",
+      "Toda conjuração realizada enquanto usa a Soberania Gelida custa 1 adicional de Sanidade (além do custo normal de 1). Em falha crítica, perde 12 de Sanidade. Em Desastre, o personagem ganha um Trauma relacionado ao frio."
     ],
     "description": "Um artefato de ouro antigo, encrustado com rubys extraido de North Galahad, que pulsa magia glacial. Rumores dizem que este item foi forjado por Sugovat.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/c36eb43f-2e7d-49d6-82af-b81017592fa0/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_crown_2.jpg"
@@ -1302,8 +1302,8 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Uma vez por cena, ao conjurar um feitiço, pode realizar um ataque extra corpo-a-corpo com esta arma.",
-      "Se tiver afinidade e antitese iguais, ganham +2 em todos os testes de Combate com esta lâmina."
+      "Uma vez por cena, ao realizar uma conjuração, pode realizar um ataque extra corpo-a-corpo com esta arma como Ação Gratuita.",
+      "Se o portador tiver ao menos 1 ponto em qualquer modificador arcano (Potência, Complexidade, Forma ou Controle), ganha +2 em todos os testes de Combate com esta lâmina."
     ],
     "description": "Forjada por um ferreiro que era também arcanista. Ele queria que as duas coisas conversassem. Funcionou.",
     "image": "assets/images/equipments/equipment_lamina-runica.jpg"
@@ -1319,7 +1319,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Permite usar a Runa de Agua",
+      "Ao conjurar com intenção aquática ou de água, ganha +5 no resultado de todos os modificadores.",
       "Uma vez por combate, cria uma onda que empurra todos os inimigos em 10m, 4m para trás (Atletismo dif. 18 para resistir)."
     ],
     "description": "Recolhida do fundo de um naufrágio em frente a Union. A ilha afundou; a espada não.",
@@ -1457,7 +1457,7 @@
     "isEquipment": true,
     "maxDurability": 10,
     "effects": [
-      "Ao conjurar um feitiço, a armadura absorve 1 de Entropia que seria acumulada.",
+      "Uma vez por cena, ao conjurar, a armadura absorve o custo de Sanidade — o portador não perde a Sanidade desta conjuração.",
       "Ganha +2 de DP contra magias arcanas."
     ],
     "description": "Cada runa gravada por um Mestre de Britannia. Leva anos para ser concluída. Protege em dois planos ao mesmo tempo.",
@@ -2553,8 +2553,8 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Ganha +3 em testes de Arcano.",
-      "Uma vez por sessão, permite rerolar um teste arcano."
+      "Ganha +3 no resultado de qualquer modificador arcano testado.",
+      "Uma vez por sessão, ao rolar uma conjuração, pode rerolar todos os dados alocados em um modificador e manter o resultado mais favorável."
     ],
     "description": "Uma joia de eltys puro que ressoa com o fluxo arcano. Arcanistas sentem o poder antes mesmo de tocá-lo.",
     "image": "assets/images/equipments/equipment_amuleto-eltirico.jpg"
@@ -2623,7 +2623,7 @@
     "maxDurability": 3,
     "effects": [
       "Para cada ponto de Entropia, ganha +1 em todos os dados de dano arcano.",
-      "A entropia 1 e 2, não tem penalidade para alcançar. Se o amuleto for removido com entropia maior que 2, o portador recebe 5D12 de Sanidade."
+      "Ao aumentar a Entropia para nível 1 ou 2, ignore a rolagem de Marca — nenhuma Modificação é recebida. Se o amuleto for removido com Entropia maior que 2, o portador perde 5D12 de Sanidade instantaneamente."
     ],
     "description": "Um aventureiro criou este amuleto com materiais vindo de outra dimensão, ele não sabia as consequencias de seus atos, mas ele criou um paradoxo vivo.",
     "image": "assets/images/equipments/equipment_amuleto-entropico.jpg"
@@ -2678,7 +2678,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Permite usar a runa de Planta."
+      "Ao conjurar com intenção vegetal (controle de plantas, crescimento, venenos naturais), ganha +5 no resultado de todos os modificadores."
     ],
     "description": "Um livro que contem o conhecimento sobre a grama e plantas, feito por um antigo arcanista vegano.",
     "image": "assets/images/equipments/equipment_livro-gramatico.jpg"
@@ -2694,7 +2694,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Permite usar a runa de Fogo."
+      "Ao conjurar com intenção de fogo ou calor, ganha +5 no resultado de todos os modificadores."
     ],
     "description": "Um livro escrito por um dragão, é o que foi vendido na loja.",
     "image": "assets/images/equipments/equipment_livro-ardente.jpg"
@@ -2710,7 +2710,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Permite usar a runa de Vento."
+      "Ao conjurar com intenção de vento ou ar, ganha +5 no resultado de todos os modificadores."
     ],
     "description": "Um livro caiu dos ceus, é o que dizem os piratas que venderam ela.",
     "image": "assets/images/equipments/equipment_livro-soprante.jpg"
@@ -2726,7 +2726,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Permite usar a runa de Tempo."
+      "Ao conjurar com intenção de manipulação temporal (acelerar, retardar, pausar), ganha +5 no resultado de todos os modificadores."
     ],
     "description": "Ao abrir o livro, consegue se ouvir o som do tic-tac.",
     "image": "assets/images/equipments/equipment_livro-passa-tempo.jpg"
@@ -2742,7 +2742,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Permite usar a runa de Teleporte."
+      "Ao conjurar com intenção de teleporte ou deslocamento espacial instantâneo, ganha +5 no resultado de todos os modificadores."
     ],
     "description": "O livro foi escrito em outra dimensão, permitindo carregar certas caracteristicas do mago que lhe forjou.",
     "image": "assets/images/equipments/equipment_livro_logo_ali.jpg"
@@ -2758,8 +2758,8 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Permite usar a runa de Invisibilidade.",
-      "Magias relacionadas a esconder ou ocultar, ganham mais +2 de bonus."
+      "Ao conjurar com intenção de invisibilidade ou ocultamento, ganha +5 no resultado de todos os modificadores.",
+      "Conjurações com intenção de esconder ou ocultar ganham +2 adicional no resultado de todos os modificadores."
     ],
     "description": "Um louco dizia ter escrito um livro invisivel, até que no dia da sua morte este livro apareceu em suas mãos.",
     "image": "assets/images/equipments/equipment_livro-do-sumico.jpg"
@@ -2775,8 +2775,8 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Permite usar a runa de Area.",
-      "Magias do elemento Energia, ganham mais +1 de bonus."
+      "Ao conjurar com intenção de efeito em área (explosão, onda, campo), ganha +5 no resultado do modificador Forma.",
+      "Ao conjurar com o elemento Energia, ganha +1 no resultado de todos os modificadores."
     ],
     "description": "Um louco dizia ter escrito um livro invisivel, até que no dia da sua morte este livro apareceu em suas mãos.",
     "image": "assets/images/equipments/equipment_livro-do-sumico.jpg"
@@ -2792,8 +2792,8 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Permite usar a runa de Metal e Escudo.",
-      "Magias de Antitese ganham +2 de bonus.",
+      "Ao conjurar com intenção de barreira, proteção ou blindagem metálica, ganha +5 no resultado do modificador Controle.",
+      "Ao conjurar com o elemento de Antítese, ganha +2 no resultado de todos os modificadores.",
       "Se o portador tiver 3 ou mais livros no inventario, ganha +1 de DP."
     ],
     "description": "Um mago que tinha medo de morrer, colocou toda a sua sabedoria para se proteger de tudo e todos. Quando exercitos de Galahad tentou invadir Camelot, este mago sobreviveu a uma chuva de 1000 flechas em sua direção.",
@@ -2810,8 +2810,8 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Permite usar a runa de Movimento e Flutuação.",
-      "Para cada livro que o portador tiver no inventario, ganha +3 em testes de arcano.",
+      "Ao conjurar com intenção de movimento arcano ou flutuação, ganha +5 no resultado de todos os modificadores.",
+      "Para cada livro que o portador tiver no inventário, ganha +3 no resultado de qualquer modificador arcano testado.",
       "Não pode ser destruido por equipamentos materiais.",
       "Se tentar ler esse livro, o personagem deve realizar um teste de Vontade (dif. 35), se nao passar ganha um Trauma."
     ],

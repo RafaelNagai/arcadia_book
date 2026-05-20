@@ -134,7 +134,7 @@ function ElementCard({
           </span>
           {bonus !== undefined && (
             <span className="text-lg font-display font-bold" style={{ color: roleColor }}>
-              +{bonus}
+              {bonus >= 0 ? `+${bonus}` : `−${Math.abs(bonus)}`}
             </span>
           )}
         </div>
@@ -238,7 +238,7 @@ export function AfinidadeWidget() {
             Gerador de Afinidade e Antítese
           </h3>
           <p className="text-xs mt-0.5 font-ui" style={{ color: 'var(--color-text-muted)' }}>
-            Rola 2D6 — o jogador escolhe qual dado é Afinidade (+4) e qual é Antítese (+2)
+            Rola 2D6 — o jogador escolhe qual dado é Afinidade e qual é Antítese (−10)
           </p>
         </div>
       </div>
@@ -298,7 +298,7 @@ export function AfinidadeWidget() {
                           Dupla Conexão — Afinidade e Antítese no mesmo elemento
                         </p>
                       </div>
-                      <ElementCard element={afinidadeEl!} role="afinidade" bonus={4} />
+                      <ElementCard element={afinidadeEl!} role="afinidade" />
                       <div
                         className="rounded border px-4 py-3 flex items-center justify-between"
                         style={{ background: 'rgba(107,63,160,0.12)', borderColor: 'rgba(107,63,160,0.4)' }}
@@ -306,7 +306,7 @@ export function AfinidadeWidget() {
                         <span className="text-sm font-ui" style={{ color: 'var(--color-text-secondary)' }}>
                           Antítese (mesmo elemento)
                         </span>
-                        <span className="font-display font-bold text-lg" style={{ color: '#9B6FD0' }}>+2</span>
+                        <span className="font-display font-bold text-lg" style={{ color: '#9B6FD0' }}>−10 → +10</span>
                       </div>
                       <div
                         className="rounded border px-4 py-3 flex items-center justify-between"
@@ -315,7 +315,7 @@ export function AfinidadeWidget() {
                         <span className="text-sm font-ui" style={{ color: 'var(--color-text-secondary)' }}>
                           Bônus total ao conjurar {afinidadeEl!.name}
                         </span>
-                        <span className="font-display font-bold text-2xl" style={{ color: 'var(--color-arcano-glow)' }}>+6</span>
+                        <span className="font-display font-bold text-2xl" style={{ color: 'var(--color-arcano-glow)' }}>+10</span>
                       </div>
                       <p className="text-xs text-center font-body italic" style={{ color: 'var(--color-text-muted)' }}>
                         Carregar o mesmo elemento como Afinidade e Antítese é como ter dois rios correndo em sentidos opostos dentro do mesmo canal.
@@ -332,13 +332,12 @@ export function AfinidadeWidget() {
                         <ElementCard
                           element={afinidadeEl!}
                           role="afinidade"
-                          bonus={4}
                           selectable={false}
                         />
                         <ElementCard
                           element={antiteseEl!}
                           role="antitese"
-                          bonus={2}
+                          bonus={-10}
                           selectable={false}
                         />
                       </div>
@@ -361,9 +360,9 @@ export function AfinidadeWidget() {
                         style={{ background: 'rgba(15,23,41,0.6)', borderColor: 'var(--color-border)' }}
                       >
                         <div className="text-sm font-ui" style={{ color: 'var(--color-text-secondary)' }}>
-                          <span style={{ color: '#E8B84B' }}>{afinidadeEl!.name}</span> +4 &nbsp;·&nbsp;
-                          <span style={{ color: '#9B6FD0' }}>{antiteseEl!.name}</span> +2 &nbsp;·&nbsp;
-                          demais elementos +0
+                          <span style={{ color: '#E8B84B' }}>{afinidadeEl!.name}</span> sem mod &nbsp;·&nbsp;
+                          <span style={{ color: '#9B6FD0' }}>{antiteseEl!.name}</span> −10 &nbsp;·&nbsp;
+                          demais +0
                         </div>
                       </div>
                     </div>

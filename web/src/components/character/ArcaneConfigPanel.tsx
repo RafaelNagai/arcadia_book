@@ -170,8 +170,10 @@ export function ArcaneConfigPanel({
   onRoll,
   onClose,
 }: ArcaneConfigPanelProps) {
-  const isAnti = selectedElement === antitese;
-  const elementBonus = isAnti ? -10 : 0;
+  const elementBonus =
+    afinidade === antitese && selectedElement === afinidade ? 10 :
+    selectedElement === antitese && afinidade !== antitese ? -10 :
+    0;
   const typeColor = getAccent(selectedElement).text;
 
   // Stable IDs for all tokens
@@ -518,7 +520,7 @@ export function ArcaneConfigPanel({
                         lineHeight: 1,
                       }}
                     >
-                      {isElemAnti ? "−10" : isElemAfin ? "—" : "✕"}
+                      {isElemAfin && isElemAnti ? "+10" : isElemAfin ? "—" : isElemAnti ? "−10" : "✕"}
                     </span>
                     {(isElemAfin || isElemAnti) && (
                       <span
@@ -531,7 +533,7 @@ export function ArcaneConfigPanel({
                           lineHeight: 1,
                         }}
                       >
-                        {isElemAfin ? "Afin" : "Anti"}
+                        {isElemAfin && isElemAnti ? "Afin+Anti" : isElemAfin ? "Afin" : "Anti"}
                       </span>
                     )}
                   </button>

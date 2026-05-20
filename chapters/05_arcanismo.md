@@ -174,6 +174,8 @@ Todo conjurador possui dois elementos: sua **Afinidade** e sua **Antítese**.
 
 O personagem **só pode conjurar com esses dois elementos**. Não é uma questão de dificuldade — é de natureza. A essência do Caos em cada ser tem sua própria cor, e às vezes carrega um eco de outra natureza. Usar esse eco é possível, mas custoso.
 
+> **Caso especial — Dupla Conexão:** se Afinidade e Antítese são o mesmo elemento, a penalidade de −10 é substituída por **+10** ao conjurar magias daquele elemento. Para a mecânica completa, consulte o capítulo de Afinidade e Antítese.
+
 > Para a descrição completa dos cinco elementos e suas naturezas, consulte o capítulo seguinte.
 
 ---

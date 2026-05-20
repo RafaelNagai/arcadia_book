@@ -96,7 +96,10 @@ export function ArcaneTestOverlay({
   const rollingEAllocRef = useRef<Record<ModKey, number>>({ potencia: 0, complexidade: 0, forma: 0, controle: 0 });
 
   const entropiaBonus = arcano * entropia;
-  const elementBonus = selectedElement === antitese ? -10 : 0;
+  const elementBonus =
+    afinidade === antitese && selectedElement === afinidade ? 10 :
+    selectedElement === antitese && afinidade !== antitese ? -10 :
+    0;
   const typeColor = getAccent(selectedElement).text;
 
   const diceRequest = useMemo<DiceRollRequest[]>(
@@ -394,7 +397,7 @@ export function ArcaneTestOverlay({
                             {(() => {
                               const bonus = rollingEAllocRef.current[k];
                               const bonusPart = bonus > 0 ? ` + ${bonus}` : "";
-                              const elPart = elementBonus < 0 ? ` − 10` : "";
+                              const elPart = elementBonus !== 0 ? ` ${elementBonus > 0 ? `+ ${elementBonus}` : `− ${Math.abs(elementBonus)}`}` : "";
                               return hasDice
                                 ? `${res.dice.reduce((a,b)=>a+b,0)} + ${res.score}${bonusPart}${elPart}`
                                 : `${res.score}${bonusPart}${elPart} (sem dado)`;

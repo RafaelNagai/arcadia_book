@@ -8,7 +8,7 @@
 
 Todo arcano nasce de um dos **Cinco Elementos** — categorias que definem não apenas o que a magia faz, mas como ela pensa, o que ela quer e o preço que cobra de quem a usa.
 
-O Mestre usa os elementos para classificar cada intenção arcana e determinar o bônus de Afinidade ou Antítese do conjurador. Em casos óbvios, o próprio jogador pode sugerir o elemento correto.
+O Mestre usa os elementos para classificar cada intenção arcana e verificar a relação elemental do conjurador — se o elemento pertence à sua Afinidade (sem modificador) ou Antítese (−10). Em casos óbvios, o próprio jogador pode sugerir o elemento correto.
 
 ---
 
