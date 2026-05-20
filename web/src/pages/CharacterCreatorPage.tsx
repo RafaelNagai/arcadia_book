@@ -54,7 +54,7 @@ export function CharacterCreatorPage() {
       setAfinidade(char.afinidade)
       setAntitese(char.antitese)
       setEntropia(char.entropia)
-      setArcano((char.attributes.arcano) ?? 0)
+
       setModificadores(char.modificadores ?? EMPTY_MODS)
       setAntecedentes(char.antecedentes)
       setTraumas(char.traumas)
@@ -87,8 +87,7 @@ export function CharacterCreatorPage() {
   const [afinidade,    setAfinidade]    = useState(existing?.afinidade ?? '')
   const [antitese,     setAntitese]     = useState(existing?.antitese  ?? '')
   const [entropia,     setEntropia]     = useState(existing?.entropia  ?? 0)
-  const [arcano,       setArcano]       = useState(existing?.attributes.arcano ?? 0)
-  const [modificadores, setModificadores] = useState<CharacterModificadores>(existing?.modificadores ?? EMPTY_MODS)
+const [modificadores, setModificadores] = useState<CharacterModificadores>(existing?.modificadores ?? EMPTY_MODS)
   const [antecedentes, setAntecedentes] = useState<string[]>(existing?.antecedentes ?? [])
   const [traumas,    setTraumas]    = useState<string[]>(existing?.traumas    ?? [])
   const [historia,   setHistoria]   = useState(existing?.historia   ?? '')
@@ -122,7 +121,6 @@ export function CharacterCreatorPage() {
     if (k === 'afinidade')     setAfinidade(v as string)
     else if (k === 'antitese') setAntitese(v as string)
     else if (k === 'entropia') setEntropia(v as number)
-    else if (k === 'arcano')   setArcano(v as number)
     else if (k === 'modificadores') setModificadores(v as CharacterModificadores)
   }, [])
 
@@ -145,7 +143,7 @@ export function CharacterCreatorPage() {
         quote:       quote.trim(),
         image,
         level:   totalLevel,
-        attributes: { ...attrs, arcano },
+        attributes: { ...attrs },
         skills,
         talents,
         hp:       newHp,
@@ -272,8 +270,6 @@ export function CharacterCreatorPage() {
               <Step4Arcano
                 afinidade={afinidade}
                 antitese={antitese}
-                entropia={entropia}
-                arcano={arcano}
                 modificadores={modificadores}
                 onChange={handleArcanoChange}
               />

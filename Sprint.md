@@ -58,6 +58,17 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Arcano como Atributo na Criação de Personagem
+**Origem:** /task Adicionar atributo ARCANO na etapa de "atributos" da criação de ficha de personagem, e remover o campo de definição do ARCANO da seção "arcano" durante a criação de ficha
+**Adicionada:** 2026-05-19 · **Validator:** APROVADO · **Concluída:** 2026-05-19
+
+- [x] Subtask 1 — `arcano` adicionado ao `ATTR_GROUPS` em `creator/types.ts` com cor `#B060D0`, label "Arcano", desc "5º atributo — cresce por experiência narrativa", `skills: []`
+- [x] Subtask 2 — Stepper de `arcano` removido de `Step4Arcano.tsx`; card roxo mantém apenas Entropia; resumo exibe só "Entropia Y"
+- [x] Subtask 3 — Estado separado `arcano` removido de `CharacterCreatorPage`; `handleSave` usa `attributes: { ...attrs }` que já inclui `arcano`; `Step2Attrs` itera `ATTR_GROUPS` e exibe Arcano automaticamente
+- [x] Subtask 4 — `Step4Arcano` não recebe mais prop `arcano`; nenhum `onChange('arcano', ...)` residual; TypeScript compila sem erros
+
+---
+
 ### Bug: Afinidade=Antítese — Bônus e Exibição na Ficha
 **Origem:** /task corrigir bug de afinidade=antítese: quando os dois são o mesmo elemento, o bônus deve ser +10 (não -10). Adicionar essa regra no livro (chapters/). Na ficha do personagem, exibir apenas um único bloco para o elemento quando afinidade e antítese são iguais.
 **Adicionada:** 2026-05-19 · **Validator:** APROVADO · **Concluída:** 2026-05-19

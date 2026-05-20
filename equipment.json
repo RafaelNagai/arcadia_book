@@ -2822,8 +2822,8 @@
     "image": "assets/images/equipments/equipment_faca_solenimente.jpg"
   },
   {
-    "id": "pirulas-do-gigante",
-    "name": "Pirulas do Gigante",
+    "id": "pilulas-do-gigante",
+    "name": "Pilulas do Gigante",
     "category": "Acessório",
     "subcategory": "Comestivel",
     "tier": "A",
@@ -2836,8 +2836,8 @@
       "Aumenta em +5 todos os dados de dano.",
       "Perde -5 em INTELECTO, se ficar com zero ou menos, o individuo se torna incontrolavel atacando qualquer um perto, dura 10 turnos."
     ],
-    "description": "Uma pirula de capsula, que serve como anabolizante para o individuo que o ingerir. Esta é uma fração da pirula que o grande Rei Thenomad usou em suas batalhas.",
-    "image": "assets/images/equipments/equipment_pirula_do_gigante.jpg"
+    "description": "Uma pilula de capsula, que serve como anabolizante para o individuo que o ingerir. Esta é uma fração da pilula que o grande Rei Thenomad usou em suas batalhas.",
+    "image": "assets/images/equipments/equipment_pilula_do_gigante.jpg"
   },
   {
     "id": "monoculo_de_guanjhi",

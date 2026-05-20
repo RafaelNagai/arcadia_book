@@ -24,7 +24,7 @@ export function Step3Skills({ skills, talents, totalLevel, onChange, onTalentTog
       </div>
 
       <div className="space-y-5">
-        {ATTR_GROUPS.map(g => (
+        {ATTR_GROUPS.filter(g => g.skills.length > 0).map(g => (
           <div key={g.attr}>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: g.color, marginBottom: '0.6rem', borderBottom: `1px solid ${g.color}22`, paddingBottom: '0.4rem' }}>
               {g.label}

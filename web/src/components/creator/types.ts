@@ -74,6 +74,11 @@ export const ATTR_GROUPS = [
       { key: 'performance' as const, label: 'Performance' },
     ],
   },
+  {
+    attr: 'arcano' as const, label: 'Arcano', color: '#52cff9',
+    desc: 'Criação e manipulação de magias.',
+    skills: [],
+  },
 ]
 
 export const EMPTY_SKILLS: CharacterSkills = {
