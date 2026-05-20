@@ -16,6 +16,49 @@ O Mestre atribui o elemento na conjuração como em qualquer outra magia. A cria
 
 ---
 
+## Os Modificadores da Invocação
+
+Invocar usa os modificadores do sistema arcano, mas cada um define uma dimensão específica da entidade trazida. Toda invocação exige no mínimo **2 modificadores**.
+
+| Modificador | O que define na invocação |
+|---|---|
+| **Forma** | O porte físico e tier de poder da entidade |
+| **Complexidade** | A sofisticação da entidade — quantas habilidades especiais pode usar |
+| **Controle** | A qualidade do vínculo — quão obediente e estável a entidade permanece |
+
+### Lendo o Resultado
+
+Cada modificador é lido na **Tabela de Grandeza** (capítulo de Arcanismo):
+
+**Forma** — o resultado determina o tier físico da entidade invocada:
+
+| Resultado | Tier da entidade |
+|---|---|
+| 0 – 20 | Menor — animal de pequeno porte, construto frágil |
+| 21 – 40 | Padrão — criatura do tamanho de um humano adulto |
+| 41 – 60 | Elite — criatura grande, urso, elemental robusto |
+| 61+ | Chefe — entidade colossal, ancião de plano, construto monumental |
+
+**Complexidade** — o resultado determina as habilidades disponíveis:
+
+| Resultado | Habilidades |
+|---|---|
+| 0 – 20 | Apenas ataque básico |
+| 21 – 40 | Ataque básico + 1 habilidade especial |
+| 41+ | Ataque básico + 2 ou mais habilidades especiais |
+
+**Controle** — o resultado determina a qualidade do vínculo:
+
+| Resultado | Vínculo |
+|---|---|
+| 0 – 20 | Instável — a criatura age predominantemente pelo instinto, ignora comandos complexos |
+| 21 – 40 | Estável — obedece comandos simples com fidelidade |
+| 41+ | Sólido — sustenta comandos complexos e duradouros sem desvio |
+
+> *Exemplo: Vael invoca um elemental de plasma (Energia). Aloca os 2D12 em Forma e sem dado em Complexidade e Controle. Forma = 38 (Padrão — humano adulto), Complexidade = 14 (apenas ataque básico), Controle = 7 (instável — age pelo instinto). O elemental aparece, ataca o inimigo mais próximo e ignora qualquer ordem mais sutil.*
+
+---
+
 ## Execução e Duração
 
 O tipo de Execução define por quanto tempo a criatura permanece no Plano Material.
