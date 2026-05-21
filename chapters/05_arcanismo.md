@@ -28,7 +28,7 @@ Qualquer personagem pode tentar tocar o Arcano. Não existe barreira inata — e
 
 A diferença entre um mago e alguém que "apenas tentou" está na **Entropia**: o quanto o personagem está disposto a se expor à essência do Caos. Com baixa Entropia, é como abrir uma torneira — a água flui com controle, em quantidade gerenciável. Com Entropia alta, é como abrir uma represa — o poder é imenso, mas a contenção exige tudo que você tem.
 
-> Coisas inanimadas não possuem consciência para abrir seus próprios portões. Mas se tivessem, o fariam.
+> Coisas inanimadas não possuem consciência para se conectar ao arcano. Mas se tivessem, o fariam.
 
 ---
 
@@ -36,7 +36,7 @@ A diferença entre um mago e alguém que "apenas tentou" está na **Entropia**: 
 
 O **Arcano** é o quinto atributo do personagem — a medida de quão familiarizado ele está com a linguagem do Caos.
 
-Funciona igual aos outros atributos: cresce apenas através de **experiência narrativa**, não por PE. Quanto maior o Arcano, maior o bônus que a Entropia concede ao conjurar.
+Funciona igual aos outros atributos: cresce apenas através de **experiência narrativa**, não evolui com testes. Quanto maior o Arcano, maior o bônus que a Entropia concede ao conjurar.
 
 > O Arcano não é treinado — é conquistado. Ele cresce com as marcas que o personagem carrega, com os riscos que tomou e os preços que pagou.
 
@@ -44,16 +44,16 @@ Funciona igual aos outros atributos: cresce apenas através de **experiência na
 
 ## Os Modificadores
 
-A magia não é um ato único — é uma composição. Quando o personagem molda o Arcano, ele trabalha em **quatro dimensões simultâneas**, cada uma com sua própria habilidade:
+A magia não é um ato único — é uma composição. Quando o personagem molda o Arcano, ele trabalha em **quatro dimensões simultâneas**, cada uma com sua própria caracteristica:
 
 | Modificador | O que define |
 |---|---|
 | **Potência** | A força do efeito — intensidade do dano, da cura, do impacto |
-| **Complexidade** | A sofisticação do efeito — condições, gatilhos, múltiplos efeitos |
 | **Forma** | Como a magia se manifesta no espaço — modelagem, direção, área |
+| **Complexidade** | A sofisticação do efeito — condições, gatilhos, múltiplos efeitos |
 | **Controle** | A contenção e gestão do efeito — precisão, estabilidade, duração |
 
-Os Modificadores funcionam como **perícias**: têm score próprio que cresce com PE. Um mago especializado em Potência cria efeitos devastadores mas pouco refinados. Um que domina Complexidade tece magias sofisticadas com múltiplas condições.
+Os Modificadores funcionam como **perícias**: têm score próprio que cresce com testes que consiga obter 2 12s em 2D12. Um mago especializado em Potência cria efeitos devastadores mas pouco refinados. Um que domina Complexidade tece magias sofisticadas com múltiplas condições.
 
 **O Mestre decide quais modificadores uma magia exige** com base na intenção descrita. Toda magia exige no mínimo 2 modificadores.
 
@@ -75,7 +75,7 @@ O Mestre designa qual dos **Cinco Elementos** a magia pertence: *Energia, Anomal
 O Mestre determina quais modificadores a magia exige com base na intenção. Toda magia exige no mínimo 2.
 
 ### 4. Distribuição da Pool de Dados
-O jogador distribui seus **2D12** entre os modificadores exigidos antes de rolar. Pode concentrar ambos em um único modificador — o outro usará apenas score + bônus de Entropia.
+O jogador distribui seus **2D12** entre os modificadores exigidos antes de rolar. Pode concentrar ambos em um único modificador — o outro usará apenas o valor do modificador.
 
 ### 5. O Teste
 Para cada modificador, o jogador rola e soma:
@@ -96,7 +96,7 @@ Todo personagem dispõe de **2D12** para distribuir entre os modificadores exigi
 - Pode colocar ambos os dados em um único modificador — o outro utiliza apenas score + Entropia, sem dado
 - Magias com 3 ou mais modificadores exigem Entropia alta para cobrir os modificadores sem dado disponível
 
-> Concentrar ambos os D12s em um modificador é a única forma de conseguir **Milagre** ou **Desastre** — e a única forma de avançá-lo com PE.
+> Concentrar ambos os D12s em um modificador é a única forma de conseguir **Milagre** ou **Desastre** — e a única forma de melhorar o score de um modificador.
 
 ---
 
@@ -123,16 +123,16 @@ A **magnitude** de toda modificação é **X = nível de Entropia atual**.
 | 1 | **Eco Arcano** — −X em furtividade ao conjurar (voz ecoa, luz vaza) | Negativo |
 | 2 | **Drenagem Ampliada** — toda conjuração custa X+1 de Sanidade | Negativo |
 | 3 | **Fragilidade Mental** — −X em Vontade | Negativo |
-| 4 | **Desgaste Físico** — −X em Físico | Negativo |
+| 4 | **Desgaste Físico** — −X em Atletismo | Negativo |
 | 5 | **Vulnerabilidade Elemental** — recebe X de dano extra do elemento de Antítese | Negativo |
-| 6 | **Fome Arcana** — compulsão a conjurar; resistir custa 1 Sanidade por cena | Negativo |
-| 7 | **Atração Indesejada** — criaturas arcanas são atraídas durante descanso | Negativo |
+| 6 | **Fome Arcana** — Em vez de perde Sanidade para realizar uma magia, perde Vida. | Negativo |
+| 7 | **Atração Indesejada** — criaturas arcanas são atraídas, eles priorizam os ataques nesse alvo | Negativo |
 | 8 | **Memória Fragmentada** — −X em Conhecimento; lacunas aleatórias de memória | Negativo |
-| 9 | **Instabilidade Passiva** — objetos leves se movem involuntariamente ao dormir | Narrativo |
+| 9 | **Instabilidade Passiva** — objetos leves se movem involuntariamente | Narrativo |
 | 10 | **Marca Visível** — elemento de Afinidade manifesta-se na aparência (cicatriz, brilho, temperatura) | Narrativo |
 | 11 | **Sonhos do Arcano** — sonhos intensos com o elemento; Mestre pode dar pistas ou visões | Narrativo |
 | 12 | **Voz do Elemento** — ouve o elemento sussurrar em momentos de silêncio; pista ou paranoia | Narrativo |
-| 13 | **Presença Arcana** — +X em Influência sobre não-magos; perceptível a outros magos | Misto |
+| 13 | **Presença Arcana** — +X em Persuação; -X em Empatia | Misto |
 | 14 | **Consumo Acelerado** — conjurações custam 1 Sanidade extra, mas resultado do teste +X | Misto |
 | 15 | **Toque Arcano** — toque causa desconforto em criaturas sensíveis; +X em Intimidação | Misto |
 | 16 | **Visão Dupla** — enxerga o plano arcano sobre o real; +X em Percepção arcana, −X em Percepção comum | Misto |
@@ -176,7 +176,7 @@ Todo conjurador possui dois elementos: sua **Afinidade** e sua **Antítese**.
 - **Afinidade**: o elemento natural do personagem. Sem penalidade.
 - **Antítese**: o elemento parasita que habita o personagem. **−10 no resultado de cada modificador testado.**
 
-O personagem **só pode conjurar com esses dois elementos**. Não é uma questão de dificuldade — é de natureza. A essência do Caos em cada ser tem sua própria cor, e às vezes carrega um eco de outra natureza. Usar esse eco é possível, mas custoso.
+O personagem **só pode conjurar com esses dois elementos**. Não é uma questão de dificuldade — é de natureza.
 
 > **Caso especial — Dupla Conexão:** se Afinidade e Antítese são o mesmo elemento, a penalidade de −10 é substituída por **+10** ao conjurar magias daquele elemento. Para a mecânica completa, consulte o capítulo de Afinidade e Antítese.
 
@@ -262,7 +262,7 @@ Alvos que não desejam receber o efeito podem resistir:
 
 Toda conjuração custa **1 de Sanidade**, independente da magnitude. Mergulhar no Arcano é exaustivo — cada magia é um ato de força de vontade contra a vastidão do Caos.
 
-Magos que operam consistentemente em Entropia alta estão em constante desgaste mental. Por este motivo, a figura do **Sincronômante** — especialistas em saúde mental arcana — é uma das mais requisitadas em grupos de exploração. Manter um mago funcional é tão importante quanto manter as armas afiadas.
+> Magos que operam consistentemente em Entropia alta estão em constante desgaste mental. Por este motivo, a figura do **Sincronômante** — especialistas em saúde mental arcana — é uma das mais requisitadas em grupos de exploração. Manter um mago funcional é tão importante quanto manter as armas afiadas.
 
 > Para a mecânica completa de Sanidade, Traumas e Estado de Loucura, consulte o capítulo de **Vida e Sanidade**.
 
