@@ -1,6 +1,6 @@
 # Afinidade e Antítese
 
-> *O Arcano não é uma ferramenta. É uma relação — e toda relação tem seus termos.*
+> *É a harmonia das relações dos elementos com o individuo.*
 
 ---
 
@@ -18,10 +18,11 @@ A **Antítese** é o segundo vínculo arcano do personagem — em geral um eleme
 |---|---|
 | **Afinidade** | Sem modificador |
 | **Antítese** | −10 |
+| **Afinidade e Antítese** | +10 |
 
-A Afinidade não concede bônus numérico — ela representa fluidez natural, não vantagem. A Antítese impõe −10 ao resultado por ser uma conexão instável e forçada. Quando Afinidade e Antítese são o mesmo elemento, veja **Dados Iguais** abaixo.
+A Afinidade não concede bônus numérico — ela representa fluidez natural, não vantagem. A Antítese impõe −10 ao resultado do teste arcano por ser uma conexão instável e forçada. Quando Afinidade e Antítese são o mesmo elemento, recebe +10 ao resultado do testes arcano.
 
-> *Exemplo: Vael tem Afinidade em Cognitivo e Antítese em Energia. Ao lançar uma ilusão (Cognitivo), não recebe modificador de relação. Ao lançar um feixe elétrico (Energia), sofre −10. Para Anomalia, Paradoxo ou Astral, também não há modificador de relação.*
+> *Exemplo: Vael tem Afinidade em Cognitivo e Antítese em Energia. Ao lançar uma ilusão (Cognitivo), não recebe modificador de relação. Ao lançar um feixe elétrico (Energia), sofre −10. Para magias do tipo anomalia, paradoxo e astral ele não consegue fazer.*
 
 ---
 

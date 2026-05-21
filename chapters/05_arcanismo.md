@@ -1,6 +1,6 @@
 # Arcanismo
 
-> *O Arcano não é uma ferramenta. É o sopro do Caos — a força que criou o vazio e nunca parou de preencher. Quando você conjura, não está usando um poder. Está emprestando, por um instante, a vontade que antecede os nomes.*
+> *O Arcano é manifestação de uma intenção. Quando você conjura, não está usando um poder. Está emprestando, por um instante, a vontade que antecede a criação.*
 
 ---
 
@@ -8,11 +8,15 @@
 
 ![](/assets/images/chapters/arcanism/image_01.jpg)
 
-No princípio, havia o Caos. Não o caos da desordem — mas o Caos como força criadora, a essência que preenche o vazio com algo onde antes não havia nada. Tudo que existe é, em algum grau, uma expressão dessa essência: uma coisa criada para preencher um espaço que aguardava ser nomeado.
+O que antecede a vida é o conceito dela, o conceito em Arcadia é uma manifestação da natureza. Uma vontade implicita antes de tudo.
+
+No princípio, existiam duas essencias primordiais, a **Inocência** e o **Caos**. A inocência é a continua expansão do vazio, abrindo espaço para o impossivel, é a representação de querer saber mais. O caos é manifestação em forma de algo para preencher aquele vazio criado pela inocencia.
+
+Tudo que existe é o, em algum grau, uma expressão de um conceito: uma coisa criada para preencher um espaço que aguardava ser nomeado.
 
 O **Arcano** é a manifestação visível dessa essência no mundo — a energia residual do ato de criação que ainda pulsa em todas as coisas vivas. Não é uma força fabricada, nem um dom concedido. Está lá, anterior a qualquer palavra que lhe deram.
 
-Magia, em Arcádia, é o ato de **emprestar** essa essência. Moldar o Arcano é dizer ao universo: *aqui existe um vazio, e eu sei o que deve preenchê-lo.* A magia é a ferramenta — o Caos é o combustível.
+Magia, em Arcádia, é o ato de **preenhcer** o vazio. Moldar o Arcano é dizer ao universo: *aqui existe um vazio, e eu sei o que deve preenchê-lo.* A magia é a ferramenta — o arcano é o combustível.
 
 ---
 
