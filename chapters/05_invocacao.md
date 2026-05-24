@@ -64,6 +64,26 @@ O conjurador vai executar os testes Forma, Complexidade e Controle.
 
 ---
 
+### Vida da Invocação
+
+Toda invocação tem 1 de VIDA Maxima, porém, o invocador pode sacrificar 1 da propria sanidade para aumentar em VIDA da invocação.
+
+---
+
+### DA e DP da Invocação
+
+Toda invocação tem 0 de DA e DP base.
+Para cada 5 pontos na rolagem de **Complexidade** aumenta a DA em 1.
+A **DP** é a metade da DA, arredondando para baixo.
+
+---
+
+### Ações da Invocação
+
+Toda invocação tem 2 ações e 1 reação, quando estiverem em batalha.
+
+---
+
 ## Execução e Duração
 
 O tipo de Execução define por quanto tempo a criatura permanece no Plano Material.
@@ -74,7 +94,7 @@ A criatura aparece, realiza **uma ação imediata** definida no momento da invoc
 ### Concentrada
 A criatura persiste enquanto o invocador mantiver o foco.
 - Sempre que o invocador **receber dano**, deve fazer um teste de **Vontade** para manter o vínculo ativo.
-- Cada invocação Concentrada adicional ativa ao mesmo tempo aplica **−1D12** (Desvantagem) nesse teste de Vontade.
+- Cada invocação Concentrada adicional que esteja ativada, ao mesmo tempo, aplica **−1D12** (Desvantagem) nesse teste de Vontade.
 - Se o teste falhar, a criatura desaparece imediatamente.
 
 ### Maldição
