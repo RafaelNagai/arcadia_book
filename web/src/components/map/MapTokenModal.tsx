@@ -42,6 +42,8 @@ interface MapTokenModalProps {
   size: number
   sharedWith?: string[]
   map: GameMap
+  campaignId: string
+  isGm?: boolean
   players?: CampaignChar[]
   onSave: (visionRadius: number | null, size: number) => void
   onShareUpdate?: (sharedWith: string[]) => void
@@ -49,7 +51,7 @@ interface MapTokenModalProps {
 }
 
 export function MapTokenModal({
-  character, visionRadius, size, sharedWith = [], map, players = [],
+  character, visionRadius, size, sharedWith = [], map, campaignId, isGm = false, players = [],
   onSave, onShareUpdate, onClose,
 }: MapTokenModalProps) {
   const [useMapDefault, setUseMapDefault] = useState(visionRadius == null)
@@ -114,7 +116,7 @@ export function MapTokenModal({
             </p>
           </div>
           <a
-            href={`/ficha/${character.id}`}
+            href={`/ficha/${character.id}?campaignId=${campaignId}${isGm ? '&isGm=1' : ''}`}
             target="_blank"
             rel="noopener noreferrer"
             title="Abrir ficha em nova aba"

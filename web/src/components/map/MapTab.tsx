@@ -1189,6 +1189,8 @@ export function MapTab({ campaign }: MapTabProps) {
           size={modalToken.size}
           sharedWith={modalToken.sharedWith}
           map={map}
+          campaignId={campaign.id}
+          isGm={campaign.isGm}
           players={campaign.players}
           onSave={(vr, sz) => handleTokenModalSave(modalToken.id, vr, sz)}
           onShareUpdate={(sw) => handleShareUpdate(modalToken.id, sw)}

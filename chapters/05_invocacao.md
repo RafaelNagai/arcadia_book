@@ -1,15 +1,15 @@
 # Invocação
 
-Invocar é uma forma específica de conjuração — em vez de moldar o Arcano em energia ou efeito, o conjurador usa o Arcano para **trazer uma entidade para o Plano Material**.
+Invocar é uma forma específica de conjuração — o conjurador usa o Arcano para **trazer uma criatura para o Plano Material**.
 
 A entidade invocada pode ser **qualquer coisa que o elemento e a intenção justifiquem narrativamente**. O elemento arcano não limita o que pode ser invocado — ele define *de onde* ou *do quê* a criatura é feita:
 
 | Elemento | O que pode ser invocado |
 |---|---|
 | **Energia** | Construtos de matéria pura — golems de lava, elementais de fogo ou relâmpago, formas de luz solidificada |
-| **Anomalia** | Criaturas reais com características mutadas — um predador com membros extras, um ser que viola as leis do corpo |
+| **Anomalia** | Criaturas reais com características mutadas — um predador com membros extras, uma hondra ou um animal |
 | **Paradoxo** | Cópias distorcidas da realidade — clones do próprio conjurador, ecos temporais de seres, reflexos do que poderia ter existido |
-| **Astral** | Espíritos dos planos, sombras do Reino das Almas, entidades da Rede dos Sonhos ou formas do Mundo das Tintas |
+| **Astral** | Morto-vivo ou Zumbis, Espíritos dos planos, sombras do Reino das Almas, entidades da Rede dos Sonhos ou formas do Mundo das Tintas |
 | **Cognitivo** | Manifestações da mente — medos tomando forma, memórias com corpo, constructos feitos de percepção coletiva |
 
 O Mestre atribui o elemento na conjuração como em qualquer outra magia. A criatura invocada usa as estatísticas de uma entidade do Bestiário ou é criada pelo Mestre com base no que foi descrito.
@@ -22,40 +22,45 @@ Invocar usa os modificadores do sistema arcano, mas cada um define uma dimensão
 
 | Modificador | O que define na invocação |
 |---|---|
-| **Forma** | O porte físico e tier de poder da entidade |
+| **Forma** | O porte físico e quantos dados a criatura vai usar em seus testes |
 | **Complexidade** | A sofisticação da entidade — quantas habilidades especiais pode usar |
 | **Controle** | A qualidade do vínculo — quão obediente e estável a entidade permanece |
 
 ### Lendo o Resultado
 
-Cada modificador é lido na **Tabela de Grandeza** (capítulo de Arcanismo):
+Cada modificador é um aspecto da invocação.
 
-**Forma** — o resultado determina o tier físico da entidade invocada:
+**Forma** — Determina o tier físico da entidade invocada.
+Esta lista é uma referencia de como poderia ser conforme o teste do conjurador.
 
-| Resultado | Tier da entidade |
-|---|---|
-| 0 – 20 | Menor — animal de pequeno porte, construto frágil |
-| 21 – 40 | Padrão — criatura do tamanho de um humano adulto |
-| 41 – 60 | Elite — criatura grande, urso, elemental robusto |
-| 61+ | Chefe — entidade colossal, ancião de plano, construto monumental |
+| Resultado | Tier da entidade | Dado Base |
+|---|---|---|---|
+| 0 – 20 | Menor — animal de pequeno porte, construto frágil | D6
+| 21 – 40 | Padrão — criatura do tamanho de um humano adulto | D8
+| 41 – 60 | Elite — criatura grande, urso, elemental robusto | D12
+| 61+ | Chefe — entidade colossal, ancião de plano, construto monumental | D20
 
-**Complexidade** — o resultado determina as habilidades disponíveis:
+**Complexidade** — Determina a sofisticação da invocação.
 
-| Resultado | Habilidades |
-|---|---|
-| 0 – 20 | Apenas ataque básico |
-| 21 – 40 | Ataque básico + 1 habilidade especial |
-| 41+ | Ataque básico + 2 ou mais habilidades especiais |
+| Resultado | Sofisticação | Quantidade de Dados
+|---|---|---|
+| 0 – 20 | Bruta — sem habilidades especiais | 2 |
+| 21 – 40 | Capaz — possui 1 habilidade especial | 3 |
+| 41+ | Refinada — possui 2 habilidades especiais | 4 |
 
-**Controle** — o resultado determina a qualidade do vínculo:
+**Controle** — Determina se o conjurador consegue ou não comandar a invocação criada.
+| Resultado | Comandos | Exemplos
+|---|---|---|
+| 0 – 20 | Comandos basicos | atacar, defender, esquivar, etc. |
+| 21 – 40 | Comandos avançados | Explicar algo complexo para fazer, como proteger um aliado, pedir para pegar um item, etc. |
+| 41+ | Inteligente | Não precisa mandar um comando, a invocação pode fazer ações sem intruções pré-determinadas pelo invocador. |
 
-| Resultado | Vínculo |
-|---|---|
-| 0 – 20 | Instável — a criatura age predominantemente pelo instinto, ignora comandos complexos |
-| 21 – 40 | Estável — obedece comandos simples com fidelidade |
-| 41+ | Sólido — sustenta comandos complexos e duradouros sem desvio |
+#### Como calcular
 
-> *Exemplo: Vael invoca um elemental de plasma (Energia). Aloca os 2D12 em Forma e sem dado em Complexidade e Controle. Forma = 38 (Padrão — humano adulto), Complexidade = 14 (apenas ataque básico), Controle = 7 (instável — age pelo instinto). O elemental aparece, ataca o inimigo mais próximo e ignora qualquer ordem mais sutil.*
+O conjurador vai executar os testes Forma, Complexidade e Controle.
+**Forma** ==> O resultado adquirido, vai definir o Dado base dessa invocação.
+**Complexidade** ==> O resultado adquirido, vai definir a quantidade de dados base a invocação vai jogar.
+**Controle** ==> O resultado define quais tipos de intruções a invocação é capaz de receber e executar.
 
 ---
 

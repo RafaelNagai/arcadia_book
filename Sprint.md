@@ -58,6 +58,18 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Bugs: Ficha no Mapa sem Edição, Título da Aba e Performance do Mapa
+**Origem:** /task Três bugs/ajustes: (1) fichas abertas via modal no mapa não permitem edição pelo mestre; (2) título da aba do navegador na ficha deve mostrar "Ficha - Nome"; (3) investigar e propor melhorias de performance no mapa da campanha
+**Adicionada:** 2026-05-20 · **Validator:** APROVADO · **Concluída:** 2026-05-20
+
+- [x] Subtask 1 — `MapTokenModal.tsx`: prop `campaignId: string` adicionada; link usa `?campaignId=${campaignId}`. `MapTab.tsx`: passa `campaignId={campaign.id}`. `CharacterPage.tsx`: lê `campaignId` da URL via `URLSearchParams` para disparar `isGmOfCampaign`
+- [x] Subtask 2 — `CharacterPage.tsx`: `document.title = character ? "Ficha - ${character.name}" : "Arcádia"`; deps do useEffect corrigidas para `[id, character]`
+- [x] Subtask 3 — `MapFogLayer.tsx`: envolvido com `memo`; `visionPolygons` em `useMemo` no `MapCanvas.tsx` com deps precisas
+- [x] Subtask 4 — `MapTokenLayer.tsx`: envolvido com `memo`; `visibleTokens` e `visibleCreatures` em `useMemo` com deps completas
+- [x] Subtask 5 — `MapCanvas.tsx`: `walls`, `blockingWalls` e `effectiveFogPatches` em `useMemo` com deps corretas; todos os handlers de evento já estavam em `useCallback`
+
+---
+
 ### Arcano como Atributo na Criação de Personagem
 **Origem:** /task Adicionar atributo ARCANO na etapa de "atributos" da criação de ficha de personagem, e remover o campo de definição do ARCANO da seção "arcano" durante a criação de ficha
 **Adicionada:** 2026-05-19 · **Validator:** APROVADO · **Concluída:** 2026-05-19

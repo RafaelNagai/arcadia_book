@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from 'react'
+import { useRef, useEffect, useState, useCallback, useMemo } from 'react'
 import { Stage, Layer, Image as KonvaImage, Line, Group, Rect, Ring, Circle } from 'react-konva'
 import type Konva from 'konva'
 import type { MapLayer, MapToken, GameMap, MapTool, FogPatch, Measurement, CreatureInstance } from '@/lib/mapTypes'
@@ -495,41 +495,47 @@ export function MapCanvas({
     }
   }, [tool, wallStart, doorStart, onWallAdd, onDoorAdd])
 
-  const closedDoors = (currentLayer?.doors ?? []).filter(d => !d.isOpen)
-  const walls = [
-    ...(currentLayer?.walls ?? []),
-    ...closedDoors.map(d => ({ id: d.id, mapId: d.mapId, layerId: d.layerId, points: d.points })),
-  ]
-  // Segments used for token collision (all walls + closed doors of current layer)
-  const blockingWalls = [
-    ...(currentLayer?.walls ?? []).flatMap(w => pointsToSegments(w.points)),
-    ...closedDoors.flatMap(d => pointsToSegments(d.points)),
-  ]
-  const visionCircles: FogPatch[] = tokens
-    .filter(t =>
-      t.layerId === currentLayer?.id &&
-      !npcCharacterIds.includes(t.characterId) &&
-      (isGm || myCharacterIds.includes(t.characterId) || (userId != null && t.sharedWith.includes(userId))),
-    )
-    .map(t => {
-      const pos = dragOverride?.tokenId === t.id
-        ? { x: dragOverride.x, y: dragOverride.y }
-        : { x: t.x, y: t.y }
-      return { ...pos, radius: t.visionRadius ?? map.defaultVisionRadius }
-    })
+  const walls = useMemo(() => {
+    const closedDoors = (currentLayer?.doors ?? []).filter(d => !d.isOpen)
+    return [
+      ...(currentLayer?.walls ?? []),
+      ...closedDoors.map(d => ({ id: d.id, mapId: d.mapId, layerId: d.layerId, points: d.points })),
+    ]
+  }, [currentLayer?.walls, currentLayer?.doors])
 
-  const visionPolygons = fogEnabled
-    ? visionCircles.map(c => computeVisibilityPolygon({ x: c.x, y: c.y }, c.radius, walls))
-    : []
+  const blockingWalls = useMemo(() => {
+    const closedDoors = (currentLayer?.doors ?? []).filter(d => !d.isOpen)
+    return [
+      ...(currentLayer?.walls ?? []).flatMap(w => pointsToSegments(w.points)),
+      ...closedDoors.flatMap(d => pointsToSegments(d.points)),
+    ]
+  }, [currentLayer?.walls, currentLayer?.doors])
+  const visionPolygons = useMemo(() => {
+    if (!fogEnabled) return []
+    const circles: FogPatch[] = tokens
+      .filter(t =>
+        t.layerId === currentLayer?.id &&
+        !npcCharacterIds.includes(t.characterId) &&
+        (isGm || myCharacterIds.includes(t.characterId) || (userId != null && t.sharedWith.includes(userId))),
+      )
+      .map(t => {
+        const pos = dragOverride?.tokenId === t.id
+          ? { x: dragOverride.x, y: dragOverride.y }
+          : { x: t.x, y: t.y }
+        return { ...pos, radius: t.visionRadius ?? map.defaultVisionRadius }
+      })
+    return circles.map(c => computeVisibilityPolygon({ x: c.x, y: c.y }, c.radius, walls))
+  }, [fogEnabled, tokens, currentLayer?.id, npcCharacterIds, isGm, myCharacterIds, userId, dragOverride, map.defaultVisionRadius, walls])
 
-  const accessibleCharIds = new Set([
-    ...myCharacterIds,
-    ...tokens.filter(t => userId != null && t.sharedWith.includes(userId ?? '')).map(t => t.characterId),
-  ])
-  const rawFogPatches = [...(currentLayer?.fogRevealed ?? []), ...localFogPatches]
-  const effectiveFogPatches = isGm
-    ? rawFogPatches
-    : rawFogPatches.filter(p => p.characterId == null || accessibleCharIds.has(p.characterId))
+  const effectiveFogPatches = useMemo(() => {
+    const rawFogPatches = [...(currentLayer?.fogRevealed ?? []), ...localFogPatches]
+    if (isGm) return rawFogPatches
+    const accessibleCharIds = new Set([
+      ...myCharacterIds,
+      ...tokens.filter(t => userId != null && t.sharedWith.includes(userId ?? '')).map(t => t.characterId),
+    ])
+    return rawFogPatches.filter(p => p.characterId == null || accessibleCharIds.has(p.characterId))
+  }, [currentLayer?.fogRevealed, localFogPatches, isGm, myCharacterIds, tokens, userId])
 
   // Build local preview measurement
   const localPreview: Measurement | null = (measureStart && measurePreview && userId)

@@ -64,9 +64,10 @@ export function CharacterPage() {
     fromCampaignId?: string;
     fromCampaignView?: string;
   } | null;
+  const searchParams = new URLSearchParams(location.search);
   const fromCampaignId: string | null =
-    locationState?.fromCampaignId ??
-    new URLSearchParams(location.search).get("campaignId");
+    locationState?.fromCampaignId ?? searchParams.get("campaignId");
+  const isGmFromUrl = searchParams.get("isGm") === "1";
   const fromCampaignView: string | null =
     locationState?.fromCampaignView ?? null;
   const { user } = useAuth();
@@ -194,9 +195,15 @@ export function CharacterPage() {
   const [isGmOfCampaign, setIsGmOfCampaign] = useState(false);
   const canEdit = owned || isGmOfCampaign;
 
-  // If navigated from a campaign, check if user is GM (to show edit buttons)
+  // If opened from map with ?isGm=1, trust it immediately (UI-only; backend still validates writes)
+  // Also fall back to API check for direct URL access without the param
   useEffect(() => {
-    if (!fromCampaignId || !user || !charLoaded) return;
+    if (!fromCampaignId) return;
+    if (isGmFromUrl) {
+      setIsGmOfCampaign(true);
+      return;
+    }
+    if (!user || !charLoaded) return;
     api.campaigns
       .get(fromCampaignId)
       .then((res) => {
@@ -204,7 +211,7 @@ export function CharacterPage() {
         setIsGmOfCampaign(c.isGm);
       })
       .catch(() => {});
-  }, [fromCampaignId, user, charLoaded]);
+  }, [fromCampaignId, isGmFromUrl, user, charLoaded]);
 
   // Realtime sync — only for API characters
   const builtInventorySnapshot = inventorySnapshot
@@ -299,7 +306,10 @@ export function CharacterPage() {
   const backOpacity = useTransform(scrollY, [0, 150], [1, 0.35]);
 
   useEffect(() => {
-    document.title = character ? `${character.name} — Arcádia` : "Arcádia";
+    document.title = character ? `Ficha - ${character.name}` : "Arcádia";
+  }, [id, character]);
+
+  useEffect(() => {
     window.scrollTo({ top: 0 });
   }, [id]);
 

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Layer, Circle, Image as KonvaImage, Text, Group, Ring } from 'react-konva'
 import type Konva from 'konva'
 import type { MapToken, MapTool, CreatureInstance } from '@/lib/mapTypes'
@@ -270,7 +270,7 @@ interface MapTokenLayerProps {
   readOnly?: boolean
 }
 
-export function MapTokenLayer({
+export const MapTokenLayer = memo(function MapTokenLayer({
   tokens,
   activeLayerId,
   tool,
@@ -292,7 +292,7 @@ export function MapTokenLayer({
   onCreatureInstanceClick,
   readOnly = false,
 }: MapTokenLayerProps) {
-  const visibleTokens = tokens.filter(t => {
+  const visibleTokens = useMemo(() => tokens.filter(t => {
     if (t.layerId !== activeLayerId) return false
     if (readOnly) {
       if (isGm) return true
@@ -303,12 +303,15 @@ export function MapTokenLayer({
     if (myCharacterIds.includes(t.characterId)) return true
     if (fogEnabled) return isInsideAnyPolygon(t.x, t.y, visionPolygons)
     return t.isVisible
-  })
+  }), [tokens, activeLayerId, readOnly, isGm, fogEnabled, visionPolygons, myCharacterIds])
 
   const canDrag = (token: MapToken) =>
     !readOnly && tool === 'select' && (isGm || (allowPlayerTokenMove && myCharacterIds.includes(token.characterId)))
 
-  const visibleCreatures = creatureInstances.filter(i => i.placed && i.layerId === activeLayerId && !readOnly)
+  const visibleCreatures = useMemo(
+    () => creatureInstances.filter(i => i.placed && i.layerId === activeLayerId && !readOnly),
+    [creatureInstances, activeLayerId, readOnly],
+  )
 
   return (
     <Layer
@@ -342,4 +345,4 @@ export function MapTokenLayer({
       ))}
     </Layer>
   )
-}
+})

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Layer, Rect, Circle, Shape } from 'react-konva'
 import type { FogPatch } from '@/lib/mapTypes'
 
@@ -28,7 +29,7 @@ function PolygonHole({ poly }: { poly: Array<{ x: number; y: number }> }) {
   )
 }
 
-export function MapFogLayer({
+export const MapFogLayer = memo(function MapFogLayer({
   enabled,
   isGm,
   panX,
@@ -76,4 +77,4 @@ export function MapFogLayer({
       </Layer>
     </>
   )
-}
+})
