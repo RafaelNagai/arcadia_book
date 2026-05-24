@@ -629,6 +629,7 @@ export function MapTokenPanel({
           visionRadius={pendingVisionRadii[configuringChar.id] ?? null}
           size={map.defaultTokenSize ?? 1}
           map={map}
+          campaignId={campaignId}
           onSave={(vr) => {
             setPendingVisionRadii(prev => ({ ...prev, [configuringChar.id]: vr }))
           }}
