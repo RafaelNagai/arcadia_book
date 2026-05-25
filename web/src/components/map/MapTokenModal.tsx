@@ -60,7 +60,6 @@ export function MapTokenModal({
   sharedWith = [],
   map,
   campaignId,
-  isGm = false,
   players = [],
   onSave,
   onShareUpdate,
