@@ -39,7 +39,8 @@
       "Bash(python3 -c \"import json; data = json.load\\(open\\('/Users/naga/Documents/arcadia/book/equipment.json'\\)\\); print\\(f'Valid JSON. Total items: {len\\(data\\)}'\\)\")",
       "Bash(xargs cat)",
       "Bash(sort -t: -k2 -n)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(node -e ' *)"
     ]
   }
 }

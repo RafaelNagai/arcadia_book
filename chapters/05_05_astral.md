@@ -9,9 +9,9 @@ O **Astral** é manipular os outros planos para se manifestar ao seu desejo.
 Diferente dos elementos que moldam a matéria ou influenciam a mente, os conjuradores do Astral estendem sua vontade além do Plano Material, alcançando as dimensões que coexistem com a realidade física para extrair delas forças puras e específicas. O arcano não controla a totalidade desses planos; ele atua como um canal condutor, trazendo suas leis e manifestações para o campo de batalha.
 
 Esse elemento subdivide-se em três pilares fundamentais, dependendo da origem da conexão:
-* **Rede dos Sonhos:** O nexo de memórias, informações e fluxos de pensamento de vivos e mortos.
+* **Rede dos Sonhos:** A conexão de memórias, informações e fluxos de pensamento de vivos e mortos.
 * **Mundo das Tintas:** A dimensão dos instintos brutos e das intenções mutáveis.
-* **Reino das Almas:** O plano espiritual da vitalidade, dos desencarnados e das projeções etéreas.
+* **Reino das Almas:** O plano que reflete o corpo(alma) de todos os indivíduos.
 
 ---
 

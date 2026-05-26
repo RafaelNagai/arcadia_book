@@ -58,6 +58,18 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Sub-capítulos de Elementos (05_01 a 05_05) no Manifest e Sidebar
+**Origem:** /task Adicionar os capítulos 05_01_energia.md, 05_02_anomolia.md, 05_03_paradoxo.md, 05_04_cognitivo.md e 05_05_astral.md ao livro como sub-itens do capítulo "Elementos" (05)
+**Adicionada:** 2026-05-25 · **Validator:** APROVADO · **Concluída:** 2026-05-25
+
+- [x] Subtask 1 — `chapterManifest.ts`: confirmado que `06_elementos` já existe com `slug: 'elementos'` e `order: 80`, sem duplicatas ou conflitos com `06_afinidades` (order: 81)
+- [x] Subtask 2 — 5 entradas adicionadas em `chapterManifest.ts` com `parentSlug: 'elementos'` e orders 82–86 (Energia, Anomalia, Paradoxo, Cognitivo, Astral)
+- [x] Subtask 3 — `chapterLoader.ts` sem alteração necessária; glob `@chapters/*.md` cobre os novos arquivos automaticamente
+- [x] Subtask 4 — `Sidebar.tsx` sem alteração necessária; sub-capítulos renderizados indentados sob "Elementos" via `parentSlug`
+- [x] Subtask 5 — `SPEC.md` atualizado: tabela "Capítulos — Mapa de Conteúdo" inclui os 5 novos arquivos com slugs e descrições corretas
+
+---
+
 ### Bugs: Ficha no Mapa sem Edição, Título da Aba e Performance do Mapa
 **Origem:** /task Três bugs/ajustes: (1) fichas abertas via modal no mapa não permitem edição pelo mestre; (2) título da aba do navegador na ficha deve mostrar "Ficha - Nome"; (3) investigar e propor melhorias de performance no mapa da campanha
 **Adicionada:** 2026-05-20 · **Validator:** APROVADO · **Concluída:** 2026-05-20

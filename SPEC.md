@@ -58,7 +58,7 @@ HP_BONUS    = [0, 4, 4, 3, 3, 2, 2, 2, 2, 2, 2...]  (caps em 2)
 SANID_BONUS = [0, 4, 4, 3, 3, 2, 2, 2, 2, 2, 2...]  (caps em 2)
 ```
 
-Tabela de referência (do capítulo `07_condicoes_e_trauma.md`):
+Tabela de referência (dos capítulos `07_vida_e_sanidade.md` e `07_traumas.md`):
 
 | Atributo | Bônus por ponto | Total |
 |---|---|---|
@@ -79,22 +79,33 @@ Tabela de referência (do capítulo `07_condicoes_e_trauma.md`):
 
 | Arquivo | Slug | Conteúdo |
 |---|---|---|
+| `00_origem.md` | `origem` | Origem do universo, cosmologia, conceitos fundamentais |
 | `01_introducao.md` | `introducao` | Conceito do mundo, Mar de Nuvens, ilhas, navios |
 | `02_personagem.md` | `personagem` | Criação de personagem, 4 atributos, 16 perícias |
 | `03_evolucao_e_testes.md` | `evolucao-e-testes` | Mecânica 2D12, dificuldades, talentos, progressão |
 | `04_combate.md` | `combate` | Fluxo de combate, iniciativa, ações, reações |
-| `16_equipamentos.md` | `equipamentos` | Tiers SS–E, tabelas de dano, crafting |
 | `05_arcanismo.md` | `arcanismo` | Sistema de magia, 5 passos, energia arcana, runas |
-| `06_elementos_e_afinidades.md` | `elementos-e-afinidades` | 5 elementos: Energia, Anomalia, Paradoxo, Astral, Cognitivo |
-| `07_condicoes_e_trauma.md` | `condicoes-e-trauma` | HP, Sanidade, estado Moribundo, condições de trauma |
+| `05_invocacao.md` | `invocacao` | Mecânicas de invocação, vida, ações e dano de invocados |
+| `05_01_energia.md` | `energia` | Elemento Energia: habilidades, usos e interações |
+| `05_02_anomolia.md` | `anomolia` | Elemento Anomalia: habilidades, usos e interações |
+| `05_03_paradoxo.md` | `paradoxo` | Elemento Paradoxo: habilidades, usos e interações |
+| `05_04_cognitivo.md` | `cognitivo` | Elemento Cognitivo: habilidades, usos e interações |
+| `05_05_astral.md` | `astral` | Elemento Astral: habilidades, usos e interações |
+| `06_elementos.md` | `elementos` | 5 elementos: Energia, Anomalia, Paradoxo, Astral, Cognitivo |
+| `06_afinidades.md` | `afinidades` | Afinidade e Antítese elemental, bônus e regra de dados iguais |
+| `07_vida_e_sanidade.md` | `vida-e-sanidade` | HP, Sanidade, cálculo de atributos e tabelas de bônus |
+| `07_condicoes.md` | `condicoes` | Estado Moribundo, condições de combate e efeitos |
+| `07_traumas.md` | `traumas` | Traumas permanentes e sequelas |
 | `08_moral.md` | `moral` | Pool de Moral compartilhado, Grito de Guerra |
 | `09_navios.md` | `navios` | Tipos de navio, setores, tripulação, durabilidade |
+| `09_combate_naval.md` | `combate-naval` | Regras de combate naval, manobras e dano estrutural |
 | `10_constelacao_e_navegacao.md` | `constelacao-e-navegacao` | Assinaturas de constelação, mecânica de navegação |
 | `11_interludio.md` | `interludio` | Downtime, ações longas/curtas, recuperação, crafting |
 | `12_racas.md` | `racas` | 6 raças jogáveis (sem bônus mecânicos) |
 | `13_regioes.md` | `regioes` | Nações, culturas, recursos, política |
 | `14_dimensoes.md` | `dimensoes` | 4 planos de existência |
 | `15_religioes.md` | `religioes` | 3 religiões com cosmologias |
+| `16_equipamentos.md` | `equipamentos` | Tiers SS–E, tabelas de dano, crafting |
 | `17_bestiario.md` | `bestiario` | Templates de criaturas, blocos de estatísticas |
 
 ---
