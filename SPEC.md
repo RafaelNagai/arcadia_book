@@ -84,15 +84,15 @@ Tabela de referência (dos capítulos `07_vida_e_sanidade.md` e `07_traumas.md`)
 | `02_personagem.md` | `personagem` | Criação de personagem, 4 atributos, 16 perícias |
 | `03_evolucao_e_testes.md` | `evolucao-e-testes` | Mecânica 2D12, dificuldades, talentos, progressão |
 | `04_combate.md` | `combate` | Fluxo de combate, iniciativa, ações, reações |
-| `05_arcanismo.md` | `arcanismo` | Sistema de magia, 5 passos, energia arcana, runas |
-| `05_invocacao.md` | `invocacao` | Mecânicas de invocação, vida, ações e dano de invocados |
-| `05_01_energia.md` | `energia` | Elemento Energia: habilidades, usos e interações |
-| `05_02_anomolia.md` | `anomolia` | Elemento Anomalia: habilidades, usos e interações |
-| `05_03_paradoxo.md` | `paradoxo` | Elemento Paradoxo: habilidades, usos e interações |
-| `05_04_cognitivo.md` | `cognitivo` | Elemento Cognitivo: habilidades, usos e interações |
-| `05_05_astral.md` | `astral` | Elemento Astral: habilidades, usos e interações |
-| `06_elementos.md` | `elementos` | 5 elementos: Energia, Anomalia, Paradoxo, Astral, Cognitivo |
-| `06_afinidades.md` | `afinidades` | Afinidade e Antítese elemental, bônus e regra de dados iguais |
+| `05_01_00_arcanismo.md` | `arcanismo` | Sistema de magia, 5 passos, energia arcana, runas |
+| `05_01_01_invocacao.md` | `invocacao` | Mecânicas de invocação, vida, ações e dano de invocados |
+| `05_02_00_elementos.md` | `elementos` | 5 elementos: Energia, Anomalia, Paradoxo, Astral, Cognitivo |
+| `05_02_01_energia.md` | `energia` | Elemento Energia: habilidades, usos e interações |
+| `05_02_02_anomolia.md` | `anomolia` | Elemento Anomalia: habilidades, usos e interações |
+| `05_02_03_paradoxo.md` | `paradoxo` | Elemento Paradoxo: habilidades, usos e interações |
+| `05_02_04_cognitivo.md` | `cognitivo` | Elemento Cognitivo: habilidades, usos e interações |
+| `05_02_05_astral.md` | `astral` | Elemento Astral: habilidades, usos e interações |
+| `05_03_00_afinidades.md` | `afinidades` | Afinidade e Antítese elemental, bônus e regra de dados iguais |
 | `07_vida_e_sanidade.md` | `vida-e-sanidade` | HP, Sanidade, cálculo de atributos e tabelas de bônus |
 | `07_condicoes.md` | `condicoes` | Estado Moribundo, condições de combate e efeitos |
 | `07_traumas.md` | `traumas` | Traumas permanentes e sequelas |

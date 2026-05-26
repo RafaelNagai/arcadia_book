@@ -4,8 +4,6 @@
 
 ---
 
-<!-- AI: detalhes de cada elemento em chapters/05_01_energia.md · chapters/05_02_anomolia.md · chapters/05_03_paradoxo.md · chapters/05_04_cognitivo.md · chapters/05_05_astral.md -->
-
 ## Os Cinco Elementos
 
 Todo arcano nasce de um dos **Cinco Elementos** — categorias que definem não apenas o que a magia faz, mas como é o seu Conceito e Definição.
