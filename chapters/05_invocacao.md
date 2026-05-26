@@ -34,7 +34,7 @@ Cada modificador é um aspecto da invocação.
 Esta lista é uma referencia de como poderia ser conforme o teste do conjurador.
 
 | Resultado | Tier da entidade | Dado Base |
-|---|---|---|---|
+|---|---|---|
 | 0 – 20 | Menor — animal de pequeno porte, construto frágil | D6
 | 21 – 40 | Padrão — criatura do tamanho de um humano adulto | D8
 | 41 – 60 | Elite — criatura grande, urso, elemental robusto | D12
