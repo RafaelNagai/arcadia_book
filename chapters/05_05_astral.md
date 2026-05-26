@@ -15,6 +15,36 @@ Esse elemento subdivide-se em três pilares fundamentais, dependendo da origem d
 
 ---
 
+## Mecânica Especial
+
+Para canalizar o arcano proveniente das dimensões adjacentes, o conjurador deve projetar sua mente e entrar em sintonia com o plano desejado. 
+
+Em termos mecânicos, o conjurador deve gastar **1 Ação** para se conectar a um dos três pilares do Astral. Uma vez **conectado**, ele permanece sintonizado a esse plano específico até gastar uma nova ação para alterar a conexão. Estar conectado é um pré-requisito obrigatório para materializar as intenções daquele respectivo plano.
+
+Cada pilar concede acesso a mecânicas e dinâmicas únicas:
+
+### 1. Rede dos Sonhos
+* **Mecânica Básica:** Permite ao conjurador navegar pelo nexo de memórias e fluxos de pensamento de Arcádia. Sob esta conexão, o mago pode extrair sabedorias enterradas no passado, estabelecer comunicação mental e projetar visões ou mensagens de voz a longas distâncias. Além disso, permite sintonizar temporariamente com o histórico de almas para assimilar e incorporar suas perícias e conhecimentos técnicos.
+
+### 2. Mundo das Tintas
+* **Mecânica Básica:** Permite manifestar e moldar os instintos puros que regem essa dimensão, onde cada cor representa uma intenção física ou mágica. No entanto, o poder do Mundo das Tintas é condicionado ao ambiente: para evocar uma intenção específica, o conjurador **deve encontrar e apontar a cor correspondente no cenário físico ao seu redor**.
+
+| Dado (1D6) | Cor | Intenção Manifestada |
+| :---: | :--- | :--- |
+| **1** | Azul | **Mover:** Impulso, projeção de movimento e vetores. |
+| **2** | Vermelho | **Aprimorar:** Potencialização física, bônus de dano e equipamento. |
+| **3** | Amarelo | **Proteger:** Barreiras estáticas, películas de mitigação e salvaguardas. |
+| **4** | Laranja | **Projetar:** Extensão de alcance, ampliação de área e propagação. |
+| **5** | Roxo | **Oposto:** Inversão de lógica, reversão de mecanismos e gatilhos. |
+| **6** | Verde | **Restaurar:** Regeneração celular, estabilização vital e vigor. |
+| **-** | Preto | **Ausência:** Representa a ausencia de cor. Permitindo enfraquecer/anular um fluxo de arcano realizados em conjurações. |
+| **-** | Outras Cores | **Aleatório:** Caso o conjurador utilize uma cor que não pertença ao espectro básico, o efeito se torna instável. Ele deve declarar o alvo e rolar **1D6** na tabela acima para definir qual intenção se manifestará de forma imprevista. |
+
+### 3. Reino das Almas
+* **Mecânica Básica:** Concede controle sobre a vitalidade, projeções etéreas e o plano espiritual que reflete o corpo físico de todos os indivíduos. Sob esta conexão, o arcano é capaz de conjurar descargas de força espiritual pura (afetando alvos intangíveis ou invisíveis), perceber a presença de entidades desencarnadas na área, estabelecer canais de drenagem vital e reanimar cadáveres recentes como lacaios funcionais.
+
+---
+
 ## Aplicações Práticas
 
 A versatilidade do Astral permite que os conjuradores transitem seus efeitos entre a utilidade informacional, o combate espiritual e a manipulação tática. Abaixo estão listadas as principais progressões de feitiços divididas por propósito tático.
