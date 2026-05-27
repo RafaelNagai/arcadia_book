@@ -34,7 +34,7 @@ A diferença entre um mago e alguém que "apenas tentou" está na **Entropia**: 
 
 ## Atributo: Arcano
 
-O **Arcano** é o quinto atributo do personagem — a medida de quão familiarizado ele está com a linguagem do Caos.
+O **Arcano** é o quinto atributo do personagem — a medida de quão familiarizado ele está para moldar o arcano em sua vontade.
 
 Funciona igual aos outros atributos: cresce apenas através de **experiência narrativa**, não evolui com testes. Quanto maior o Arcano, maior o bônus que a Entropia concede ao conjurar.
 
@@ -42,7 +42,7 @@ Funciona igual aos outros atributos: cresce apenas através de **experiência na
 
 ---
 
-## Os Modificadores
+## Modificadores
 
 A magia não é um ato único — é uma composição. Quando o personagem molda o Arcano, ele trabalha em **quatro dimensões simultâneas**, cada uma com sua própria caracteristica:
 
@@ -53,119 +53,17 @@ A magia não é um ato único — é uma composição. Quando o personagem molda
 | **Complexidade** | A sofisticação do efeito — condições, gatilhos, múltiplos efeitos |
 | **Controle** | A contenção e gestão do efeito — precisão, estabilidade, duração |
 
-Os Modificadores funcionam como **perícias**: têm score próprio que cresce com testes que consiga obter 2 12s em 2D12. Um mago especializado em Potência cria efeitos devastadores mas pouco refinados. Um que domina Complexidade tece magias sofisticadas com múltiplas condições.
+Um mago especializado em Potência cria efeitos devastadores mas pouco refinados. Um que domina Complexidade tece magias sofisticadas com múltiplas condições.
+
+### Evolução dos Modificadores
+
+Para avançar um modificador, o jogador precisa tirar **dois 12s nos 2D12s** durante um teste que inclua aquele modificador — igual ao sistema de evolução de perícias.
+
+O jogador pode gastar **PE** para aumentar o valor dos dados e alcançar os 12s necessários.
+
+> Concentrar ambos os D12s em um único modificador é a única forma de ter chance de avançar aquele modificador. Isso cria a escolha central do mago: dividir os dados para equilibrar a magia, ou concentrá-los para crescer — mas com risco de Desastre.
 
 **O Mestre decide quais modificadores uma magia exige** com base na intenção descrita. Toda magia exige no mínimo 2 modificadores.
-
----
-
-## O Processo de Conjuração
-
-### 1. A Intenção
-O jogador descreve o que deseja realizar em termos narrativos.
-
-> *"Quero criar uma barreira de chamas entre nós e os piratas."*
-> *"Quero fazer o guarda acreditar que não há ninguém neste beco."*
-> *"Quero paralisar o tempo em torno daquela bala antes que ela atinja Lyra."*
-
-### 2. O Elemento
-O Mestre designa qual dos **Cinco Elementos** a magia pertence: *Energia, Anomalia, Paradoxo, Astral ou Cognitivo*. O personagem só pode conjurar com seu elemento de **Afinidade** ou **Antítese**.
-
-### 3. Os Modificadores Exigidos
-O Mestre determina quais modificadores a magia exige com base na intenção. Toda magia exige no mínimo 2.
-
-### 4. Distribuição da Pool de Dados
-O jogador distribui seus **2D12** entre os modificadores exigidos antes de rolar. Pode concentrar ambos em um único modificador — o outro usará apenas o valor do modificador.
-
-### 5. O Teste
-Para cada modificador, o jogador rola e soma:
-
-```
-Resultado = Score do Modificador + D12s alocados + Bônus de Entropia
-```
-
-O resultado de cada modificador é lido na **Tabela de Grandeza** para determinar como aquela dimensão da magia se manifestou.
-
----
-
-## Pool de Dados
-
-Todo personagem dispõe de **2D12** para distribuir entre os modificadores exigidos pela magia.
-
-- O jogador decide a distribuição **antes** de rolar
-- Pode colocar ambos os dados em um único modificador — o outro utiliza apenas score + Entropia, sem dado
-- Magias com 3 ou mais modificadores exigem Entropia alta para cobrir os modificadores sem dado disponível
-
-> Concentrar ambos os D12s em um modificador é a única forma de conseguir **Milagre** ou **Desastre** — e a única forma de melhorar o score de um modificador.
-
----
-
-## Entropia
-
-A **Entropia** representa o quanto o personagem abriu os portões da criação — o grau de exposição à essência do Caos. Escala de **0 a 5**.
-
-### O Que a Entropia Faz
-
-Cada ponto de Entropia concede um **token de bônus** no valor do atributo **Arcano** do personagem, que pode ser alocado em qualquer modificador. Os tokens não podem ser divididos — cada token é alocado inteiro a um único modificador.
-
-> Entropia 3 com Arcano 4: o personagem tem **3 tokens de +4** para distribuir entre os modificadores. Pode colocar os três no mesmo modificador (+12) ou dividi-los como quiser, sempre em blocos de 4.
-
-Quanto mais alto o nível de Entropia, mais poderosas as magias — e mais devastadoras as consequências de falhar.
-
-### Como Aumentar a Entropia
-
-Para subir um nível de Entropia, o personagem se submete à essência do Caos. Ao aumentar, rola **1D20** na Tabela de Modificações e recebe a modificação correspondente.
-
-A **magnitude** de toda modificação é **X = nível de Entropia atual**.
-
-| D20 | Modificação | Tipo |
-|---|---|---|
-| 1 | **Eco Arcano** — −X em furtividade ao conjurar (voz ecoa, luz vaza) | Negativo |
-| 2 | **Drenagem Ampliada** — toda conjuração custa X+1 de Sanidade | Negativo |
-| 3 | **Fragilidade Mental** — −X em Vontade | Negativo |
-| 4 | **Desgaste Físico** — −X em Atletismo | Negativo |
-| 5 | **Vulnerabilidade Elemental** — recebe X de dano extra do elemento de Antítese | Negativo |
-| 6 | **Fome Arcana** — Em vez de perde Sanidade para realizar uma magia, perde Vida. | Negativo |
-| 7 | **Atração Indesejada** — criaturas arcanas são atraídas, eles priorizam os ataques nesse alvo | Negativo |
-| 8 | **Memória Fragmentada** — −X em Conhecimento; lacunas aleatórias de memória | Negativo |
-| 9 | **Instabilidade Passiva** — objetos leves se movem involuntariamente | Narrativo |
-| 10 | **Marca Visível** — elemento de Afinidade manifesta-se na aparência (cicatriz, brilho, temperatura) | Narrativo |
-| 11 | **Sonhos do Arcano** — sonhos intensos com o elemento; Mestre pode dar pistas ou visões | Narrativo |
-| 12 | **Voz do Elemento** — ouve o elemento sussurrar em momentos de silêncio; pista ou paranoia | Narrativo |
-| 13 | **Presença Arcana** — +X em Persuação; -X em Empatia | Misto |
-| 14 | **Consumo Acelerado** — conjurações custam 1 Sanidade extra, mas resultado do teste +X | Misto |
-| 15 | **Toque Arcano** — toque causa desconforto em criaturas sensíveis; +X em Intimidação | Misto |
-| 16 | **Visão Dupla** — enxerga o plano arcano sobre o real; +X em Percepção arcana, −X em Percepção comum | Misto |
-| 17 | **Afinidade Aguçada** — +X em testes com o elemento de Afinidade | Positivo |
-| 18 | **Resistência Elemental** — reduz X de dano do elemento de Afinidade | Positivo |
-| 19 | **Clareza Arcana** — +X em todos os testes arcanos enquanto Sanidade > 50% | Positivo |
-| 20 | **Dom do Abismo** — ganha percepção sobrenatural ligada ao elemento; detalhe definido pelo Mestre | Positivo |
-
-### Marcas e Permanência
-
-Cada modificação recebida é registrada como uma **Marca** na ficha — um registro permanente do quanto o Arcano já passou por aquele personagem.
-
-Ao rolar o **mesmo número pelo terceiro vez**, a modificação torna-se **permanente**, com magnitude congelada no maior nível de Entropia em que aquele número apareceu.
-
-### Redução por Descanso
-
-Após descanso, a Entropia retorna a **0** e todas as Marcas não permanentes são removidas. Marcas permanentes persistem para sempre na ficha.
-
----
-
-## Crítico, Falha e Casos Especiais
-
-Funciona igual às perícias — os D12s alocados num modificador determinam os casos especiais.
-
-| Resultado nos dados | Efeito |
-|---|---|
-| Um dado natural **1** | O bônus ainda é somado. Se o resultado atingir a DT do Mestre → **Sucesso Parcial**; se não atingir → **Falha Crítica** com consequência proporcional à Entropia |
-| Um dado natural **12** | Crítico — dano ou efeito dobrado |
-| Dois dados naturais **12** | Milagre — dano ou efeito triplicado |
-| Dois dados naturais **1** | Desastre — consequência catastrófica proporcional à Entropia |
-| **12** e **1** no mesmo modificador | Anulam-se — sem estado especial |
-
-> Milagre e Desastre só são possíveis quando o jogador concentra ambos os D12s em um único modificador. Com apenas 1 dado alocado, 12 = Crítico e 1 = possível Falha Crítica.
 
 ---
 
@@ -180,98 +78,12 @@ O personagem **só pode conjurar com esses dois elementos**. Não é uma questã
 
 > **Caso especial — Dupla Conexão:** se Afinidade e Antítese são o mesmo elemento, a penalidade de −10 é substituída por **+10** ao conjurar magias daquele elemento. Para a mecânica completa, consulte o capítulo de Afinidade e Antítese.
 
-> Para a descrição completa dos cinco elementos e suas naturezas, consulte o capítulo seguinte.
+Entenda melhor como [Afinidade e Antitese](afinidades) funcionam.
 
----
+Para a descrição completa dos cinco elementos e suas naturezas, consulte este [capítulo](elementos).
 
-## Cálculo de Dano, Cura e Efeitos
+## Conjurar Magias
 
-O resultado do teste em cada modificador determina a magnitude do efeito.
+Todo conjurador molda a sua vontade para materalizar algo, isso chamamos de **magia**.
 
-**A cada 5 pontos no resultado do teste:**
-
-| Modificador | Efeito |
-|---|---|
-| **Potência** | +1D12 de dano **ou** +1 HP curado |
-| **Complexidade** | +1 stack de condição |
-
-> Em caso de **Crítico** (dado natural 12): efeito dobrado. **Milagre** (dois 12s naturais): efeito triplicado.
-
-Os dados de dano arcano funcionam como qualquer outro dano — cada resultado é comparado à DA do alvo individualmente.
-
----
-
-## Execução Arcana
-
-A forma como o conjurador libera a energia determina quanto tempo a magia permanece ativa.
-
-### Rápida
-A magia é um lampejo — ocorre instantaneamente e se dissipa.
-
-- **Duração:** Imediata, sem persistência
-- **Uso típico:** Disparos, curas rápidas, escudos instantâneos
-
-### Concentrada
-A magia persiste enquanto o conjurador mantiver o foco.
-
-- **Manutenção:** Toda ação complexa enquanto a magia está ativa exige teste de **Vontade**. Falha encerra a magia imediatamente.
-- **Uso típico:** Barreiras sustentadas, campos de força, buffs prolongados
-
-### Maldição
-A magia é tecida na própria realidade — permanente até ser removida.
-
-- **Duração:** Permanente até ritual de dissipação ou cancelamento voluntário
-- **Complexidade:** Sempre exige resultado expressivo em Controle e Complexidade
-- **Uso típico:** Invocações, amaldiçoar alvos, alterar permanentemente um ambiente
-
----
-
-## Tabela de Grandeza
-
-Não é uma DT — é uma referência para o Mestre narrar **como** cada dimensão da magia se manifestou. Cada modificador é lido na tabela separadamente.
-
-| Resultado | Nível | Âncora de escala |
-|---|---|---|
-| 0 – 10 | **Ínfimo** | Ponto único — uma moeda, uma vela, um toque |
-| 11 – 20 | **Menor** | Objeto pequeno — livro, pedra, animal de pequeno porte |
-| 21 – 30 | **Moderado** | Objeto médio — barril, mesa, criança |
-| 31 – 40 | **Considerável** | Humano adulto |
-| 41 – 50 | **Grande** | Criatura grande — urso, boi, porta de fortaleza |
-| 51 – 60 | **Severo** | Cavalo ou carroça carregada |
-| 61 – 70 | **Extremo** | Elefante ou canhão de navio |
-| 71 – 80 | **Colossal** | Aldeia ou navio pequeno |
-| 81 – 90 | **Catastrófico** | Cidade ou navio de guerra |
-| 91 – 100 | **Absoluto** | País ou ilha inteira |
-
-**Exemplo:** Bola de fogo exige Potência + Forma. Potência = 35 (Considerável) e Forma = 10 (Ínfimo) — força para afetar um alvo do tamanho de um humano, mas sem forma definida: as chamas explodiram em todas as direções sem controle.
-
----
-
-## Resistência do Alvo
-
-Alvos que não desejam receber o efeito podem resistir:
-
-- **Resistência Ativa:** O alvo rola um teste de **Vontade** contra o resultado do modificador relevante.
-- **Resistência Passiva:** Se não está ativamente resistindo, rola **Vontade com Desvantagem**.
-
-> Forçar magia sobre uma vontade resistente aumenta a dificuldade — o Mestre pode exigir resultados mais altos nos modificadores.
-
----
-
-## Sanidade e o Custo do Arcano
-
-Toda conjuração custa **1 de Sanidade**, independente da magnitude. Mergulhar no Arcano é exaustivo — cada magia é um ato de força de vontade contra a vastidão do Caos.
-
-> Magos que operam consistentemente em Entropia alta estão em constante desgaste mental. Por este motivo, a figura do **Sincronômante** — especialistas em saúde mental arcana — é uma das mais requisitadas em grupos de exploração. Manter um mago funcional é tão importante quanto manter as armas afiadas.
-
-> Para a mecânica completa de Sanidade, Traumas e Estado de Loucura, consulte o capítulo de **Vida e Sanidade**.
-
----
-
-## Evolução dos Modificadores
-
-Para avançar um modificador, o jogador precisa tirar **dois 12s nos 2D12s** durante um teste que inclua aquele modificador — igual ao sistema de evolução de perícias.
-
-O jogador pode gastar **PE** para aumentar o valor dos dados e alcançar os 12s necessários.
-
-> Concentrar ambos os D12s em um único modificador é a única forma de ter chance de avançar aquele modificador. Isso cria a escolha central do mago: dividir os dados para equilibrar a magia, ou concentrá-los para crescer — mas com risco de Desastre.
+Entenda melhor como [conjurar magias](conjuracao)
