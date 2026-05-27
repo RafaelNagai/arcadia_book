@@ -185,25 +185,20 @@ export function ArcanoSection({
                               </span>
                               <button
                                 onClick={() => onModificadorChange(key, -1)}
-                                disabled={bonus <= 0}
                                 style={{
                                   width: 16,
                                   height: 16,
                                   borderRadius: 3,
                                   border: "1px solid rgba(200,146,42,0.35)",
                                   background: "transparent",
-                                  color:
-                                    bonus > 0
-                                      ? "#C8922A"
-                                      : "rgba(255,255,255,0.15)",
-                                  cursor: bonus > 0 ? "pointer" : "not-allowed",
+                                  color: "#C8922A",
+                                  cursor: "pointer",
                                   display: "flex",
                                   alignItems: "center",
                                   justifyContent: "center",
                                   fontSize: 13,
                                   lineHeight: 1,
                                   padding: 0,
-                                  opacity: bonus > 0 ? 1 : 0.3,
                                 }}
                               >
                                 −
@@ -214,7 +209,7 @@ export function ArcanoSection({
                                   fontWeight: 700,
                                   fontSize: "0.9rem",
                                   color:
-                                    bonus > 0
+                                    bonus !== 0
                                       ? "#C8922A"
                                       : "rgba(255,255,255,0.2)",
                                   minWidth: 14,

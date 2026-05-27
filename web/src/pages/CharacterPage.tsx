@@ -500,7 +500,7 @@ export function CharacterPage() {
     setSkillModifiers((prev) => {
       const next = {
         ...prev,
-        [bonusKey]: Math.max(0, (prev[bonusKey] ?? 0) + delta),
+        [bonusKey]: (prev[bonusKey] ?? 0) + delta,
       };
       if (id) {
         if (isApiChar) void api.state.updateSkillModifiers(id, next);

@@ -23,7 +23,7 @@ export function Step2Attrs({ attrs, onChange }: {
               <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.85rem', fontWeight: 600, color: g.color }}>{g.label}</p>
               <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.65rem', color: 'var(--color-text-muted)' }}>{g.desc}</p>
             </div>
-            <Stepper value={attrs[g.attr]} min={0} onChange={v => onChange(g.attr, v)} color={g.color} />
+            <Stepper value={attrs[g.attr]} onChange={v => onChange(g.attr, v)} color={g.color} />
           </div>
         ))}
       </div>

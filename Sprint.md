@@ -14,6 +14,7 @@ _nenhum item em andamento_
 
 ### A fazer
 
+
 ---
 
 ### Sistema Arcano Completo na Ficha de Personagem
@@ -57,6 +58,17 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 ---
 
 ## Concluídos
+
+### Valores Negativos em Atributos e Perícias
+**Origem:** /task Permitir valores negativos para Atributos e Perícias na ficha do personagem
+**Adicionada:** 2026-05-26 · **Validator:** APROVADO · **Concluída:** 2026-05-26
+
+- [x] Subtask 1 — `CreatorUI.tsx`: `Stepper` aceita `min?: number` sem default; botão `−` e input sem restrição inferior quando `min` não é passado
+- [x] Subtask 2 — `Step2Attrs.tsx`: removido `min={0}` do Stepper de atributos (Físico, Destreza, Intelecto, Influência, Arcano)
+- [x] Subtask 3 — `Step3Skills.tsx`: removido `min={0}` do Stepper de perícias (16 perícias)
+- [x] Subtask 4 — `Step4Arcano.tsx`: entropia mantém `min={0}` — não afetada pela mudança
+
+---
 
 ### Sub-capítulos de Elementos (05_01 a 05_05) no Manifest e Sidebar
 **Origem:** /task Adicionar os capítulos 05_01_energia.md, 05_02_anomolia.md, 05_03_paradoxo.md, 05_04_cognitivo.md e 05_05_astral.md ao livro como sub-itens do capítulo "Elementos" (05)

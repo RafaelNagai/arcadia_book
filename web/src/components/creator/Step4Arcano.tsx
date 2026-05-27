@@ -484,7 +484,6 @@ export function Step4Arcano({
           <Field key={key} label={label} hint={hint}>
             <Stepper
               value={modificadores[key]}
-              min={0}
               onChange={(v) => handleModificador(key, v)}
               color="#60c5d0"
             />

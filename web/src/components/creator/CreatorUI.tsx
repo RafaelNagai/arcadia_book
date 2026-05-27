@@ -210,7 +210,7 @@ export function TextInput({
 
 export function Stepper({
   value,
-  min = 0,
+  min,
   onChange,
   color = "var(--color-arcano)",
 }: {
@@ -219,6 +219,7 @@ export function Stepper({
   onChange: (v: number) => void;
   color?: string;
 }) {
+  const atFloor = min !== undefined && value <= min;
   const btnStyle = (disabled: boolean): React.CSSProperties => ({
     width: 28,
     height: 32,
@@ -237,9 +238,9 @@ export function Stepper({
   return (
     <div className="flex items-center gap-1.5">
       <button
-        onClick={() => onChange(Math.max(min, value - 1))}
-        disabled={value <= min}
-        style={btnStyle(value <= min)}
+        onClick={() => onChange(min !== undefined ? Math.max(min, value - 1) : value - 1)}
+        disabled={atFloor}
+        style={btnStyle(atFloor)}
       >
         −
       </button>
@@ -249,7 +250,7 @@ export function Stepper({
         min={min}
         onChange={(e) => {
           const v = parseInt(e.target.value);
-          if (!isNaN(v) && v >= min) onChange(v);
+          if (!isNaN(v) && (min === undefined || v >= min)) onChange(v);
         }}
         style={
           {

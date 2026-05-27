@@ -1,18 +1,18 @@
 import { z } from 'zod'
 
 const AttributesSchema = z.object({
-  fisico: z.number().int().min(0).max(99),
-  destreza: z.number().int().min(0).max(99),
-  intelecto: z.number().int().min(0).max(99),
-  influencia: z.number().int().min(0).max(99),
-  arcano: z.number().int().min(0).max(99).default(0),
+  fisico: z.number().int().min(-99).max(99),
+  destreza: z.number().int().min(-99).max(99),
+  intelecto: z.number().int().min(-99).max(99),
+  influencia: z.number().int().min(-99).max(99),
+  arcano: z.number().int().min(-99).max(99).default(0),
 })
 
 const ModificadoresSchema = z.object({
-  potencia:     z.number().int().min(0).max(99).default(0),
-  complexidade: z.number().int().min(0).max(99).default(0),
-  forma:        z.number().int().min(0).max(99).default(0),
-  controle:     z.number().int().min(0).max(99).default(0),
+  potencia:     z.number().int().min(-99).max(99).default(0),
+  complexidade: z.number().int().min(-99).max(99).default(0),
+  forma:        z.number().int().min(-99).max(99).default(0),
+  controle:     z.number().int().min(-99).max(99).default(0),
 })
 
 const EntropiaMarcaSchema = z.object({
@@ -22,22 +22,22 @@ const EntropiaMarcaSchema = z.object({
 })
 
 const SkillsSchema = z.object({
-  fortitude: z.number().int().min(0).max(99),
-  vontade: z.number().int().min(0).max(99),
-  atletismo: z.number().int().min(0).max(99),
-  combate: z.number().int().min(0).max(99),
-  furtividade: z.number().int().min(0).max(99),
-  precisao: z.number().int().min(0).max(99),
-  acrobacia: z.number().int().min(0).max(99),
-  reflexo: z.number().int().min(0).max(99),
-  percepcao: z.number().int().min(0).max(99),
-  intuicao: z.number().int().min(0).max(99),
-  investigacao: z.number().int().min(0).max(99),
-  conhecimento: z.number().int().min(0).max(99),
-  empatia: z.number().int().min(0).max(99),
-  dominacao: z.number().int().min(0).max(99),
-  persuasao: z.number().int().min(0).max(99),
-  performance: z.number().int().min(0).max(99),
+  fortitude: z.number().int().min(-99).max(99),
+  vontade: z.number().int().min(-99).max(99),
+  atletismo: z.number().int().min(-99).max(99),
+  combate: z.number().int().min(-99).max(99),
+  furtividade: z.number().int().min(-99).max(99),
+  precisao: z.number().int().min(-99).max(99),
+  acrobacia: z.number().int().min(-99).max(99),
+  reflexo: z.number().int().min(-99).max(99),
+  percepcao: z.number().int().min(-99).max(99),
+  intuicao: z.number().int().min(-99).max(99),
+  investigacao: z.number().int().min(-99).max(99),
+  conhecimento: z.number().int().min(-99).max(99),
+  empatia: z.number().int().min(-99).max(99),
+  dominacao: z.number().int().min(-99).max(99),
+  persuasao: z.number().int().min(-99).max(99),
+  performance: z.number().int().min(-99).max(99),
 })
 
 const ELEMENTS = ['Energia', 'Anomalia', 'Paradoxo', 'Astral', 'Cognitivo'] as const

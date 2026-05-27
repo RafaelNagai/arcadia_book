@@ -44,7 +44,7 @@ export function Step3Skills({ skills, talents, totalLevel, onChange, onTalentTog
                     <span style={{ flex: 1, fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: hasTalent ? 'var(--color-text-secondary)' : 'var(--color-text-muted)', fontWeight: hasTalent ? 600 : 400 }}>
                       {skill.label}
                     </span>
-                    <Stepper value={skills[skill.key]} min={0} onChange={v => onChange(skill.key, v)} color={g.color} />
+                    <Stepper value={skills[skill.key]} onChange={v => onChange(skill.key, v)} color={g.color} />
                   </div>
                 )
               })}
