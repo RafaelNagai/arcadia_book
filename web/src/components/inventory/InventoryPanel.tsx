@@ -55,8 +55,8 @@ export function InventoryPanel({
   canEdit?: boolean;
   inventorySnapshot?: { bags: InventoryBag[]; items: InventoryItem[] } | null;
 }) {
-  const totalSlots = 2 + fisico;
-  const maxWeight = 12 + fisico * 3;
+  const totalSlots = 4;
+  const maxWeight = 20 + fisico * 5;
   const isApiChar = isApiCharacterId(characterId);
 
   const [items, setItems] = useState<InventoryItem[]>([]);
@@ -782,7 +782,7 @@ export function InventoryPanel({
                       marginTop: 3,
                     }}
                   >
-                    {items.length}/{totalSlots} slots base · Físico {fisico}
+                    {items.length}/{totalSlots} · 4 slots base
                     {bags.length > 0
                       ? ` · ${bags.length} mochila${bags.length > 1 ? "s" : ""}`
                       : ""}

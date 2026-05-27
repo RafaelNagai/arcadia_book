@@ -49,6 +49,14 @@ Nunca modifique arquivos em `chapters/` para agradar ao site. Sempre ajuste o si
 | Astral | Roxo | `#C090F0` |
 | Cognitivo | Dourado | `#E8B84B` |
 
+### Inventário e Carga
+
+- **Slots base:** 4 fixos (independente de qualquer atributo)
+- **Slots extras:** mochilas e contêineres adicionam slots além do base
+- **Limite de Carga:** `20 + (Físico × 5)`
+- **Sobrecarga:** Carga > limite → Desvantagem em todos os testes
+- **Carga Crítica:** Carga > limite × 2 → 2× Desvantagem em todos os testes
+
 ### Cálculo de HP e Sanidade
 ```
 HP       = 15 + soma de HP_BONUS[1..Físico]

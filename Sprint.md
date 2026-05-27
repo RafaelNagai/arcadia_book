@@ -58,6 +58,18 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Inventário Base Fixo e Nova Fórmula de Carga
+**Origem:** /task Atualizar regras de inventário e carga do personagem
+**Adicionada:** 2026-05-26 · **Validator:** APROVADO · **Concluída:** 2026-05-26
+
+- [x] Subtask 1 — `chapters/02_personagem.md`: tabela mostra 4 slots fixos para todo valor de Físico; fórmula `20 + (Físico × 5)` com exemplo Físico 2 → limite 30
+- [x] Subtask 2 — `chapters/16_equipamentos.md`: fórmula `20 + (Físico × 5)` na seção Capacidade de Carga; seção Mochilas descreve 4 slots base fixos; nenhuma menção à fórmula antiga
+- [x] Subtask 3 — `InventoryPanel.tsx`: `totalSlots = 4`, `maxWeight = 20 + fisico * 5`, label "4 slots base"
+- [x] Subtask 4 — `SPEC.md`: seção "Inventário e Carga" atualizada com slots base = 4 e fórmula `20 + (Físico × 5)`
+- [x] Subtask 5 — `characters.json`: sem campo `inventorySlots` ou valores derivados de Físico; calculado em tempo de render — nenhuma alteração necessária
+
+---
+
 ### Diário de Personagem — Persistência via API
 **Origem:** /task Persistir diário de personagem via API para fichas API (PATCH /characters/:id/diary)
 **Adicionada:** 2026-05-26 · **Validator:** APROVADO · **Concluída:** 2026-05-26
