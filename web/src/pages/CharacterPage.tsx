@@ -1,12 +1,12 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-import type { Character, Condition } from "@/data/characterTypes";
+import type { Character, Condition, DiaryData } from "@/data/characterTypes";
 import charactersData from "@characters";
 import { InventoryPanel } from "@/components/inventory/InventoryPanel";
 import {
@@ -22,6 +22,8 @@ import {
   saveDefenseModifiers,
   loadConditions,
   saveConditions,
+  loadDiary,
+  saveDiary,
 } from "@/lib/localCharacters";
 import { useAuth } from "@/lib/authContext";
 import { api } from "@/lib/apiClient";
@@ -39,6 +41,8 @@ import { SkillsSection } from "@/components/character/SkillsSection";
 import { ArcanoSection } from "@/components/character/ArcanoSection";
 import { Tag, SectionLabel } from "@/components/character/CharacterUI";
 import { FloatingDiceButton } from "@/components/character/FloatingDiceButton";
+import { FloatingDiaryButton } from "@/components/character/FloatingDiaryButton";
+import { DiaryPanel } from "@/components/character/DiaryPanel";
 import { SkillTestOverlay } from "@/components/character/SkillTestOverlay";
 import type { SkillTestData } from "@/components/character/SkillTestOverlay";
 import { DamageRollOverlay } from "@/components/character/DamageRollOverlay";
@@ -98,6 +102,8 @@ export function CharacterPage() {
   const [daBonus, setDaBonus] = useState(0);
   const [dpBonus, setDpBonus] = useState(0);
   const [conditions, setConditions] = useState<Condition[]>([]);
+  const [diaryData, setDiaryData] = useState<DiaryData>({ blocks: [], categories: [] });
+  const [diaryOpen, setDiaryOpen] = useState(false);
 
   const isApiChar = id ? isApiCharacterId(id) : false;
 
@@ -113,17 +119,21 @@ export function CharacterPage() {
       return;
     }
 
+    let cancelled = false;
+
     if (isApiCharacterId(id)) {
+      const currentUserId = user?.id;
       Promise.all([
         api.characters.get(id),
         api.state.get(id).catch(() => ({ state: null })),
       ])
         .then(([charRes, stateRes]) => {
+          if (cancelled) return;
           const raw = (charRes as { character: Record<string, unknown> })
             .character;
           const char = mapApiToCharacter(raw);
           setCharacter(char);
-          setOwned(user?.id != null && raw.userId === user.id);
+          setOwned(currentUserId != null && raw.userId === currentUserId);
           setCurrentHp(char.currentHp ?? char.hp);
           setCurrentSanidade(char.currentSanidade ?? char.sanidade);
           const s =
@@ -148,14 +158,15 @@ export function CharacterPage() {
           setDpBonus(dm.dpBonus ?? 0);
           setInitialDiceLog((s.diceLog as DiceLogEntry[]) ?? []);
           setConditions((s.conditions as Condition[]) ?? []);
+          if (raw.diary) setDiaryData(raw.diary as DiaryData);
           const pub = (raw.isPublic as boolean) ?? false;
           setIsPublic(pub);
-          if (pub && raw.userId !== user?.id) setHistoriaExpanded(true);
+          if (pub && raw.userId !== currentUserId) setHistoriaExpanded(true);
         })
         .catch(() => {
           /* character not found or forbidden — leave undefined */
         })
-        .finally(() => setCharLoaded(true));
+        .finally(() => { if (!cancelled) setCharLoaded(true); });
     } else {
       const char =
         PRESET_CHARACTERS.find((c) => c.id === id) ?? getCustomCharacter(id);
@@ -178,9 +189,11 @@ export function CharacterPage() {
         setDaBonus(dm.daBonus);
         setDpBonus(dm.dpBonus);
         setConditions(loadConditions(id));
+        setDiaryData(loadDiary(id));
       }
       setCharLoaded(true);
     }
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, user?.id]);
 
@@ -459,6 +472,16 @@ export function CharacterPage() {
       return next;
     });
   }
+
+  /* ── Diary ───────────────────────────────────────────────────── */
+
+  const handleDiaryChange = useCallback((data: DiaryData) => {
+    setDiaryData(data);
+    if (id) {
+      if (isApiChar) void api.characters.updateDiary(id, data);
+      else saveDiary(id, data);
+    }
+  }, [id, isApiChar]);
 
   /* ── Entropia ────────────────────────────────────────────────── */
 
@@ -1208,6 +1231,12 @@ export function CharacterPage() {
           🎒
         </button>
 
+        {/* ── Floating diary button ────────────────────────── */}
+        <FloatingDiaryButton
+          accentColor={accent.text}
+          onClick={() => setDiaryOpen((d) => !d)}
+        />
+
         {/* ── Floating dice button ─────────────────────────── */}
         <FloatingDiceButton accentColor={accent.text} />
 
@@ -1240,6 +1269,15 @@ export function CharacterPage() {
             inventorySnapshot={builtInventorySnapshot}
           />
         )}
+
+        {/* ── Diary panel ──────────────────────────────────── */}
+        <DiaryPanel
+          isOpen={diaryOpen}
+          onClose={() => setDiaryOpen(false)}
+          diaryData={diaryData}
+          onChangeDiary={handleDiaryChange}
+          canEdit={canEdit}
+        />
 
         {/* ── Dice log sidebar ─────────────────────────────── */}
         <DiceLogSidebar />

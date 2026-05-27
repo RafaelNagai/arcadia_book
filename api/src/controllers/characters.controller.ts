@@ -3,6 +3,7 @@ import { CharactersService } from '../services/characters.service.js'
 import {
   CreateCharacterSchema,
   CurrentValuesSchema,
+  DiarySchema,
   UpdateCharacterSchema,
   VisibilitySchema,
   type UpdateCharacterInput,
@@ -62,6 +63,14 @@ export async function charactersController(fastify: FastifyInstance) {
     const { id } = UUIDParamSchema.parse(req.params)
     const values = CurrentValuesSchema.parse(req.body)
     const char = await svc.updateCurrentValues(id, req.user!.id, values)
+    return reply.send({ character: char })
+  })
+
+  fastify.patch('/:id/diary', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id } = UUIDParamSchema.parse(req.params)
+    const diary = DiarySchema.parse(req.body)
+    const char = await svc.updateDiary(id, req.user!.id, diary)
     return reply.send({ character: char })
   })
 

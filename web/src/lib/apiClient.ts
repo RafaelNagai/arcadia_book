@@ -90,6 +90,12 @@ export const api = {
         body: JSON.stringify({ is_public: isPublic }),
       }),
 
+    updateDiary: (id: string, diary: unknown) =>
+      apiFetch<{ character: unknown }>(`/characters/${id}/diary`, {
+        method: 'PATCH',
+        body: JSON.stringify(diary),
+      }),
+
     delete: (id: string) => apiFetch(`/characters/${id}`, { method: 'DELETE' }),
   },
 

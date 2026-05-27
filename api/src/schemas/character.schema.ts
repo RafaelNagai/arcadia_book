@@ -78,5 +78,23 @@ export const VisibilitySchema = z.object({
   is_public: z.boolean(),
 })
 
+export const DiaryBlockSchema = z.object({
+  id: z.string(),
+  content: z.string(),
+  order: z.number().int(),
+  categoryId: z.string().optional(),
+})
+
+export const DiaryCategorySchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  order: z.number().int(),
+})
+
+export const DiarySchema = z.object({
+  blocks: z.array(DiaryBlockSchema),
+  categories: z.array(DiaryCategorySchema),
+})
+
 export type CreateCharacterInput = z.infer<typeof CreateCharacterSchema>
 export type UpdateCharacterInput = z.infer<typeof UpdateCharacterSchema>

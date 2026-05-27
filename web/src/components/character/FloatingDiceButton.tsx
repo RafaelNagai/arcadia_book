@@ -79,7 +79,7 @@ export function FloatingDiceButton({ accentColor }: FloatingDiceButtonProps) {
             transition={{ type: 'spring', stiffness: 340, damping: 28 }}
             style={{
               position: 'fixed',
-              bottom: 152,
+              bottom: 216,
               right: 28,
               zIndex: 79,
               background: 'var(--color-deep)',
@@ -235,7 +235,7 @@ export function FloatingDiceButton({ accentColor }: FloatingDiceButtonProps) {
         title="Rolar dados"
         style={{
           position: 'fixed',
-          bottom: 92,
+          bottom: 156,
           right: 28,
           zIndex: 80,
           width: 52,

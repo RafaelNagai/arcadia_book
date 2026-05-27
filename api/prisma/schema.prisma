@@ -30,6 +30,7 @@ model Character {
   entropia        Int      @default(0)
   modificadores   Json     @default("{}")
   marcas          Json     @default("[]")
+  diary           Json?
   traumas         String[]
   antecedentes    String[]
   historia        String?

@@ -1,3 +1,21 @@
+export interface DiaryCategory {
+  id: string
+  name: string
+  order: number
+}
+
+export interface DiaryBlock {
+  id: string
+  content: string
+  order: number
+  categoryId?: string
+}
+
+export interface DiaryData {
+  blocks: DiaryBlock[]
+  categories: DiaryCategory[]
+}
+
 export type ConditionEffectField =
   | 'fortitude' | 'vontade' | 'atletismo' | 'combate'
   | 'furtividade' | 'precisao' | 'acrobacia' | 'reflexo'

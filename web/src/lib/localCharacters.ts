@@ -5,7 +5,7 @@
  * The `owned` flag on Character will map to server-side ownership once auth exists.
  */
 
-import type { Character, Condition, InventoryBag, InventoryItem } from '@/data/characterTypes'
+import type { Character, Condition, DiaryData, InventoryBag, InventoryItem } from '@/data/characterTypes'
 
 const STORAGE_KEY = 'arcadia_custom_characters'
 
@@ -217,6 +217,30 @@ export function saveConditions(characterId: string, conditions: Condition[]): vo
     const all = raw ? (JSON.parse(raw) as Record<string, Condition[]>) : {}
     all[characterId] = conditions
     localStorage.setItem(CONDITIONS_KEY, JSON.stringify(all))
+  } catch {}
+}
+
+/* ─── Diary ─────────────────────────────────────────────────────── */
+
+const DIARY_KEY = 'arcadia_diary'
+const DIARY_FALLBACK: DiaryData = { blocks: [], categories: [] }
+
+export function loadDiary(characterId: string): DiaryData {
+  try {
+    const raw = localStorage.getItem(DIARY_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, DiaryData>) : {}
+    return all[characterId] ?? { ...DIARY_FALLBACK }
+  } catch {
+    return { ...DIARY_FALLBACK }
+  }
+}
+
+export function saveDiary(characterId: string, data: DiaryData): void {
+  try {
+    const raw = localStorage.getItem(DIARY_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, DiaryData>) : {}
+    all[characterId] = data
+    localStorage.setItem(DIARY_KEY, JSON.stringify(all))
   } catch {}
 }
 

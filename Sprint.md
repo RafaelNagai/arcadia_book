@@ -14,7 +14,6 @@ _nenhum item em andamento_
 
 ### A fazer
 
-
 ---
 
 ### Sistema Arcano Completo na Ficha de Personagem
@@ -58,6 +57,30 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 ---
 
 ## Concluídos
+
+### Diário de Personagem — Persistência via API
+**Origem:** /task Persistir diário de personagem via API para fichas API (PATCH /characters/:id/diary)
+**Adicionada:** 2026-05-26 · **Validator:** APROVADO · **Concluída:** 2026-05-26
+
+- [x] Subtask 1 — Schema Prisma: campo `diary Json?` adicionado no modelo `Character`; `db push` aplicado com sucesso; client regenerado
+- [x] Subtask 2 — Backend: `DiaryBlockSchema`, `DiaryCategorySchema`, `DiarySchema` em `character.schema.ts`; método `updateDiary` no `CharactersService`; rota `PATCH /:id/diary` no `charactersController`
+- [x] Subtask 3 — Frontend: `api.characters.updateDiary` adicionado em `apiClient.ts`; body enviado como `JSON.stringify(diary)` onde `diary` é `{ blocks, categories }` — compatível com `DiarySchema` no controller
+- [x] Subtask 4 — `CharacterPage.tsx`: carrega `raw.diary` no branch API (`setDiaryData`); `handleDiaryChange` bifurca entre `api.characters.updateDiary` (isApiChar) e `saveDiary` (local)
+- [x] Subtask 5 — `loadDiary`/`saveDiary` importados e usados no branch local; typecheck API sem erros novos
+
+---
+
+### Diário de Personagem
+**Origem:** /task adicionar Diário de Personagem na ficha
+**Adicionada:** 2026-05-26 · **Validator:** APROVADO · **Concluída:** 2026-05-26
+
+- [x] Subtask 1 — Tipos `DiaryBlock`, `DiaryCategory`, `DiaryData` exportados em `characterTypes.ts`
+- [x] Subtask 2 — `loadDiary`/`saveDiary` em `localCharacters.ts` com chave `arcadia_diary` (sub-objeto por characterId, padrão do projeto) e fallback `{ blocks: [], categories: [] }`
+- [x] Subtask 3 — `DiaryPanel.tsx` criado: sidebar createPortal, motion.div `initial={{ x: '100%' }}`, width 340, zIndex 9001, categorias com expand/collapse, blocos com textarea, drag-and-drop via @dnd-kit/sortable, canEdit=false = readonly
+- [x] Subtask 4 — `FloatingDiaryButton.tsx` criado (bottom: 92, right: 28, zIndex: 80, ícone BookOpen do Lucide); `FloatingDiceButton.tsx`: bottom→156, painel bottom→216; `CharacterPage.tsx`: FloatingDiaryButton renderizado entre mochila e dado
+- [x] Subtask 5 — `CharacterPage.tsx`: estado `diaryData`/`diaryOpen`, `loadDiary` no useEffect, `handleDiaryChange` com `useCallback`, `<DiaryPanel>` e `<FloatingDiaryButton>` integrados
+
+---
 
 ### Valores Negativos em Atributos e Perícias
 **Origem:** /task Permitir valores negativos para Atributos e Perícias na ficha do personagem

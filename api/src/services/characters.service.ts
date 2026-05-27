@@ -4,7 +4,8 @@ import { ForbiddenError, NotFoundError } from '../middleware/error-handler.js'
 import { CharactersRepository } from '../repositories/characters.repository.js'
 import { CampaignsRepository } from '../repositories/campaigns.repository.js'
 import { UploadService } from './upload.service.js'
-import type { CreateCharacterInput } from '../schemas/character.schema.js'
+import type { z } from 'zod'
+import type { CreateCharacterInput, DiarySchema } from '../schemas/character.schema.js'
 
 const SNAKE_TO_CAMEL: Record<string, string> = {
   image_url: 'imageUrl',
@@ -91,6 +92,11 @@ export class CharactersService {
       ...(values.current_hp !== undefined && { currentHp: values.current_hp }),
       ...(values.current_sanidade !== undefined && { currentSanidade: values.current_sanidade }),
     })
+  }
+
+  async updateDiary(id: string, userId: string, diary: z.infer<typeof DiarySchema>): Promise<Character> {
+    await this.assertOwner(id, userId)
+    return this.repo.update(id, { diary: diary as object })
   }
 
   async setVisibility(id: string, userId: string, isPublic: boolean): Promise<Character> {
