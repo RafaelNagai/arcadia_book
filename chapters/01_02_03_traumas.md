@@ -6,7 +6,7 @@ Traumas são marcas permanentes que o passado deixa no personagem — psicológi
 
 O TIPO define *como* o trauma se manifesta mecanicamente. O ALVO define *sobre o quê*.
 
-### Determinando o Tipo
+## Determinando o Tipo
 
 Role **1D20** e consulte a tabela:
 
@@ -17,11 +17,11 @@ Role **1D20** e consulte a tabela:
 | 5–7 | **Paranoia** | O personagem pode ser forçado a substituir uma perícia escolhida pelo jogador por outra, sem aviso. |
 | 8–10 | **Fobia** | O personagem perde **1 ação** sempre que estiver na presença do Alvo do trauma. |
 | 11–13 | **Medo** | O personagem tem **Desvantagem** em perícias quando age perante o Alvo do trauma. |
-| 14–16 | **Alergia** | O problema se externaliza no corpo: **−3 a −8** em perícias específicas. |
+| 14–16 | **Alergia** | O problema se externaliza no corpo: **−3 a −10** em perícias específicas. |
 | 17–19 | **Arrogância / Preconceito** | O personagem não soma bônus de atributo e pericia, e nem pode usar PE em ações contra o Alvo do trauma. |
 | 20 | **Jogador decide** | — |
 
-### Determinando o Alvo
+## Determinando o Alvo
 
 Role **1D20** e consulte a tabela:
 
@@ -38,7 +38,7 @@ Role **1D20** e consulte a tabela:
 | 9 | Multidão | 19 | Equipamento / Item |
 | 10 | Lugares | 20 | Jogador decide |
 
-### Alvo de Alergia
+## Determinando o Alvo de Alergia
 
 Quando o Tipo sorteado for **Alergia**, role novamente nesta tabela:
 
@@ -55,13 +55,13 @@ Quando o Tipo sorteado for **Alergia**, role novamente nesta tabela:
 | 9 | Mofo | 19 | Medicamento / Poção |
 | 10 | Tecido | 20 | Jogador decide |
 
-### Exemplos de Trauma
+## Exemplos de Trauma
 
 | Tipo + Alvo | Nome narrativo |
 |---|---|
-| Vício + Furto/Crime | Compulsão em Roubo |
+| Vício + Furto/Crime | Vicio em Roubar |
 | Vício + Jogos de Azar | Impulso em Cassinos |
 | Medo + Limpeza | Medo de Locais Limpos |
-| Arrogância + Raça | Preconceituoso a [Raça específica] |
+| Arrogância + Raça | Preconceito a Elfos |
 
 > Sinta-se à vontade para ser criativo com as combinações. O TIPO e o ALVO são pontos de partida — o Mestre e o jogador podem interpretar a combinação de formas inesperadas e profundas.

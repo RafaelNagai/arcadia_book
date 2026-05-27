@@ -1,28 +1,6 @@
-# Personagem
+# Atributos e Perícias
 
-> *Um explorador não é definido pelo que carrega, mas pelo que é capaz de fazer quando tudo o que carregava foi perdido.*
-
----
-
-## O Que Define um Personagem
-
-Todo personagem em Arcádia é construído sobre dois conceitos interdependentes: **Atributos** e **Perícias**.
-
-Os **Atributos** representam o potencial bruto — as quatro forças fundamentais que moldam quem o personagem é por natureza. São a herança do corpo, da mente e da alma. Não mudam facilmente, e quando mudam, é porque algo profundo aconteceu.
-
-As **Perícias** representam o que o personagem faz com esse potencial. São o refinamento, a técnica, a experiência acumulada. Elas crescem com o uso — toda vez que você desafia o destino com seus dados e atinge a perfeição natural, uma perícia evolui. O fracasso também ensina, mas é o sucesso absoluto que grava a habilidade no músculo e na memória.
-
-Cada Atributo governa quatro Perícias. Quando você investe numa Perícia, está aplicando um aspecto específico daquele Atributo a uma forma precisa de ação.
-
-> **Valores iniciais:** Todo Atributo e toda Perícia começam em **0** por padrão. Os pontos distribuídos na criação do personagem definem o ponto de partida de cada um. Um valor 0 significa que o personagem não tem treino formal naquela área — ele pode tentar, mas conta apenas com o que os dados oferecem.
->
-> **Crescimento:** Perícias evoluem organicamente durante o jogo (ver capítulo de Evolução e Testes). Atributos não evoluem pelo uso — pontos adicionais de Atributo são recompensas concedidas pelo Mestre por feitos extraordinários ou marcos narrativos significativos.
-
----
-
-## Os Quatro Atributos
-
-### Físico
+## Físico
 
 O **Físico** representa a força bruta, a resistência e o vigor natural do personagem. É o atributo da presença corporal — do impacto direto sobre o mundo material.
 
@@ -32,7 +10,7 @@ Personagens com alto Físico são difíceis de derrubar. Continuam de pé após 
 
 ---
 
-#### Fortitude
+### Fortitude
 
 A **Fortitude** mede a saúde e a resistência do personagem. É usada para resistir à dor, veneno, exaustão, fome, frio e qualquer forma de desgaste que tente apagar o personagem de dentro para fora.
 
@@ -43,7 +21,7 @@ A **Fortitude** mede a saúde e a resistência do personagem. É usada para resi
 
 ---
 
-#### Vontade
+### Vontade
 
 A **Vontade** representa a determinação e a resistência emocional. É usada quando o personagem enfrenta pressões mentais, tenta resistir a controle mágico ou medo, ou precisa se manter focado sob estresse extremo.
 
@@ -57,7 +35,7 @@ A **Vontade** representa a determinação e a resistência emocional. É usada q
 
 ---
 
-#### Atletismo
+### Atletismo
 
 O **Atletismo** define o domínio físico e a coordenação do corpo. Serve para escalar, nadar, saltar, correr longas distâncias ou realizar feitos que exigem vigor e controle muscular combinados.
 
@@ -69,7 +47,7 @@ O **Atletismo** define o domínio físico e a coordenação do corpo. Serve para
 
 ---
 
-#### Combate
+### Combate
 
 A perícia de **Combate** mede a habilidade do personagem em lutar corpo a corpo. Não é apenas força — é técnica: saber quando atacar, como se posicionar e como aproveitar as aberturas que o adversário deixa.
 
@@ -84,7 +62,7 @@ Cada estilo de luta (espada, lança, garras, punhos) pode ser interpretado dentr
 
 ---
 
-### Destreza
+## Destreza
 
 A **Destreza** mede coordenação, reflexos, equilíbrio e agilidade. É o atributo da precisão e da reação — a capacidade de agir rápido, mover-se com elegância e manter o controle em meio ao caos.
 
@@ -94,7 +72,7 @@ Onde o Físico quebra, a Destreza contorna.
 
 ---
 
-#### Furtividade
+### Furtividade
 
 A **Furtividade** é a arte de se mover e agir sem ser notado. Engloba esconder-se, mover-se silenciosamente, camuflar-se em ambientes e agir de forma discreta quando os olhos errados estão por perto.
 
@@ -106,7 +84,7 @@ A **Furtividade** é a arte de se mover e agir sem ser notado. Engloba esconder-
 
 ---
 
-#### Precisão
+### Precisão
 
 A **Precisão** mede o acerto e o controle ao atacar à distância. Aplica-se a arcos, bestas, armas de fogo e magias de projeção direta. Personagens com alta Precisão sabem quando e onde atirar — e raramente erram.
 
@@ -118,7 +96,7 @@ A **Precisão** mede o acerto e o controle ao atacar à distância. Aplica-se a 
 
 ---
 
-#### Acrobacia
+### Acrobacia
 
 A **Acrobacia** representa agilidade, equilíbrio e coordenação corporal refinada. Permite ao personagem realizar movimentos rápidos e graciosos, escapar de perigos físicos ou executar ações espetaculares que desafiam o que parece possível.
 
@@ -130,7 +108,7 @@ A **Acrobacia** representa agilidade, equilíbrio e coordenação corporal refin
 
 ---
 
-#### Reflexo
+### Reflexo
 
 O **Reflexo** representa a capacidade de perceber e mover o corpo rapidamente, antes que a mente consciente processe o que aconteceu. É instinto treinado.
 
@@ -142,7 +120,7 @@ O **Reflexo** representa a capacidade de perceber e mover o corpo rapidamente, a
 
 ---
 
-### Intelecto
+## Intelecto
 
 O **Intelecto** é a medida do raciocínio, percepção e domínio do conhecimento. Representa o poder da mente analítica e intuitiva — a capacidade de entender, criar e adaptar-se. É o atributo central para personagens voltados à investigação, estratégia e sobrevivência inteligente.
 
@@ -150,7 +128,7 @@ O **Intelecto** é a medida do raciocínio, percepção e domínio do conhecimen
 
 ---
 
-#### Percepção
+### Percepção
 
 A **Percepção** mede o quanto o personagem nota o ambiente ao redor. É usada para detectar armadilhas, emboscadas, sons, cheiros ou detalhes visuais sutis que outros ignorariam.
 
@@ -162,7 +140,7 @@ A **Percepção** mede o quanto o personagem nota o ambiente ao redor. É usada 
 
 ---
 
-#### Intuição
+### Intuição
 
 A **Intuição** representa o instinto e a sensibilidade emocional. Permite perceber intenções ocultas, mentiras ou perigos não evidentes. É a "razão do coração" — usada quando não há tempo para análise racional e o personagem precisa confiar no que sente.
 
@@ -178,7 +156,7 @@ A **Intuição** representa o instinto e a sensibilidade emocional. Permite perc
 
 ---
 
-#### Investigação
+### Investigação
 
 A **Investigação** é a habilidade de analisar e deduzir informações a partir de evidências. Combina lógica, observação e raciocínio para descobrir a verdade por trás dos fatos — onde a Percepção nota os detalhes, a Investigação os conecta.
 
@@ -190,7 +168,7 @@ A **Investigação** é a habilidade de analisar e deduzir informações a parti
 
 ---
 
-#### Conhecimento
+### Conhecimento
 
 A perícia de **Conhecimento** representa tudo o que o personagem aprendeu, viveu ou se lembra. Abrange tanto a educação formal quanto o saber empírico — histórias antigas, lendas, tradições, técnicas, culturas, ciências.
 
@@ -210,7 +188,7 @@ Durante o jogo, o Mestre solicita testes de Conhecimento quando uma memória ou 
 
 ---
 
-### Influência
+## Influência
 
 A **Influência** mede carisma, presença, empatia e força de personalidade. É o atributo da comunicação, da liderança e do impacto emocional. Personagens com alta Influência podem inspirar, enganar ou dominar os outros apenas com palavras e atitude.
 
@@ -218,7 +196,7 @@ A **Influência** mede carisma, presença, empatia e força de personalidade. É
 
 ---
 
-#### Empatia
+### Empatia
 
 A **Empatia** é a arte de entender e transmitir sentimentos. Permite convencer, acalmar ou inspirar pessoas sem recorrer à força ou à lógica fria. Diplomatas e líderes a utilizam para resolver conflitos e construir alianças duradouras.
 
@@ -230,7 +208,7 @@ A **Empatia** é a arte de entender e transmitir sentimentos. Permite convencer,
 
 ---
 
-#### Dominação
+### Dominação
 
 A **Dominação** usa medo, poder ou presença para influenciar os outros. Não é apenas gritar — é a capacidade de impor sua vontade com palavras, postura e olhar. Aqueles que dominam não pedem: eles estabelecem.
 
@@ -242,7 +220,7 @@ A **Dominação** usa medo, poder ou presença para influenciar os outros. Não 
 
 ---
 
-#### Persuasão
+### Persuasão
 
 A **Persuasão** é a perícia da influência racional e emocional combinadas. Envolve retórica, charme e argumentação — usada para convencer alguém com lógica, apelo emocional ou carisma puro.
 
@@ -254,7 +232,7 @@ A **Persuasão** é a perícia da influência racional e emocional combinadas. E
 
 ---
 
-#### Performance
+### Performance
 
 A **Performance** mede a expressão artística e a presença cênica. Músicos, atores e bardos a utilizam para comover, distrair ou inspirar. Em certos contextos — especialmente quando o Arcano está envolvido — pode ter poder que vai além do entretenimento.
 
@@ -263,70 +241,8 @@ A **Performance** mede a expressão artística e a presença cênica. Músicos, 
 - Enganar inimigos com uma atuação convincente.
 - Distrair guardas com um espetáculo improvisado.
 
----
+## Quinto Atributo
 
-## Inventário
+Existe um quinto atributo conhecido como **Arcano**, ele representa o seu conhecimento e experiência em impor sua vontade e desejo, para moldar esse arcano em algo Material.
 
-Todo personagem carrega consigo um conjunto de **slots de inventário** — espaços físicos onde itens e equipamentos podem ser guardados durante as aventuras.
-
-### Capacidade de Slots
-
-Todo personagem possui **4 slots de inventário base**, independentemente de qualquer atributo. Mochilas e contêineres podem adicionar slots extras além desse valor base.
-
-Cada slot comporta um único item, independentemente do seu peso.
-
-### Limite de Carga
-
-O peso total que um personagem consegue carregar sem penalidade é determinado pelo atributo **Físico**:
-
-> **Limite de Carga = 20 + (Físico × 5)**
-
-| Físico | Slots Base | Limite de Carga |
-|---|---|---|
-| 0 | 4 | 20 |
-| 1 | 4 | 25 |
-| 2 | 4 | 30 |
-| 3 | 4 | 35 |
-| 4 | 4 | 40 |
-| 5 | 4 | 45 |
-
-### Penalidades por Sobrecarga
-
-| Condição | Penalidade |
-|---|---|
-| Peso > Limite de Carga | **Desvantagem** em todos os testes |
-| Peso > 2× Limite de Carga | **2× Desvantagem** em todos os testes |
-
-> **Desvantagem** significa rolar um dado a menos no pool. **2× Desvantagem** significa rolar dois dados a menos. Se o pool chegar a zero dados, o teste falha automaticamente.
-
-> **Exemplo:** Um personagem com Físico 2 (Limite 30) que carrega peso 36 sofre Desvantagem em todos os testes. Se carregar peso 60 ou mais, sofre 2× Desvantagem.
-
-### Itens e Equipamentos no Inventário
-
-Cada slot pode conter um **item comum** ou um **equipamento**:
-
-- **Item comum** — Possui nome, descrição e peso. Não tem contagem de durabilidade. Exemplos: poções, mapas, instrumentos, moedas.
-- **Equipamento** — Além de nome, descrição e peso, possui **Durabilidade**. A durabilidade máxima é definida na criação ou aquisição do item (consulte as tabelas de Tier no capítulo *Item e Equipamento*). Durante o jogo, pode subir ou cair conforme os eventos da sessão.
-
----
-
-## Tabela de Referência Rápida
-
-| Atributo | Perícia | Uso Central |
-|---|---|---|
-| **Físico** | Fortitude | Resistir dano, veneno, exaustão |
-| | Vontade | Resistir magia, medo, pressão mental |
-| | Atletismo | Escalar, nadar, saltar, correr |
-| | Combate | Lutar corpo a corpo |
-| **Destreza** | Furtividade | Mover-se e agir sem ser notado |
-| | Precisão | Atacar à distância com acurácia |
-| | Acrobacia | Agilidade, equilíbrio, movimentos complexos |
-| | Reflexo | Reagir instantaneamente a ameaças |
-| **Intelecto** | Percepção | Notar detalhes, detectar ameaças ocultas |
-| | Intuição | Sentir intenções, mentiras, perigos |
-| | Investigação | Analisar evidências e deduzir conclusões |
-| | Conhecimento | Lembrar e aplicar aprendizados do passado |
-| **Influência** | Empatia | Entender e transmitir emoções |
-| | Dominação | Impor presença e vontade |
-| | Persuasão | Convencer com argumento ou charme |
-| | Performance | Expressão artística e presença cênica |
+Saiba mais, consultando sobre [arcano](arcanismo)

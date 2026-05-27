@@ -17,7 +17,7 @@ Aqui, sobrevivência e glória dependem de uma única capacidade: **navegar pelo
 
 ## O Mar de Nuvens
 
-As terras de Arcádia existem no chamado **Plano Finito** — a camada mais densa da realidade, onde a fantasia cruza os céus com navios voadores. Nele, ilhas e continentes não estão ancorados a placas tectônicas. Eles flutuam, movidos pelas correntes de vento e pela própria vontade do **Arcano** — a energia bruta que permeia tudo o que existe.
+As terras de Arcádia existem no chamado **Plano Material** — a camada mais densa da realidade, onde a fantasia cruza os céus com navios voadores. Nele, ilhas e continentes não estão ancorados a placas tectônicas. Eles flutuam, movidos pelas correntes de vento e pela própria vontade do **Arcano** — a energia bruta que permeia tudo o que existe.
 
 A consequência direta disso é simples e devastadora: **a geografia é viva**.
 
@@ -41,7 +41,7 @@ Não existe aventura sem uma embarcação. Não existe tripulação sem um lar q
 
 | Tipo | Descrição |
 |---|---|
-| **Embarcações Materiais** | Construídas com aço, madeira e engenharia. Movidas por propulsores de éter e velas solares. Representam o ápice tecnológico de civilizações como *Rubra* e *Union*. |
+| **Embarcações Materiais** | Construídas com aço, madeira e engenharia. Movidas por propulsores de Eltys e velas solares. Representam o ápice tecnológico de civilizações como *Rubra* e *Union*. |
 | **Embarcações Orgânicas** | Feras colossais domesticadas, onde a tripulação constrói conveses e estruturas sobre cascos vivos. Imprevisíveis, perigosas e absolutamente magníficas. |
 
 Independente do tipo, todo navio é mais do que um meio de transporte. Ele possui **Setores** (áreas funcionais com papéis táticos), uma **Durabilidade** que se desgasta em batalha, e uma **Moral** coletiva que oscila conforme as ações da tripulação.
@@ -62,7 +62,7 @@ E o fracasso? O fracasso não é um fim. É um degrau.
 |---|---|
 | **Exploração de Alto Risco** | Navegar entre ilhas flutuantes usando sequências de Constelações, enfrentando tempestades e anomalias do Mar de Nuvens. |
 | **Gestão de Tripulação** | Manter a Moral alta através de Gritos de Guerra, sacrifícios individuais e liderança no momento certo. |
-| **Magia Criativa e Perigosa** | Moldar o Arcano com Elementos e Runas, pagando o preço em Sanidade através da Entropia. |
+| **Magia Criativa e Perigosa** | Moldar o Arcano com Elementos, pagando o preço em Sanidade e mergulhando no poder através da Entropia. |
 | **Combate Dinâmico** | Um ritmo de batalha onde reações, esquivas e o desgaste do equipamento ditam quem permanece no convés. |
 
 ---
@@ -87,7 +87,7 @@ Onde as emoções pintam o céu e alteram a física. Neste plano, sentimentos t�
 > *Uma cor carrega mais do que você pode ver, carrega todo o sentimento de quem a pintou.*
 
 ### O Reino das Almas
-O eco daqueles que já partiram, flutuando no silêncio. Não é um paraíso nem um inferno — é um arquivo. As almas permanecem ali enquanto ainda forem lembradas por alguém no Plano Material. Quando o último ser vivo esquece, a alma se dissolve.
+O eco daqueles que já partiram, flutuando no silêncio. Não é um paraíso nem um inferno — é um arquivo. As almas são uma replica do que já foi o seu corpo no Plano Material, que é desgastada conforme o tempo se passa.
 
 > *O reino das almas é a sombra do Plano Material.*
 
