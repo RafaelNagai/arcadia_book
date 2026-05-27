@@ -110,6 +110,21 @@ A criatura é vinculada permanentemente ao invocador — sem necessidade de conc
 A criatura age no **turno dos jogadores**, junto aos aliados.
 
 - Para ordenar que a criatura realize uma **ação específica**, o invocador gasta **1 de suas próprias ações** para comandá-la. Com a ação específica criada, a invocação vai seguir esse comando pelo resto do combate até ser alterado.
-- Sem receber um comando, a criatura age pelo **instinto dela** — o Mestre usa o campo **Estilo** da ficha da criatura como guia.
+- Um único comando pode ser feito para multiplas invocações, por exemplo: mandar todos as invocações atacarem.
+- Sem receber um comando, a criatura age pelo **instinto dela** — o Mestre usa o campo **Instinto** da ficha da criatura como guia.
 
-> *Uma criatura com Estilo "Agressivo · Predador" sem comando vai atacar o inimigo mais próximo. Uma com Estilo "Protetora" vai posicionar-se entre o invocador e os inimigos. O instinto não é inimigo — mas também não é aliado perfeitamente controlável.*
+### Instinto
+
+| Instinto | Descrição |
+| :--- | :--- |
+| **Hostil** | A invocação prioriza ações ofensivas e busca destruir o alvo atual. Ela avançará contra o inimigo sem se preocupar com a própria segurança. |
+| **Territorial** | A invocação prioriza a defesa de uma área. Ela não avança e só atacará ou defenderá se alvos (aliados ou inimigos) entrarem no seu raio de alcance. |
+| **Predador** | A invocação ignora o alvo principal do invocador para focar e perseguir o inimigo com menos pontos de vida ou que pareça mais vulnerável. |
+| **Protetor** | A invocação prioriza a defesa do invocador ou de aliados feridos. Ela se moverá para interceptar ataques e ficará posicionada como um escudo vivo. |
+| **Fugaz** | A invocação evita o confronto direto. Ela prioriza ataques à distância, emboscadas ou recuar caso inimigos se aproximem demais. |
+| **Frenético** | Se a invocação sofrer dano, ela vai atacar esse alvo. Ela pode mudar de alvo, dependendo de quem foi o ultimo a causar dano na invocação. |
+| **Oportunista** | A invocação prioriza atacar alvos que estejam incapacitados, caídos ou sofrendo com efeitos negativos (como tontura ou paralisia). |
+| **Errático** | A invocação é imprevisível. No início de cada turno, o mestre (ou um dado) define se ela vai atacar, defender ou simplesmente se distrair com o cenário. |
+
+> *Uma criatura com instinto "Hostil" sem comando vai atacar o inimigo mais próximo. Uma com instinto "Protetor" vai posicionar-se entre o invocador e os inimigos. O instinto não é inimigo — mas também não é aliado perfeitamente controlável.*
+
