@@ -8,15 +8,15 @@
 
 ![](/assets/images/chapters/arcanism/image_01.jpg)
 
-O que antecede a vida é o conceito dela, o conceito em Arcadia é uma manifestação da natureza. Uma vontade implicita antes de tudo.
+O que antecede a vida é o conceito dela, o conceito em Arcadia é uma manifestação da natureza. Uma vontade implícita antes de tudo.
 
-No princípio, existiam duas essencias primordiais, a **Inocência** e o **Caos**. A inocência é a continua expansão do vazio, abrindo espaço para o impossivel, é a representação de querer saber mais. O caos é manifestação em forma de algo para preencher aquele vazio criado pela inocencia.
+No princípio, existiam duas essências primordiais, a **Inocência** e o **Caos**. A inocência é a contínua expansão do vazio, abrindo espaço para o impossível, é a representação de querer saber mais. O caos é manifestação em forma de algo para preencher aquele vazio criado pela inocência.
 
-Tudo que existe é o, em algum grau, uma expressão de um conceito: uma coisa criada para preencher um espaço que aguardava ser nomeado.
+Tudo que existe é, em algum grau, uma expressão de um conceito: uma coisa criada para preencher um espaço que aguardava ser nomeado.
 
 O **Arcano** é a manifestação visível dessa essência no mundo — a energia residual do ato de criação que ainda pulsa em todas as coisas vivas. Não é uma força fabricada, nem um dom concedido. Está lá, anterior a qualquer palavra que lhe deram.
 
-Magia, em Arcádia, é o ato de **preenhcer** o vazio. Moldar o Arcano é dizer ao universo: *aqui existe um vazio, e eu sei o que deve preenchê-lo.* A magia é a ferramenta — o arcano é o combustível.
+Magia, em Arcádia, é o ato de **preencher** o vazio. Moldar o Arcano é dizer ao universo: *aqui existe um vazio, e eu sei o que deve preenchê-lo.* A magia é a ferramenta — o arcano é o combustível.
 
 ---
 
@@ -61,6 +61,8 @@ Para avançar um modificador, o jogador precisa tirar **dois 12s nos 2D12s** dur
 
 O jogador pode gastar **PE** para aumentar o valor dos dados e alcançar os 12s necessários.
 
+> Para entender como PE funciona, consulte o capítulo de [PE](TODO).
+
 > Concentrar ambos os D12s em um único modificador é a única forma de ter chance de avançar aquele modificador. Isso cria a escolha central do mago: dividir os dados para equilibrar a magia, ou concentrá-los para crescer — mas com risco de Desastre.
 
 **O Mestre decide quais modificadores uma magia exige** com base na intenção descrita. Toda magia exige no mínimo 2 modificadores.
@@ -84,6 +86,8 @@ Para a descrição completa dos cinco elementos e suas naturezas, consulte este 
 
 ## Conjurar Magias
 
-Todo conjurador molda a sua vontade para materalizar algo, isso chamamos de **magia**.
+Todo conjurador molda a sua vontade para materializar algo — isso chamamos de **magia**.
 
-Entenda melhor como [conjurar magias](conjuracao)
+Conjurar não é apenas liberar poder. É impor uma intenção sobre a vastidão do arcano e esperar que o Caos aceite. O custo dessa negociação é a sua própria **Sanidade** — o quanto o personagem está disposto a se abrir para a essência primordial que torna tudo possível. Quanto mais fundo esse vinculo, que chamamos de Entropia, maior o poder. Quanto maior o poder, mais devastador o preço de uma falha.
+
+Entenda melhor como [conjurar magias](conjuracao).

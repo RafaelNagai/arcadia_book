@@ -28,7 +28,7 @@ A **Energia** é a manifestação. Representa a criação de qualquer material o
 
 A **Anomalia** é a transmutação. Conjuradores dessa vertente manipulam formas vivas, mutação e alteração física. Diferente da Energia, que cria do nada, a Anomalia molda o que já existe.
 
-→ [Ver Anomalia em detalhe](anomolia)
+→ [Ver Anomalia em detalhe](anomalia)
 
 ---
 
@@ -67,7 +67,7 @@ O **Astral** é manipular os outros planos para se manifestar ao seu desejo. Con
 | Elemento | Essência | Detalhe |
 |---|---|---|
 | **Energia** | Criação e manifestação física | [→](energia) |
-| **Anomalia** | Mutação e transmutação | [→](anomolia) |
+| **Anomalia** | Mutação e transmutação | [→](anomalia) |
 | **Paradoxo** | Distorção de conceitos | [→](paradoxo) |
 | **Astral** | Manipulação entre planos | [→](astral) |
 | **Cognitivo** | Controle de mente e sentidos | [→](cognitivo) |

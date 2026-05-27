@@ -53,20 +53,23 @@ Esta lista é uma referencia de como poderia ser conforme o teste do conjurador.
 |---|---|---|
 | 0 – 20 | Comandos basicos | atacar, defender, esquivar, etc. |
 | 21 – 40 | Comandos avançados | Explicar algo complexo para fazer, como proteger um aliado, pedir para pegar um item, etc. |
-| 41+ | Inteligente | Não precisa mandar um comando, a invocação pode fazer ações sem intruções pré-determinadas pelo invocador. |
+| 41+ | Inteligente | Não precisa mandar um comando, a invocação pode fazer ações sem instruções pré-determinadas pelo invocador. |
 
-#### Como calcular
+### Como calcular
 
 O conjurador vai executar os testes Forma, Complexidade e Controle.
+
 **Forma** ==> O resultado adquirido, vai definir o Dado base dessa invocação.
+
 **Complexidade** ==> O resultado adquirido, vai definir a quantidade de dados base a invocação vai jogar.
-**Controle** ==> O resultado define quais tipos de intruções a invocação é capaz de receber e executar.
+
+**Controle** ==> O resultado define quais tipos de instruções a invocação é capaz de receber e executar.
 
 ---
 
 ### Vida da Invocação
 
-Toda invocação tem 1 de VIDA Maxima, porém, o invocador pode sacrificar 1 da propria sanidade para aumentar em VIDA da invocação.
+Toda invocação tem 1 de Vida Máxima. O invocador pode sacrificar 1 de sua própria Sanidade para aumentar a Vida da invocação em 1.
 
 ---
 
@@ -92,9 +95,9 @@ O tipo de Execução define por quanto tempo a criatura permanece no Plano Mater
 A criatura aparece, realiza **uma ação imediata** definida no momento da invocação e some. Não pode receber comandos adicionais depois.
 
 ### Concentrada
-A criatura persiste enquanto o invocador mantiver o foco.
-- Sempre que o invocador **receber dano**, deve fazer um teste de **Vontade** para manter o vínculo ativo.
-- Cada invocação Concentrada adicional que esteja ativada, ao mesmo tempo, aplica **−1D12** (Desvantagem) nesse teste de Vontade.
+A invocação é convocada como uma **ação rápida**, mas o invocador entra em estado de **concentração** — sustentando o vínculo arcano enquanto mantiver o foco.
+- Sempre que o invocador **sofrer dano** ou um evento que comprometa seu foco (a critério do Mestre), deve fazer um teste de **Vontade** para manter o vínculo ativo.
+- Cada invocação Concentrada adicional ativa simultaneamente aplica **−1D12** (Desvantagem) nesse teste de Vontade.
 - Se o teste falhar, a criatura desaparece imediatamente.
 
 ### Maldição
@@ -106,7 +109,7 @@ A criatura é vinculada permanentemente ao invocador — sem necessidade de conc
 
 A criatura age no **turno dos jogadores**, junto aos aliados.
 
-- Para ordenar que a criatura realize uma **ação específica**, o invocador gasta **1 de suas próprias ações** para comandá-la. Com a ação especifica criada, a invocação vai seguir esse comando pelo resto do combate até ser alterado.
+- Para ordenar que a criatura realize uma **ação específica**, o invocador gasta **1 de suas próprias ações** para comandá-la. Com a ação específica criada, a invocação vai seguir esse comando pelo resto do combate até ser alterado.
 - Sem receber um comando, a criatura age pelo **instinto dela** — o Mestre usa o campo **Estilo** da ficha da criatura como guia.
 
 > *Uma criatura com Estilo "Agressivo · Predador" sem comando vai atacar o inimigo mais próximo. Uma com Estilo "Protetora" vai posicionar-se entre o invocador e os inimigos. O instinto não é inimigo — mas também não é aliado perfeitamente controlável.*

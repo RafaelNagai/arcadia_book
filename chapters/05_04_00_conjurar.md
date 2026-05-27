@@ -13,17 +13,17 @@ A magia é um lampejo — ocorre instantaneamente e se dissipa.
 - **Uso típico:** Disparos, curas rápidas, escudos instantâneos
 
 ### Concentrada
-A magia persiste enquanto o conjurador mantiver o foco.
+A magia é executada como uma **ação rápida**, mas o conjurador entra em estado de **concentração** — sustentando a intenção arcana enquanto mantiver o foco.
 
-- **Manutenção:** Toda ação complexa enquanto a magia está ativa exige teste de **Vontade**. Falha encerra a magia imediatamente.
+- **Manutenção:** Sempre que o conjurador **sofrer dano** ou um evento que comprometa seu foco (a critério do Mestre), deve fazer um teste de **Vontade**. Falha encerra a magia imediatamente.
 - **Uso típico:** Barreiras sustentadas, campos de força, buffs prolongados
 
 ### Maldição
 A magia é tecida na própria realidade — permanente até ser removida.
 
 - **Duração:** Permanente até ritual de dissipação ou cancelamento voluntário
-- **Complexidade:** Sempre exige resultado expressivo em Controle e Complexidade
-- **Uso típico:** Invocações, amaldiçoar alvos, alterar permanentemente um ambiente
+- **Exigência:** Os resultados de **Controle** e **Complexidade** devem atingir **uma a duas categorias acima** do que a magia exigiria normalmente na Tabela de Grandeza. Exemplo: uma magia de nível Considerável (31–40), tecida como Maldição, requer resultados na faixa Grande (41–50) ou Severo (51–60).
+- **Uso típico:** Invocações permanentes, amaldiçoar alvos, alterar permanentemente um ambiente
 
 ---
 
@@ -89,7 +89,7 @@ Toda conjuração custa **1 de Sanidade**, independente da magnitude. Mergulhar 
 
 > Magos que operam consistentemente em Entropia alta estão em constante desgaste mental. Por este motivo, a figura do **Sincronômante** — especialistas em saúde mental arcana — é uma das mais requisitadas em grupos de exploração. Manter um mago funcional é tão importante quanto manter as armas afiadas.
 
-> Para a mecânica completa de Sanidade, Traumas e Estado de Loucura, consulte o capítulo de **Vida e Sanidade**.
+Para a mecânica completa de Sanidade, Traumas e Estado de Loucura, consulte o capítulo de [Vida e Sanidade](vida-e-sanidade).
 
 ---
 
@@ -98,7 +98,7 @@ Toda conjuração custa **1 de Sanidade**, independente da magnitude. Mergulhar 
 Alvos que não desejam receber o efeito podem resistir:
 
 - **Resistência Ativa:** O alvo rola um teste de **Vontade** contra o resultado do modificador relevante.
-- **Resistência Passiva:** Se não está ativamente resistindo, rola **Vontade com Desvantagem**.
+- **Resistência Passiva:** Se não está ativamente resistindo, rola **Vontade com Desvantagem** (ver [Desvantagem](TODO)).
 
 > Forçar magia sobre uma vontade resistente aumenta a dificuldade — o Mestre pode exigir resultados mais altos nos modificadores.
 
@@ -106,16 +106,19 @@ Alvos que não desejam receber o efeito podem resistir:
 
 ## Cálculo de Dano, Cura e Efeitos
 
-O resultado do teste em cada modificador determina a magnitude do efeito.
+O **resultado mais alto** entre todos os modificadores testados na conjuração define a magnitude do efeito. A cada 5 pontos nesse resultado:
 
-**A cada 5 pontos no resultado do teste:**
-
-| Modificador | Efeito |
+| Efeito | A cada 5 pontos |
 |---|---|
-| **Potência** | +1D12 de dano **ou** +1 HP curado |
-| **Complexidade** | +1 stack de condição |
+| **Dano** | +1D12 |
+| **Cura** | +1 de Vida |
+| **Condição** | +1 stack |
 
-> Em caso de **Crítico** (dado natural 12): efeito dobrado. **Milagre** (dois 12s naturais): efeito triplicado.
+A natureza do efeito — dano, cura, condição ou combinação — é determinada pela intenção descrita e confirmada pelo Mestre.
+
+> Em caso de **Crítico** (dado natural 12): efeito dobrado. 
+>
+> Em caso de **Milagre** (dois 12s naturais): efeito triplicado.
 
 Os dados de dano arcano funcionam como qualquer outro dano — cada resultado é comparado à DA do alvo individualmente.
 
@@ -144,6 +147,6 @@ Não é uma DT — é uma referência para o Mestre narrar **como** cada dimens�
 
 O arcano pode ser moldado de diversas formas, que representam um estilo de magias. Segue uma lista de algumas ideias de formas:
 
-| Forma | Descrição | Capitulo |
+| Forma | Descrição | Capítulo |
 | :--- | :--- | :--- |
 | Invocação | Utilizar de seres ou criaturas criadas ou moldadas do arcano. | [Veja em](invocacao) | 
