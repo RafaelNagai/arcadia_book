@@ -9,14 +9,14 @@ function SkeletonCard() {
   return (
     <div style={{
       borderRadius: 4,
-      background: 'rgba(10,15,30,0.8)',
-      border: '1px solid rgba(255,255,255,0.05)',
+      background: 'rgba(200,146,42,0.06)',
+      border: '1px solid rgba(200,146,42,0.2)',
       overflow: 'hidden',
     }}>
-      <div style={{ height: 160, background: 'rgba(255,255,255,0.04)', animation: 'pulse 1.5s ease-in-out infinite' }} />
+      <div style={{ height: 160, background: 'rgba(200,146,42,0.15)', animation: 'pulse 1.5s ease-in-out infinite' }} />
       <div style={{ padding: '1rem' }}>
-        <div style={{ height: 18, width: '60%', borderRadius: 4, background: 'rgba(255,255,255,0.08)', marginBottom: '0.5rem', animation: 'pulse 1.5s ease-in-out infinite' }} />
-        <div style={{ height: 12, width: '80%', borderRadius: 4, background: 'rgba(255,255,255,0.05)', animation: 'pulse 1.5s ease-in-out infinite' }} />
+        <div style={{ height: 18, width: '60%', borderRadius: 4, background: 'rgba(200,146,42,0.25)', marginBottom: '0.5rem', animation: 'pulse 1.5s ease-in-out infinite' }} />
+        <div style={{ height: 12, width: '80%', borderRadius: 4, background: 'rgba(200,146,42,0.18)', animation: 'pulse 1.5s ease-in-out infinite' }} />
       </div>
     </div>
   )
@@ -265,6 +265,7 @@ export function CampaignListPage() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--color-abyss)' }}>
+      <style>{`@keyframes pulse{0%,100%{opacity:0.75}50%{opacity:0.25}}`}</style>
       {/* Header */}
       <div style={{
         background: 'linear-gradient(180deg, rgba(8,18,36,0.9) 0%, var(--color-abyss) 100%)',

@@ -494,8 +494,38 @@ export function CampaignPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--color-abyss)' }}>
-        <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.85rem' }}>Carregando…</p>
+      <div className="min-h-screen" style={{ background: 'var(--color-abyss)' }}>
+        <style>{`@keyframes pulse{0%,100%{opacity:0.75}50%{opacity:0.25}}`}</style>
+        {/* Top bar skeleton */}
+        <div style={{ height: 52, display: 'flex', alignItems: 'center', padding: '0 1.25rem', gap: '1rem', background: 'rgba(4,6,12,0.92)', borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ height: 12, width: 80, borderRadius: 4, background: 'rgba(200,146,42,0.2)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+          <div style={{ height: 16, width: 200, borderRadius: 4, background: 'rgba(200,146,42,0.28)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+        </div>
+        <div style={{ display: 'flex' }}>
+          {/* Sidebar skeleton */}
+          <div className="hidden lg:block" style={{ width: 240, flexShrink: 0, borderRight: '1px solid var(--color-border)', background: 'rgba(6,10,22,0.6)', height: 'calc(100vh - 52px)', padding: '1.25rem' }}>
+            <div style={{ height: 14, width: '70%', borderRadius: 4, background: 'rgba(200,146,42,0.22)', marginBottom: '0.75rem', animation: 'pulse 1.8s ease-in-out infinite' }} />
+            <div style={{ height: 10, width: '50%', borderRadius: 4, background: 'rgba(200,146,42,0.15)', marginBottom: '2rem', animation: 'pulse 1.8s ease-in-out infinite' }} />
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} style={{ height: 36, borderRadius: 4, background: 'rgba(200,146,42,0.12)', marginBottom: '0.5rem', animation: 'pulse 1.8s ease-in-out infinite' }} />
+            ))}
+          </div>
+          {/* Main content skeleton */}
+          <div style={{ flex: 1, padding: '2rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ height: 24, width: 180, borderRadius: 4, background: 'rgba(200,146,42,0.22)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[1, 2, 3].map(i => (
+                <div key={i} style={{ height: 120, borderRadius: 6, background: 'rgba(200,146,42,0.12)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+              ))}
+            </div>
+            <div style={{ height: 14, width: 140, borderRadius: 4, background: 'rgba(200,146,42,0.18)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[1, 2].map(i => (
+                <div key={i} style={{ height: 100, borderRadius: 6, background: 'rgba(200,146,42,0.12)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

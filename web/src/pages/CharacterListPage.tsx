@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Character } from '@/data/characterTypes'
 import charactersData from '@characters'
@@ -9,6 +9,55 @@ import { api } from '@/lib/apiClient'
 import { mapApiToCharacter, isApiCharacterId } from '@/lib/apiAdapter'
 
 const PRESET_CHARACTERS = charactersData as Character[]
+
+function CharacterSkeletonCard() {
+  return (
+    <div style={{
+      borderRadius: 4,
+      background: '#0D1528',
+      border: '1px solid rgba(200,146,42,0.35)',
+      overflow: 'hidden',
+      boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+    }}>
+      {/* Portrait */}
+      <div style={{
+        height: 220,
+        background: 'linear-gradient(160deg, rgba(200,146,42,0.22) 0%, rgba(200,146,42,0.08) 100%)',
+        animation: 'skpulse 1.6s ease-in-out infinite',
+        position: 'relative',
+      }}>
+        {/* Simula o gradiente de saída na base */}
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%',
+          background: 'linear-gradient(to top, #0D1528 0%, transparent 100%)',
+        }} />
+      </div>
+
+      {/* Info */}
+      <div style={{ padding: '1rem 1.25rem 1.5rem', marginTop: '-2rem', position: 'relative', display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+        {/* Race tag */}
+        <div style={{ height: 16, width: 72, borderRadius: 3, background: 'rgba(200,146,42,0.25)', animation: 'skpulse 1.6s ease-in-out infinite' }} />
+        {/* Name */}
+        <div style={{ height: 24, width: '72%', borderRadius: 4, background: 'rgba(200,146,42,0.35)', animation: 'skpulse 1.6s ease-in-out infinite' }} />
+        {/* Concept */}
+        <div style={{ height: 12, width: '55%', borderRadius: 4, background: 'rgba(200,146,42,0.2)', animation: 'skpulse 1.6s ease-in-out infinite' }} />
+        {/* Stats */}
+        <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.35rem' }}>
+          {[1, 2, 3].map(i => (
+            <div key={i} style={{
+              flex: 1, height: 38, borderRadius: 4,
+              background: 'rgba(200,146,42,0.12)',
+              border: '1px solid rgba(200,146,42,0.2)',
+              animation: 'skpulse 1.6s ease-in-out infinite',
+            }} />
+          ))}
+        </div>
+        {/* Afinidade */}
+        <div style={{ height: 10, width: '45%', borderRadius: 4, background: 'rgba(200,146,42,0.18)', animation: 'skpulse 1.6s ease-in-out infinite', marginTop: '0.1rem' }} />
+      </div>
+    </div>
+  )
+}
 
 const ELEMENT_COLORS: Record<string, { text: string; glow: string }> = {
   'Energia':   { text: '#E8803A', glow: 'rgba(232,128,58,0.35)' },
@@ -187,9 +236,19 @@ export function CharacterListPage() {
   const { user } = useAuth()
   const [customChars, setCustomChars] = useState<Character[]>([])
   const [publicChars, setPublicChars] = useState<Character[]>([])
-  const [loadingChars, setLoadingChars] = useState(false)
+  const [loadingChars, setLoadingChars] = useState(true)
+  const [loadingPublic, setLoadingPublic] = useState(true)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<TabId>(() => user ? 'meus' : 'explorar')
+  const styleRef = useRef<HTMLStyleElement | null>(null)
+
+  useEffect(() => {
+    const el = document.createElement('style')
+    el.textContent = '@keyframes skpulse{0%,100%{opacity:1}50%{opacity:0.3}}'
+    document.head.appendChild(el)
+    styleRef.current = el
+    return () => { el.remove() }
+  }, [])
 
   useEffect(() => {
     document.title = 'Personagens — Arcádia'
@@ -208,8 +267,10 @@ export function CharacterListPage() {
         .finally(() => setLoadingChars(false))
     } else {
       setCustomChars([])
+      setLoadingChars(false)
     }
 
+    setLoadingPublic(true)
     api.characters.listPublic()
       .then(res => {
         const chars = (res as { characters: unknown[] }).characters.map(
@@ -218,6 +279,7 @@ export function CharacterListPage() {
         setPublicChars(chars)
       })
       .catch(() => setPublicChars([]))
+      .finally(() => setLoadingPublic(false))
   }, [user])
 
   // when user logs in, switch to their tab; when they log out, go to explorar
@@ -247,7 +309,7 @@ export function CharacterListPage() {
 
   const counts: Record<TabId, number | null> = {
     meus: loadingChars ? null : customChars.length,
-    explorar: publicChars.length,
+    explorar: loadingPublic ? null : publicChars.length,
     arcadia: PRESET_CHARACTERS.length,
   }
 
@@ -258,7 +320,6 @@ export function CharacterListPage() {
       transition={{ duration: 0.3 }}
       className="min-h-screen"
       style={{ background: 'var(--color-abyss)' }}>
-      <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}`}</style>
 
       {/* Header */}
       <div
@@ -393,21 +454,7 @@ export function CharacterListPage() {
               transition={{ duration: 0.22 }}>
               {loadingChars ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {Array.from({ length: 3 }).map((_, i) => (
-                    <div key={i} style={{
-                      borderRadius: 2,
-                      background: 'rgba(10,15,30,0.8)',
-                      border: '1px solid rgba(255,255,255,0.05)',
-                      overflow: 'hidden',
-                    }}>
-                      <div style={{ height: 220, background: 'rgba(255,255,255,0.04)', animation: 'pulse 1.5s ease-in-out infinite' }} />
-                      <div style={{ padding: '1.25rem' }}>
-                        <div style={{ height: 10, width: '40%', borderRadius: 4, background: 'rgba(255,255,255,0.06)', marginBottom: '0.75rem', animation: 'pulse 1.5s ease-in-out infinite' }} />
-                        <div style={{ height: 18, width: '70%', borderRadius: 4, background: 'rgba(255,255,255,0.08)', marginBottom: '0.5rem', animation: 'pulse 1.5s ease-in-out infinite' }} />
-                        <div style={{ height: 12, width: '55%', borderRadius: 4, background: 'rgba(255,255,255,0.05)', animation: 'pulse 1.5s ease-in-out infinite' }} />
-                      </div>
-                    </div>
-                  ))}
+                  {Array.from({ length: 3 }).map((_, i) => <CharacterSkeletonCard key={i} />)}
                 </div>
               ) : customChars.length === 0 ? (
                 <div style={{
@@ -468,11 +515,12 @@ export function CharacterListPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.22 }}>
-              {publicChars.length === 0 ? (
-                <div style={{
-                  padding: '4rem 2rem', textAlign: 'center',
-                  border: '1px dashed rgba(255,255,255,0.08)', borderRadius: 4,
-                }}>
+              {loadingPublic ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {Array.from({ length: 6 }).map((_, i) => <CharacterSkeletonCard key={i} />)}
+                </div>
+              ) : publicChars.length === 0 ? (
+                <div style={{ padding: '4rem 2rem', textAlign: 'center', border: '1px dashed rgba(255,255,255,0.08)', borderRadius: 4 }}>
                   <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.82rem' }}>
                     Nenhuma ficha pública disponível ainda.
                   </p>

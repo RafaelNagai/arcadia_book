@@ -266,6 +266,61 @@ function FilterChip({ label, active, danger, onClick }: { label: string; active:
   )
 }
 
+/* ─── Skeleton ─────────────────────────────────────────────────────── */
+
+function CreatureSkeletonCard() {
+  return (
+    <div style={{
+      borderRadius: 4,
+      background: '#0A0604',
+      border: '1px solid rgba(160,48,32,0.45)',
+      overflow: 'hidden',
+      boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+    }}>
+      {/* Portrait */}
+      <div style={{
+        height: 200,
+        background: 'linear-gradient(160deg, rgba(160,48,32,0.3) 0%, rgba(160,48,32,0.1) 100%)',
+        animation: 'skpulse 1.6s ease-in-out infinite',
+        position: 'relative',
+      }}>
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '55%',
+          background: 'linear-gradient(to top, #0A0604 0%, transparent 100%)',
+        }} />
+        {/* Level badge placeholder */}
+        <div style={{
+          position: 'absolute', top: 10, right: 10,
+          height: 22, width: 64, borderRadius: 4,
+          background: 'rgba(160,48,32,0.35)',
+          animation: 'skpulse 1.6s ease-in-out infinite',
+        }} />
+      </div>
+
+      {/* Info */}
+      <div style={{ padding: '0.75rem 1rem 1.25rem', marginTop: '-1.5rem', position: 'relative', display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+        {/* Style tag */}
+        <div style={{ height: 16, width: 60, borderRadius: 3, background: 'rgba(160,48,32,0.35)', animation: 'skpulse 1.6s ease-in-out infinite' }} />
+        {/* Name */}
+        <div style={{ height: 22, width: '65%', borderRadius: 4, background: 'rgba(160,48,32,0.4)', animation: 'skpulse 1.6s ease-in-out infinite' }} />
+        {/* Stats grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 4, marginTop: '0.25rem' }}>
+          {[0, 1, 2, 3].map(i => (
+            <div key={i} style={{
+              height: 42, borderRadius: 3,
+              background: 'rgba(160,48,32,0.2)',
+              border: '1px solid rgba(160,48,32,0.3)',
+              animation: 'skpulse 1.6s ease-in-out infinite',
+            }} />
+          ))}
+        </div>
+        {/* Immune/vuln line */}
+        <div style={{ height: 10, width: '70%', borderRadius: 4, background: 'rgba(160,48,32,0.2)', animation: 'skpulse 1.6s ease-in-out infinite', marginTop: '0.1rem' }} />
+      </div>
+    </div>
+  )
+}
+
 /* ─── Main page ────────────────────────────────────────────────────── */
 
 type TabId = 'minhas' | 'arcadia'
@@ -276,6 +331,7 @@ export function CreatureListPage() {
 
   const [activeTab, setActiveTab] = useState<TabId>(() => user ? 'minhas' : 'arcadia')
   const [customCreatures, setCustomCreatures] = useState<CustomCreature[]>([])
+  const [loadingCustom, setLoadingCustom] = useState(true)
 
   // filter state (used in arcadia tab)
   const [search, setSearch] = useState('')
@@ -287,6 +343,13 @@ export function CreatureListPage() {
   const [activeVulnerable, setActiveVulnerable] = useState<Set<string>>(new Set())
 
   useEffect(() => {
+    const el = document.createElement('style')
+    el.textContent = '@keyframes skpulse{0%,100%{opacity:1}50%{opacity:0.3}}'
+    document.head.appendChild(el)
+    return () => { el.remove() }
+  }, [])
+
+  useEffect(() => {
     document.title = 'Bestiário — Arcádia'
     window.scrollTo({ top: 0 })
   }, [])
@@ -294,11 +357,14 @@ export function CreatureListPage() {
   useEffect(() => {
     if (!user) {
       setCustomCreatures([])
+      setLoadingCustom(false)
       return
     }
+    setLoadingCustom(true)
     api.customCreatures.list()
       .then(res => setCustomCreatures(res.creatures))
       .catch(() => {})
+      .finally(() => setLoadingCustom(false))
   }, [user])
 
   useEffect(() => {
@@ -371,8 +437,8 @@ export function CreatureListPage() {
     { id: 'arcadia', label: 'Arcádia' },
   ]
 
-  const counts: Record<TabId, number> = {
-    minhas: customCreatures.length,
+  const counts: Record<TabId, number | null> = {
+    minhas: loadingCustom ? null : customCreatures.length,
     arcadia: CREATURES.length,
   }
 
@@ -463,7 +529,7 @@ export function CreatureListPage() {
                   }}
                 >
                   {tab.label}
-                  {count > 0 && (
+                  {count !== null && count > 0 && (
                     <span style={{
                       fontSize: '0.6rem', fontWeight: 700,
                       padding: '0.1rem 0.35rem', borderRadius: 10,
@@ -505,7 +571,11 @@ export function CreatureListPage() {
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.22 }}
             >
-              {customCreatures.length === 0 ? (
+              {loadingCustom ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {Array.from({ length: 3 }).map((_, i) => <CreatureSkeletonCard key={i} />)}
+                </div>
+              ) : customCreatures.length === 0 ? (
                 <div style={{ padding: '4rem 2rem', textAlign: 'center', border: `1px dashed ${CREATURE_ACCENT_DIM}`, borderRadius: 4 }}>
                   <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', color: '#F0D0C0', marginBottom: '0.5rem' }}>
                     Nenhuma criatura ainda

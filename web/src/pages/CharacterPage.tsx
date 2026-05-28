@@ -647,19 +647,27 @@ export function CharacterPage() {
 
   if (!charLoaded) {
     return (
-      <div
-        className="min-h-screen flex items-center justify-center"
-        style={{ background: "var(--color-abyss)" }}
-      >
-        <p
-          style={{
-            color: "var(--color-text-muted)",
-            fontFamily: "var(--font-ui)",
-            fontSize: "0.85rem",
-          }}
-        >
-          Carregando…
-        </p>
+      <div className="min-h-screen" style={{ background: "var(--color-abyss)" }}>
+        <style>{`@keyframes pulse{0%,100%{opacity:0.75}50%{opacity:0.25}}`}</style>
+        {/* Hero skeleton */}
+        <div style={{ height: '55vh', minHeight: 380, background: 'rgba(200,146,42,0.12)', animation: 'pulse 1.8s ease-in-out infinite', position: 'relative' }}>
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%', background: 'linear-gradient(to top, var(--color-abyss) 0%, transparent 100%)' }} />
+        </div>
+        {/* Content skeleton */}
+        <div style={{ maxWidth: 860, margin: '0 auto', padding: '2rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <div>
+            <div style={{ height: 12, width: 80, borderRadius: 4, background: 'rgba(200,146,42,0.2)', marginBottom: '0.75rem', animation: 'pulse 1.8s ease-in-out infinite' }} />
+            <div style={{ height: 36, width: 260, borderRadius: 4, background: 'rgba(200,146,42,0.28)', marginBottom: '0.5rem', animation: 'pulse 1.8s ease-in-out infinite' }} />
+            <div style={{ height: 14, width: 180, borderRadius: 4, background: 'rgba(200,146,42,0.18)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+            {[1, 2].map(i => (
+              <div key={i} style={{ height: 120, borderRadius: 6, background: 'rgba(200,146,42,0.12)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+            ))}
+          </div>
+          <div style={{ height: 200, borderRadius: 6, background: 'rgba(200,146,42,0.1)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+          <div style={{ height: 140, borderRadius: 6, background: 'rgba(200,146,42,0.1)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+        </div>
       </div>
     );
   }
