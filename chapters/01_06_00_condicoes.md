@@ -117,7 +117,7 @@ No **Interlúdio**, personagens podem dedicar ações para tratar condições at
 | **Congelado** | Ação Rápida | Nenhum | Calor, fogo ou bebida quente (remove todos os stacks) |
 | **Paralisado** | Ação Rápida | Atletismo DT 14 | — (falha: tenta de novo na próxima ação) |
 
-> Cura mágica (conjuração Arcana com intenção de cura) remove qualquer condição imediatamente, sem teste, com custo de Entropia proporcional à gravidade.
+> Cura mágica (conjuração Arcana com intenção de cura) pode remove/reduzir qualquer condição, portanto que passe na DT.
 
 ### Para o Mestre
 
