@@ -17,6 +17,9 @@ A regra é simples: **a narração deve suportar a mecânica**.
 ## Fluxo de Combate
 
 O combate é organizado em **rodadas**. Em cada rodada, um lado age por completo antes do outro.
+Um lado permite realizar ações, e o outro lado permite usar reações com base nas ações realizadas.
+
+O lado que começa é definida por uma **Iniciativa**.
 
 ### Iniciativa
 
@@ -27,7 +30,7 @@ Compare a **maior Destreza do grupo** com a **maior Destreza entre os inimigos**
 
 A iniciativa é mantida ao longo do combate — não é reavaliada a cada rodada, salvo se o Mestre julgar que algo mudou dramaticamente na cena.
 
-### Ações
+## Ações
 
 Cada personagem tem **2 Ações** por rodada sem penalidade, livres — qualquer perícia pode ser usada, desde que a narração justifique.
 
@@ -35,7 +38,30 @@ O lado que venceu a Iniciativa age primeiro. Os membros do lado decidem a ordem 
 
 É possivel usar mais do que 2 ações, porém para cada ação extra tem **desvantagem** no teste realizado. Se não tiver D12s para jogar, não é possivel realizar aquela ação.
 
-### Reações
+### EXEMPLOS DE AÇÕES
+### Atacar
+
+A ação mais basica para causar dano, determine qual pericia deseja usar e execute a ação.
+> Normalmente usa-se Combate para ataques corpo-a-corpo, Precisão para ataques a longa-distancia, e um teste de Arcano, se conjurar uma magia ofensiva.
+
+### Movimentar
+
+A ação de deslocar-se em um local, escolha uma perícia relacionada que narrativamente consiga explicar como vai se movimentar.
+> Normalmente usa-se atletismo para se movimentar, porém pode se usar qualquer perícia. Por exemplo, usar acrobacia, para pular uma mesa e chegar no local desejado.
+
+### Manobra
+
+A ação na intenção de modificar ou dificultar a ação de um alvo, pode utilizar qualquer perícia ou conjurar qualquer magia portanto que faça sentido narrativamente.
+Os efeitos e complicações causadas, o mestre pode decidir.
+Alguns exemplos:
+- :: Pode reduzir a DA do alvo, para ajudar os aliados a causarem mais dano. 
+- :: Causar desvantagem nas ações daquele alvo.
+- :: Diminuir o resultado do teste realizado por um inimigo.
+- :: Aumentar o resultado do teste realizado por um aliado.
+
+> **Exemplo:** Um aliado usa Atletismo para segurar o braço de um inimigo, diminuindo a DA do alvo em 1.
+
+## Reações
 
 Reações podem ser usadas a qualquer momento — quando não for o seu turno — em resposta a qualquer ação em cena.
 
@@ -50,30 +76,8 @@ Após a primeira reação, toda reação extra usada causa +1 de Desvantagem.
 
 Quando qualquer ação é realizada em cena no turno do oponente, qualquer personagem pode gastar **1 Reação** para responder. Uma reação pode ser qualquer coisa — esquivar, defender, conjurar, contra-atacar, interromper, empurrar um aliado para fora do caminho — desde que a narração justifique e uma perícia faça sentido para ser usada.
 
-### Contra-Ataque
-
-O personagem aceita o golpe do inimigo e responde imediatamente, no mesmo instante.
-
-- **Mecânica:** O dano do atacante é calculado normalmente contra a **DP** do personagem. Em troca, o personagem ataca de volta o atacante.
-- O inimigo pode gastar uma **ação** ao contra-ataque.
-
-> *Exemplo: Um pirata ataca Mira. Ela escolhe Contra-Ataque: absorve o golpe na DP e devolve com um contra-ataque. O pirata pode usar sua ação extra para esquivar ou defender.*
-
----
-
-### Corrente de Ações e Reações
-
-Quando uma reação **ameaça diretamente a integridade do autor da ação** — como um contra-ataque ou uma conjuração ofensiva —, o autor gasta **1 de suas próprias ações** para responder a essa ameaça.
-
-Reações puramente defensivas — como uma esquiva ou um bloqueio — **não geram corrente**. Elas apenas protegem quem as usa, sem impor custo adicional ao atacante.
-
-> *Exemplo: Kael ataca um goblin. Como reação, o goblin devolve um contra-ataque — uma ameaça direta à integridade de Kael. Isso inicia uma corrente: Kael gasta 1 de suas ações para esquivar ou absorver o golpe com sua DP. Ainda lhe resta uma segunda ação para agir normalmente no turno.*
-
----
-
-### Exemplos Comuns de Reação
-
-#### Esquiva
+### EXEMPLOS DE REAÇÕES
+### Esquiva
 
 Você tenta evitar o golpe completamente. Pode usar qualquer perícia para esquivar, desde que explique como.
 
@@ -86,7 +90,7 @@ Você tenta evitar o golpe completamente. Pode usar qualquer perícia para esqui
 
 ---
 
-#### Defesa
+### Defesa
 
 Você se prepara para o impacto. Não há disputa de dados — você confia na sua armadura.
 
@@ -97,15 +101,34 @@ Você se prepara para o impacto. Não há disputa de dados — você confia na s
 
 Entenda mais sobre [Defesa](defesa).
 
+### Contra-Ataque
+
+O personagem aceita o golpe do inimigo e responde imediatamente, no mesmo instante.
+
+- **Mecânica:** O dano do atacante é calculado normalmente contra a **DP** do personagem. Em troca, o personagem ataca de volta o atacante.
+- O inimigo pode gastar uma **ação** ao contra-ataque.
+
+> *Exemplo: Um pirata ataca Mira. Ela escolhe Contra-Ataque: absorve o golpe na DP e devolve com um contra-ataque. O pirata pode usar sua ação extra para esquivar ou defender.*
+
 ---
 
-### Indefeso
+## Corrente de Ações e Reações
+
+Quando uma reação **ameaça diretamente a integridade do autor da ação** — como um contra-ataque ou uma conjuração ofensiva —, o autor gasta **1 de suas próprias ações** para responder a essa ameaça.
+
+Reações puramente defensivas — como uma esquiva ou um bloqueio — **não geram corrente**. Elas apenas protegem quem as usa, sem impor custo adicional ao atacante.
+
+> *Exemplo: Kael ataca um goblin. Como reação, o goblin devolve um contra-ataque — uma ameaça direta à integridade de Kael. Isso inicia uma corrente: Kael gasta 1 de suas ações para esquivar ou absorver o golpe com sua DP. Ainda lhe resta uma segunda ação para agir normalmente no turno.*
+
+---
+
+## Indefeso
 
 Quando todas as Reações foram gastas ou os jogadores criem um cenario para incapacitar um alvo, o personagem está **Indefeso**. Todo dano recebido é calculado contra a **Defesa Passiva (DP)**, sem direito a reação.
 
 ---
 
-## Dados de Dano
+## Dano
 
 Quando um ataque é bem-sucedido, o atacante rola o **pool de dados** da sua arma para calcular o dano.
 
@@ -125,7 +148,7 @@ A **arma** define a quantidade de dados. O **projétil** define o tipo de dado.
 
 > *Exemplo: Arco (3 dados) + Flecha Tier B (D8) = rola 3D8.*
 
-**Projéteis são consumíveis:** após cada uso, role 1D6. Se o resultado for **1**, o projétil é consumido e descartado. Projéteis especiais seguem a mesma regra e descrevem seus efeitos adicionais em sua ficha (dano garantido, bônus em testes, condições, etc.).
+**Projéteis são consumíveis:** após o combate, role 1D6. Se o resultado for **1**, o projétil é consumido e descartado. Projéteis especiais seguem a mesma regra e descrevem seus efeitos adicionais em sua ficha (dano garantido, bônus em testes, condições, etc.).
 
 ---
 
