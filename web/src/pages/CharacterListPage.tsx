@@ -71,7 +71,6 @@ function CharacterCard({ character, index }: { character: Character; index: numb
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-                {/* Decorative grid */}
                 <div style={{
                   position: 'absolute', inset: 0, opacity: 0.06,
                   backgroundImage: `repeating-linear-gradient(0deg, ${accent.text} 0px, ${accent.text} 1px, transparent 1px, transparent 40px),
@@ -90,7 +89,6 @@ function CharacterCard({ character, index }: { character: Character; index: numb
                 </span>
               </div>
             )}
-            {/* Bottom gradient */}
             <div style={{
               position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%',
               background: 'linear-gradient(to top, rgba(4,10,20,0.98) 0%, transparent 100%)',
@@ -100,7 +98,6 @@ function CharacterCard({ character, index }: { character: Character; index: numb
 
           {/* Info */}
           <div className="px-5 pb-5 -mt-10 relative">
-            {/* Race tag */}
             <span className="inline-block text-xs px-2 py-0.5 rounded-sm mb-2"
               style={{
                 background: `${accent.text}18`,
@@ -121,7 +118,6 @@ function CharacterCard({ character, index }: { character: Character; index: numb
               {character.concept}
             </p>
 
-            {/* Stats row */}
             <div className="flex items-center gap-4 mb-4">
               {[
                 { label: 'Nível', value: character.level },
@@ -137,7 +133,6 @@ function CharacterCard({ character, index }: { character: Character; index: numb
               ))}
             </div>
 
-            {/* Afinidade */}
             {character.afinidade && (
               <div className="flex items-center gap-1.5">
                 <span className="text-xs" style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}>
@@ -149,7 +144,6 @@ function CharacterCard({ character, index }: { character: Character; index: numb
               </div>
             )}
 
-            {/* Campaign badge */}
             {character.campaign && (
               <div className="flex items-center gap-1.5 mt-2">
                 <span style={{
@@ -168,7 +162,6 @@ function CharacterCard({ character, index }: { character: Character; index: numb
               </div>
             )}
 
-            {/* CTA */}
             <div className="mt-4 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider transition-opacity group-hover:opacity-100 opacity-50"
               style={{ color: accent.text, fontFamily: 'var(--font-ui)' }}>
               Ver ficha completa
@@ -181,6 +174,14 @@ function CharacterCard({ character, index }: { character: Character; index: numb
   )
 }
 
+type TabId = 'meus' | 'explorar' | 'arcadia'
+
+const TABS: { id: TabId; label: string; description: string }[] = [
+  { id: 'meus',    label: 'Meus Personagens', description: 'Fichas que você criou' },
+  { id: 'explorar', label: 'Explorar',         description: 'Fichas públicas da comunidade' },
+  { id: 'arcadia',  label: 'Arcádia',          description: 'NPCs originais do mundo' },
+]
+
 export function CharacterListPage() {
   const navigate = useNavigate()
   const { user } = useAuth()
@@ -188,6 +189,7 @@ export function CharacterListPage() {
   const [publicChars, setPublicChars] = useState<Character[]>([])
   const [loadingChars, setLoadingChars] = useState(false)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<TabId>(() => user ? 'meus' : 'explorar')
 
   useEffect(() => {
     document.title = 'Personagens — Arcádia'
@@ -218,6 +220,15 @@ export function CharacterListPage() {
       .catch(() => setPublicChars([]))
   }, [user])
 
+  // when user logs in, switch to their tab; when they log out, go to explorar
+  useEffect(() => {
+    if (user) {
+      setActiveTab('meus')
+    } else {
+      setActiveTab(prev => prev === 'meus' ? 'explorar' : prev)
+    }
+  }, [user])
+
   async function confirmDelete() {
     if (!pendingDeleteId) return
     if (isApiCharacterId(pendingDeleteId)) {
@@ -231,6 +242,14 @@ export function CharacterListPage() {
   }
 
   const pendingChar = customChars.find(c => c.id === pendingDeleteId)
+
+  const visibleTabs = user ? TABS : TABS.filter(t => t.id !== 'meus')
+
+  const counts: Record<TabId, number | null> = {
+    meus: loadingChars ? null : customChars.length,
+    explorar: publicChars.length,
+    arcadia: PRESET_CHARACTERS.length,
+  }
 
   return (
     <motion.div
@@ -247,7 +266,7 @@ export function CharacterListPage() {
         style={{
           background: 'linear-gradient(180deg, rgba(8,18,36,0.9) 0%, var(--color-abyss) 100%)',
           borderBottom: '1px solid var(--color-border)',
-          padding: '4rem 2rem 3rem',
+          padding: '4rem 2rem 0',
         }}>
         <div style={{
           position: 'absolute', inset: 0, opacity: 0.025,
@@ -255,136 +274,237 @@ export function CharacterListPage() {
                             repeating-linear-gradient(90deg, var(--color-arcano) 0px, var(--color-arcano) 1px, transparent 1px, transparent 60px)`,
           pointerEvents: 'none',
         }} />
-        <div className="relative max-w-4xl mx-auto flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <Link
-              to="/"
-              className="inline-flex items-center gap-1.5 mb-4 transition-opacity duration-200 hover:opacity-80"
-              style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none' }}
-            >
-              ← Início
-            </Link>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-3"
-              style={{ color: 'var(--color-arcano-dim)', fontFamily: 'var(--font-ui)' }}>
-              Fichas de Personagem
-            </p>
-            <h1 className="font-display font-bold text-4xl mb-3" style={{ color: '#EEF4FC', letterSpacing: '-0.01em' }}>
-              Personagens
-            </h1>
-            <p className="font-body text-base" style={{ color: 'var(--color-text-secondary)', maxWidth: 520 }}>
-              Aventureiros prontos para o Mar de Nuvens — ou crie o seu próprio.
-            </p>
+
+        <div className="relative max-w-4xl mx-auto">
+          {/* Top row */}
+          <div className="flex items-start justify-between gap-4 flex-wrap mb-8">
+            <div>
+              <Link
+                to="/"
+                className="inline-flex items-center gap-1.5 mb-4 transition-opacity duration-200 hover:opacity-80"
+                style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none' }}
+              >
+                ← Início
+              </Link>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-3"
+                style={{ color: 'var(--color-arcano-dim)', fontFamily: 'var(--font-ui)' }}>
+                Fichas de Personagem
+              </p>
+              <h1 className="font-display font-bold text-4xl mb-3" style={{ color: '#EEF4FC', letterSpacing: '-0.01em' }}>
+                Personagens
+              </h1>
+              <p className="font-body text-base" style={{ color: 'var(--color-text-secondary)', maxWidth: 520 }}>
+                Aventureiros prontos para o Mar de Nuvens — ou crie o seu próprio.
+              </p>
+            </div>
+
+            {activeTab === 'meus' && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                onClick={() => navigate(user ? '/criar-ficha' : '/login')}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.6rem 1.1rem', borderRadius: 4,
+                  background: 'var(--color-arcano)', border: 'none',
+                  color: '#0A0A0A', fontFamily: 'var(--font-ui)',
+                  fontSize: '0.75rem', fontWeight: 700,
+                  letterSpacing: '0.15em', textTransform: 'uppercase',
+                  cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
+                }}
+              >
+                + Criar Personagem
+              </motion.button>
+            )}
           </div>
-          <button
-            onClick={() => navigate(user ? '/criar-ficha' : '/login')}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-              padding: '0.6rem 1.1rem', borderRadius: 4,
-              background: 'var(--color-arcano)', border: 'none',
-              color: '#0A0A0A', fontFamily: 'var(--font-ui)',
-              fontSize: '0.75rem', fontWeight: 700,
-              letterSpacing: '0.15em', textTransform: 'uppercase',
-              cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
-            }}
-          >
-            + Criar Personagem
-          </button>
+
+          {/* Tabs */}
+          <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            {visibleTabs.map(tab => {
+              const isActive = activeTab === tab.id
+              const count = counts[tab.id]
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  style={{
+                    position: 'relative',
+                    padding: '0.75rem 1.25rem',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.78rem',
+                    fontWeight: isActive ? 700 : 400,
+                    letterSpacing: '0.06em',
+                    color: isActive ? 'var(--color-arcano)' : 'var(--color-text-muted)',
+                    transition: 'color 0.2s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {tab.label}
+                  {count !== null && count > 0 && (
+                    <span style={{
+                      fontSize: '0.6rem',
+                      fontWeight: 700,
+                      padding: '0.1rem 0.35rem',
+                      borderRadius: 10,
+                      background: isActive ? 'rgba(200,146,42,0.18)' : 'rgba(255,255,255,0.06)',
+                      color: isActive ? 'var(--color-arcano)' : 'rgba(255,255,255,0.3)',
+                      transition: 'all 0.2s',
+                    }}>
+                      {count}
+                    </span>
+                  )}
+                  {isActive && (
+                    <motion.div
+                      layoutId="tab-indicator"
+                      style={{
+                        position: 'absolute',
+                        bottom: -1,
+                        left: 0,
+                        right: 0,
+                        height: 2,
+                        background: 'var(--color-arcano)',
+                        borderRadius: '2px 2px 0 0',
+                      }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                    />
+                  )}
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 py-12 space-y-12">
-
-        {/* Custom characters */}
-        {(user || loadingChars) && (
-          <section>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-5"
-              style={{ color: 'var(--color-arcano-dim)', fontFamily: 'var(--font-ui)' }}>
-              Seus Personagens
-            </p>
-            {loadingChars ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} style={{
-                    borderRadius: 2,
-                    background: 'rgba(10,15,30,0.8)',
-                    border: '1px solid rgba(255,255,255,0.05)',
-                    overflow: 'hidden',
-                  }}>
-                    <div style={{ height: 220, background: 'rgba(255,255,255,0.04)', animation: 'pulse 1.5s ease-in-out infinite' }} />
-                    <div style={{ padding: '1.25rem' }}>
-                      <div style={{ height: 10, width: '40%', borderRadius: 4, background: 'rgba(255,255,255,0.06)', marginBottom: '0.75rem', animation: 'pulse 1.5s ease-in-out infinite' }} />
-                      <div style={{ height: 18, width: '70%', borderRadius: 4, background: 'rgba(255,255,255,0.08)', marginBottom: '0.5rem', animation: 'pulse 1.5s ease-in-out infinite' }} />
-                      <div style={{ height: 12, width: '55%', borderRadius: 4, background: 'rgba(255,255,255,0.05)', animation: 'pulse 1.5s ease-in-out infinite' }} />
+      {/* Tab content */}
+      <div className="max-w-4xl mx-auto px-6 py-10">
+        <AnimatePresence mode="wait">
+          {activeTab === 'meus' && (
+            <motion.div
+              key="meus"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.22 }}>
+              {loadingChars ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <div key={i} style={{
+                      borderRadius: 2,
+                      background: 'rgba(10,15,30,0.8)',
+                      border: '1px solid rgba(255,255,255,0.05)',
+                      overflow: 'hidden',
+                    }}>
+                      <div style={{ height: 220, background: 'rgba(255,255,255,0.04)', animation: 'pulse 1.5s ease-in-out infinite' }} />
+                      <div style={{ padding: '1.25rem' }}>
+                        <div style={{ height: 10, width: '40%', borderRadius: 4, background: 'rgba(255,255,255,0.06)', marginBottom: '0.75rem', animation: 'pulse 1.5s ease-in-out infinite' }} />
+                        <div style={{ height: 18, width: '70%', borderRadius: 4, background: 'rgba(255,255,255,0.08)', marginBottom: '0.5rem', animation: 'pulse 1.5s ease-in-out infinite' }} />
+                        <div style={{ height: 12, width: '55%', borderRadius: 4, background: 'rgba(255,255,255,0.05)', animation: 'pulse 1.5s ease-in-out infinite' }} />
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ) : customChars.length === 0 ? (
-              <div style={{
-                padding: '2.5rem', textAlign: 'center',
-                border: '1px dashed rgba(255,255,255,0.08)', borderRadius: 4,
-              }}>
-                <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.82rem' }}>
-                  Nenhum personagem criado ainda.
-                </p>
-              </div>
-            ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {customChars.map((character, i) => (
-                <div key={character.id} style={{ position: 'relative' }}>
-                  <CharacterCard character={character} index={i} />
+                  ))}
+                </div>
+              ) : customChars.length === 0 ? (
+                <div style={{
+                  padding: '4rem 2rem', textAlign: 'center',
+                  border: '1px dashed rgba(255,255,255,0.08)', borderRadius: 4,
+                }}>
+                  <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', color: '#EEF4FC', marginBottom: '0.5rem' }}>
+                    Nenhum personagem ainda
+                  </p>
+                  <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.82rem', marginBottom: '1.5rem' }}>
+                    Crie seu primeiro aventureiro e embarque no Mar de Nuvens.
+                  </p>
                   <button
-                    onClick={() => setPendingDeleteId(character.id)}
-                    title="Excluir personagem"
+                    onClick={() => navigate('/criar-ficha')}
                     style={{
-                      position: 'absolute', top: 8, right: 8, zIndex: 10,
-                      background: 'rgba(4,10,20,0.85)', border: '1px solid rgba(255,255,255,0.12)',
-                      borderRadius: 4, padding: '0.2rem 0.45rem', cursor: 'pointer',
-                      color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
-                      backdropFilter: 'blur(4px)',
+                      padding: '0.55rem 1.1rem', borderRadius: 4,
+                      background: 'var(--color-arcano)', border: 'none',
+                      color: '#0A0A0A', fontFamily: 'var(--font-ui)',
+                      fontSize: '0.75rem', fontWeight: 700,
+                      letterSpacing: '0.15em', textTransform: 'uppercase',
+                      cursor: 'pointer',
                     }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#C05050' }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
                   >
-                    ✕
+                    + Criar Personagem
                   </button>
                 </div>
-              ))}
-            </div>
-            )}
-          </section>
-        )}
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {customChars.map((character, i) => (
+                    <div key={character.id} style={{ position: 'relative' }}>
+                      <CharacterCard character={character} index={i} />
+                      <button
+                        onClick={() => setPendingDeleteId(character.id)}
+                        title="Excluir personagem"
+                        style={{
+                          position: 'absolute', top: 8, right: 8, zIndex: 10,
+                          background: 'rgba(4,10,20,0.85)', border: '1px solid rgba(255,255,255,0.12)',
+                          borderRadius: 4, padding: '0.2rem 0.45rem', cursor: 'pointer',
+                          color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
+                          backdropFilter: 'blur(4px)',
+                        }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#C05050' }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
 
-        {/* Public characters from other users */}
-        {publicChars.length > 0 && (
-          <section>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-5"
-              style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}>
-              Fichas Públicas
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {publicChars.map((character, i) => (
-                <CharacterCard key={character.id} character={character} index={i} />
-              ))}
-            </div>
-          </section>
-        )}
+          {activeTab === 'explorar' && (
+            <motion.div
+              key="explorar"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.22 }}>
+              {publicChars.length === 0 ? (
+                <div style={{
+                  padding: '4rem 2rem', textAlign: 'center',
+                  border: '1px dashed rgba(255,255,255,0.08)', borderRadius: 4,
+                }}>
+                  <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.82rem' }}>
+                    Nenhuma ficha pública disponível ainda.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {publicChars.map((character, i) => (
+                    <CharacterCard key={character.id} character={character} index={i} />
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
 
-        {/* Pre-made characters */}
-        <section>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-5"
-            style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)' }}>
-            Personagens Pré-criados
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {PRESET_CHARACTERS.map((character, i) => (
-              <CharacterCard key={character.id} character={character} index={i} />
-            ))}
-          </div>
-        </section>
+          {activeTab === 'arcadia' && (
+            <motion.div
+              key="arcadia"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.22 }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {PRESET_CHARACTERS.map((character, i) => (
+                  <CharacterCard key={character.id} character={character} index={i} />
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* ── Delete confirmation modal ─────────────────────── */}
+      {/* Delete confirmation modal */}
       <AnimatePresence>
         {pendingDeleteId && pendingChar && (
           <motion.div

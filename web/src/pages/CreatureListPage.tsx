@@ -42,7 +42,7 @@ function buildFilter(
   }
 }
 
-/* ─── Summary card shown in the list grid ────────────────────────── */
+/* ─── Preset creature card ─────────────────────────────────────────── */
 
 function CreatureSummaryCard({ creature, index }: { creature: Creature; index: number }) {
   const navigate = useNavigate()
@@ -87,388 +87,30 @@ function CreatureSummaryCard({ creature, index }: { creature: Creature; index: n
           ) : (
             <div
               style={{
-                width: '100%',
-                height: '100%',
-                background: `linear-gradient(135deg, rgba(80,20,10,0.55) 0%, rgba(12,4,2,0.98) 100%)`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position: 'relative',
-              }}
-            >
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  opacity: 0.04,
-                  backgroundImage: `repeating-linear-gradient(0deg, ${CREATURE_ACCENT} 0px, ${CREATURE_ACCENT} 1px, transparent 1px, transparent 40px),
-                                    repeating-linear-gradient(90deg, ${CREATURE_ACCENT} 0px, ${CREATURE_ACCENT} 1px, transparent 1px, transparent 40px)`,
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontWeight: 700,
-                  fontSize: '7rem',
-                  color: CREATURE_ACCENT,
-                  opacity: 0.12,
-                  userSelect: 'none',
-                  lineHeight: 1,
-                }}
-              >
-                {creature.name[0]}
-              </span>
-            </div>
-          )}
-
-          {/* Bottom gradient */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '65%',
-              background: 'linear-gradient(to top, rgba(10,6,4,0.98) 0%, transparent 100%)',
-              pointerEvents: 'none',
-            }}
-          />
-
-          {/* Level badge */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              background: 'rgba(10,6,4,0.82)',
-              border: `1px solid ${CREATURE_ACCENT_DIM}`,
-              borderRadius: 4,
-              padding: '0.2rem 0.55rem',
-              backdropFilter: 'blur(6px)',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.6rem',
-                color: 'var(--color-text-muted)',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Nível {creature.levelRange}
-            </span>
-          </div>
-        </div>
-
-        {/* Info */}
-        <div className="px-4 pb-4 -mt-8 relative">
-          {/* Style tags */}
-          <div className="flex flex-wrap gap-1 mb-2">
-            {styles.map(s => (
-              <span
-                key={s}
-                style={{
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.55rem',
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  fontWeight: 700,
-                  color: CREATURE_ACCENT_GLOW,
-                  background: 'rgba(160,48,32,0.12)',
-                  border: `1px solid rgba(160,48,32,0.3)`,
-                  borderRadius: 3,
-                  padding: '0.12rem 0.4rem',
-                }}
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-
-          <h3
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontWeight: 700,
-              fontSize: '1.35rem',
-              color: '#F0D0C0',
-              letterSpacing: '0.03em',
-              marginBottom: '0.75rem',
-            }}
-          >
-            {creature.name}
-          </h3>
-
-          {/* Stats grid */}
-          <div className="grid grid-cols-4 gap-1 mb-3">
-            {[
-              { label: 'HP', value: creature.hp },
-              { label: 'DA', value: creature.da },
-              { label: 'DP', value: creature.dp },
-              { label: 'Dados', value: creature.diceBase },
-            ].map(s => (
-              <div
-                key={s.label}
-                className="flex flex-col items-center"
-                style={{
-                  background: CREATURE_SECTION_BG,
-                  borderRadius: 3,
-                  padding: '0.3rem 0.2rem',
-                  border: `1px solid ${CREATURE_ACCENT_DIM}`,
-                }}
-              >
-                <p
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontWeight: 700,
-                    fontSize: '0.9rem',
-                    color: '#F0D0C0',
-                    lineHeight: 1,
-                  }}
-                >
-                  {s.value}
-                </p>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    fontSize: '0.52rem',
-                    color: 'var(--color-text-muted)',
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    marginTop: 3,
-                  }}
-                >
-                  {s.label}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* Immune / Vulnerable tags (abbreviated) */}
-          {(creature.immune.length > 0 || creature.vulnerable.length > 0) && (
-            <div className="space-y-1 mb-3">
-              {creature.immune.length > 0 && (
-                <div className="flex flex-wrap items-center gap-1">
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-ui)',
-                      fontSize: '0.58rem',
-                      color: 'var(--color-text-muted)',
-                      letterSpacing: '0.1em',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    Imune:
-                  </span>
-                  {creature.immune.slice(0, 3).map(item => (
-                    <span
-                      key={item}
-                      style={{
-                        fontFamily: 'var(--font-ui)',
-                        fontSize: '0.58rem',
-                        color: 'var(--color-text-secondary)',
-                        background: CREATURE_ACCENT_DIM,
-                        border: `1px solid ${CREATURE_ACCENT_DIM}`,
-                        borderRadius: 3,
-                        padding: '0.1rem 0.35rem',
-                      }}
-                    >
-                      {item}
-                    </span>
-                  ))}
-                  {creature.immune.length > 3 && (
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-ui)',
-                        fontSize: '0.58rem',
-                        color: 'var(--color-text-muted)',
-                      }}
-                    >
-                      +{creature.immune.length - 3}
-                    </span>
-                  )}
-                </div>
-              )}
-              {creature.vulnerable.length > 0 && (
-                <div className="flex flex-wrap items-center gap-1">
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-ui)',
-                      fontSize: '0.58rem',
-                      color: 'var(--color-text-muted)',
-                      letterSpacing: '0.1em',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    Vuln:
-                  </span>
-                  {creature.vulnerable.slice(0, 3).map(item => (
-                    <span
-                      key={item}
-                      style={{
-                        fontFamily: 'var(--font-ui)',
-                        fontSize: '0.58rem',
-                        color: CREATURE_ACCENT_GLOW,
-                        background: 'rgba(160,48,32,0.12)',
-                        border: `1px solid rgba(160,48,32,0.3)`,
-                        borderRadius: 3,
-                        padding: '0.1rem 0.35rem',
-                      }}
-                    >
-                      {item}
-                    </span>
-                  ))}
-                  {creature.vulnerable.length > 3 && (
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-ui)',
-                        fontSize: '0.58rem',
-                        color: 'var(--color-text-muted)',
-                      }}
-                    >
-                      +{creature.vulnerable.length - 3}
-                    </span>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* CTA */}
-          <div
-            className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider transition-opacity duration-200 opacity-40 group-hover:opacity-100"
-            style={{ color: CREATURE_ACCENT_GLOW, fontFamily: 'var(--font-ui)' }}
-          >
-            Ver ficha completa →
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
-/* ─── Filter UI primitives ───────────────────────────────────────── */
-
-function FilterGroupLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p
-      style={{
-        fontFamily: 'var(--font-ui)',
-        fontSize: '0.6rem',
-        letterSpacing: '0.16em',
-        textTransform: 'uppercase',
-        color: 'var(--color-text-muted)',
-        marginBottom: '0.5rem',
-      }}
-    >
-      {children}
-    </p>
-  )
-}
-
-function FilterChip({
-  label,
-  active,
-  danger,
-  onClick,
-}: {
-  label: string
-  active: boolean
-  danger?: boolean
-  onClick: () => void
-}) {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        padding: '0.25rem 0.65rem',
-        borderRadius: 3,
-        fontFamily: 'var(--font-ui)',
-        fontSize: '0.68rem',
-        fontWeight: 600,
-        letterSpacing: '0.1em',
-        textTransform: 'uppercase',
-        cursor: 'pointer',
-        transition: 'all 0.15s',
-        background: active
-          ? danger
-            ? 'rgba(160,48,32,0.2)'
-            : CREATURE_ACCENT_DIM
-          : 'rgba(255,255,255,0.04)',
-        border: `1px solid ${active ? CREATURE_ACCENT : 'rgba(255,255,255,0.1)'}`,
-        color: active
-          ? danger
-            ? CREATURE_ACCENT_GLOW
-            : 'var(--color-text-secondary)'
-          : 'var(--color-text-muted)',
-      }}
-    >
-      {label}
-    </button>
-  )
-}
-
-/* ─── Custom creature card ────────────────────────────────────────── */
-
-function CustomCreatureSummaryCard({ creature, index }: { creature: CustomCreature; index: number }) {
-  const navigate = useNavigate()
-  const styles = getCreatureStyles(creature.style)
-  const imageUrl = creature.imageUrl ?? creature.image
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: index * 0.07 }}
-    >
-      <div
-        className="rounded-sm overflow-hidden cursor-pointer group relative"
-        style={{
-          background: 'rgba(10,6,4,0.98)',
-          border: `1px solid ${CREATURE_ACCENT_DIM}`,
-          boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
-          transition: 'border-color 0.2s, box-shadow 0.2s',
-        }}
-        onClick={() => navigate(`/criatura/custom/${creature.id}`)}
-        onMouseEnter={e => {
-          const el = e.currentTarget as HTMLDivElement
-          el.style.borderColor = CREATURE_ACCENT
-          el.style.boxShadow = `0 8px 40px rgba(0,0,0,0.7), 0 0 24px rgba(160,48,32,0.22)`
-        }}
-        onMouseLeave={e => {
-          const el = e.currentTarget as HTMLDivElement
-          el.style.borderColor = CREATURE_ACCENT_DIM
-          el.style.boxShadow = '0 4px 24px rgba(0,0,0,0.5)'
-        }}
-      >
-        <div style={{ height: 200, position: 'relative', overflow: 'hidden' }}>
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt={creature.name}
-              className="transition-transform duration-500 group-hover:scale-105"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center' }}
-            />
-          ) : (
-            <div
-              style={{
                 width: '100%', height: '100%',
                 background: `linear-gradient(135deg, rgba(80,20,10,0.55) 0%, rgba(12,4,2,0.98) 100%)`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative',
               }}
             >
+              <div style={{
+                position: 'absolute', inset: 0, opacity: 0.04,
+                backgroundImage: `repeating-linear-gradient(0deg, ${CREATURE_ACCENT} 0px, ${CREATURE_ACCENT} 1px, transparent 1px, transparent 40px),
+                                  repeating-linear-gradient(90deg, ${CREATURE_ACCENT} 0px, ${CREATURE_ACCENT} 1px, transparent 1px, transparent 40px)`,
+              }} />
               <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '7rem', color: CREATURE_ACCENT, opacity: 0.12, userSelect: 'none', lineHeight: 1 }}>
                 {creature.name[0]}
               </span>
             </div>
           )}
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '65%', background: 'linear-gradient(to top, rgba(10,6,4,0.98) 0%, transparent 100%)', pointerEvents: 'none' }} />
-          <div style={{ position: 'absolute', top: 10, right: 10, display: 'flex', gap: '0.35rem' }}>
-            <span style={{ background: 'rgba(10,6,4,0.82)', border: `1px solid ${CREATURE_ACCENT}`, borderRadius: 4, padding: '0.2rem 0.55rem', backdropFilter: 'blur(6px)', fontFamily: 'var(--font-ui)', fontSize: '0.58rem', color: CREATURE_ACCENT_GLOW, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              Custom
+          <div style={{ position: 'absolute', top: 10, right: 10, background: 'rgba(10,6,4,0.82)', border: `1px solid ${CREATURE_ACCENT_DIM}`, borderRadius: 4, padding: '0.2rem 0.55rem', backdropFilter: 'blur(6px)' }}>
+            <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6rem', color: 'var(--color-text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              Nível {creature.levelRange}
             </span>
           </div>
         </div>
+
+        {/* Info */}
         <div className="px-4 pb-4 -mt-8 relative">
           <div className="flex flex-wrap gap-1 mb-2">
             {styles.map(s => (
@@ -493,6 +135,28 @@ function CustomCreatureSummaryCard({ creature, index }: { creature: CustomCreatu
               </div>
             ))}
           </div>
+          {(creature.immune.length > 0 || creature.vulnerable.length > 0) && (
+            <div className="space-y-1 mb-3">
+              {creature.immune.length > 0 && (
+                <div className="flex flex-wrap items-center gap-1">
+                  <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.58rem', color: 'var(--color-text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Imune:</span>
+                  {creature.immune.slice(0, 3).map(item => (
+                    <span key={item} style={{ fontFamily: 'var(--font-ui)', fontSize: '0.58rem', color: 'var(--color-text-secondary)', background: CREATURE_ACCENT_DIM, border: `1px solid ${CREATURE_ACCENT_DIM}`, borderRadius: 3, padding: '0.1rem 0.35rem' }}>{item}</span>
+                  ))}
+                  {creature.immune.length > 3 && <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.58rem', color: 'var(--color-text-muted)' }}>+{creature.immune.length - 3}</span>}
+                </div>
+              )}
+              {creature.vulnerable.length > 0 && (
+                <div className="flex flex-wrap items-center gap-1">
+                  <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.58rem', color: 'var(--color-text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Vuln:</span>
+                  {creature.vulnerable.slice(0, 3).map(item => (
+                    <span key={item} style={{ fontFamily: 'var(--font-ui)', fontSize: '0.58rem', color: CREATURE_ACCENT_GLOW, background: 'rgba(160,48,32,0.12)', border: `1px solid rgba(160,48,32,0.3)`, borderRadius: 3, padding: '0.1rem 0.35rem' }}>{item}</span>
+                  ))}
+                  {creature.vulnerable.length > 3 && <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.58rem', color: 'var(--color-text-muted)' }}>+{creature.vulnerable.length - 3}</span>}
+                </div>
+              )}
+            </div>
+          )}
           <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider transition-opacity duration-200 opacity-40 group-hover:opacity-100" style={{ color: CREATURE_ACCENT_GLOW, fontFamily: 'var(--font-ui)' }}>
             Ver ficha completa →
           </div>
@@ -502,11 +166,118 @@ function CustomCreatureSummaryCard({ creature, index }: { creature: CustomCreatu
   )
 }
 
-/* ─── Main page ───────────────────────────────────────────────────── */
+/* ─── Custom creature card ─────────────────────────────────────────── */
+
+function CustomCreatureSummaryCard({ creature, index }: { creature: CustomCreature; index: number }) {
+  const navigate = useNavigate()
+  const styles = getCreatureStyles(creature.style)
+  const imageUrl = creature.imageUrl ?? creature.image
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: index * 0.07 }}
+    >
+      <div
+        className="rounded-sm overflow-hidden cursor-pointer group relative"
+        style={{ background: 'rgba(10,6,4,0.98)', border: `1px solid ${CREATURE_ACCENT_DIM}`, boxShadow: '0 4px 24px rgba(0,0,0,0.5)', transition: 'border-color 0.2s, box-shadow 0.2s' }}
+        onClick={() => navigate(`/criatura/custom/${creature.id}`)}
+        onMouseEnter={e => {
+          const el = e.currentTarget as HTMLDivElement
+          el.style.borderColor = CREATURE_ACCENT
+          el.style.boxShadow = `0 8px 40px rgba(0,0,0,0.7), 0 0 24px rgba(160,48,32,0.22)`
+        }}
+        onMouseLeave={e => {
+          const el = e.currentTarget as HTMLDivElement
+          el.style.borderColor = CREATURE_ACCENT_DIM
+          el.style.boxShadow = '0 4px 24px rgba(0,0,0,0.5)'
+        }}
+      >
+        <div style={{ height: 200, position: 'relative', overflow: 'hidden' }}>
+          {imageUrl ? (
+            <img src={imageUrl} alt={creature.name} className="transition-transform duration-500 group-hover:scale-105" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center' }} />
+          ) : (
+            <div style={{ width: '100%', height: '100%', background: `linear-gradient(135deg, rgba(80,20,10,0.55) 0%, rgba(12,4,2,0.98) 100%)`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '7rem', color: CREATURE_ACCENT, opacity: 0.12, userSelect: 'none', lineHeight: 1 }}>{creature.name[0]}</span>
+            </div>
+          )}
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '65%', background: 'linear-gradient(to top, rgba(10,6,4,0.98) 0%, transparent 100%)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: 10, right: 10 }}>
+            <span style={{ background: 'rgba(10,6,4,0.82)', border: `1px solid ${CREATURE_ACCENT}`, borderRadius: 4, padding: '0.2rem 0.55rem', backdropFilter: 'blur(6px)', fontFamily: 'var(--font-ui)', fontSize: '0.58rem', color: CREATURE_ACCENT_GLOW, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              Custom
+            </span>
+          </div>
+        </div>
+        <div className="px-4 pb-4 -mt-8 relative">
+          <div className="flex flex-wrap gap-1 mb-2">
+            {styles.map(s => (
+              <span key={s} style={{ fontFamily: 'var(--font-ui)', fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 700, color: CREATURE_ACCENT_GLOW, background: 'rgba(160,48,32,0.12)', border: `1px solid rgba(160,48,32,0.3)`, borderRadius: 3, padding: '0.12rem 0.4rem' }}>{s}</span>
+            ))}
+          </div>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.35rem', color: '#F0D0C0', letterSpacing: '0.03em', marginBottom: '0.75rem' }}>{creature.name}</h3>
+          <div className="grid grid-cols-4 gap-1 mb-3">
+            {[
+              { label: 'HP', value: creature.hp },
+              { label: 'DA', value: creature.da },
+              { label: 'DP', value: creature.dp },
+              { label: 'Dados', value: creature.diceBase },
+            ].map(s => (
+              <div key={s.label} className="flex flex-col items-center" style={{ background: CREATURE_SECTION_BG, borderRadius: 3, padding: '0.3rem 0.2rem', border: `1px solid ${CREATURE_ACCENT_DIM}` }}>
+                <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: '#F0D0C0', lineHeight: 1 }}>{s.value}</p>
+                <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.52rem', color: 'var(--color-text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: 3 }}>{s.label}</p>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider transition-opacity duration-200 opacity-40 group-hover:opacity-100" style={{ color: CREATURE_ACCENT_GLOW, fontFamily: 'var(--font-ui)' }}>
+            Ver ficha completa →
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+/* ─── Filter primitives ────────────────────────────────────────────── */
+
+function FilterGroupLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
+      {children}
+    </p>
+  )
+}
+
+function FilterChip({ label, active, danger, onClick }: { label: string; active: boolean; danger?: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: '0.25rem 0.65rem', borderRadius: 3,
+        fontFamily: 'var(--font-ui)', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase',
+        cursor: 'pointer', transition: 'all 0.15s',
+        background: active ? (danger ? 'rgba(160,48,32,0.2)' : CREATURE_ACCENT_DIM) : 'rgba(255,255,255,0.04)',
+        border: `1px solid ${active ? CREATURE_ACCENT : 'rgba(255,255,255,0.1)'}`,
+        color: active ? (danger ? CREATURE_ACCENT_GLOW : 'var(--color-text-secondary)') : 'var(--color-text-muted)',
+      }}
+    >
+      {label}
+    </button>
+  )
+}
+
+/* ─── Main page ────────────────────────────────────────────────────── */
+
+type TabId = 'minhas' | 'arcadia'
 
 export function CreatureListPage() {
   const navigate = useNavigate()
   const { user } = useAuth()
+
+  const [activeTab, setActiveTab] = useState<TabId>(() => user ? 'minhas' : 'arcadia')
+  const [customCreatures, setCustomCreatures] = useState<CustomCreature[]>([])
+
+  // filter state (used in arcadia tab)
   const [search, setSearch] = useState('')
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [activeStyles, setActiveStyles] = useState<Set<string>>(new Set())
@@ -514,8 +285,6 @@ export function CreatureListPage() {
   const [maxLevel, setMaxLevel] = useState('')
   const [activeImmune, setActiveImmune] = useState<Set<string>>(new Set())
   const [activeVulnerable, setActiveVulnerable] = useState<Set<string>>(new Set())
-  const [customCreatures, setCustomCreatures] = useState<CustomCreature[]>([])
-  const [publicCreatures, setPublicCreatures] = useState<CustomCreature[]>([])
 
   useEffect(() => {
     document.title = 'Bestiário — Arcádia'
@@ -525,42 +294,38 @@ export function CreatureListPage() {
   useEffect(() => {
     if (!user) {
       setCustomCreatures([])
-      api.customCreatures.listPublic()
-        .then(res => setPublicCreatures(res.creatures))
-        .catch(() => {})
       return
     }
     api.customCreatures.list()
       .then(res => setCustomCreatures(res.creatures))
       .catch(() => {})
-    api.customCreatures.listPublic()
-      .then(res => setPublicCreatures(res.creatures.filter(c => c.userId !== user.id)))
-      .catch(() => {})
+  }, [user])
+
+  useEffect(() => {
+    if (user) {
+      setActiveTab('minhas')
+    } else {
+      setActiveTab('arcadia')
+    }
   }, [user])
 
   const allStyles = useMemo(() => {
     const s = new Set<string>()
     CREATURES.forEach(c => getCreatureStyles(c.style).forEach(t => s.add(t)))
-    customCreatures.forEach(c => getCreatureStyles(c.style).forEach(t => s.add(t)))
-    publicCreatures.forEach(c => getCreatureStyles(c.style).forEach(t => s.add(t)))
     return Array.from(s).sort()
-  }, [customCreatures, publicCreatures])
+  }, [])
 
   const allImmune = useMemo(() => {
     const s = new Set<string>()
     CREATURES.forEach(c => c.immune.forEach(i => s.add(i)))
-    customCreatures.forEach(c => c.immune.forEach(i => s.add(i)))
-    publicCreatures.forEach(c => c.immune.forEach(i => s.add(i)))
     return Array.from(s).sort()
-  }, [customCreatures, publicCreatures])
+  }, [])
 
   const allVulnerable = useMemo(() => {
     const s = new Set<string>()
     CREATURES.forEach(c => c.vulnerable.forEach(v => s.add(v)))
-    customCreatures.forEach(c => c.vulnerable.forEach(v => s.add(v)))
-    publicCreatures.forEach(c => c.vulnerable.forEach(v => s.add(v)))
     return Array.from(s).sort()
-  }, [customCreatures, publicCreatures])
+  }, [])
 
   const predicate = useMemo(
     () => buildFilter(
@@ -575,8 +340,6 @@ export function CreatureListPage() {
   )
 
   const filtered = useMemo(() => CREATURES.filter(predicate), [predicate])
-  const filteredCustom = useMemo(() => customCreatures.filter(predicate), [predicate, customCreatures])
-  const filteredPublic = useMemo(() => publicCreatures.filter(predicate), [predicate, publicCreatures])
 
   const advancedFilterCount =
     activeStyles.size +
@@ -603,6 +366,16 @@ export function CreatureListPage() {
     transition: 'border-color 0.15s',
   }
 
+  const visibleTabs: { id: TabId; label: string }[] = [
+    ...(user ? [{ id: 'minhas' as TabId, label: 'Minhas Criaturas' }] : []),
+    { id: 'arcadia', label: 'Arcádia' },
+  ]
+
+  const counts: Record<TabId, number> = {
+    minhas: customCreatures.length,
+    arcadia: CREATURES.length,
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -617,395 +390,280 @@ export function CreatureListPage() {
         style={{
           background: 'linear-gradient(180deg, rgba(40,10,6,0.9) 0%, var(--color-abyss) 100%)',
           borderBottom: `1px solid rgba(160,48,32,0.18)`,
-          padding: '4rem 2rem 3rem',
+          padding: '4rem 2rem 0',
         }}
       >
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            opacity: 0.022,
-            backgroundImage: `repeating-linear-gradient(0deg, ${CREATURE_ACCENT} 0px, ${CREATURE_ACCENT} 1px, transparent 1px, transparent 60px),
-                              repeating-linear-gradient(90deg, ${CREATURE_ACCENT} 0px, ${CREATURE_ACCENT} 1px, transparent 1px, transparent 60px)`,
-            pointerEvents: 'none',
-          }}
-        />
+        <div style={{
+          position: 'absolute', inset: 0, opacity: 0.022,
+          backgroundImage: `repeating-linear-gradient(0deg, ${CREATURE_ACCENT} 0px, ${CREATURE_ACCENT} 1px, transparent 1px, transparent 60px),
+                            repeating-linear-gradient(90deg, ${CREATURE_ACCENT} 0px, ${CREATURE_ACCENT} 1px, transparent 1px, transparent 60px)`,
+          pointerEvents: 'none',
+        }} />
+
         <div className="relative max-w-5xl mx-auto">
-          <Link
-            to="/"
-            style={{
-              color: 'var(--color-text-muted)',
-              fontFamily: 'var(--font-ui)',
-              fontSize: '0.7rem',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              marginBottom: '1rem',
-              transition: 'opacity 0.15s',
-            }}
-          >
-            ← Início
-          </Link>
-          <p
-            className="text-xs font-semibold uppercase tracking-[0.22em] mb-3"
-            style={{ color: 'rgba(160,48,32,0.65)', fontFamily: 'var(--font-ui)' }}
-          >
-            Criaturas de Arcádia
-          </p>
-          <h1
-            className="font-display font-bold text-4xl mb-3"
-            style={{ color: '#F0D0C0', letterSpacing: '-0.01em' }}
-          >
-            Bestiário
-          </h1>
-          <p
-            className="font-body text-base"
-            style={{ color: 'var(--color-text-secondary)', maxWidth: 520 }}
-          >
-            Fichas completas das criaturas que habitam o Mar de Nuvens e as ilhas flutuantes de Arcádia.
-          </p>
-          {user && (
-            <button
-              onClick={() => navigate('/criaturas/nova')}
-              style={{
-                marginTop: '1.25rem',
-                padding: '0.55rem 1.2rem',
-                borderRadius: 4,
-                background: CREATURE_ACCENT,
-                border: `1px solid ${CREATURE_ACCENT}`,
-                color: '#F0D0C0',
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                cursor: 'pointer',
-                transition: 'opacity 0.15s',
-              }}
-            >
-              + Nova Criatura
-            </button>
-          )}
+          {/* Top row */}
+          <div className="flex items-start justify-between gap-4 flex-wrap mb-8">
+            <div>
+              <Link
+                to="/"
+                style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginBottom: '1rem', transition: 'opacity 0.15s' }}
+              >
+                ← Início
+              </Link>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] mb-3" style={{ color: 'rgba(160,48,32,0.65)', fontFamily: 'var(--font-ui)' }}>
+                Criaturas de Arcádia
+              </p>
+              <h1 className="font-display font-bold text-4xl mb-3" style={{ color: '#F0D0C0', letterSpacing: '-0.01em' }}>
+                Bestiário
+              </h1>
+              <p className="font-body text-base" style={{ color: 'var(--color-text-secondary)', maxWidth: 520 }}>
+                Fichas completas das criaturas que habitam o Mar de Nuvens e as ilhas flutuantes de Arcádia.
+              </p>
+            </div>
+
+            {activeTab === 'minhas' && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                onClick={() => navigate('/criaturas/nova')}
+                style={{
+                  padding: '0.55rem 1.2rem', borderRadius: 4,
+                  background: CREATURE_ACCENT, border: `1px solid ${CREATURE_ACCENT}`,
+                  color: '#F0D0C0', fontFamily: 'var(--font-ui)',
+                  fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
+                  cursor: 'pointer', transition: 'opacity 0.15s', whiteSpace: 'nowrap', flexShrink: 0,
+                }}
+              >
+                + Nova Criatura
+              </motion.button>
+            )}
+          </div>
+
+          {/* Tabs */}
+          <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            {visibleTabs.map(tab => {
+              const isActive = activeTab === tab.id
+              const count = counts[tab.id]
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  style={{
+                    position: 'relative',
+                    padding: '0.75rem 1.25rem',
+                    background: 'none', border: 'none', cursor: 'pointer',
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.78rem',
+                    fontWeight: isActive ? 700 : 400,
+                    letterSpacing: '0.06em',
+                    color: isActive ? CREATURE_ACCENT_GLOW : 'var(--color-text-muted)',
+                    transition: 'color 0.2s',
+                    display: 'flex', alignItems: 'center', gap: '0.4rem',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {tab.label}
+                  {count > 0 && (
+                    <span style={{
+                      fontSize: '0.6rem', fontWeight: 700,
+                      padding: '0.1rem 0.35rem', borderRadius: 10,
+                      background: isActive ? 'rgba(160,48,32,0.2)' : 'rgba(255,255,255,0.06)',
+                      color: isActive ? CREATURE_ACCENT_GLOW : 'rgba(255,255,255,0.3)',
+                      transition: 'all 0.2s',
+                    }}>
+                      {count}
+                    </span>
+                  )}
+                  {isActive && (
+                    <motion.div
+                      layoutId="creature-tab-indicator"
+                      style={{
+                        position: 'absolute', bottom: -1, left: 0, right: 0,
+                        height: 2, background: CREATURE_ACCENT,
+                        borderRadius: '2px 2px 0 0',
+                      }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                    />
+                  )}
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
 
+      {/* Tab content */}
       <div className="max-w-5xl mx-auto px-6 py-8">
-        {/* ── Filter panel ──────────────────────────────────────── */}
-        <div
-          style={{
-            background: 'rgba(10,6,4,0.95)',
-            border: `1px solid ${CREATURE_ACCENT_DIM}`,
-            borderRadius: 6,
-            padding: '1rem 1.25rem',
-            marginBottom: '1.75rem',
-          }}
-        >
-          {/* Search + advanced toggle row */}
-          <div className="flex gap-2 items-center">
-            <input
-              type="text"
-              placeholder="Buscar por nome ou descrição..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              style={{
-                ...inputStyle,
-                flex: 1,
-                boxSizing: 'border-box',
-                borderColor: search ? CREATURE_ACCENT : 'rgba(255,255,255,0.1)',
-              }}
-            />
-            <button
-              onClick={() => setFiltersOpen(v => !v)}
-              style={{
-                flexShrink: 0,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.45rem',
-                padding: '0.45rem 0.9rem',
-                borderRadius: 4,
-                background: filtersOpen || advancedFilterCount > 0
-                  ? 'rgba(160,48,32,0.15)'
-                  : 'rgba(255,255,255,0.04)',
-                border: `1px solid ${filtersOpen || advancedFilterCount > 0 ? CREATURE_ACCENT : 'rgba(255,255,255,0.1)'}`,
-                color: filtersOpen || advancedFilterCount > 0
-                  ? CREATURE_ACCENT_GLOW
-                  : 'var(--color-text-muted)',
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.72rem',
-                fontWeight: 600,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                cursor: 'pointer',
-                transition: 'all 0.15s',
-                whiteSpace: 'nowrap',
-              }}
+        <AnimatePresence mode="wait">
+
+          {/* ── Minhas Criaturas ── */}
+          {activeTab === 'minhas' && (
+            <motion.div
+              key="minhas"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.22 }}
             >
-              Filtros
-              {advancedFilterCount > 0 && (
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 18,
-                    height: 18,
-                    borderRadius: '50%',
-                    background: CREATURE_ACCENT,
-                    color: '#F0D0C0',
-                    fontSize: '0.6rem',
-                    fontWeight: 700,
-                    lineHeight: 1,
-                  }}
-                >
-                  {advancedFilterCount}
-                </span>
-              )}
-              <span
-                style={{
-                  fontSize: '0.6rem',
-                  transition: 'transform 0.2s',
-                  transform: filtersOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                  display: 'inline-block',
-                }}
-              >
-                ▾
-              </span>
-            </button>
-          </div>
-
-          {/* Expandable advanced filters */}
-          <AnimatePresence initial={false}>
-            {filtersOpen && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.22, ease: 'easeInOut' }}
-                style={{ overflow: 'hidden' }}
-              >
-                <div
-                  style={{
-                    borderTop: `1px solid ${CREATURE_ACCENT_DIM}`,
-                    marginTop: '1rem',
-                    paddingTop: '1rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '1rem',
-                  }}
-                >
-                  {/* Style */}
-                  {allStyles.length > 0 && (
-                    <div>
-                      <FilterGroupLabel>Estilo</FilterGroupLabel>
-                      <div className="flex flex-wrap gap-1.5">
-                        {allStyles.map(s => (
-                          <FilterChip
-                            key={s}
-                            label={s}
-                            active={activeStyles.has(s)}
-                            onClick={() => setActiveStyles(toggle(activeStyles, s))}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Level range */}
-                  <div>
-                    <FilterGroupLabel>Nível</FilterGroupLabel>
-                    <div className="flex flex-wrap items-center gap-3">
-                      <div className="flex items-center gap-2">
-                        <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.68rem', color: 'var(--color-text-muted)' }}>
-                          De
-                        </span>
-                        <input
-                          type="number"
-                          placeholder="—"
-                          value={minLevel}
-                          onChange={e => setMinLevel(e.target.value)}
-                          min={1}
-                          style={{
-                            ...inputStyle,
-                            width: 72,
-                            borderColor: minLevel ? CREATURE_ACCENT : 'rgba(255,255,255,0.1)',
-                          }}
-                        />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.68rem', color: 'var(--color-text-muted)' }}>
-                          Até
-                        </span>
-                        <input
-                          type="number"
-                          placeholder="—"
-                          value={maxLevel}
-                          onChange={e => setMaxLevel(e.target.value)}
-                          min={1}
-                          style={{
-                            ...inputStyle,
-                            width: 72,
-                            borderColor: maxLevel ? CREATURE_ACCENT : 'rgba(255,255,255,0.1)',
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Immune */}
-                  {allImmune.length > 0 && (
-                    <div>
-                      <FilterGroupLabel>Imune a</FilterGroupLabel>
-                      <div className="flex flex-wrap gap-1.5">
-                        {allImmune.map(i => (
-                          <FilterChip
-                            key={i}
-                            label={i}
-                            active={activeImmune.has(i)}
-                            onClick={() => setActiveImmune(toggle(activeImmune, i))}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Vulnerable */}
-                  {allVulnerable.length > 0 && (
-                    <div>
-                      <FilterGroupLabel>Vulnerável a</FilterGroupLabel>
-                      <div className="flex flex-wrap gap-1.5">
-                        {allVulnerable.map(v => (
-                          <FilterChip
-                            key={v}
-                            label={v}
-                            active={activeVulnerable.has(v)}
-                            danger
-                            onClick={() => setActiveVulnerable(toggle(activeVulnerable, v))}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Clear advanced */}
-                  {advancedFilterCount > 0 && (
-                    <div className="flex justify-end pt-1">
-                      <button
-                        onClick={() => {
-                          setActiveStyles(new Set())
-                          setMinLevel('')
-                          setMaxLevel('')
-                          setActiveImmune(new Set())
-                          setActiveVulnerable(new Set())
-                        }}
-                        style={{
-                          background: 'transparent',
-                          border: 'none',
-                          color: 'var(--color-text-muted)',
-                          fontFamily: 'var(--font-ui)',
-                          fontSize: '0.68rem',
-                          cursor: 'pointer',
-                          letterSpacing: '0.1em',
-                          textTransform: 'uppercase',
-                          padding: '0.2rem 0',
-                          transition: 'color 0.15s',
-                        }}
-                        onMouseEnter={e =>
-                          ((e.currentTarget as HTMLButtonElement).style.color = CREATURE_ACCENT_GLOW)
-                        }
-                        onMouseLeave={e =>
-                          ((e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-muted)')
-                        }
-                      >
-                        ✕ Limpar filtros avançados
-                      </button>
-                    </div>
-                  )}
+              {customCreatures.length === 0 ? (
+                <div style={{ padding: '4rem 2rem', textAlign: 'center', border: `1px dashed ${CREATURE_ACCENT_DIM}`, borderRadius: 4 }}>
+                  <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', color: '#F0D0C0', marginBottom: '0.5rem' }}>
+                    Nenhuma criatura ainda
+                  </p>
+                  <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.82rem', marginBottom: '1.5rem' }}>
+                    Crie suas próprias criaturas para usar nas campanhas.
+                  </p>
+                  <button
+                    onClick={() => navigate('/criaturas/nova')}
+                    style={{
+                      padding: '0.55rem 1.1rem', borderRadius: 4,
+                      background: CREATURE_ACCENT, border: `1px solid ${CREATURE_ACCENT}`,
+                      color: '#F0D0C0', fontFamily: 'var(--font-ui)',
+                      fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    + Nova Criatura
+                  </button>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {customCreatures.map((creature, i) => (
+                    <CustomCreatureSummaryCard key={creature.id} creature={creature} index={i} />
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
 
-        {/* Custom creatures section */}
-        {customCreatures.length > 0 && (
-          <div style={{ marginBottom: '2rem' }}>
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: CREATURE_ACCENT_GLOW, marginBottom: '1rem', paddingBottom: '0.35rem', borderBottom: `1px solid ${CREATURE_ACCENT_DIM}` }}>
-              Minhas Criaturas
-            </p>
-            {filteredCustom.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {filteredCustom.map((creature, i) => (
-                  <CustomCreatureSummaryCard key={creature.id} creature={creature} index={i} />
-                ))}
-              </div>
-            ) : (
-              <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.78rem', color: 'var(--color-text-muted)', padding: '1rem 0' }}>
-                Nenhuma das suas criaturas corresponde ao filtro.
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* Public creatures from other users */}
-        {publicCreatures.length > 0 && (
-          <div style={{ marginBottom: '2rem' }}>
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(160,48,32,0.55)', marginBottom: '1rem', paddingBottom: '0.35rem', borderBottom: `1px solid ${CREATURE_ACCENT_DIM}` }}>
-              Criaturas da Comunidade
-            </p>
-            {filteredPublic.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {filteredPublic.map((creature, i) => (
-                  <CustomCreatureSummaryCard key={creature.id} creature={creature} index={i} />
-                ))}
-              </div>
-            ) : (
-              <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.78rem', color: 'var(--color-text-muted)', padding: '1rem 0' }}>
-                Nenhuma criatura pública corresponde ao filtro.
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* Results count */}
-        {(() => {
-          const total = filtered.length + filteredCustom.length + filteredPublic.length
-          return (
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.7rem', color: 'var(--color-text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
-              {total} {total === 1 ? 'criatura encontrada' : 'criaturas encontradas'}
-            </p>
-          )
-        })()}
-
-        {/* Grid */}
-        {filtered.length === 0 ? (
-          <div
-            style={{
-              padding: '3.5rem',
-              textAlign: 'center',
-              border: `1px dashed ${CREATURE_ACCENT_DIM}`,
-              borderRadius: 4,
-            }}
-          >
-            <p
-              style={{
-                color: 'var(--color-text-muted)',
-                fontFamily: 'var(--font-ui)',
-                fontSize: '0.85rem',
-              }}
+          {/* ── Arcádia (bestiário com filtros) ── */}
+          {activeTab === 'arcadia' && (
+            <motion.div
+              key="arcadia"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.22 }}
             >
-              Nenhuma criatura corresponde aos filtros selecionados.
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {filtered.map((creature, i) => (
-              <CreatureSummaryCard key={creature.name} creature={creature} index={i} />
-            ))}
-          </div>
-        )}
+              {/* Filter panel */}
+              <div style={{ background: 'rgba(10,6,4,0.95)', border: `1px solid ${CREATURE_ACCENT_DIM}`, borderRadius: 6, padding: '1rem 1.25rem', marginBottom: '1.75rem' }}>
+                <div className="flex gap-2 items-center">
+                  <input
+                    type="text"
+                    placeholder="Buscar por nome ou descrição..."
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    style={{ ...inputStyle, flex: 1, boxSizing: 'border-box', borderColor: search ? CREATURE_ACCENT : 'rgba(255,255,255,0.1)' }}
+                  />
+                  <button
+                    onClick={() => setFiltersOpen(v => !v)}
+                    style={{
+                      flexShrink: 0, display: 'flex', alignItems: 'center', gap: '0.45rem',
+                      padding: '0.45rem 0.9rem', borderRadius: 4,
+                      background: filtersOpen || advancedFilterCount > 0 ? 'rgba(160,48,32,0.15)' : 'rgba(255,255,255,0.04)',
+                      border: `1px solid ${filtersOpen || advancedFilterCount > 0 ? CREATURE_ACCENT : 'rgba(255,255,255,0.1)'}`,
+                      color: filtersOpen || advancedFilterCount > 0 ? CREATURE_ACCENT_GLOW : 'var(--color-text-muted)',
+                      fontFamily: 'var(--font-ui)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase',
+                      cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Filtros
+                    {advancedFilterCount > 0 && (
+                      <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18, borderRadius: '50%', background: CREATURE_ACCENT, color: '#F0D0C0', fontSize: '0.6rem', fontWeight: 700, lineHeight: 1 }}>
+                        {advancedFilterCount}
+                      </span>
+                    )}
+                    <span style={{ fontSize: '0.6rem', transition: 'transform 0.2s', transform: filtersOpen ? 'rotate(180deg)' : 'rotate(0deg)', display: 'inline-block' }}>▾</span>
+                  </button>
+                </div>
+
+                <AnimatePresence initial={false}>
+                  {filtersOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.22, ease: 'easeInOut' }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <div style={{ borderTop: `1px solid ${CREATURE_ACCENT_DIM}`, marginTop: '1rem', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        {allStyles.length > 0 && (
+                          <div>
+                            <FilterGroupLabel>Estilo</FilterGroupLabel>
+                            <div className="flex flex-wrap gap-1.5">
+                              {allStyles.map(s => <FilterChip key={s} label={s} active={activeStyles.has(s)} onClick={() => setActiveStyles(toggle(activeStyles, s))} />)}
+                            </div>
+                          </div>
+                        )}
+                        <div>
+                          <FilterGroupLabel>Nível</FilterGroupLabel>
+                          <div className="flex flex-wrap items-center gap-3">
+                            <div className="flex items-center gap-2">
+                              <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.68rem', color: 'var(--color-text-muted)' }}>De</span>
+                              <input type="number" placeholder="—" value={minLevel} onChange={e => setMinLevel(e.target.value)} min={1} style={{ ...inputStyle, width: 72, borderColor: minLevel ? CREATURE_ACCENT : 'rgba(255,255,255,0.1)' }} />
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span style={{ fontFamily: 'var(--font-ui)', fontSize: '0.68rem', color: 'var(--color-text-muted)' }}>Até</span>
+                              <input type="number" placeholder="—" value={maxLevel} onChange={e => setMaxLevel(e.target.value)} min={1} style={{ ...inputStyle, width: 72, borderColor: maxLevel ? CREATURE_ACCENT : 'rgba(255,255,255,0.1)' }} />
+                            </div>
+                          </div>
+                        </div>
+                        {allImmune.length > 0 && (
+                          <div>
+                            <FilterGroupLabel>Imune a</FilterGroupLabel>
+                            <div className="flex flex-wrap gap-1.5">
+                              {allImmune.map(i => <FilterChip key={i} label={i} active={activeImmune.has(i)} onClick={() => setActiveImmune(toggle(activeImmune, i))} />)}
+                            </div>
+                          </div>
+                        )}
+                        {allVulnerable.length > 0 && (
+                          <div>
+                            <FilterGroupLabel>Vulnerável a</FilterGroupLabel>
+                            <div className="flex flex-wrap gap-1.5">
+                              {allVulnerable.map(v => <FilterChip key={v} label={v} active={activeVulnerable.has(v)} danger onClick={() => setActiveVulnerable(toggle(activeVulnerable, v))} />)}
+                            </div>
+                          </div>
+                        )}
+                        {advancedFilterCount > 0 && (
+                          <div className="flex justify-end pt-1">
+                            <button
+                              onClick={() => { setActiveStyles(new Set()); setMinLevel(''); setMaxLevel(''); setActiveImmune(new Set()); setActiveVulnerable(new Set()) }}
+                              style={{ background: 'transparent', border: 'none', color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.68rem', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '0.2rem 0', transition: 'color 0.15s' }}
+                              onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.color = CREATURE_ACCENT_GLOW)}
+                              onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-muted)')}
+                            >
+                              ✕ Limpar filtros avançados
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Results count */}
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.7rem', color: 'var(--color-text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
+                {filtered.length} {filtered.length === 1 ? 'criatura encontrada' : 'criaturas encontradas'}
+              </p>
+
+              {filtered.length === 0 ? (
+                <div style={{ padding: '3.5rem', textAlign: 'center', border: `1px dashed ${CREATURE_ACCENT_DIM}`, borderRadius: 4 }}>
+                  <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.85rem' }}>
+                    Nenhuma criatura corresponde aos filtros selecionados.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {filtered.map((creature, i) => (
+                    <CreatureSummaryCard key={creature.name} creature={creature} index={i} />
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+        </AnimatePresence>
       </div>
     </motion.div>
   )
