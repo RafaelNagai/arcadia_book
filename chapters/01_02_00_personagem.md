@@ -20,6 +20,12 @@ Cada Atributo governa quatro Perícias. Quando você investe numa Perícia, est�
 >
 > **Crescimento:** Perícias evoluem organicamente durante o jogo (ver capítulo de Evolução e Testes). Atributos não evoluem pelo uso — pontos adicionais de Atributo são recompensas concedidas pelo Mestre por feitos extraordinários ou marcos narrativos significativos.
 
+### Pontos de Atributo
+
+Os **Atributos** (Físico, Destreza, Intelecto, Influência) começam com o valor definido na criação do personagem e não evoluem pelo uso. Pontos adicionais de Atributo são **recompensas concedidas pelo Mestre** — por feitos extraordinários, marcos narrativos ou progressos que vão além do treino comum.
+
+> *Exemplo: Após sobreviver a uma tormenta devastadora e salvar o navio sozinho, o Mestre concede +1 em Físico ao personagem como reconhecimento de que algo mudou nele de forma permanente.*
+
 ### Resumo sobre Atributos e Perícias
 
 | Atributo | Perícia | Uso Central |
@@ -48,3 +54,15 @@ Cada Atributo governa quatro Perícias. Quando você investe numa Perícia, est�
 Alem das caracteristicas unicas que representam um personagem, os itens e equipamentos definem as suas ferramentas para se aventurar pelo mundo de Arcadia.
 
 Saiba mais sobre [Inventário](inventario)
+
+---
+
+## Nível do Personagem
+
+O **nível** de um personagem em Arcádia não é um número atribuído manualmente — ele emerge diretamente da experiência acumulada.
+
+> **Nível = soma total de todos os pontos em todas as 16 perícias.**
+
+Cada vez que uma perícia ganha +1 permanente, o nível do personagem sobe em 1. O nível não concede bônus diretos em testes — é uma referência de progressão que o Mestre pode usar para calibrar recompensas e desafios.
+
+---

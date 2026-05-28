@@ -4,13 +4,15 @@
 
 ---
 
-## A Regra dos Dados
+## Teste
 
 Toda vez que o resultado de uma ação é incerto e as consequências importam, o Mestre pode pedir um **teste de perícia**. A mecânica central de Arcádia é construída sobre dois dados de doze faces(D12).
 
 ### O Teste Padrão
 
 Role **2D12** e some os dois resultados. Em seguida, adicione o seu **bônus**:
+
+> É considerado **bônus** todo acrescimo que tiver para aquela teste. Nesse caso, é **atributo** e **perícia**.
 
 > **Resultado Final = 2D12 + Atributo + Perícia**
 
@@ -27,11 +29,11 @@ O Mestre usa as faixas abaixo como guia ao definir DTs. A escala foi calibrada p
 
 | Faixa de DT | Nível | Referência |
 |---|---|---|
-| 10 – 15 | **Simples** | Qualquer personagem consegue, mesmo sem treino |
-| 16 – 20 | **Moderado** | Requer algum investimento em Atributo ou Perícia |
-| 21 – 25 | **Difícil** | Requer investimento sólido nos dois |
-| 26 – 30 | **Severo** | Território de veteranos com bônus altos |
-| 30+ | **Épico** | Apenas mestres absolutos têm chance real |
+| 6 – 15 | **Simples** | Qualquer personagem consegue, mesmo sem treino |
+| 16 – 25 | **Moderado** | Requer algum investimento em Atributo ou Perícia |
+| 26 – 35 | **Difícil** | Requer investimento sólido nos dois |
+| 36 – 45 | **Severo** | Território de veteranos com bônus altos |
+| 46+ | **Épico** | Apenas mestres absolutos têm chance real |
 
 ---
 
@@ -79,7 +81,7 @@ Algo dá errado além da simples falha. O Mestre introduz uma complicação ines
 
 Uma catástrofe narrativa imediata. Independentemente da DT, algo vai muito, muito mal. O Mestre tem carta branca para introduzir uma consequência severa e imediata.
 
-### Tabela Resumo
+### Resumo dos Resultados
 
 | Resultado nos Dados | Nome | Efeito |
 |---|---|---|
@@ -109,55 +111,7 @@ O personagem opera em condições favoráveis. Cada nível de Vantagem **adicion
 
 ---
 
-## Pontos de Esforço (PE)
-
-Os **Pontos de Esforço** representam a determinação do explorador em superar seus próprios limites — a reserva interna que permite ir além quando tudo indica que não é possível.
-
-### Capacidade
-Cada um dos quatro Atributos armazena até **5 PE** independentemente. Um personagem pode ter até 20 PE no total, distribuídos entre Físico, Destreza, Intelecto e Influência.
-
-### Como Usar PE
-O jogador pode gastar PE de duas formas, **após** rolar os dados:
-
-**A. Aumentar a Soma Final**
-Gaste 1 PE do Atributo relevante para adicionar **+1** ao Resultado Final. Pode ser usado múltiplas vezes no mesmo teste.
-
-> *Exemplo: Lyra falhou por 2 pontos. Ela gasta 2 PE de Físico para empatar e, então, passar na DT.*
-
-**B. Forçar o 12**
-Gaste **1 PE** para transformar o valor de **um** Dado Usado em 12. Útil para garantir a Evolução.
-
-> **Atenção:** Um 12 forçado por PE **não conta como Crítico** para efeitos de dano ou bônus narrativos. Ele serve apenas para progressão e para atingir DTs — não para amplificar o impacto de um ataque.
-
-### Como Ganhar PE
-
-| Fonte | Descrição |
-|---|---|
-| **Início de Sessão** | O Mestre distribui PE no começo de cada jornada |
-| **Interpretação** | Recompensa por boas jogadas narrativas e decisões marcantes |
-| **Treinamento** | Durante descanso ou *downtime*, o personagem pode treinar um Atributo específico e ganhar PE fixos naquele Atributo |
-
-> **Distribuição:** PE ganhos por Treinamento ficam fixos no Atributo treinado. PE ganhos por outras fontes podem ser distribuídos livremente entre os quatro Atributos, respeitando o limite de 5 por Atributo.
-
----
-
-## Nível do Personagem
-
-O **nível** de um personagem em Arcádia não é um número atribuído manualmente — ele emerge diretamente da experiência acumulada.
-
-> **Nível = soma total de todos os pontos em todas as 16 perícias.**
-
-Cada vez que uma perícia ganha +1 permanente, o nível do personagem sobe em 1. O nível não concede bônus diretos em testes — é uma referência de progressão que o Mestre pode usar para calibrar recompensas e desafios.
-
-### Pontos de Atributo
-
-Os **Atributos** (Físico, Destreza, Intelecto, Influência) começam com o valor definido na criação do personagem e não evoluem pelo uso. Pontos adicionais de Atributo são **recompensas concedidas pelo Mestre** — por feitos extraordinários, marcos narrativos ou progressos que vão além do treino comum.
-
-> *Exemplo: Após sobreviver a uma tormenta devastadora e salvar o navio sozinho, o Mestre concede +1 em Físico ao personagem como reconhecimento de que algo mudou nele de forma permanente.*
-
----
-
-## O Caminho da Evolução
+## Evolução
 
 Em Arcádia, as perícias não evoluem através de pontos de experiência distribuídos entre sessões. Elas evoluem **no momento em que são usadas com maestria absoluta**.
 
@@ -171,5 +125,7 @@ Este é o único caminho para evolução orgânica de perícias. Não há atalho
 - Os dois dados devem ser **12**, pode ser **12 natural** ou 12 com adição dos PE.
 - Se o jogador usou Talento (3D12), os dois dados **escolhidos** devem ser 12. O dado descartado não conta. Devem seguir a regra acima.
 - A evolução ocorre independentemente de passar ou não na DT — o feito importa, não o resultado narrativo.
+
+> É possivel aumentar o valor dos dados usando pontos de **PE**, veja mais sobre [Pontos de Esforço](esforco).
 
 > *Exemplo: Mira rola 3D12 com seu Talento em Furtividade e tira [12, 12, 4]. Ela descarta o 4 e usa os dois 12s. O teste resulta em Milagre — e ela ganha +1 permanente em Furtividade.*
