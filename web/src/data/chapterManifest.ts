@@ -60,7 +60,7 @@ export const CHAPTERS: ChapterMeta[] = [
   { id: '04_04_00_dimensoes',               slug: 'dimensoes',               title: 'Planos Dimensionais',                part: 'O Mundo',                order: 150, subtitle: 'Além do Plano Material' },
   { id: '04_05_00_religioes',               slug: 'religioes',               title: 'Religiões',                part: 'O Mundo',                order: 160, subtitle: 'Os deuses que respiram' },
   { id: '04_06_00_bestiario',               slug: 'bestiario',               title: 'Bestiário',                part: 'O Mundo',                order: 170, subtitle: 'Criaturas do Mar de Nuvens' },
-  { id: 'a_tempestade_de_vidro',      slug: 'a-tempestade-de-vidro',   title: 'A Tempestade de Vidro',    part: 'One-Shots',              order: 180, subtitle: '3-4 horas · Iniciante a Intermediário' },
+  { id: 'a_salvo',      slug: 'a-salvo',   title: 'A Salvo',    part: 'One-Shots',              order: 180, subtitle: '3-4 horas · Iniciante a Intermediário' },
 ]
 
 export function getChapterBySlug(slug: string): ChapterMeta | undefined {
