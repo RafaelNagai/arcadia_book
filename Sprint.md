@@ -58,6 +58,18 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Recuperação e Alteração de Senha
+**Origem:** /task implementar "Esqueci minha senha" no login e painel de configurações com "alterar senha" para usuários logados
+**Adicionada:** 2026-05-28 · **Validator:** APROVADO · **Concluída:** 2026-05-28
+
+- [x] Subtask 1 — `authContext.tsx`: `resetPassword` e `updatePassword` adicionados ao contexto; `redirectTo` aponta para `/redefinir-senha`
+- [x] Subtask 2 — `EsqueciSenhaPage.tsx`: formulário de recuperação de senha com estado de sucesso, erro inline e link "Voltar ao login"
+- [x] Subtask 3 — `RedefinirSenhaPage.tsx`: detecta `PASSWORD_RECOVERY` via `onAuthStateChange`; trata token inválido, senhas divergentes e redireciona para `/login` após sucesso
+- [x] Subtask 4 — `App.tsx`: rotas `/esqueci-senha`, `/redefinir-senha` e `/configuracoes` registradas
+- [x] Subtask 5 — `ChangePasswordSection.tsx` + `SettingsPage.tsx` + link "Configurações" no `Navbar.tsx` (desktop e mobile) quando logado
+
+---
+
 ### Inventário Base Fixo e Nova Fórmula de Carga
 **Origem:** /task Atualizar regras de inventário e carga do personagem
 **Adicionada:** 2026-05-26 · **Validator:** APROVADO · **Concluída:** 2026-05-26

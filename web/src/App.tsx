@@ -6,6 +6,9 @@ import { CharacterListPage } from '@/pages/CharacterListPage'
 import { CharacterPage } from '@/pages/CharacterPage'
 import { CharacterCreatorPage } from '@/pages/CharacterCreatorPage'
 import { LoginPage } from '@/pages/LoginPage'
+import { EsqueciSenhaPage } from '@/pages/EsqueciSenhaPage'
+import { RedefinirSenhaPage } from '@/pages/RedefinirSenhaPage'
+import { SettingsPage } from '@/pages/SettingsPage'
 import { CampaignListPage } from '@/pages/CampaignListPage'
 import { CampaignPage } from '@/pages/CampaignPage'
 import { CreatureListPage } from '@/pages/CreatureListPage'
@@ -38,6 +41,9 @@ function AppRoutes() {
         <Route path="criatura/custom/:id" element={<CustomCreaturePage />} />
         <Route path="criatura/:slug" element={<CreaturePage />} />
         <Route path="login" element={<LoginPage />} />
+        <Route path="esqueci-senha" element={<EsqueciSenhaPage />} />
+        <Route path="redefinir-senha" element={<RedefinirSenhaPage />} />
+        <Route path="configuracoes" element={<SettingsPage />} />
         <Route element={<AppShell />}>
           <Route path="capitulo/:slug" element={<ChapterPage />} />
         </Route>
