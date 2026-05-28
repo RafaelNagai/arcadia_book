@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arcádia — Convite para campanha</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #04060C;
+      font-family: 'EB Garamond', Georgia, serif;
+      color: #E8E0D0;
+    }
+
+    .wrapper {
+      max-width: 580px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: linear-gradient(160deg, #0F1729 0%, #0A0F1E 100%);
+      border: 1px solid #2A3A60;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(180deg, #0F1729 0%, #1A2440 100%);
+      border-bottom: 1px solid #2A3A60;
+      padding: 36px 40px 28px;
+      text-align: center;
+    }
+
+    .logo-glyph {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 36px;
+      color: #E8B84B;
+      letter-spacing: 0.1em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .logo-sub {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: #9c8f78;
+      text-transform: uppercase;
+    }
+
+    .divider {
+      text-align: center;
+      color: #7A5516;
+      font-size: 14px;
+      letter-spacing: 0.5em;
+      margin: 16px 0 0;
+    }
+
+    .body {
+      padding: 36px 40px;
+    }
+
+    .heading {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 20px;
+      color: #E8B84B;
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .text {
+      font-size: 17px;
+      line-height: 1.8;
+      color: #d9cfb2;
+      margin-bottom: 16px;
+    }
+
+    .text em {
+      color: #E8E0D0;
+      font-style: italic;
+    }
+
+    .scroll-box {
+      background: rgba(26, 36, 64, 0.7);
+      border: 1px solid #2A3A60;
+      border-left: 3px solid #C8922A;
+      border-radius: 0 4px 4px 0;
+      padding: 16px 20px;
+      margin: 24px 0;
+      font-style: italic;
+      font-size: 17px;
+      color: #d9cfb2;
+      line-height: 1.7;
+    }
+
+    .cta-wrap {
+      text-align: center;
+      margin: 32px 0;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #C8922A 0%, #E8B84B 100%);
+      color: #04060C;
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 36px;
+      border-radius: 4px;
+    }
+
+    .fallback {
+      font-size: 13px;
+      color: #9c8f78;
+      line-height: 1.6;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #1A2440;
+    }
+
+    .fallback a {
+      color: #C8922A;
+      word-break: break-all;
+    }
+
+    .footer {
+      border-top: 1px solid #1A2440;
+      padding: 24px 40px;
+      text-align: center;
+    }
+
+    .footer-ornament {
+      color: #7A5516;
+      font-size: 13px;
+      letter-spacing: 0.5em;
+      margin-bottom: 12px;
+    }
+
+    .footer-text {
+      font-size: 13px;
+      color: #9c8f78;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <div class="header">
+        <span class="logo-glyph">✦ ARCÁDIA ✦</span>
+        <span class="logo-sub">Sistema de Jogo de Interpretação</span>
+        <div class="divider">⁂</div>
+      </div>
+
+      <div class="body">
+        <h1 class="heading">Um convite cruzou os ventos arcanos</h1>
+
+        <p class="text">
+          Navegante, um mestre de jornadas enviou um convite para você ingressar em uma campanha nas Ilhas Flutuantes de Arcádia.
+        </p>
+
+        <div class="scroll-box">
+          <em>"Os ventos te chamam. Apenas os mais corajosos respondem ao chamado das Ilhas Flutuantes."</em>
+        </div>
+
+        <p class="text">
+          Clique abaixo para aceitar o convite e criar seu acesso ao compêndio.
+        </p>
+
+        <div class="cta-wrap">
+          <a href="{{ .ConfirmationURL }}" class="cta-btn">Aceitar o Convite</a>
+        </div>
+
+        <div class="fallback">
+          Se o botão não funcionar, copie e cole este endereço no seu navegador:<br />
+          <a href="{{ .ConfirmationURL }}">{{ .ConfirmationURL }}</a>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="footer-ornament">✦  ⁂  ✦</div>
+        <p class="footer-text">
+          Se você não esperava este convite, ignore este email com segurança.<br />
+          Arcádia — Ilhas Flutuantes, Ventos Arcanos.
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+[project]
+id = "arcadia"
+
+[auth]
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["https://arcadia.game"]
+jwt_expiry = 3600
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+template.confirmation.subject = "Arcádia — Confirme seu acesso"
+template.confirmation.content_path = "./templates/confirmation.html"
+template.recovery.subject = "Arcádia — Recuperação de acesso"
+template.recovery.content_path = "./templates/recovery.html"
+template.invite.subject = "Arcádia — Você foi convidado para uma campanha"
+template.invite.content_path = "./templates/invite.html"
+template.magic_link.subject = "Arcádia — Seu link de acesso"
+template.magic_link.content_path = "./templates/magic_link.html"
