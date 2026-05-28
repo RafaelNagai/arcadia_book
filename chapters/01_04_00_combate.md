@@ -35,19 +35,26 @@ O lado que venceu a Iniciativa age primeiro. Os membros do lado decidem a ordem 
 
 ### Reações
 
-Cada personagem tem um número de **Reações** por rodada igual ao seu valor de **Destreza** (mínimo 1, mesmo se Destreza for 0). Reações podem ser usadas a qualquer momento — dentro ou fora do seu turno — em resposta a qualquer ação em cena.
+Reações podem ser usadas a qualquer momento — quando não for o seu turno — em resposta a qualquer ação em cena.
 
-Quando qualquer ação é realizada em cena, qualquer personagem pode gastar **1 Reação** para responder. Uma reação pode ser qualquer coisa — esquivar, defender, conjurar, contra-atacar, interromper, empurrar um aliado para fora do caminho — desde que a narração justifique e uma perícia faça sentido.
+Após a primeira reação, toda reação extra usada causa +1 de Desvantagem.
+
+| Numero de Reações | Desvantagem |
+| :--- | :--- |
+| 1 | - |
+| 2 | -1D12 |
+| 3 | -2D12 |
+| 4 | ... |
+
+Quando qualquer ação é realizada em cena no turno do oponente, qualquer personagem pode gastar **1 Reação** para responder. Uma reação pode ser qualquer coisa — esquivar, defender, conjurar, contra-atacar, interromper, empurrar um aliado para fora do caminho — desde que a narração justifique e uma perícia faça sentido para ser feito.
 
 ---
 
-### Corrente de Reações
+### Corrente de Ações e Reações
 
-Uma reação pode ser respondida por outra reação, formando uma corrente. Cada reação além da primeira acumula **−1D12 de Desvantagem**, cumulativamente.
+Sempre que uma **reação** forçar um teste do autor da ação, ele gasta 1 ação propria para realizar uma resposta.
 
-Se o personagem não tiver mais D12 para rolar naquela perícia, não consegue realizar a ação — a corrente se encerra naturalmente.
-
-> *Exemplo: Um inimigo ataca Mirra. Kael reage, tentando empurrá-la para fora do alcance (1ª reação — sem penalidade). Mirra pode resistir ao empurrão de Kael (2ª reação — −1D12). O inimigo pode reagir ao movimento de Kael (3ª reação — −2D12). E assim por diante, até ninguém conseguir ou querer reagir.*
+> *Exemplo: Kael tenta atacar um goblin, porém este goblin recebe o dano e decide com sua reação devolver um ataque. Essa reação gera um ato do autor, ele pode esquivar gastando sua segunda ação ou receber o dano usando sua DP e realizar outro ato com sua segunda ação.*
 
 ---
 
@@ -75,21 +82,13 @@ Você se prepara para o impacto. Não há disputa de dados — você confia na s
 
 > Se no teste houver um crítico, o dano é dobrado. Se for uma falha, o dano é dividido pela metade, arredondando para baixo.
 
----
-
-#### Contra-Ataque
-
-Você aceita o golpe para devolver outro imediatamente.
-
-- **Mecânica:** Você realiza um ataque imediato contra quem te atacou, mas com **Desvantagem**.
-- **Consequência:** Você sofre o dano do ataque original calculado na sua DP, sem direito a defesa. Simultaneamente, causa seu próprio dano — mas o alvo pode reagir normalmente a esse contra-ataque.
-- **Acumulação:** As Desvantagens são acumulativas. Quando a Desvantagem reduzir seu pool a zero dados, não é possível continuar usando esta opção.
+Entenda mais sobre [Defesa](defesa).
 
 ---
 
 ### Indefeso
 
-Quando todas as Reações foram gastas, o personagem está **Indefeso**. Todo dano recebido é calculado contra a **Defesa Passiva (DP)**, sem direito a reação.
+Quando todas as Reações foram gastas ou os jogadores criem um cenario para incapacitar um alvo, o personagem está **Indefeso**. Todo dano recebido é calculado contra a **Defesa Passiva (DP)**, sem direito a reação.
 
 ---
 
@@ -127,56 +126,6 @@ DA alta protege duas vezes: eleva o limiar do dano básico e do dado duplo. Cont
 
 ---
 
-## DA e DP — O Limiar de Dano
-
-O dano em Arcádia não funciona como uma subtração direta de pontos de vida. Ele funciona por **sucessos individuais** em cada dado de dano rolado.
-
-### Defesa Ativa (DA)
-
-A DA é o **valor mínimo** que um dado de dano precisa tirar para causar 1 ponto de dano.
-
-- **Base:** Todo personagem começa com **DA 1** — sem armadura, qualquer resultado de dado causa dano.
-- **Múltiplos itens defensivos:** Quando o personagem usa mais de um item defensivo simultaneamente (armadura, escudo, manto, capacete), vale sempre o **maior DA** entre eles. A exceção são itens cujo efeito especial descreve um bônus aditivo (ex: *"+2 DA"*) — nesses casos, o valor é somado ao DA mais alto. Os bônus aditivos são **cumulativos entre si**. Itens que simplesmente definem um valor (ex: *"DA 4"*) não se acumulam entre si.
-- **Durabilidade compartilhada:** Quando múltiplos itens estão equipados, **todos** têm sua Durabilidade consumida simultaneamente ao receber dano — independente de qual deles define o DA.
-
-> **Exemplo de stacking de DA:**
-> Lira equipa três itens: Armadura Tier B (DA 4), Escudo Tier C (DA 3) e um Manto com efeito especial *"+1 DA"*, além de um amuleto arcano com efeito *"+2 DA"*.
-> - O maior DA base é **4** (Armadura). O Escudo tem DA 3 — como é menor, é ignorado.
-> - Os bônus aditivos somam ao maior: +1 (Manto) + +2 (Amuleto) = **+3**.
-> - **DA final de Lira: 4 + 3 = 7.**
-
-> *Exemplo de uso em combate: Se sua DA é 4 e o inimigo ataca com 6D6, cada dado que resultar em 4 ou mais causa 1 ponto de dano. Se o inimigo tirar [1, 3, 4, 5, 6, 2], os dados [4, 5, 6] passam — 3 pontos de dano.*
-
-### Defesa Passiva (DP)
-
-A DP é usada quando o personagem está Indefeso ou falhou na Esquiva.
-
-> **Fórmula: DP = ⌊DA ÷ 2⌋** *(metade da DA, arredondado para baixo)*
-
-| DA | DP |
-|---|---|
-| 1 | 0 |
-| 2 | 1 |
-| 3 | 1 |
-| 4 | 2 |
-| 5 | 2 |
-| 6 | 3 |
-| 7 | 3 |
-
-> **Nota:** DA 1 (sem armadura) resulta em DP 0 — qualquer dado de dano causa dado duplo. Isso é intencional: um personagem sem proteção é extremamente vulnerável quando Indefeso.
-
----
-
-## Durabilidade e Equipamento em Combate
-
-O equipamento protege a vida do personagem — mas ele sofre o castigo no lugar dele. **O dano sempre atinge a Durabilidade do item antes de atingir a Vida.**
-
-- **Absorção:** Cada ponto de dano recebido reduz a Durabilidade do item equipado em 1, o jogador pode decidir em qual equipamento é direcionado a redução da durabilidade.
-- **Quebra:** Quando a Durabilidade chega a 0, o item é quebrado e sem possibilidade de reparo. Podendo mitigar até 5 de dano extra do ataque, porém se passar vai receber todo o dano causado na vida do personagem.
-- **Sacrifício Voluntário:** O personagem pode optar por "não usar" o equipamento num golpe específico para preservá-lo. Nesse caso, ele mantem os efeitos e a DA que o item provém.
-
----
-
 ## Críticos e Falhas em Combate
 
 Os resultados especiais dos dados (definidos no capítulo de Evolução e Testes) têm efeitos diretos sobre o dano em combate.
@@ -203,7 +152,7 @@ Se numa mesma rolagem de múltiplos dados surgirem **12 e 1** no mesmo pool, ele
 
 ---
 
-> Para tabelas de Tiers, catálogo de itens e guia de criação de equipamentos, consulte o capítulo **Equipamentos**.
+> Para tabelas de Tiers, catálogo de itens e guia de criação de equipamentos, consulte o capítulo [Equipamentos](equipamentos).
 
 ---
 
