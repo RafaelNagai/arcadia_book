@@ -1,4 +1,4 @@
-# Dimensões
+# Plano Dimensional
 
 > *Você pensa que o mundo é tudo o que existe. Mas o que você chama de "mundo" é apenas a camada mais fina de uma realidade muito mais profunda.*
 
