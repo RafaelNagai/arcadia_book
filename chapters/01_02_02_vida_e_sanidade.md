@@ -82,7 +82,7 @@ Todo personagem começa com **15 de Sanidade Máxima**, acrescidos de um bônus 
 
 A Sanidade mede o equilíbrio interno. Quando chega a **zero**, o corpo ainda vive — mas a mente começa a se despedaçar.
 
-A morte mental so acontece quando é **acumulado 3 traumas** ao personagem. O personagem enlouquece e o mestre recebe o controle desse personagem.
+A morte mental só acontece quando são **acumulados 3 traumas** ao personagem. O personagem enlouquece e o Mestre recebe o controle desse personagem.
 
 Ao acumular **3 Traumas**, o personagem entra no **Estado de Loucura** — uma batalha interna entre a consciência que restou e o colapso total.
 

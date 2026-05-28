@@ -72,9 +72,9 @@ Um feito lendário. O Mestre pode permitir que o personagem ignore quase qualque
 
 Algo dá errado além da simples falha. O Mestre introduz uma complicação inesperada — não apenas o personagem não conseguiu, mas a situação piorou.
 
-> Quando **1 natural** é obtido, os bônus não são somados para efetuar os cálculos.
+> Quando **1 natural** é obtido nos Dados Usados, os bônus não são somados para efetuar os cálculos.
 
-> **Importante:** A Falha Crítica só ocorre quando **ambas** as condições se cumprem. Tirar um 1 natural em um teste que ainda assim passa na DT não é uma Falha Crítica — é apenas um sucesso difícil.
+> **Importante:** A Falha Crítica só ocorre quando **ambas** as condições se cumprem. Tirar um 1 natural em um teste que ainda assim passa na DT não é uma Falha Crítica — é apenas um sucesso difícil. Com **Talento** (3D12), apenas os dois dados escolhidos contam — o dado descartado não ativa este efeito.
 
 ### Desastre
 **Condição:** Tirar **1 natural nos dois** Dados Usados.
@@ -122,8 +122,8 @@ Em Arcádia, as perícias não evoluem através de pontos de experiência distri
 Este é o único caminho para evolução orgânica de perícias. Não há atalho — apenas o momento em que tudo se alinha e os dados mostram o máximo.
 
 **Condições importantes:**
-- Os dois dados devem ser **12**, pode ser **12 natural** ou 12 com adição dos PE.
-- Se o jogador usou Talento (3D12), os dois dados **escolhidos** devem ser 12. O dado descartado não conta. Devem seguir a regra acima.
+- Os dois Dados Usados devem mostrar **12** — seja por resultado natural, seja elevados com **PE**.
+- Se o jogador usou Talento (3D12), os dois dados **escolhidos** devem ser 12. O dado descartado não conta.
 - A evolução ocorre independentemente de passar ou não na DT — o feito importa, não o resultado narrativo.
 
 > É possivel aumentar o valor dos dados usando pontos de **PE**, veja mais sobre [Pontos de Esforço](esforco).

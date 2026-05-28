@@ -8,23 +8,17 @@
 
 Todo personagem em Arcádia é construído sobre dois conceitos interdependentes: **Atributos** e **Perícias**.
 
-Os **Atributos** representam o potencial bruto — as quatro forças fundamentais que moldam quem o personagem é por natureza. São a herança do corpo, da mente e da alma. Não mudam facilmente, e quando mudam, é porque algo profundo aconteceu.
+Os **Atributos** representam o potencial bruto — as quatro forças fundamentais que moldam quem o personagem é por natureza. São a herança do corpo, da mente e da alma. Não evoluem pelo uso: pontos adicionais de Atributo são **recompensas concedidas pelo Mestre** por feitos extraordinários, marcos narrativos ou progressos que vão além do treino comum.
+
+> *Exemplo: Após sobreviver a uma tormenta devastadora e salvar o navio sozinho, o Mestre concede +1 em Físico ao personagem como reconhecimento de que algo mudou nele de forma permanente.*
 
 As **Perícias** representam o que o personagem faz com esse potencial. São o refinamento, a técnica, a experiência acumulada. Elas crescem com o uso — toda vez que você desafia o destino com seus dados e atinge a perfeição natural, uma perícia evolui. O fracasso também ensina, mas é o sucesso absoluto que grava a habilidade no músculo e na memória.
-
-Saiba mais detalhadamente cada um neste [capitulo](pericia).
 
 Cada Atributo governa quatro Perícias. Quando você investe numa Perícia, está aplicando um aspecto específico daquele Atributo a uma forma precisa de ação.
 
 > **Valores iniciais:** Todo Atributo e toda Perícia começam em **0** por padrão. Os pontos distribuídos na criação do personagem definem o ponto de partida de cada um. Um valor 0 significa que o personagem não tem treino formal naquela área — ele pode tentar, mas conta apenas com o que os dados oferecem.
->
-> **Crescimento:** Perícias evoluem organicamente durante o jogo (ver capítulo de Evolução e Testes). Atributos não evoluem pelo uso — pontos adicionais de Atributo são recompensas concedidas pelo Mestre por feitos extraordinários ou marcos narrativos significativos.
 
-### Pontos de Atributo
-
-Os **Atributos** (Físico, Destreza, Intelecto, Influência) começam com o valor definido na criação do personagem e não evoluem pelo uso. Pontos adicionais de Atributo são **recompensas concedidas pelo Mestre** — por feitos extraordinários, marcos narrativos ou progressos que vão além do treino comum.
-
-> *Exemplo: Após sobreviver a uma tormenta devastadora e salvar o navio sozinho, o Mestre concede +1 em Físico ao personagem como reconhecimento de que algo mudou nele de forma permanente.*
+Conheça cada Atributo e Perícia em detalhes no [capítulo de Perícias](pericias).
 
 ### Resumo sobre Atributos e Perícias
 
@@ -51,7 +45,7 @@ Os **Atributos** (Físico, Destreza, Intelecto, Influência) começam com o valo
 
 ## Inventário e Equipamento
 
-Alem das caracteristicas unicas que representam um personagem, os itens e equipamentos definem as suas ferramentas para se aventurar pelo mundo de Arcadia.
+Além das características que representam um personagem, os itens e equipamentos definem suas ferramentas para se aventurar pelo mundo de Arcádia.
 
 Saiba mais sobre [Inventário](inventario)
 
@@ -63,6 +57,6 @@ O **nível** de um personagem em Arcádia não é um número atribuído manualme
 
 > **Nível = soma total de todos os pontos em todas as 16 perícias.**
 
-Cada vez que uma perícia ganha +1 permanente, o nível do personagem sobe em 1. O nível não concede bônus diretos em testes — é uma referência de progressão que o Mestre pode usar para calibrar recompensas e desafios.
+Cada vez que uma perícia ganha +1 permanente, o nível do personagem sobe em 1. O nível **não concede bônus diretos em testes** — é uma referência de progressão que permite ao Mestre compreender o grau de desenvolvimento de cada personagem e calibrar desafios, recompensas e a dificuldade dos encontros de forma adequada.
 
 ---

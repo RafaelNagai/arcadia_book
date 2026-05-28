@@ -14,10 +14,10 @@ Role **1D20** e consulte a tabela:
 |---|---|---|
 | 1 | **Mestre decide** | — |
 | 2–4 | **Vício** | O personagem pode realizar uma ação involuntária para adquirir ou se aproximar do Alvo do trauma. |
-| 5–7 | **Paranoia** | O personagem pode ser forçado a substituir uma perícia escolhida pelo jogador por outra, sem aviso. |
+| 5–7 | **Paranoia** | Quando em contato com o Alvo, o Mestre pode forçar o personagem a substituir uma perícia por outra — sem aviso. O Mestre define qual perícia substitui qual, com base na narrativa. |
 | 8–10 | **Fobia** | O personagem perde **1 ação** sempre que estiver na presença do Alvo do trauma. |
 | 11–13 | **Medo** | O personagem tem **Desvantagem** em perícias quando age perante o Alvo do trauma. |
-| 14–16 | **Alergia** | O problema se externaliza no corpo: **−3 a −10** em perícias específicas. |
+| 14–16 | **Alergia** | O trauma se externaliza no corpo. Quando em presença ou contato com o Alvo, o Mestre aplica uma penalidade de **−3 a −10** em perícias específicas, conforme a situação narrativa. |
 | 17–19 | **Arrogância / Preconceito** | O personagem não soma bônus de atributo e pericia, e nem pode usar PE em ações contra o Alvo do trauma. |
 | 20 | **Jogador decide** | — |
 

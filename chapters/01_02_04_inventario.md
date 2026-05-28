@@ -4,19 +4,19 @@ Todo personagem carrega consigo um conjunto de **slots de inventário** — espa
 
 Existem os **slots ativos** e **slots passivos** no inventário.
 
-## Slots Ativo
+## Slots Ativos
 
-Todo personagem possui **4 slots de inventário ativo**. Mochilas e contêineres podem adicionar slots extras além desse valor base, esses vão ser considerados os **slots de inventário passivo**.
+Todo personagem possui **4 slots de inventário ativo**. Mochilas e contêineres podem adicionar slots extras além desse valor base — esses serão considerados os **slots de inventário passivo**.
 
 Cada slot comporta um único item, independentemente do seu peso.
 
-Equipamentos e Armamentos são apenas válidos e considerados que estão em uso, quando estão nos **slots ativos**.
-Apenas amuletos e equipamentos menores(colar, brinco, anel, etc.) ainda tem seu efeito se colocados nos **slots passivos**.
+Equipamentos e armamentos só são válidos e considerados em uso quando estão nos **slots ativos**.
+Apenas amuletos e equipamentos menores (colar, brinco, anel, etc.) mantêm seu efeito mesmo nos **slots passivos**.
 > Em combate, gasta 1 ação para realizar a troca de itens entre os **slots ativos** e **slots passivos**.
 
 ## Limite de Carga
 
-O peso total que um personagem consegue carregar sem penalidade é determinado pelo atributo **Físico**:
+Todos os itens carregados pelo personagem — tanto nos **slots ativos** quanto nos **slots passivos** — contribuem para o peso total. O limite sem penalidade é determinado pelo atributo **Físico**:
 
 > **Limite de Carga = 20 + (Físico × 5)**
 

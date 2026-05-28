@@ -29,9 +29,11 @@ A iniciativa é mantida ao longo do combate — não é reavaliada a cada rodada
 
 ### Ações
 
-Cada personagem tem **2 Ações** por rodada, livres — qualquer perícia pode ser usada, desde que a narração justifique.
+Cada personagem tem **2 Ações** por rodada sem penalidade, livres — qualquer perícia pode ser usada, desde que a narração justifique.
 
 O lado que venceu a Iniciativa age primeiro. Os membros do lado decidem a ordem entre si. Depois, o outro lado age.
+
+É possivel usar mais do que 2 ações, porém para cada ação extra tem **desvantagem** no teste realizado. Se não tiver D12s para jogar, não é possivel realizar aquela ação.
 
 ### Reações
 
@@ -46,15 +48,26 @@ Após a primeira reação, toda reação extra usada causa +1 de Desvantagem.
 | 3 | -2D12 |
 | 4 | ... |
 
-Quando qualquer ação é realizada em cena no turno do oponente, qualquer personagem pode gastar **1 Reação** para responder. Uma reação pode ser qualquer coisa — esquivar, defender, conjurar, contra-atacar, interromper, empurrar um aliado para fora do caminho — desde que a narração justifique e uma perícia faça sentido para ser feito.
+Quando qualquer ação é realizada em cena no turno do oponente, qualquer personagem pode gastar **1 Reação** para responder. Uma reação pode ser qualquer coisa — esquivar, defender, conjurar, contra-atacar, interromper, empurrar um aliado para fora do caminho — desde que a narração justifique e uma perícia faça sentido para ser usada.
+
+### Contra-Ataque
+
+O personagem aceita o golpe do inimigo e responde imediatamente, no mesmo instante.
+
+- **Mecânica:** O dano do atacante é calculado normalmente contra a **DP** do personagem. Em troca, o personagem ataca de volta o atacante.
+- O inimigo pode gastar uma **ação** ao contra-ataque.
+
+> *Exemplo: Um pirata ataca Mira. Ela escolhe Contra-Ataque: absorve o golpe na DP e devolve com um contra-ataque. O pirata pode usar sua ação extra para esquivar ou defender.*
 
 ---
 
 ### Corrente de Ações e Reações
 
-Sempre que uma **reação** forçar um teste do autor da ação, ele gasta 1 ação propria para realizar uma resposta.
+Quando uma reação **ameaça diretamente a integridade do autor da ação** — como um contra-ataque ou uma conjuração ofensiva —, o autor gasta **1 de suas próprias ações** para responder a essa ameaça.
 
-> *Exemplo: Kael tenta atacar um goblin, porém este goblin recebe o dano e decide com sua reação devolver um ataque. Essa reação gera um ato do autor, ele pode esquivar gastando sua segunda ação ou receber o dano usando sua DP e realizar outro ato com sua segunda ação.*
+Reações puramente defensivas — como uma esquiva ou um bloqueio — **não geram corrente**. Elas apenas protegem quem as usa, sem impor custo adicional ao atacante.
+
+> *Exemplo: Kael ataca um goblin. Como reação, o goblin devolve um contra-ataque — uma ameaça direta à integridade de Kael. Isso inicia uma corrente: Kael gasta 1 de suas ações para esquivar ou absorver o golpe com sua DP. Ainda lhe resta uma segunda ação para agir normalmente no turno.*
 
 ---
 
@@ -116,13 +129,15 @@ A **arma** define a quantidade de dados. O **projétil** define o tipo de dado.
 
 ---
 
-### Dado Duplo
+### Dano Duplicado
 
 Se o resultado de um dado de dano for **igual ou superior ao dobro da defesa usada (DA ou DP)**, aquele dado vale **2 pontos de dano** em vez de 1. A regra aplica-se individualmente a cada dado do ataque.
 
-> *Exemplo: Alvo com DA 3. Threshold do dado duplo = 6. Um dado que resultar em [6+] vale 2 dano. Resultados [3–5] valem 1 dano. Abaixo de 3 não causam dano algum.*
+> *Exemplo: Alvo com DA 3. Threshold do dano duplo = 6. Um dado que resultar em [6+] vale 2 dano. Resultados [3–5] valem 1 dano. Abaixo de 3 não causam dano algum.*
 
-DA alta protege duas vezes: eleva o limiar do dano básico e do dado duplo. Contra tanques com DA muito alta, o threshold pode ser inalcançável pelo dado da arma — tornando a armadura pesada duplamente valiosa.
+DA alta protege duas vezes: eleva o limiar do dano básico e do dano duplo. Contra tanques com DA muito alta, o threshold pode ser inalcançável pelo dado da arma — tornando a armadura pesada duplamente valiosa.
+
+> Quando a DP é **0**, o threshold do dano duplo também é 0 — todos os dados de dano causam dano duplo automaticamente. Consulte [Defesa](defesa) para entender como a DP é calculada.
 
 ---
 
@@ -156,34 +171,35 @@ Se numa mesma rolagem de múltiplos dados surgirem **12 e 1** no mesmo pool, ele
 
 ---
 
-## Exemplo Ilustrado: O Convés dos Piratas
+## Exemplos
 
 > **Situação:** Kael e Mira enfrentam dois piratas no convés de um navio durante uma tormenta.
 
 **Kael** possui um peitoral de ferro arcano (Armadura Tier B, DA 4, Durabilidade 4). Sua DP é 2.
 
-**Turno 1 — O Ataque do Primeiro Pirata:**
+**Exemplo 1 — O Ataque do Primeiro Pirata:**
 O pirata ataca Kael com um mosquete (pool: 2D6). Kael já gastou sua Reação no turno anterior — está **Indefeso**.
 
-O pirata rola o pool de dano: **[3, 5]**. Como Kael está Indefeso, usamos a DP 2. Threshold do dado duplo = DP 2 × 2 = **4**.
-- [3]: ≥ 2 → 1 dano. Abaixo de 4 → sem dado duplo.
-- [5]: ≥ 2 → 1 dano. ≥ 4 → **dado duplo → 2 dano**.
+O pirata rola o pool de dano: **[3, 5]**. Como Kael está Indefeso, usamos a DP 2. Threshold do dano duplo = DP 2 × 2 = **4**.
+- [3]: ≥ 2 → 1 dano. Abaixo de 4 → sem dano duplo.
+- [5]: ≥ 2 → 2 dano. **dano duplo → 2 dano**.
 - **Total: 3 pontos de dano.** A Durabilidade do peitoral absorve: 4 → **1 restante**.
 - Vida de Kael: intacta.
 
-**Turno 2 — Mira tenta o Contra-Ataque:**
-Um segundo pirata ataca Mira. Ela escolhe **Contra-Ataque** — aceita o golpe e devolve imediatamente com Desvantagem.
+**Exemplo 2 — Mira usa Contra-Ataque:**
+Um segundo pirata ataca Mira. Ela escolhe **Contra-Ataque** como Reação — aceita o golpe e devolve imediatamente.
 
-- O dano do pirata é calculado na DP de Mira.
+- O dano do pirata é calculado contra a DP de Mira.
 - Mira ataca de volta com Desvantagem: rola 1D12 em vez de 2D12 e soma seus bônus.
-- O pirata pode reagir ao contra-ataque de Mira normalmente.
+- O pirata pode usar uma Ação normalmente para responder ao contra-ataque.
 
-**Turno 3 — O Peitoral de Kael Quebra:**
+**Exemplo 3 — O Peitoral de Kael Quebra:**
 Outro pirata ataca Kael com uma adaga (pool: 2D6). Com a Durabilidade do peitoral em 1, o pirata rola **[2, 5]**.
 
-- [2]: ≥ DP 2 → 1 dano. Abaixo de 4 → sem dado duplo.
-- [5]: ≥ DP 2 → 1 dano. ≥ 4 → **dado duplo → 2 dano**.
+- [2]: ≥ DP 2 → 1 dano. Abaixo de 4 → sem dano duplo.
+- [5]: ≥ DP 2 → 2 dano. **dano duplo**.
 - **Total: 3 pontos de dano.**
-- A Durabilidade absorve 1 → **Durabilidade 0. O peitoral quebra.**
+- A Durabilidade absorve 1 → **Durabilidade 0.**
+- Kael decide sacrificar seu equipamento para mitigar 1 de dano.
 - Os 2 pontos restantes vão direto para a Vida de Kael. **Vida de Kael: 8/10.**
 - O peitoral é destruído: DA volta para a base 1.
