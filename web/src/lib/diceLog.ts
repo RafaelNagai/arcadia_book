@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useEffect } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react'
 import type { MutableRefObject, ReactNode } from 'react'
 import { createElement } from 'react'
 
@@ -113,6 +113,7 @@ export function DiceLogProvider({
   persistEntry,
   persistClear,
   setterRef,
+  onBroadcast,
 }: {
   children: ReactNode
   characterId?: string
@@ -120,6 +121,7 @@ export function DiceLogProvider({
   persistEntry?: (entry: DiceLogEntry) => void
   persistClear?: () => void
   setterRef?: MutableRefObject<((entries: DiceLogEntry[]) => void) | null>
+  onBroadcast?: (entry: DiceLogEntry) => void
 }) {
   const [entries, setEntries] = useState<DiceLogEntry[]>(() =>
     initialEntries !== undefined ? initialEntries : (characterId ? loadLog(characterId) : []),
@@ -133,6 +135,9 @@ export function DiceLogProvider({
     return () => { setterRef.current = null }
   }, [setterRef])
 
+  const onBroadcastRef = useRef(onBroadcast)
+  onBroadcastRef.current = onBroadcast
+
   const addEntry = useCallback((entry: NewDiceLogEntry) => {
     const full = {
       ...entry,
@@ -145,6 +150,12 @@ export function DiceLogProvider({
       return next
     })
     if (persistEntry) persistEntry(full)
+    if (onBroadcastRef.current) {
+      console.log('[DiceLog] broadcasting entry:', full.type)
+      onBroadcastRef.current(full)
+    } else {
+      console.log('[DiceLog] no onBroadcast callback (membership not set?)')
+    }
   }, [characterId, persistEntry])
 
   const clearLog = useCallback(() => {

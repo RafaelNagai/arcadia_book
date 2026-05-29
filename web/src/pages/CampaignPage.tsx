@@ -549,7 +549,7 @@ export function CampaignPage() {
   const currentList = listView === 'players' ? campaign.players : campaign.npcs
 
   return (
-    <div style={{ background: 'var(--color-abyss)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ background: 'var(--color-abyss)', height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       {/* Top bar */}
       <div style={{
         height: 52, display: 'flex', alignItems: 'center',

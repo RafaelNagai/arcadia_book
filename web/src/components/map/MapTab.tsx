@@ -17,6 +17,9 @@ import { MapTokenModal } from './MapTokenModal'
 import { loadPreferredTokenSize } from './MapTokenModal'
 import { MapSettingsPanel } from './MapSettingsPanel'
 import { MapGallery } from './MapGallery'
+import { MapDiceLog } from './MapDiceLog'
+import { useCampaignDiceChannel } from '@/hooks/useCampaignDiceChannel'
+import type { DiceRollEvent } from '@/hooks/useCampaignDiceChannel'
 
 const TOKEN_DRAG_THROTTLE_MS = 50
 
@@ -142,6 +145,12 @@ export function MapTab({ campaign }: MapTabProps) {
   const [forcedLayerId, setForcedLayerId] = useState<string | null>(null)
   const [viewportOverride, setViewportOverride] = useState<{ scale: number; x: number; y: number } | null>(null)
   const [currentViewport, setCurrentViewport] = useState<{ scale: number; x: number; y: number } | null>(null)
+
+  // Dice roll feed
+  const [diceRolls, setDiceRolls] = useState<DiceRollEvent[]>([])
+  const [diceLogOpen, setDiceLogOpen] = useState(false)
+  const [unseenDiceCount, setUnseenDiceCount] = useState(0)
+  const diceLogOpenRef = useRef(false)
 
   const allChars = [...campaign.players, ...campaign.npcs]
   const myCharacterIds = campaign.isGm
@@ -330,6 +339,23 @@ export function MapTab({ campaign }: MapTabProps) {
       setCreatureInstances(instances)
     }, []),
   })
+
+  const playerCharacterIds = useMemo(
+    () => new Set(campaign.players.map(p => p.id)),
+    [campaign.players],
+  )
+
+  useCampaignDiceChannel(campaign.id, useCallback((event: DiceRollEvent) => {
+    console.log('[MapTab] received DICE_ROLL, characterId:', event.characterId, 'players:', [...playerCharacterIds])
+    if (!playerCharacterIds.has(event.characterId)) {
+      console.log('[MapTab] filtered out (not a player character)')
+      return
+    }
+    setDiceRolls(prev => [event, ...prev].slice(0, 50))
+    if (!diceLogOpenRef.current) {
+      setUnseenDiceCount(prev => prev + 1)
+    }
+  }, [playerCharacterIds]))
 
   const broadcastCampaign = useCampaignMapChannel(campaign.id, {
     onMapActivated: useCallback((newMap: GameMap) => {
@@ -912,6 +938,8 @@ export function MapTab({ campaign }: MapTabProps) {
     )
   }
 
+  diceLogOpenRef.current = diceLogOpen
+
   const hasLayers = map.layers.length > 0
   const hasMeasurements = measurements.length > 0 || liveMeasurements.length > 0
 
@@ -1162,6 +1190,17 @@ export function MapTab({ campaign }: MapTabProps) {
               {map.title} — {gmCurrentLayer.name}
             </div>
           )}
+
+          <MapDiceLog
+            rolls={diceRolls}
+            isOpen={diceLogOpen}
+            unseenCount={unseenDiceCount}
+            onToggle={() => {
+              const next = !diceLogOpen
+              setDiceLogOpen(next)
+              if (next) setUnseenDiceCount(0)
+            }}
+          />
         </div>
       </div>
 

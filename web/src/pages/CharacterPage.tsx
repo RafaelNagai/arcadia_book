@@ -50,6 +50,7 @@ import { DiceLogProvider } from "@/lib/diceLog";
 import type { DiceLogEntry } from "@/lib/diceLog";
 import { DiceLogSidebar } from "@/components/character/DiceLogSidebar";
 import { useCharacterRealtime } from "@/hooks/useCharacterRealtime";
+import { useCampaignDiceChannel } from "@/hooks/useCampaignDiceChannel";
 
 const PRESET_CHARACTERS = charactersData as Character[];
 const EMPTY_PE = {
@@ -303,6 +304,7 @@ export function CharacterPage() {
     campaignId: string;
     campaign: { id: string; title: string };
   }
+
   const [membership, setMembership] = useState<
     CampaignMembership | null | undefined
   >(undefined);
@@ -314,6 +316,15 @@ export function CharacterPage() {
     damageStr: string;
     equipmentName: string;
   } | null>(null);
+
+  // Use campaignId from URL/state immediately (available on mount),
+  // fall back to membership.campaignId when loaded via API.
+  const campaignIdForDice = fromCampaignId ?? (membership?.campaignId ?? null)
+
+  const broadcastDiceRoll = useCampaignDiceChannel(
+    campaignIdForDice,
+    () => {},
+  )
 
   const { scrollY } = useScroll();
   const backOpacity = useTransform(scrollY, [0, 150], [1, 0.35]);
@@ -727,6 +738,18 @@ export function CharacterPage() {
           : undefined
       }
       setterRef={isApiChar ? diceLogSetterRef : undefined}
+      onBroadcast={
+        campaignIdForDice && id && user
+          ? (entry) =>
+              broadcastDiceRoll({
+                type: 'DICE_ROLL',
+                characterId: id,
+                characterName: character?.name ?? 'Personagem',
+                senderId: user.id,
+                entry,
+              })
+          : undefined
+      }
     >
       <div style={{ background: "var(--color-abyss)", minHeight: "100vh" }}>
         {/* ── Fixed back button ─────────────────────────────── */}
