@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/lib/authContext'
@@ -116,8 +116,22 @@ function CreateCampaignModal({ onClose, onCreate }: {
 }) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [coverFile, setCoverFile] = useState<File | null>(null)
+  const [coverPreview, setCoverPreview] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0] ?? null
+    setCoverFile(file)
+    if (file) {
+      const url = URL.createObjectURL(file)
+      setCoverPreview(url)
+    } else {
+      setCoverPreview(null)
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -126,7 +140,12 @@ function CreateCampaignModal({ onClose, onCreate }: {
     setError(null)
     try {
       const res = await api.campaigns.create({ title: title.trim(), description: description.trim() })
-      onCreate(res.campaign)
+      let finalCampaign = res.campaign
+      if (coverFile) {
+        const uploadRes = await api.campaigns.uploadCover(res.campaign.id, coverFile)
+        finalCampaign = { ...finalCampaign, imageUrl: uploadRes.imageUrl }
+      }
+      onCreate(finalCampaign)
       onClose()
     } catch (err) {
       setError((err as Error).message)
@@ -203,6 +222,48 @@ function CreateCampaignModal({ onClose, onCreate }: {
               onFocus={e => { e.currentTarget.style.borderColor = 'rgba(200,146,42,0.5)' }}
               onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)' }}
             />
+          </div>
+
+          <div>
+            <label style={labelStyle}>Imagem de Capa</label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
+            {coverPreview ? (
+              <div style={{ position: 'relative', borderRadius: 4, overflow: 'hidden', height: 120, cursor: 'pointer' }}
+                onClick={() => fileInputRef.current?.click()}>
+                <img src={coverPreview} alt="Preview"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  background: 'rgba(0,0,0,0.45)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  opacity: 0, transition: 'opacity 0.15s',
+                }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.opacity = '1' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.opacity = '0' }}>
+                  <span style={{ color: '#fff', fontFamily: 'var(--font-ui)', fontSize: '0.75rem' }}>Alterar imagem</span>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                style={{
+                  ...inputStyle,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  gap: '0.5rem', height: 72, cursor: 'pointer',
+                  color: 'var(--color-text-muted)', border: '1px dashed rgba(255,255,255,0.14)',
+                }}
+              >
+                <span style={{ fontSize: '1.1rem', opacity: 0.5 }}>+</span>
+                <span style={{ fontSize: '0.78rem' }}>Adicionar imagem de capa</span>
+              </button>
+            )}
           </div>
 
           {error && (

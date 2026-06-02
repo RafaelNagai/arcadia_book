@@ -101,6 +101,18 @@ export class CampaignsService {
     }
   }
 
+  async uploadCoverImage(
+    id: string,
+    userId: string,
+    buffer: Buffer,
+    mimeType: string,
+    originalName: string,
+  ) {
+    await this.assertGm(id, userId)
+    const imageUrl = await this.uploadSvc.uploadCampaignCoverImage(userId, id, buffer, mimeType, originalName)
+    return this.repo.update(id, { imageUrl })
+  }
+
   async regenerateInviteCode(id: string, userId: string) {
     await this.assertGm(id, userId)
     const updated = await this.repo.update(id, { inviteCode: generateInviteCode() })

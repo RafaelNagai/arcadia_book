@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/lib/authContext'
@@ -6,6 +6,7 @@ import { api } from '@/lib/apiClient'
 import { getAccent } from '@/components/character/types'
 import type { CampaignChar, CampaignDetail } from '@/data/campaignTypes'
 import { MapTab } from '@/components/map/MapTab'
+import { CampaignIntroScreen } from '@/components/CampaignIntroScreen'
 
 // ── CharMiniCard ─────────────────────────────────────────────────────────────
 
@@ -251,6 +252,191 @@ function SelectNpcModal({ campaignId, existingNpcIds, onClose, onAdd, chars, cha
   )
 }
 
+// ── EditCampaignModal ─────────────────────────────────────────────────────────
+
+function EditCampaignModal({ campaign, onClose, onSave }: {
+  campaign: CampaignDetail
+  onClose: () => void
+  onSave: (updated: CampaignDetail) => void
+}) {
+  const [title, setTitle] = useState(campaign.title)
+  const [description, setDescription] = useState(campaign.description)
+  const [coverFile, setCoverFile] = useState<File | null>(null)
+  const [coverPreview, setCoverPreview] = useState<string | null>(campaign.imageUrl)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0] ?? null
+    setCoverFile(file)
+    if (file) {
+      setCoverPreview(URL.createObjectURL(file))
+    }
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if (!title.trim()) return
+    setSaving(true)
+    setError(null)
+    try {
+      const res = await api.campaigns.update(campaign.id, { title: title.trim(), description: description.trim() })
+      let updated = res.campaign
+      if (coverFile) {
+        const uploadRes = await api.campaigns.uploadCover(campaign.id, coverFile)
+        updated = { ...updated, imageUrl: uploadRes.imageUrl }
+      }
+      onSave(updated)
+      onClose()
+    } catch (err) {
+      setError((err as Error).message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%', padding: '0.65rem 0.85rem',
+    background: 'rgba(255,255,255,0.04)',
+    border: '1px solid rgba(255,255,255,0.12)',
+    borderRadius: 4, color: 'var(--color-text-primary)',
+    fontFamily: 'var(--font-ui)', fontSize: '0.875rem',
+    outline: 'none', boxSizing: 'border-box',
+  }
+  const labelStyle: React.CSSProperties = {
+    display: 'block', fontFamily: 'var(--font-ui)',
+    fontSize: '0.7rem', fontWeight: 600,
+    letterSpacing: '0.12em', textTransform: 'uppercase',
+    color: 'var(--color-text-muted)', marginBottom: '0.4rem',
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 200,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(4px)',
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.18 }}
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: '#0A0F1E', border: '1px solid rgba(255,255,255,0.1)',
+          borderRadius: 8, padding: '1.75rem',
+          width: 420, maxWidth: 'calc(100vw - 2rem)',
+          boxShadow: '0 24px 64px rgba(0,0,0,0.85)',
+        }}
+      >
+        <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 700, color: '#EEF4FC', marginBottom: '1.25rem' }}>
+          Editar Campanha
+        </p>
+
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div>
+            <label style={labelStyle}>Título *</label>
+            <input
+              value={title} onChange={e => setTitle(e.target.value)}
+              required
+              style={inputStyle}
+              onFocus={e => { e.currentTarget.style.borderColor = 'rgba(200,146,42,0.5)' }}
+              onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)' }}
+            />
+          </div>
+          <div>
+            <label style={labelStyle}>Descrição</label>
+            <textarea
+              value={description} onChange={e => setDescription(e.target.value)}
+              rows={3}
+              style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.5 }}
+              onFocus={e => { e.currentTarget.style.borderColor = 'rgba(200,146,42,0.5)' }}
+              onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)' }}
+            />
+          </div>
+
+          <div>
+            <label style={labelStyle}>Imagem de Capa</label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
+            {coverPreview ? (
+              <div
+                style={{ position: 'relative', borderRadius: 4, overflow: 'hidden', height: 120, cursor: 'pointer' }}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <img src={coverPreview} alt="Preview"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <div
+                  style={{
+                    position: 'absolute', inset: 0,
+                    background: 'rgba(0,0,0,0.45)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    opacity: 0, transition: 'opacity 0.15s',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.opacity = '1' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.opacity = '0' }}
+                >
+                  <span style={{ color: '#fff', fontFamily: 'var(--font-ui)', fontSize: '0.75rem' }}>Alterar imagem</span>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                style={{
+                  ...inputStyle,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  gap: '0.5rem', height: 72, cursor: 'pointer',
+                  color: 'var(--color-text-muted)', border: '1px dashed rgba(255,255,255,0.14)',
+                }}
+              >
+                <span style={{ fontSize: '1.1rem', opacity: 0.5 }}>+</span>
+                <span style={{ fontSize: '0.78rem' }}>Adicionar imagem de capa</span>
+              </button>
+            )}
+          </div>
+
+          {error && (
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.75rem', color: '#E07070',
+              background: 'rgba(200,60,60,0.1)', border: '1px solid rgba(200,60,60,0.25)',
+              borderRadius: 4, padding: '0.5rem 0.75rem' }}>
+              {error}
+            </p>
+          )}
+
+          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', marginTop: '0.25rem' }}>
+            <button type="button" onClick={onClose}
+              style={{ padding: '0.5rem 1rem', borderRadius: 4,
+                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)',
+                color: 'rgba(255,255,255,0.45)', fontFamily: 'var(--font-ui)', fontSize: '0.75rem', cursor: 'pointer' }}>
+              Cancelar
+            </button>
+            <button type="submit" disabled={saving || !title.trim()}
+              style={{ padding: '0.5rem 1.25rem', borderRadius: 4, border: 'none',
+                background: saving || !title.trim() ? 'rgba(255,255,255,0.05)' : 'var(--color-arcano)',
+                color: saving || !title.trim() ? 'rgba(255,255,255,0.2)' : '#0A0A0A',
+                fontFamily: 'var(--font-ui)', fontSize: '0.75rem', fontWeight: 700,
+                letterSpacing: '0.12em', textTransform: 'uppercase',
+                cursor: saving || !title.trim() ? 'not-allowed' : 'pointer' }}>
+              {saving ? 'Salvando…' : 'Salvar'}
+            </button>
+          </div>
+        </form>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 // ── CampaignSidebar ───────────────────────────────────────────────────────────
 
 type CampaignView = 'players' | 'npcs' | 'mapa'
@@ -262,10 +448,11 @@ interface CampaignSidebarProps {
   onChangeView: (v: CampaignView) => void
   onRegenerateCode: () => void
   onRequestDelete: () => void
+  onRequestEdit: () => void
   onClose?: () => void
 }
 
-function CampaignSidebar({ campaign, view, isGm, onChangeView, onRegenerateCode, onRequestDelete, onClose }: CampaignSidebarProps) {
+function CampaignSidebar({ campaign, view, isGm, onChangeView, onRegenerateCode, onRequestDelete, onRequestEdit, onClose }: CampaignSidebarProps) {
   const [showInviteCode, setShowInviteCode] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -392,6 +579,15 @@ function CampaignSidebar({ campaign, view, isGm, onChangeView, onRegenerateCode,
               </div>
             </div>
           )}
+          <button onClick={onRequestEdit}
+            style={{
+              padding: '0.5rem 0.75rem', borderRadius: 4, textAlign: 'left',
+              background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
+              color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)',
+              fontSize: '0.72rem', cursor: 'pointer',
+            }}>
+            Editar campanha
+          </button>
           <button onClick={onRequestDelete}
             style={{
               padding: '0.5rem 0.75rem', borderRadius: 4, textAlign: 'left',
@@ -423,8 +619,10 @@ export function CampaignPage() {
   const [showNpcModal, setShowNpcModal] = useState(false)
   const [npcCandidates, setNpcCandidates] = useState<CampaignChar[] | null>(null)
   const [npcCandidatesLoading, setNpcCandidatesLoading] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [showIntro, setShowIntro] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -433,6 +631,9 @@ export function CampaignPage() {
       .then(res => {
         setCampaign(res.campaign)
         document.title = `${res.campaign.title} — Arcádia`
+        if (res.campaign.imageUrl) {
+          setShowIntro(true)
+        }
       })
       .catch(() => setCampaign(null))
       .finally(() => setLoading(false))
@@ -550,6 +751,17 @@ export function CampaignPage() {
 
   return (
     <div style={{ background: 'var(--color-abyss)', height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+      <AnimatePresence>
+        {showIntro && campaign && (
+          <CampaignIntroScreen
+            title={campaign.title}
+            description={campaign.description}
+            imageUrl={campaign.imageUrl}
+            onDismiss={() => setShowIntro(false)}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Top bar */}
       <div style={{
         height: 52, display: 'flex', alignItems: 'center',
@@ -593,6 +805,7 @@ export function CampaignPage() {
             isGm={isGm}
             onChangeView={setView}
             onRegenerateCode={handleRegenerateCode}
+            onRequestEdit={() => setShowEditModal(true)}
             onRequestDelete={() => setShowDeleteConfirm(true)}
           />
         </div>
@@ -620,6 +833,7 @@ export function CampaignPage() {
                   isGm={isGm}
                   onChangeView={setView}
                   onRegenerateCode={handleRegenerateCode}
+                  onRequestEdit={() => setShowEditModal(true)}
                   onRequestDelete={() => setShowDeleteConfirm(true)}
                   onClose={() => setSidebarOpen(false)}
                 />
@@ -703,6 +917,16 @@ export function CampaignPage() {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {showEditModal && campaign && isGm && (
+          <EditCampaignModal
+            campaign={campaign}
+            onClose={() => setShowEditModal(false)}
+            onSave={updated => setCampaign(prev => prev ? { ...prev, ...updated } : prev)}
+          />
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showNpcModal && id && campaign && (

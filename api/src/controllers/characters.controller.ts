@@ -82,6 +82,13 @@ export async function charactersController(fastify: FastifyInstance) {
     return reply.send({ character: char })
   })
 
+  fastify.post('/:id/duplicate', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id } = UUIDParamSchema.parse(req.params)
+    const char = await svc.duplicate(id, req.user!.id)
+    return reply.status(201).send({ character: char })
+  })
+
   fastify.delete('/:id', async (req, reply) => {
     await fastify.authenticate(req)
     const { id } = UUIDParamSchema.parse(req.params)

@@ -58,6 +58,29 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Duplicar Ficha, Upload de Capa de Campanha e Tela de Abertura Animada
+**Origem:** /task Implementar 3 novas features: (1) Duplicar fichas de personagem; (2) Upload de imagem de capa ao criar/editar campanha; (3) Tela de abertura animada da campanha
+**Adicionada:** 2026-06-01 · **Validator:** APROVADO · **Concluída:** 2026-06-01
+
+- [x] Subtask 1 — Backend `POST /characters/:id/duplicate`: repository `duplicate()`, service com ownership check (403 se privado de outro usuário), controller responde 201 com novo personagem; `isPublic: false` no novo registro
+- [x] Subtask 2 — Frontend botão "⎘" nos 3 tipos de card em `CharacterListPage.tsx`; UUID via API, preset via localStorage; tab muda para "meus" sem reload; `api.characters.duplicate(id)` em `apiClient.ts`
+- [x] Subtask 3 — `UploadService.uploadCampaignCoverImage()` + bucket `campaign-covers` em `env.ts`; `CampaignsService.uploadCoverImage()` com `assertGm`; `POST /:id/upload-cover` retorna `{ imageUrl }` e persiste no banco
+- [x] Subtask 4 — `CreateCampaignModal` em `CampaignListPage.tsx` com campo de capa + preview; `EditCampaignModal` em `CampaignPage.tsx` para GM; upload após criação/edição; `api.campaigns.uploadCover(id, file)` em `apiClient.ts`
+- [x] Subtask 5 — `CampaignIntroScreen.tsx` full-screen animado; título Cinzel + glow; descrição linha-por-linha com stagger; `imageUrl` como fundo com overlay; `sessionStorage` controla exibição única por sessão; botão "Entrar no Conto"; integrado em `CampaignPage.tsx` com `AnimatePresence`
+
+---
+
+### Deleção de Campanha
+**Origem:** /task implementar deleção de campanha: ao deletar, desvincular todas as fichas vinculadas, excluir todas as imagens dos mapas do storage, e desvincular NPCs (sem deletar). Adicionar botão/UI de deletar na página de campanha.
+**Adicionada:** 2026-05-29 · **Validator:** APROVADO · **Concluída:** 2026-05-29
+
+- [x] Subtask 1 — `schema.prisma`: `CampaignCharacter.campaign: onDelete: Cascade` remove o join row ao deletar Campanha; `Character` é preservado
+- [x] Subtask 2 — `campaigns.service.ts::delete()`: sequência listar mapas → deletar DB → limpar storage; `listMaps` inclui `layers[].imageUrl` (String não-nulo); `.catch(() => {})` presente
+- [x] Subtask 3 — `apiClient.ts` linha 29: `if (res.status === 204) return undefined as T` antes de `res.json()`
+- [x] Subtask 4 — `CampaignPage.tsx`: botão GM-only em `{isGm && ...}`; modal com confirmação e texto de aviso; `handleDeleteCampaign` correto; `deleting` desabilita ambos os botões
+
+---
+
 ### Recuperação e Alteração de Senha
 **Origem:** /task implementar "Esqueci minha senha" no login e painel de configurações com "alterar senha" para usuários logados
 **Adicionada:** 2026-05-28 · **Validator:** APROVADO · **Concluída:** 2026-05-28

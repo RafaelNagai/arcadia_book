@@ -96,6 +96,9 @@ export const api = {
         body: JSON.stringify(diary),
       }),
 
+    duplicate: (id: string) =>
+      apiFetch<{ character: unknown }>(`/characters/${id}/duplicate`, { method: 'POST' }),
+
     delete: (id: string) => apiFetch(`/characters/${id}`, { method: 'DELETE' }),
   },
 
@@ -220,6 +223,24 @@ export const api = {
 
     getMembership: (characterId: string) =>
       apiFetch<{ membership: unknown }>(`/campaigns/character/${characterId}/membership`),
+
+    uploadCover: async (campaignId: string, file: File): Promise<{ imageUrl: string }> => {
+      const token = await getToken()
+      const form = new FormData()
+      form.append('file', file)
+
+      const headers: Record<string, string> = {}
+      if (token) headers['Authorization'] = `Bearer ${token}`
+
+      const res = await fetch(`${API_BASE}/campaigns/${campaignId}/upload-cover`, {
+        method: 'POST',
+        headers,
+        body: form,
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json?.error?.message ?? 'Erro no upload')
+      return json as { imageUrl: string }
+    },
   },
 
   // ── Maps ────────────────────────────────────────────────────────────────────

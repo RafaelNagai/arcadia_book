@@ -7,6 +7,7 @@ import {
   AddNpcSchema,
 } from '../schemas/campaign.schema.js'
 import { UUIDParamSchema } from '../schemas/shared.schema.js'
+import { ValidationError } from '../middleware/error-handler.js'
 
 const CampaignAndCharParamSchema = UUIDParamSchema.extend({
   charId: UUIDParamSchema.shape.id,
@@ -61,6 +62,19 @@ export async function campaignsController(fastify: FastifyInstance) {
     const { id } = UUIDParamSchema.parse(req.params)
     await svc.delete(id, req.user!.id)
     return reply.status(204).send()
+  })
+
+  // Upload campaign cover image (GM only)
+  fastify.post('/:id/upload-cover', async (req, reply) => {
+    await fastify.authenticate(req)
+    const { id } = UUIDParamSchema.parse(req.params)
+
+    const data = await req.file()
+    if (!data) throw new ValidationError('Nenhum arquivo enviado')
+
+    const buffer = await data.toBuffer()
+    const campaign = await svc.uploadCoverImage(id, req.user!.id, buffer, data.mimetype, data.filename)
+    return reply.send({ imageUrl: campaign.imageUrl })
   })
 
   // Regenerate invite code (GM only)

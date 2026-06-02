@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Character } from '@/data/characterTypes'
 import charactersData from '@characters'
-import { deleteCustomCharacter } from '@/lib/localCharacters'
+import { deleteCustomCharacter, saveCustomCharacter } from '@/lib/localCharacters'
 import { useAuth } from '@/lib/authContext'
 import { api } from '@/lib/apiClient'
 import { mapApiToCharacter, isApiCharacterId } from '@/lib/apiAdapter'
@@ -239,6 +239,8 @@ export function CharacterListPage() {
   const [loadingChars, setLoadingChars] = useState(true)
   const [loadingPublic, setLoadingPublic] = useState(true)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+  const [pendingDuplicateChar, setPendingDuplicateChar] = useState<Character | null>(null)
+  const [duplicatingId, setDuplicatingId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<TabId>(() => user ? 'meus' : 'explorar')
   const styleRef = useRef<HTMLStyleElement | null>(null)
 
@@ -301,6 +303,32 @@ export function CharacterListPage() {
       setCustomChars(prev => prev.filter(c => c.id !== pendingDeleteId))
     }
     setPendingDeleteId(null)
+  }
+
+  async function handleDuplicate(character: Character) {
+    if (duplicatingId) return
+    setDuplicatingId(character.id)
+    try {
+      if (isApiCharacterId(character.id) && user) {
+        const res = await api.characters.duplicate(character.id)
+        const newChar = mapApiToCharacter(res.character as Record<string, unknown>)
+        setCustomChars(prev => [newChar, ...prev])
+      } else {
+        const newChar: Character = {
+          ...character,
+          id: crypto.randomUUID(),
+          name: `Cópia de ${character.name}`,
+          owned: true,
+        }
+        saveCustomCharacter(newChar)
+        setCustomChars(prev => [newChar, ...prev])
+      }
+      setActiveTab('meus')
+    } catch (err) {
+      alert((err as Error).message)
+    } finally {
+      setDuplicatingId(null)
+    }
   }
 
   const pendingChar = customChars.find(c => c.id === pendingDeleteId)
@@ -486,21 +514,37 @@ export function CharacterListPage() {
                   {customChars.map((character, i) => (
                     <div key={character.id} style={{ position: 'relative' }}>
                       <CharacterCard character={character} index={i} />
-                      <button
-                        onClick={() => setPendingDeleteId(character.id)}
-                        title="Excluir personagem"
-                        style={{
-                          position: 'absolute', top: 8, right: 8, zIndex: 10,
-                          background: 'rgba(4,10,20,0.85)', border: '1px solid rgba(255,255,255,0.12)',
-                          borderRadius: 4, padding: '0.2rem 0.45rem', cursor: 'pointer',
-                          color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
-                          backdropFilter: 'blur(4px)',
-                        }}
-                        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#C05050' }}
-                        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
-                      >
-                        ✕
-                      </button>
+                      <div style={{ position: 'absolute', top: 8, right: 8, zIndex: 10, display: 'flex', gap: '0.3rem' }}>
+                        <button
+                          onClick={() => setPendingDuplicateChar(character)}
+                          disabled={duplicatingId === character.id}
+                          title="Duplicar personagem"
+                          style={{
+                            background: 'rgba(4,10,20,0.85)', border: '1px solid rgba(255,255,255,0.12)',
+                            borderRadius: 4, padding: '0.2rem 0.45rem', cursor: duplicatingId === character.id ? 'not-allowed' : 'pointer',
+                            color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
+                            backdropFilter: 'blur(4px)',
+                          }}
+                          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-arcano)' }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
+                        >
+                          {duplicatingId === character.id ? '…' : '⎘'}
+                        </button>
+                        <button
+                          onClick={() => setPendingDeleteId(character.id)}
+                          title="Excluir personagem"
+                          style={{
+                            background: 'rgba(4,10,20,0.85)', border: '1px solid rgba(255,255,255,0.12)',
+                            borderRadius: 4, padding: '0.2rem 0.45rem', cursor: 'pointer',
+                            color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
+                            backdropFilter: 'blur(4px)',
+                          }}
+                          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#C05050' }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
+                        >
+                          ✕
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -528,7 +572,27 @@ export function CharacterListPage() {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {publicChars.map((character, i) => (
-                    <CharacterCard key={character.id} character={character} index={i} />
+                    <div key={character.id} style={{ position: 'relative' }}>
+                      <CharacterCard character={character} index={i} />
+                      {user && (
+                        <button
+                          onClick={() => setPendingDuplicateChar(character)}
+                          disabled={duplicatingId === character.id}
+                          title="Duplicar personagem"
+                          style={{
+                            position: 'absolute', top: 8, right: 8, zIndex: 10,
+                            background: 'rgba(4,10,20,0.85)', border: '1px solid rgba(255,255,255,0.12)',
+                            borderRadius: 4, padding: '0.2rem 0.45rem', cursor: duplicatingId === character.id ? 'not-allowed' : 'pointer',
+                            color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
+                            backdropFilter: 'blur(4px)',
+                          }}
+                          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-arcano)' }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
+                        >
+                          {duplicatingId === character.id ? '…' : '⎘'}
+                        </button>
+                      )}
+                    </div>
                   ))}
                 </div>
               )}
@@ -544,7 +608,25 @@ export function CharacterListPage() {
               transition={{ duration: 0.22 }}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {PRESET_CHARACTERS.map((character, i) => (
-                  <CharacterCard key={character.id} character={character} index={i} />
+                  <div key={character.id} style={{ position: 'relative' }}>
+                    <CharacterCard character={character} index={i} />
+                    <button
+                      onClick={() => setPendingDuplicateChar(character)}
+                      disabled={duplicatingId === character.id}
+                      title="Duplicar personagem"
+                      style={{
+                        position: 'absolute', top: 8, right: 8, zIndex: 10,
+                        background: 'rgba(4,10,20,0.85)', border: '1px solid rgba(255,255,255,0.12)',
+                        borderRadius: 4, padding: '0.2rem 0.45rem', cursor: duplicatingId === character.id ? 'not-allowed' : 'pointer',
+                        color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
+                        backdropFilter: 'blur(4px)',
+                      }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-arcano)' }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
+                    >
+                      {duplicatingId === character.id ? '…' : '⎘'}
+                    </button>
+                  </div>
                 ))}
               </div>
             </motion.div>
@@ -635,6 +717,95 @@ export function CharacterListPage() {
                   }}
                 >
                   Excluir
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Duplicate confirmation modal */}
+      <AnimatePresence>
+        {pendingDuplicateChar && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 200,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'rgba(0,0,0,0.72)',
+              backdropFilter: 'blur(4px)',
+            }}
+            onClick={() => setPendingDuplicateChar(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 8 }}
+              transition={{ duration: 0.18 }}
+              style={{
+                background: '#0A0F1E',
+                border: '1px solid rgba(200,146,42,0.3)',
+                borderRadius: 8,
+                padding: '1.75rem',
+                width: 360,
+                maxWidth: 'calc(100vw - 2rem)',
+                boxShadow: '0 24px 64px rgba(0,0,0,0.85)',
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              <p style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '1rem',
+                fontWeight: 700,
+                color: '#EEF4FC',
+                marginBottom: '0.5rem',
+              }}>
+                Duplicar personagem?
+              </p>
+              <p style={{
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.8rem',
+                color: 'var(--color-text-secondary)',
+                marginBottom: '1.5rem',
+                lineHeight: 1.5,
+              }}>
+                Uma cópia de <span style={{ color: '#EEF4FC', fontWeight: 600 }}>{pendingDuplicateChar.name}</span> será criada nas suas fichas.
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={() => setPendingDuplicateChar(null)}
+                  style={{
+                    background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    borderRadius: 4,
+                    color: 'rgba(255,255,255,0.45)',
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.75rem',
+                    letterSpacing: '0.1em',
+                    padding: '0.45rem 1rem',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => { const c = pendingDuplicateChar; setPendingDuplicateChar(null); handleDuplicate(c) }}
+                  style={{
+                    background: 'rgba(200,146,42,0.15)',
+                    border: '1px solid rgba(200,146,42,0.45)',
+                    borderRadius: 4,
+                    color: 'var(--color-arcano)',
+                    fontFamily: 'var(--font-ui)',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.1em',
+                    padding: '0.45rem 1rem',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Duplicar
                 </button>
               </div>
             </motion.div>

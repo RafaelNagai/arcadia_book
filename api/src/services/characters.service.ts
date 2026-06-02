@@ -71,6 +71,15 @@ export class CharactersService {
     return this.repo.create(userId, input)
   }
 
+  async duplicate(id: string, requestingUserId: string): Promise<Character> {
+    const source = await this.repo.findById(id)
+    if (!source) throw new NotFoundError('Personagem não encontrado')
+    if (!source.isPublic && source.userId !== requestingUserId) {
+      throw new ForbiddenError('Este personagem é privado')
+    }
+    return this.repo.duplicate(source, requestingUserId, `Cópia de ${source.name}`)
+  }
+
   async update(id: string, userId: string, input: Record<string, unknown>): Promise<Character> {
     const char = await this.assertOwner(id, userId)
     const updated = await this.repo.update(id, snakeToCamelPatch(input))

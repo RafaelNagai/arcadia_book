@@ -166,5 +166,35 @@
       { "name": "Esquivar", "description": "Permite esquivar usando 3D8+4." }
     ],
     "variants": []
+  },
+  {
+    "name": "Anomora",
+    "levelRange": "20 – 30",
+    "style": "Neutro · Marinho",
+    "image": "/assets/images/creatures/creature_anomora.jpg",
+    "lore": "Anomora conhecida como sapo do pantano, manipula os musgos e usa o pantano para se camuflar. São criaturas territorialista e super protetoras. As ovas da Anomora são mundialmente conhecidas por fazer cervejas, e sua carne usada como pratos exoticos. Ela se alimenta de outros pequenos peixes, e busca sempre ficar escondido.",
+    "diceBase": "2D8",
+    "hp": 8,
+    "da": 3,
+    "dp": 2,
+    "attributes": { "fisico": 2, "destreza": 3, "intelecto": 0, "influencia": 0 },
+    "immune": ["Veneno"],
+    "vulnerable": ["Perfurante"],
+    "interactions": [
+      { "name": "Camuflagem", "description": "Enquanto Anomora, estiver sobre um pantano ou submersa sobre água, permite ela ficar escondida. Todo personagem que quiser encontrar ela, deve gastar um ação de Percepção. (Dif. 20)" },
+      { "name": "Habitat", "description": "Se Anomora estiver imerso no pantano, permite usar a habilidade PANTANAL." },
+      { "name": "Suspenso", "description": "Se Anomora estiver fora da água por muito tempo, anomora perde a capacidade de se locomover." }
+    ],
+    "actions": [
+      { "name": "Cabeçada", "description": "Avança dando uma cabeçada. Causa 2D6+2 de Esmagamento. Se ele estiver escondido, o dano sempre sera critico." },
+      { "name": "Esconde-Esconde", "description": "Permite Anomora se esconder, e todos que tiverem Anomora no seu campo de visão deve rodar um TESTE de PERCEPCAO. DT => 14." },
+      { "name": "Pantanal Vivo", "description": "Todos que estiverem dentro do pantano, exceto Anomora, começa a crescer um musgo em seu corpo. Todos ficaram com o status de envenenado enquanto ficarem dentro do pantano. Não pode ser resistido." }
+    ],
+    "reactions": [
+      { "name": "Mergulhar", "description": "Permite defender com a DP, e ativa CAMUFLAGEM." },
+      { "name": "Defender", "description": "Permite defender com a DA." },
+      { "name": "Esquivar", "description": "Permite esquivar usando 2D12+2." }
+    ],
+    "variants": []
   }
 ]

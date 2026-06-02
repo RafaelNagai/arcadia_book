@@ -72,6 +72,37 @@ export class CharactersRepository {
     return this.db.character.update({ where: { id }, data: patch })
   }
 
+  duplicate(source: Character, newUserId: string, newName: string): Promise<Character> {
+    return this.db.character.create({
+      data: {
+        userId: newUserId,
+        name: newName,
+        race: source.race,
+        nationality: source.nationality,
+        religion: source.religion,
+        concept: source.concept,
+        quote: source.quote,
+        imageUrl: source.imageUrl,
+        level: source.level,
+        attributes: source.attributes as object,
+        skills: source.skills as object,
+        talents: source.talents,
+        hp: source.hp,
+        sanidade: source.sanidade,
+        afinidade: source.afinidade,
+        antitese: source.antitese,
+        entropia: source.entropia,
+        modificadores: source.modificadores as object,
+        marcas: source.marcas as object[],
+        diary: source.diary as object ?? undefined,
+        traumas: source.traumas,
+        antecedentes: source.antecedentes,
+        historia: source.historia,
+        isPublic: false,
+      },
+    })
+  }
+
   delete(id: string): Promise<Character> {
     return this.db.character.delete({ where: { id } })
   }
