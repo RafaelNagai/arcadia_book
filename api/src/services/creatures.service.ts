@@ -44,6 +44,15 @@ export class CreaturesService {
     return this.repo.update(id, patch)
   }
 
+  async duplicateCreature(id: string, userId: string): Promise<CustomCreature> {
+    const creature = await this.repo.findById(id)
+    if (!creature) throw new NotFoundError('Criatura não encontrada')
+    if (!creature.isPublic && creature.userId !== userId) {
+      throw new ForbiddenError('Esta criatura é privada')
+    }
+    return this.repo.duplicate(creature, userId)
+  }
+
   async setVisibility(id: string, userId: string, isPublic: boolean): Promise<CustomCreature> {
     await this.assertOwner(id, userId)
     return this.repo.update(id, { isPublic })

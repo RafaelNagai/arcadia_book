@@ -14,6 +14,7 @@ import {
   isOwnedCharacter,
   saveCurrentValues,
   saveCustomCharacter,
+  normalizeCharacter,
   loadPeChecks,
   savePeChecks,
   loadSkillModifiers,
@@ -52,7 +53,7 @@ import { DiceLogSidebar } from "@/components/character/DiceLogSidebar";
 import { useCharacterRealtime } from "@/hooks/useCharacterRealtime";
 import { useCampaignDiceChannel } from "@/hooks/useCampaignDiceChannel";
 
-const PRESET_CHARACTERS = charactersData as Character[];
+const PRESET_CHARACTERS = (charactersData as Character[]).map(normalizeCharacter);
 const EMPTY_PE = {
   fisico: Array(5).fill(false) as boolean[],
   destreza: Array(5).fill(false) as boolean[],

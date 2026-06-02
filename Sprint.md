@@ -58,6 +58,17 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Visibilidade e Duplicar Criaturas Customizadas
+**Origem:** /task Implementar para criaturas customizadas as mesmas features que personagens já têm: (1) toggle de visibilidade pública/privada na lista de criaturas; (2) duplicar criatura com modal de confirmação — copiando qualquer criatura que o usuário tem acesso (própria, pública, arcádia/preset)
+**Adicionada:** 2026-06-01 · **Validator:** APROVADO · **Concluída:** 2026-06-01
+
+- [x] Subtask 1 — Backend `POST /custom-creatures/:id/duplicate`: `duplicate(source, newUserId)` no repository, `duplicateCreature(id, userId)` no service com 404/403, controller responde 201; `isPublic: false` no novo registro
+- [x] Subtask 2 — `api.customCreatures.duplicate(id)` em `apiClient.ts`; aba "Explorar" em `CreatureListPage.tsx` visível apenas para logados, filtrando `userId !== user.id`
+- [x] Subtask 3 — Botão 🌐/🔒 em `CustomCreatureSummaryCard` com `showVisibilityToggle`; badge "Público"/"Privado"; atualiza estado local sem reload; ausente nas abas "Explorar" e "Arcádia"
+- [x] Subtask 4 — Botão ⎘ nos 3 tipos de card; modal de confirmação com cores de criatura; custom via `duplicate(id)`, preset via `create({name: 'Cópia de ...'})`, muda para aba "minhas" após sucesso
+
+---
+
 ### Duplicar Ficha, Upload de Capa de Campanha e Tela de Abertura Animada
 **Origem:** /task Implementar 3 novas features: (1) Duplicar fichas de personagem; (2) Upload de imagem de capa ao criar/editar campanha; (3) Tela de abertura animada da campanha
 **Adicionada:** 2026-06-01 · **Validator:** APROVADO · **Concluída:** 2026-06-01

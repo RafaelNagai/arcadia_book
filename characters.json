@@ -1,18 +1,17 @@
 [
   {
     "id": "kalissa",
-    "name": "Kalissa",
+    "name": "Kalissa Seraphin",
     "race": "Elfa",
-    "concept": "Capitã de Corveta · Lâmina da Tempestade",
-    "quote": "Eu não fujo das tempestades. Eu as dirijo.",
-    "image": "/assets/images/characters/character_1.jpg",
-    "level": 38,
+    "concept": "Aliada de todos os seres, exceto dos humanos.",
+    "quote": "Vermes precisam ser salvos, mas humanos são piores que qualquer escória.",
+    "image": "/assets/images/characters/character_kalissa.jpg",
     "attributes": {
-      "fisico": 3,
-      "destreza": 3,
-      "intelecto": 2,
+      "fisico": 2,
+      "destreza": 2,
+      "intelecto": 3,
       "influencia": 4,
-      "arcano": 2
+      "arcano": 4
     },
     "skills": {
       "fortitude": 3,
@@ -21,36 +20,33 @@
       "combate": 4,
       "furtividade": 1,
       "precisao": 2,
-      "acrobacia": 3,
-      "reflexo": 3,
+      "acrobacia": 5,
+      "reflexo": 1,
       "percepcao": 2,
       "intuicao": 3,
       "investigacao": 1,
       "conhecimento": 2,
       "empatia": 2,
-      "dominacao": 4,
-      "persuasao": 3,
+      "dominacao": 2,
+      "persuasao": 5,
       "performance": 1
     },
-    "talents": ["combate", "dominacao", "reflexo"],
-    "hp": 28,
-    "sanidade": 37,
-    "afinidade": "Energia",
-    "antitese": "Paradoxo",
+    "talents": ["investigacao", "empatia", "persuasao"],
+    "afinidade": "Anomalia",
+    "antitese": "Anomalia",
     "entropia": 1,
-    "modificadores": { "potencia": 3, "complexidade": 2, "forma": 2, "controle": 1 },
+    "modificadores": { "potencia": 1, "complexidade": 5, "forma": 2, "controle": 5 },
     "marcas": [],
-    "traumas": ["Cicatrizes do Mar de Sangue"],
-    "antecedentes": ["Pirata", "Marinheira", "Nobre Caída"]
+    "traumas": ["Racismo com Humanos"],
+    "antecedentes": ["Caçadora", "Pirata", "Nobre"]
   },
   {
     "id": "eris",
-    "name": "Eris",
+    "name": "Eris Ponderus",
     "race": "Avaro",
-    "concept": "Informante Arcana · Sombra do Mercado Negro",
+    "concept": "Informante por um Bom Preço · Sombra do Mercado Negro",
     "quote": "A mentira mais eficaz é aquela que ninguém percebe que foi contada.",
-    "image": "/assets/images/characters/character_2.jpg",
-    "level": 35,
+    "image": "/assets/images/characters/character_eris.jpg",
     "attributes": {
       "fisico": 1,
       "destreza": 4,
@@ -77,61 +73,15 @@
       "performance": 2
     },
     "talents": ["furtividade", "percepcao", "investigacao", "reflexo"],
-    "hp": 17,
-    "sanidade": 37,
     "afinidade": "Anomalia",
     "antitese": "Cognitivo",
     "entropia": 3,
     "modificadores": { "potencia": 2, "complexidade": 4, "forma": 3, "controle": 3 },
     "marcas": [
-      { "d20Result": 8, "entropiaLevel": 2, "permanent": false },
-      { "d20Result": 3, "entropiaLevel": 3, "permanent": false }
+      { "d20Result": 8, "entropiaLevel": 2, "permanent": true },
+      { "d20Result": 3, "entropiaLevel": 3, "permanent": true }
     ],
-    "traumas": ["Delírio Arcano Grau 2", "Paranoia Crônica"],
-    "antecedentes": ["Espiã de Guilda", "Contrabandista", "Cartógrafa"]
-  },
-  {
-    "id": "urgo",
-    "name": "Urgo o Albino",
-    "race": "Orc",
-    "concept": "Guerreiro de Convés · Punho Inabalável",
-    "quote": "Palavras são desnecessárias quando você tem músculos suficientes.",
-    "image": "/assets/images/characters/character_3.jpg",
-    "level": 9,
-    "attributes": {
-      "fisico": 5,
-      "destreza": 2,
-      "intelecto": 2,
-      "influencia": 1,
-      "arcano": 0
-    },
-    "skills": {
-      "fortitude": 3,
-      "vontade": 2,
-      "atletismo": 1,
-      "combate": 1,
-      "furtividade": 0,
-      "precisao": 1,
-      "acrobacia": 0,
-      "reflexo": 0,
-      "percepcao": 0,
-      "intuicao": 1,
-      "investigacao": 0,
-      "conhecimento": 0,
-      "empatia": 0,
-      "dominacao": 0,
-      "persuasao": 0,
-      "performance": 0
-    },
-    "talents": ["fortitude", "combate", "atletismo"],
-    "hp": 41,
-    "sanidade": 25,
-    "afinidade": "Astral",
-    "antitese": "Energia",
-    "entropia": 0,
-    "modificadores": { "potencia": 0, "complexidade": 0, "forma": 0, "controle": 0 },
-    "marcas": [],
-    "traumas": ["Fobia de Altura", "Mão Esquerda Mecânica"],
-    "antecedentes": ["Mercenário", "Ferreiro", "Soldado Imperial"]
+    "traumas": ["Medo de Perder Dinheiro", "Medo do Escuro"],
+    "antecedentes": ["Informante", "Contrabandista", "Mercador"]
   }
 ]

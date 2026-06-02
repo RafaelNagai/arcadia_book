@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Character, CharacterSkills, CharacterAttributes, CharacterModificadores, EntropiaMarca } from '@/data/characterTypes'
-import { saveCustomCharacter, generateId, getCustomCharacter, calcHP, calcSanidade } from '@/lib/localCharacters'
+import { saveCustomCharacter, generateId, getCustomCharacter, calcHP, calcSanidade, calcLevel } from '@/lib/localCharacters'
 import { useAuth } from '@/lib/authContext'
 import { api } from '@/lib/apiClient'
 import { isApiCharacterId, mapApiToCharacter, mapCharacterToApi } from '@/lib/apiAdapter'
@@ -93,7 +93,7 @@ const [modificadores, setModificadores] = useState<CharacterModificadores>(exist
   const [historia,   setHistoria]   = useState(existing?.historia   ?? '')
   const [image,      setImage]      = useState<string | null>(existing?.image ?? null)
 
-  const totalLevel = Object.values(skills).reduce((a, b) => a + b, 0)
+  const totalLevel = calcLevel(skills)
 
   useEffect(() => {
     document.title = isEditing ? 'Editar Personagem — Arcádia' : 'Criar Personagem — Arcádia'

@@ -403,6 +403,9 @@ export const api = {
 
     delete: (id: string) => apiFetch(`/custom-creatures/${id}`, { method: 'DELETE' }),
 
+    duplicate: (id: string) =>
+      apiFetch<{ creature: CustomCreature }>(`/custom-creatures/${id}/duplicate`, { method: 'POST' }),
+
     setVisibility: (id: string, isPublic: boolean) =>
       apiFetch<{ creature: CustomCreature }>(`/custom-creatures/${id}/visibility`, {
         method: 'PATCH',

@@ -54,4 +54,29 @@ export class CreaturesRepository {
   delete(id: string): Promise<CustomCreature> {
     return this.db.customCreature.delete({ where: { id } })
   }
+
+  duplicate(source: CustomCreature, newUserId: string): Promise<CustomCreature> {
+    return this.db.customCreature.create({
+      data: {
+        userId: newUserId,
+        name: source.name,
+        levelRange: source.levelRange,
+        style: source.style,
+        imageUrl: source.imageUrl ?? null,
+        lore: source.lore,
+        diceBase: source.diceBase,
+        hp: source.hp,
+        da: source.da,
+        dp: source.dp,
+        attributes: source.attributes as object,
+        immune: source.immune,
+        vulnerable: source.vulnerable,
+        interactions: source.interactions as object[],
+        actions: source.actions as object[],
+        reactions: source.reactions as object[],
+        variants: source.variants as object[],
+        isPublic: false,
+      },
+    })
+  }
 }

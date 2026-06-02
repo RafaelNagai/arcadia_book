@@ -3,12 +3,12 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Character } from '@/data/characterTypes'
 import charactersData from '@characters'
-import { deleteCustomCharacter, saveCustomCharacter } from '@/lib/localCharacters'
+import { deleteCustomCharacter, normalizeCharacter, saveCustomCharacter } from '@/lib/localCharacters'
 import { useAuth } from '@/lib/authContext'
 import { api } from '@/lib/apiClient'
 import { mapApiToCharacter, isApiCharacterId } from '@/lib/apiAdapter'
 
-const PRESET_CHARACTERS = charactersData as Character[]
+const PRESET_CHARACTERS = (charactersData as Character[]).map(normalizeCharacter)
 
 function CharacterSkeletonCard() {
   return (
@@ -312,6 +312,42 @@ export function CharacterListPage() {
       if (isApiCharacterId(character.id) && user) {
         const res = await api.characters.duplicate(character.id)
         const newChar = mapApiToCharacter(res.character as Record<string, unknown>)
+        setCustomChars(prev => [newChar, ...prev])
+      } else if (user) {
+        const res = await api.characters.create({
+          name: `Cópia de ${character.name}`,
+          race: character.race ?? '',
+          concept: character.concept ?? '',
+          quote: character.quote ?? '',
+          level: character.level ?? 0,
+          attributes: character.attributes,
+          skills: character.skills,
+          talents: character.talents ?? [],
+          hp: character.hp,
+          sanidade: character.sanidade,
+          afinidade: character.afinidade ?? '',
+          antitese: character.antitese ?? '',
+          entropia: character.entropia ?? 0,
+          modificadores: character.modificadores ?? { potencia: 0, complexidade: 0, forma: 0, controle: 0 },
+          marcas: character.marcas ?? [],
+          traumas: character.traumas ?? [],
+          antecedentes: character.antecedentes ?? [],
+          is_public: false,
+        })
+        let newChar = mapApiToCharacter(res.character as Record<string, unknown>)
+        if (character.image) {
+          try {
+            const imgRes = await fetch(character.image)
+            const blob = await imgRes.blob()
+            const ext = character.image.split('.').pop()?.split('?')[0] ?? 'jpg'
+            const file = new File([blob], `cover.${ext}`, { type: blob.type || 'image/jpeg' })
+            const { url } = await api.upload.characterImage(newChar.id, file)
+            const updated = await api.characters.update(newChar.id, { image_url: url })
+            newChar = mapApiToCharacter(updated.character as Record<string, unknown>)
+          } catch {
+            // image upload failed, character still created without image
+          }
+        }
         setCustomChars(prev => [newChar, ...prev])
       } else {
         const newChar: Character = {

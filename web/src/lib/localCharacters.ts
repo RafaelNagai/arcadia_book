@@ -261,3 +261,14 @@ export function calcSanidade(intelecto: number, influencia: number): number {
   for (let i = 1; i <= val; i++) san += SANID_BONUS[Math.min(i, SANID_BONUS.length - 1)]
   return san
 }
+
+export function calcLevel(skills: Character['skills']): number {
+  return Object.values(skills).reduce((a, b) => a + b, 0)
+}
+
+export function normalizeCharacter(c: Omit<Character, 'hp' | 'sanidade' | 'level'> & { hp?: number; sanidade?: number; level?: number }): Character {
+  const hp = c.hp ?? calcHP(c.attributes.fisico)
+  const sanidade = c.sanidade ?? calcSanidade(c.attributes.intelecto, c.attributes.influencia)
+  const level = calcLevel(c.skills)
+  return { ...c, hp, sanidade, level } as Character
+}

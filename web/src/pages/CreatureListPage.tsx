@@ -15,6 +15,8 @@ import {
 import { useAuth } from '@/lib/authContext'
 import { api } from '@/lib/apiClient'
 
+type DuplicatePending = { type: 'custom'; creature: CustomCreature } | { type: 'preset'; creature: Creature }
+
 const CREATURES = creaturesData as Creature[]
 
 function buildFilter(
@@ -44,7 +46,7 @@ function buildFilter(
 
 /* ─── Preset creature card ─────────────────────────────────────────── */
 
-function CreatureSummaryCard({ creature, index }: { creature: Creature; index: number }) {
+function CreatureSummaryCard({ creature, index, onDuplicate, duplicating }: { creature: Creature; index: number; onDuplicate?: () => void; duplicating?: boolean }) {
   const navigate = useNavigate()
   const slug = creatureSlug(creature.name)
   const styles = getCreatureStyles(creature.style)
@@ -75,6 +77,24 @@ function CreatureSummaryCard({ creature, index }: { creature: Creature; index: n
           el.style.boxShadow = '0 4px 24px rgba(0,0,0,0.5)'
         }}
       >
+        {onDuplicate && (
+          <button
+            onClick={e => { e.stopPropagation(); onDuplicate() }}
+            disabled={duplicating}
+            title="Duplicar criatura"
+            style={{
+              position: 'absolute', top: 8, left: 8, zIndex: 10,
+              background: 'rgba(10,6,4,0.85)', border: `1px solid ${CREATURE_ACCENT_DIM}`,
+              borderRadius: 4, padding: '0.2rem 0.45rem', cursor: duplicating ? 'not-allowed' : 'pointer',
+              color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
+              backdropFilter: 'blur(4px)', transition: 'color 0.15s',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = CREATURE_ACCENT_GLOW }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
+          >
+            {duplicating ? '…' : '⎘'}
+          </button>
+        )}
         {/* Portrait */}
         <div style={{ height: 200, position: 'relative', overflow: 'hidden' }}>
           {creature.image ? (
@@ -168,7 +188,21 @@ function CreatureSummaryCard({ creature, index }: { creature: Creature; index: n
 
 /* ─── Custom creature card ─────────────────────────────────────────── */
 
-function CustomCreatureSummaryCard({ creature, index }: { creature: CustomCreature; index: number }) {
+function CustomCreatureSummaryCard({
+  creature,
+  index,
+  showVisibilityToggle,
+  onToggleVisibility,
+  onDuplicate,
+  duplicating,
+}: {
+  creature: CustomCreature
+  index: number
+  showVisibilityToggle?: boolean
+  onToggleVisibility?: (id: string, isPublic: boolean) => void
+  onDuplicate?: () => void
+  duplicating?: boolean
+}) {
   const navigate = useNavigate()
   const styles = getCreatureStyles(creature.style)
   const imageUrl = creature.imageUrl ?? creature.image
@@ -203,6 +237,42 @@ function CustomCreatureSummaryCard({ creature, index }: { creature: CustomCreatu
             </div>
           )}
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '65%', background: 'linear-gradient(to top, rgba(10,6,4,0.98) 0%, transparent 100%)', pointerEvents: 'none' }} />
+          {showVisibilityToggle && onToggleVisibility && (
+            <button
+              onClick={e => { e.stopPropagation(); onToggleVisibility(creature.id, !creature.isPublic) }}
+              title={creature.isPublic ? 'Tornar privada' : 'Tornar pública'}
+              style={{
+                position: 'absolute', top: 8, left: 8, zIndex: 10,
+                background: 'rgba(10,6,4,0.85)', border: `1px solid ${creature.isPublic ? CREATURE_ACCENT : CREATURE_ACCENT_DIM}`,
+                borderRadius: 4, padding: '0.2rem 0.45rem', cursor: 'pointer',
+                color: creature.isPublic ? CREATURE_ACCENT_GLOW : 'rgba(255,255,255,0.4)',
+                fontFamily: 'var(--font-ui)', fontSize: '0.68rem',
+                backdropFilter: 'blur(4px)', transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = CREATURE_ACCENT }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = creature.isPublic ? CREATURE_ACCENT : CREATURE_ACCENT_DIM }}
+            >
+              {creature.isPublic ? '🌐' : '🔒'}
+            </button>
+          )}
+          {onDuplicate && (
+            <button
+              onClick={e => { e.stopPropagation(); onDuplicate() }}
+              disabled={duplicating}
+              title="Duplicar criatura"
+              style={{
+                position: 'absolute', top: 8, left: showVisibilityToggle ? 44 : 8, zIndex: 10,
+                background: 'rgba(10,6,4,0.85)', border: `1px solid ${CREATURE_ACCENT_DIM}`,
+                borderRadius: 4, padding: '0.2rem 0.45rem', cursor: duplicating ? 'not-allowed' : 'pointer',
+                color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
+                backdropFilter: 'blur(4px)', transition: 'color 0.15s',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = CREATURE_ACCENT_GLOW }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
+            >
+              {duplicating ? '…' : '⎘'}
+            </button>
+          )}
           <div style={{ position: 'absolute', top: 10, right: 10 }}>
             <span style={{ background: 'rgba(10,6,4,0.82)', border: `1px solid ${CREATURE_ACCENT}`, borderRadius: 4, padding: '0.2rem 0.55rem', backdropFilter: 'blur(6px)', fontFamily: 'var(--font-ui)', fontSize: '0.58rem', color: CREATURE_ACCENT_GLOW, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
               Custom
@@ -214,6 +284,17 @@ function CustomCreatureSummaryCard({ creature, index }: { creature: CustomCreatu
             {styles.map(s => (
               <span key={s} style={{ fontFamily: 'var(--font-ui)', fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 700, color: CREATURE_ACCENT_GLOW, background: 'rgba(160,48,32,0.12)', border: `1px solid rgba(160,48,32,0.3)`, borderRadius: 3, padding: '0.12rem 0.4rem' }}>{s}</span>
             ))}
+            {showVisibilityToggle && (
+              <span style={{
+                fontFamily: 'var(--font-ui)', fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 700,
+                color: creature.isPublic ? CREATURE_ACCENT_GLOW : 'var(--color-text-muted)',
+                background: creature.isPublic ? 'rgba(160,48,32,0.12)' : 'rgba(255,255,255,0.04)',
+                border: `1px solid ${creature.isPublic ? 'rgba(160,48,32,0.3)' : 'rgba(255,255,255,0.1)'}`,
+                borderRadius: 3, padding: '0.12rem 0.4rem',
+              }}>
+                {creature.isPublic ? 'Público' : 'Privado'}
+              </span>
+            )}
           </div>
           <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.35rem', color: '#F0D0C0', letterSpacing: '0.03em', marginBottom: '0.75rem' }}>{creature.name}</h3>
           <div className="grid grid-cols-4 gap-1 mb-3">
@@ -323,7 +404,7 @@ function CreatureSkeletonCard() {
 
 /* ─── Main page ────────────────────────────────────────────────────── */
 
-type TabId = 'minhas' | 'arcadia'
+type TabId = 'minhas' | 'explorar' | 'arcadia'
 
 export function CreatureListPage() {
   const navigate = useNavigate()
@@ -331,7 +412,11 @@ export function CreatureListPage() {
 
   const [activeTab, setActiveTab] = useState<TabId>(() => user ? 'minhas' : 'arcadia')
   const [customCreatures, setCustomCreatures] = useState<CustomCreature[]>([])
+  const [publicCreatures, setPublicCreatures] = useState<CustomCreature[]>([])
   const [loadingCustom, setLoadingCustom] = useState(true)
+  const [loadingPublic, setLoadingPublic] = useState(true)
+  const [pendingDuplicate, setPendingDuplicate] = useState<DuplicatePending | null>(null)
+  const [duplicatingId, setDuplicatingId] = useState<string | null>(null)
 
   // filter state (used in arcadia tab)
   const [search, setSearch] = useState('')
@@ -368,12 +453,85 @@ export function CreatureListPage() {
   }, [user])
 
   useEffect(() => {
+    if (!user) {
+      setPublicCreatures([])
+      setLoadingPublic(false)
+      return
+    }
+    setLoadingPublic(true)
+    api.customCreatures.listPublic()
+      .then(res => setPublicCreatures(res.creatures.filter(c => c.userId !== user.id)))
+      .catch(() => {})
+      .finally(() => setLoadingPublic(false))
+  }, [user])
+
+  useEffect(() => {
     if (user) {
       setActiveTab('minhas')
     } else {
       setActiveTab('arcadia')
     }
   }, [user])
+
+  async function handleToggleVisibility(id: string, isPublic: boolean) {
+    try {
+      const res = await api.customCreatures.setVisibility(id, isPublic)
+      setCustomCreatures(prev => prev.map(c => c.id === id ? res.creature : c))
+    } catch {
+      // silent
+    }
+  }
+
+  async function handleDuplicate(pending: DuplicatePending) {
+    const key = pending.type === 'custom' ? pending.creature.id : pending.creature.name
+    if (duplicatingId) return
+    setDuplicatingId(key)
+    try {
+      if (pending.type === 'custom') {
+        const res = await api.customCreatures.duplicate(pending.creature.id)
+        setCustomCreatures(prev => [res.creature, ...prev])
+      } else {
+        const c = pending.creature
+        const res = await api.customCreatures.create({
+          name: `Cópia de ${c.name}`,
+          levelRange: c.levelRange,
+          style: c.style,
+          diceBase: c.diceBase,
+          hp: c.hp,
+          da: c.da,
+          dp: c.dp,
+          attributes: c.attributes,
+          immune: c.immune,
+          vulnerable: c.vulnerable,
+          interactions: c.interactions,
+          actions: c.actions,
+          reactions: c.reactions,
+          variants: c.variants,
+          lore: c.lore,
+        })
+        let newCreature = res.creature
+        if (c.image) {
+          try {
+            const imgRes = await fetch(c.image)
+            const blob = await imgRes.blob()
+            const ext = c.image.split('.').pop()?.split('?')[0] ?? 'jpg'
+            const file = new File([blob], `cover.${ext}`, { type: blob.type || 'image/jpeg' })
+            const { url } = await api.customCreatures.uploadImage(newCreature.id, file)
+            const updated = await api.customCreatures.update(newCreature.id, { imageUrl: url })
+            newCreature = updated.creature
+          } catch {
+            // image upload failed, creature still created without image
+          }
+        }
+        setCustomCreatures(prev => [newCreature, ...prev])
+      }
+      setActiveTab('minhas')
+    } catch (err) {
+      alert((err as Error).message)
+    } finally {
+      setDuplicatingId(null)
+    }
+  }
 
   const allStyles = useMemo(() => {
     const s = new Set<string>()
@@ -434,11 +592,13 @@ export function CreatureListPage() {
 
   const visibleTabs: { id: TabId; label: string }[] = [
     ...(user ? [{ id: 'minhas' as TabId, label: 'Minhas Criaturas' }] : []),
+    ...(user ? [{ id: 'explorar' as TabId, label: 'Explorar' }] : []),
     { id: 'arcadia', label: 'Arcádia' },
   ]
 
   const counts: Record<TabId, number | null> = {
     minhas: loadingCustom ? null : customCreatures.length,
+    explorar: loadingPublic ? null : publicCreatures.length,
     arcadia: CREATURES.length,
   }
 
@@ -599,7 +759,50 @@ export function CreatureListPage() {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {customCreatures.map((creature, i) => (
-                    <CustomCreatureSummaryCard key={creature.id} creature={creature} index={i} />
+                    <CustomCreatureSummaryCard
+                      key={creature.id}
+                      creature={creature}
+                      index={i}
+                      showVisibilityToggle
+                      onToggleVisibility={handleToggleVisibility}
+                      onDuplicate={() => setPendingDuplicate({ type: 'custom', creature })}
+                      duplicating={duplicatingId === creature.id}
+                    />
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* ── Explorar ── */}
+          {activeTab === 'explorar' && (
+            <motion.div
+              key="explorar"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.22 }}
+            >
+              {loadingPublic ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {Array.from({ length: 6 }).map((_, i) => <CreatureSkeletonCard key={i} />)}
+                </div>
+              ) : publicCreatures.length === 0 ? (
+                <div style={{ padding: '4rem 2rem', textAlign: 'center', border: `1px dashed ${CREATURE_ACCENT_DIM}`, borderRadius: 4 }}>
+                  <p style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-ui)', fontSize: '0.82rem' }}>
+                    Nenhuma criatura pública disponível ainda.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {publicCreatures.map((creature, i) => (
+                    <CustomCreatureSummaryCard
+                      key={creature.id}
+                      creature={creature}
+                      index={i}
+                      onDuplicate={() => setPendingDuplicate({ type: 'custom', creature })}
+                      duplicating={duplicatingId === creature.id}
+                    />
                   ))}
                 </div>
               )}
@@ -726,7 +929,13 @@ export function CreatureListPage() {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {filtered.map((creature, i) => (
-                    <CreatureSummaryCard key={creature.name} creature={creature} index={i} />
+                    <CreatureSummaryCard
+                      key={creature.name}
+                      creature={creature}
+                      index={i}
+                      onDuplicate={user ? () => setPendingDuplicate({ type: 'preset', creature }) : undefined}
+                      duplicating={duplicatingId === creature.name}
+                    />
                   ))}
                 </div>
               )}
@@ -735,6 +944,72 @@ export function CreatureListPage() {
 
         </AnimatePresence>
       </div>
+
+      {/* Duplicate confirmation modal */}
+      <AnimatePresence>
+        {pendingDuplicate && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 200,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'rgba(0,0,0,0.72)',
+              backdropFilter: 'blur(4px)',
+            }}
+            onClick={() => setPendingDuplicate(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 8 }}
+              transition={{ duration: 0.18 }}
+              style={{
+                background: '#0A0604',
+                border: `1px solid rgba(160,48,32,0.3)`,
+                borderRadius: 8,
+                padding: '1.75rem',
+                width: 360,
+                maxWidth: 'calc(100vw - 2rem)',
+                boxShadow: '0 24px 64px rgba(0,0,0,0.85)',
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, color: '#F0D0C0', marginBottom: '0.5rem' }}>
+                Duplicar criatura?
+              </p>
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: 'var(--color-text-secondary)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
+                Uma cópia de <span style={{ color: '#F0D0C0', fontWeight: 600 }}>{pendingDuplicate.creature.name}</span> será criada nas suas criaturas.
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={() => setPendingDuplicate(null)}
+                  style={{
+                    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)',
+                    borderRadius: 4, color: 'rgba(255,255,255,0.45)',
+                    fontFamily: 'var(--font-ui)', fontSize: '0.75rem', letterSpacing: '0.1em',
+                    padding: '0.45rem 1rem', cursor: 'pointer',
+                  }}
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => { const p = pendingDuplicate; setPendingDuplicate(null); handleDuplicate(p) }}
+                  style={{
+                    background: `rgba(160,48,32,0.15)`, border: `1px solid rgba(160,48,32,0.45)`,
+                    borderRadius: 4, color: CREATURE_ACCENT_GLOW,
+                    fontFamily: 'var(--font-ui)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em',
+                    padding: '0.45rem 1rem', cursor: 'pointer',
+                  }}
+                >
+                  Duplicar
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   )
 }
