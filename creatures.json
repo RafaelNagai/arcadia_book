@@ -278,5 +278,61 @@
       { "name": "Lodo", "description": "Permite defender com a DA, porem se receber dano, todos os alvos ao arredor de Las Pragas em 1m deve rodar um teste de REFLEXO, ATLETISMO ou FORTITUDE para nao ser infectado. (Dif. 10)" }
     ],
     "variants": []
+  },
+  {
+    "name": "Las Grande",
+    "levelRange": "80 – 100",
+    "style": "Agressivo",
+    "image": "/assets/images/creatures/creature_lasgrande.jpg",
+    "lore": "Após varios corpos de Las pragas não conseguirem consumir arcano de outros seres, eles começam a consumir outras las pragas, e apartir do lodo suas vontades criam vida apartir da essencia do caos. Este Las Grande tentou recriar um Ifrit.",
+    "diceBase": "3D12",
+    "hp": 120,
+    "da": 4,
+    "dp": 3,
+    "attributes": { "fisico": 12, "destreza": 7, "intelecto": 3, "influencia": 3 },
+    "immune": ["Cognitivo"],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Sede de Arcano", "description": "Todo turno que estiver corpo-a-corpo com Las Grande deve rodar um teste de FORTITUDE para INFECCAO. (Dif. 18)" },
+      { "name": "Insignificante", "description": "Las Grande ignora criaturas com zero de Entropia Arcana. " }
+    ],
+    "actions": [
+      { "name": "Expelir", "description": "Reduz 5 de vida de Las Grande, e invoca uma Las Praga." },
+      { "name": "Molho de Podridão", "description": "Cria uma area de lodo preto, que causa 3D8 de dano ANOMALIA por turno para todos os alvos que estiverem nessa area, exceto Las Grande ou Las Pragas. Alvos dentro dessa area, deve rodar um teste de FORTITUDE para INFECCAO. (Dif. 20)" },
+      { "name": "Explosão de Marionete", "description": "Explode todas as Las pragas presentes, matando elas no processo. Causa 5D6 para cada las pragas explodida, em uma area de 1m. Alvos na explosão devem rodar um teste de FORTITUDE para INFECCAO. (dif. 22)" },
+      { "name": "Explosão de Marionete", "description": "Causa XD12 sendo X a quantidade de INFECÇÃO. Deve rodar um teste de FORTITUDE e VONTADE, se falhar nos dois e tiver 10x ou mais de INFECÇÃO, ele se transforma em um Las Pragas. (Dif. 15)", "once": "alvo deve ter 5x infecção"}
+    ],
+    "reactions": [
+      { "name": "Uso de Marionete", "description": "Permite redirecionar todo o dano tomado, para um dos Las pragas que ele tenha gerado." },
+      { "name": "Consumir Marionete", "description": "Permite defender com DA, mas se o dano tomado for maior que 5 permite a Las Grande invocar 1 Las pagras no local." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Tuntruga",
+    "levelRange": "40 – 60",
+    "style": "Neutro · Territorial",
+    "image": "/assets/images/creatures/creature_tuntruga.jpg",
+    "lore": "Tuntugras são criaturas que vivem agarrados nas arvores, normalmente em Galahad. São extremamente fortes, com um casco nas costas para proteger e ajudar a se camuflar nas arvores. Quando agarrados nas arvores, eles parecem rochas encrostadas no tronco das arvores. Eles normalmente bebem da seiva das arvores, não são agressivos, porém sempre disputam o território e sua arvore de alimento.",
+    "diceBase": "2D12",
+    "hp": 22,
+    "da": 4,
+    "dp": 2,
+    "attributes": { "fisico": 6, "destreza": 6, "intelecto": 3, "influencia": 3 },
+    "immune": [],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Casco Rigido", "description": "Tuntrugas não recebem dano multiplicado por dano critico." }
+    ],
+    "actions": [
+      { "name": "Garras Serradas", "description": "Causa 4D6 de dano Cortante. Causa 1 de Sangramento." },
+      { "name": "Quebra-Ossos", "description": "Causa 4D6 de dano Bruto. Causa 1 de Fratura." },
+      { "name": "Explosão de Marionete", "description": "Causa 4D12 de dano Bruto direto na DP do alvo. O alvo não pode defender ou esquivar.", "once": "Estar agarrado com o alvo"}
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com a DA." },
+      { "name": "Agarrar e Derrubar", "description": "Permite defender com a DP. O alvo deve rolar um teste de ATLETISMO, se falhar, o alvo fica imovel. (Dif. 23)" }
+    ],
+    "variants": []
   }
 ]
