@@ -196,5 +196,34 @@
       { "name": "Esquivar", "description": "Permite esquivar usando 2D12+2." }
     ],
     "variants": []
+  },
+  {
+    "name": "Sugovat",
+    "levelRange": "90 – 120",
+    "style": "Entidade · Neutro",
+    "image": "/assets/images/creatures/creature_sugovat.jpg",
+    "lore": "A origem de Sugovat é desconhecida, porém ele busca roubar os traumas das pessoas, por consequência ele rouba suas memórias mais temidas. Ele não mata os seus alvos depois de roubar seus traumas. Porém são poucos que se lembram de ter tido contato com Sugovat. Sugovat se alimenta dos pesadelos dos mortais, ele remove essas memórias e para cada trauma que ele absorve, surge um fio de cabelo.",
+    "diceBase": "3D12",
+    "hp": 100,
+    "da": 4,
+    "dp": 2,
+    "attributes": { "fisico": 3, "destreza": 0, "intelecto": 5, "influencia": 0 },
+    "immune": ["Astral"],
+    "vulnerable": ["Cortante"],
+    "interactions": [
+      { "name": "Drenar Trauma", "description": "Quanto mais traumas ele sugar, mais cabelo vai ter na cabeça de SUGOVAT." },
+      { "name": "Satisfeito", "description": "Se o alvo tiver 5 ou mais traumas, SUGOVAT vai ignorar ele." },
+      { "name": "Traumas Retidos", "description": "Toda vez que o cabelo de Sugovat for cortado, os traumas são soltos nos alvos mais proximos. Para cada 1 de dano, um trauma é liberado. Os alvos em cena, devem rolar um teste de VONTADE para não receber 1 trauma randomico. (Dif. 16)" },
+      { "name": "Hora do Pesadelo", "description": "Uma vez por cena, todos que estiverem na presença do SUGOVAT roda um teste de VONTADE, se falhar os alvos vão adquirir um TRAUMA de MEDO de Fantasma. Caso SUGOVAT absorva esse TRAUMA, o alvo perde a memória de que viu a criatura. (Dif. 20)" }
+    ],
+    "actions": [
+      { "name": "Destraumar", "description": "Permite a SUGOVAT remover um TRAUMA do alvo se estiver corpo-a-corpo, ele irá remover a memoria condizente a esse trauma, porém o alvo perde 2 de VIDA MAXIMA permanentemente. O alvo pode resistir rodando um teste de VONTADE. (Dif. 28)" },
+      { "name": "Traumatizar", "description": "Causa XD10+(8) de dano Bruto, sendo X para cada trauma que o alvo tiver." }
+    ],
+    "reactions": [
+      { "name": "Salva-Trauma", "description": "Permite defender com DP, para cada 1 de dano recebido, ativa o TRAUMAS RETIDOS." },
+      { "name": "Pesadelo", "description": "Permite defender com DA. Para cada trauma do alvo, SUGOVAT recebe +1 de DA." }
+    ],
+    "variants": []
   }
 ]
