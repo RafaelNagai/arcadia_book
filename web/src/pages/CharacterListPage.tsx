@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Character } from '@/data/characterTypes'
 import charactersData from '@characters'
-import { deleteCustomCharacter, normalizeCharacter, saveCustomCharacter } from '@/lib/localCharacters'
+import { deleteCustomCharacter, normalizeCharacter } from '@/lib/localCharacters'
 import { useAuth } from '@/lib/authContext'
 import { api } from '@/lib/apiClient'
 import { mapApiToCharacter, isApiCharacterId } from '@/lib/apiAdapter'
@@ -349,15 +349,6 @@ export function CharacterListPage() {
           }
         }
         setCustomChars(prev => [newChar, ...prev])
-      } else {
-        const newChar: Character = {
-          ...character,
-          id: crypto.randomUUID(),
-          name: `Cópia de ${character.name}`,
-          owned: true,
-        }
-        saveCustomCharacter(newChar)
-        setCustomChars(prev => [newChar, ...prev])
       }
       setActiveTab('meus')
     } catch (err) {
@@ -646,22 +637,24 @@ export function CharacterListPage() {
                 {PRESET_CHARACTERS.map((character, i) => (
                   <div key={character.id} style={{ position: 'relative' }}>
                     <CharacterCard character={character} index={i} />
-                    <button
-                      onClick={() => setPendingDuplicateChar(character)}
-                      disabled={duplicatingId === character.id}
-                      title="Duplicar personagem"
-                      style={{
-                        position: 'absolute', top: 8, right: 8, zIndex: 10,
-                        background: 'rgba(4,10,20,0.85)', border: '1px solid rgba(255,255,255,0.12)',
-                        borderRadius: 4, padding: '0.2rem 0.45rem', cursor: duplicatingId === character.id ? 'not-allowed' : 'pointer',
-                        color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
-                        backdropFilter: 'blur(4px)',
-                      }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-arcano)' }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
-                    >
-                      {duplicatingId === character.id ? '…' : '⎘'}
-                    </button>
+                    {user && (
+                      <button
+                        onClick={() => setPendingDuplicateChar(character)}
+                        disabled={duplicatingId === character.id}
+                        title="Duplicar personagem"
+                        style={{
+                          position: 'absolute', top: 8, right: 8, zIndex: 10,
+                          background: 'rgba(4,10,20,0.85)', border: '1px solid rgba(255,255,255,0.12)',
+                          borderRadius: 4, padding: '0.2rem 0.45rem', cursor: duplicatingId === character.id ? 'not-allowed' : 'pointer',
+                          color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
+                          backdropFilter: 'blur(4px)',
+                        }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-arcano)' }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
+                      >
+                        {duplicatingId === character.id ? '…' : '⎘'}
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
