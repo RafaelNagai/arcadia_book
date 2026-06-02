@@ -225,5 +225,58 @@
       { "name": "Pesadelo", "description": "Permite defender com DA. Para cada trauma do alvo, SUGOVAT recebe +1 de DA." }
     ],
     "variants": []
+  },
+  {
+    "name": "Nauak",
+    "levelRange": "60 – 80",
+    "style": "Agressivo · Medroso",
+    "image": "/assets/images/creatures/creature_nauak.jpg",
+    "lore": "Nauak é um fungo evoluído que veio de uma magia paradoxal, que se alimenta de criaturas ainda vivas enquanto estão enlouquecidas. Prefere locais fechados e úmidos, para ficar na espreita e atacar suas vítimas enquantos estão dormindo.",
+    "diceBase": "3D12",
+    "hp": 40,
+    "da": 5,
+    "dp": 4,
+    "attributes": { "fisico": 3, "destreza": 10, "intelecto": 5, "influencia": 5 },
+    "immune": ["Cortante, Bruto, Cognitivo, Astral, Energia, Anomalia"],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Invisibilidade", "description": "Quando NAUAK não está sendo visto, ele fica invisível enquanto se mantiver imovel, em batalha os personagens precisam rodar um teste de PERCEPÇÃO para encontrá-lo. (Dif. 25)" },
+      { "name": "Vergonhoso", "description": "Enquanto estiver sendo visto por algum indivíduo, ele perde todas as suas IMUNIDADES." }
+    ],
+    "actions": [
+      { "name": "Desaparecer", "description": "Se não estiver na visão de algum personagem, ele pode teleportar para qualquer lugar que não esteja sendo visto." },
+      { "name": "Mentificação", "description": "Uma vez por cena, se NAUAK estiver corpo-a-corpo em um alvo dormindo ou desmaiado, ele pode atormentar a mente desse alvo causando 3D12 de sanidade. Se o alvo estiver acordado, ele deve fazer um teste de VONTADE(Dif. 20), se falhar causará 2D12 de sanidade. Se o alvo chegar a zero de sanidade, permite ele a utilizar a habilidade MINION." },
+      { "name": "Minion", "description": "Permite criar uma cópia do alvo enlouquecido, com os mesmos Atributos/Pericias e item atuais do alvo." }
+    ],
+    "reactions": [
+      { "name": "Miopia", "description": "Ele toma todo o dano, mas todos que estiverem olhando para ele terão que fazer um teste de PERCEPÇÃO contra a FURTIVIDADE dele. Se não, ele ficará invisível." },
+      { "name": "Adormecer", "description": "Permite defender com DA, porem o alvo deve passar por um teste de FORTITUDE para não dormir na presença de NAUAK. (Dif. 18)" }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Las Praga",
+    "levelRange": "30 – 40",
+    "style": "Agressivo",
+    "image": "/assets/images/creatures/creature_laspraga.jpg",
+    "lore": "O las pragas é uma doença que afeta arcadianos, sugando toda o seu arcano e criando um lodo energizado com arcano que começa a escorrer por todo seu corpo, olhos e boca. Uma vez que o lodo negro entra em contato com alguma lugar exposto, como olhos, boca, ferimentos, etc. Esta pessoa também estará infectada com las pragas, e o processo de transformação é lento.",
+    "diceBase": "1D12",
+    "hp": 12,
+    "da": 3,
+    "dp": 2,
+    "attributes": { "fisico": 3, "destreza": 0, "intelecto": 0, "influencia": 0 },
+    "immune": ["Cognitivo"],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Sede de Arcano", "description": "Eles são atraídos para a maior quantidade ou aglomeração de Arcano, lembrando que todo arcadiano tem uma pequena aura de arcano, porém quanto mais Entropia ao arcano, mais forte fica essa atração pelos Las Pragas." }
+    ],
+    "actions": [
+      { "name": "Morder", "description": "Causa 1D8 de dano CORTANTE. Caso cause dano ao alvo, o alvo deve rolar um teste de FORTITUDE para ver se vai ser infectado. Essa infecçao é estacado no alvo. (Dif. 10)" },
+      { "name": "Podridão", "description": "Causa XD6 de dano ANOMALIA sendo X cada nivel de infectado no alvo.", "once": "Alvo deve estar infectado" }
+    ],
+    "reactions": [
+      { "name": "Lodo", "description": "Permite defender com a DA, porem se receber dano, todos os alvos ao arredor de Las Pragas em 1m deve rodar um teste de REFLEXO, ATLETISMO ou FORTITUDE para nao ser infectado. (Dif. 10)" }
+    ],
+    "variants": []
   }
 ]
