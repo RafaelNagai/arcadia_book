@@ -1038,7 +1038,7 @@
     "maxDurability": 2,
     "effects": ["Ao atacar em Furtividade, causa 1 de dano garantido alem do dano da arma."],
     "description": "Fina como um sussurro. Precisa de apenas um lugar certo.",
-    "image": "assets/images/equipments/equipment_agulha-sombria.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/d0b04b81-7b17-4262-8c4d-e7f09417eac5/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_Northernstyle_3.jpg"
   },
   {
     "id": "faca-do-cacador",
@@ -1052,7 +1052,7 @@
     "maxDurability": 2,
     "effects": ["Ao atacar criaturas animais ou bestas, ganha +2 no teste de pericia contra a criatura."],
     "description": "Afiada por necessidade, não por arte. As marcas no cabo contam quantas caças.",
-    "image": "assets/images/equipments/equipment_faca-do-cacador.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/d0b04b81-7b17-4262-8c4d-e7f09417eac5/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_Northernstyle_0.jpg"
   },
   {
     "id": "stilete-imperial",
@@ -1066,7 +1066,7 @@
     "maxDurability": 2,
     "effects": ["O dano desta adaga ignora 3 pontos de DA do alvo."],
     "description": "Os conselheiros do Imperador de Camelot carregam este estilete. Diplomacia tem seus limites.",
-    "image": "assets/images/equipments/equipment_stilete-imperial.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/9c4c37f7-0989-4846-a606-4ece94bbe95a/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_divinelooking_2.jpg"
   },
   {
     "id": "faca-de-osso",
@@ -1129,7 +1129,7 @@
       "Ao matar um alvo com esta adaga, o portador recupera 3 de Sanidade."
     ],
     "description": "A Irmandade das Chamas usa estas lâminas como símbolo de iniciação. O ritual de consagração é melhor não descrever.",
-    "image": "assets/images/equipments/equipment_lamina-espectral-da-irmandade.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/81b675e8-14be-474e-8c11-da920401fe74/segments/1:1:1/Lucid_Origin_A_highly_detailed_illustration_of_a_Katar_Indian__0.jpg"
   },
   {
     "id": "navalha-relampago",
@@ -1146,7 +1146,7 @@
       "Ao falhar em qualquer ataque extra, é considerado uma falha critica."
     ],
     "description": "Os duelos que ela encerrou foram tão rápidos que as testemunhas juraram que o adversário caiu sozinho.",
-    "image": "assets/images/equipments/equipment_navalha-relampago.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/9c4c37f7-0989-4846-a606-4ece94bbe95a/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_divinelooking_0.jpg"
   },
   {
     "id": "punhal-de-cristal-arcano",
@@ -1163,7 +1163,7 @@
       "Ao quebrar (durabilidade 0), libera uma explosão arcana de 5m causando 4D8 de dano."
     ],
     "description": "Cristalizado em eltys puro de Britannia. Instável. Poderoso. Ninguém pergunta onde está o ferreiro que a criou.",
-    "image": "assets/images/equipments/equipment_punhal-de-cristal-arcano.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/eae11720-896e-4200-ac68-64f9f01918ad/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_dagge_0.jpg"
   },
   {
     "id": "punhal-do-assassino-velado",
@@ -1180,7 +1180,7 @@
       "Se o portador tiver Furtividade como talento, ganha +2 em todos os ataques."
     ],
     "description": "Os Velados de Union nunca aparecem duas vezes na mesma forma. Mas o punhal, sempre reconhecido.",
-    "image": "assets/images/equipments/equipment_punhal-do-assassino-velado.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/06569540-7a32-4bdf-834c-c35de87712b5/segments/1:1:1/Lucid_Origin_A_highly_detailed_illustration_of_an_assassins_da_0.jpg"
   },
   {
     "id": "espada-de-treino",
@@ -1239,7 +1239,7 @@
     "maxDurability": 3,
     "effects": ["Requer duas mãos. Ao acertar um ataque, pode empurrar o alvo 5m em qualquer direção."],
     "description": "Forjada nos picos congelados de North Galahad. Pesada o suficiente para encerrar argumentos.",
-    "image": "assets/images/equipments/equipment_claymore-do-norte.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/f259f94b-d37b-4443-b66d-bae2b1f5c79c/segments/1:1:1/Lucid_Origin_A_highly_detailed_illustration_of_a_massive_twoha_0.jpg"
   },
   {
     "id": "espada-do-abismo",
@@ -1272,7 +1272,7 @@
       "O portador não pode ser afetado por maldições enquanto a empunha."
     ],
     "description": "Consagrada pela deusa Alfa em tempos de guerra. Brilha na presença do mal — o que é conveniente e assustador.",
-    "image": "assets/images/equipments/equipment_lamina-celestial.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/12d0d10c-f86b-41e8-b70d-724a62634958/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_divinelooking_2.jpg"
   },
   {
     "id": "espada-dos-ventos",
@@ -1306,7 +1306,7 @@
       "Se o portador tiver ao menos 1 ponto em qualquer modificador arcano (Potência, Complexidade, Forma ou Controle), ganha +2 em todos os testes de Combate com esta lâmina."
     ],
     "description": "Forjada por um ferreiro que era também arcanista. Ele queria que as duas coisas conversassem. Funcionou.",
-    "image": "assets/images/equipments/equipment_lamina-runica.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/fffb7cbf-af5e-426f-94b7-8676690d0710/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_mache_2.jpg"
   },
   {
     "id": "espada-das-mares",
@@ -1355,7 +1355,7 @@
     "maxDurability": 5,
     "effects": [],
     "description": "Mil elos de aço interligados. Cada um colocado à mão por algum ferreiro anônimo de Britannia.",
-    "image": "assets/images/equipments/equipment_cota-de-malha.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/5df7786e-a55a-4cda-8ca1-86f874450864/segments/3:4:1/Lucid_Origin_A_detailed_illustration_of_a_chainmail_armor_cota_2.jpg"
   },
   {
     "id": "armadura-de-escamas",
@@ -1425,7 +1425,7 @@
       "O portador desta armadura não pode receber dano adicional proviniente do dano critico."
     ],
     "description": "Feita com os ossos de um antigo esqueleto de uma criatura titanica em Rubra. Seus ossos eram facilmente confundidos com uma montanha.",
-    "image": "assets/images/equipments/equipment_armadura-de-tita.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/25532c58-b4e1-4bba-9107-147b81b6a5e0/segments/3:4:1/Lucid_Origin_A_detailed_illustration_of_a_fantasy_fullbody_arm_2.jpg"
   },
   {
     "id": "manto-do-viajante",
@@ -1443,7 +1443,7 @@
       "Uma vez por sessão, permite rerolar um teste de intuição."
     ],
     "description": "Desgastado por mil estradas. Cada mancha é uma história que o dono prefere não contar.",
-    "image": "assets/images/equipments/equipment_manto-do-viajante.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/d07e89f0-7bc2-4118-9a61-a6eeea73cb97/segments/4:4:1/Lucid_Origin_A_detailed_illustration_of_an_adventurers_outfit__3.jpgk"
   },
   {
     "id": "armadura-runica",
