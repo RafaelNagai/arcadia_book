@@ -40,7 +40,8 @@
       "Bash(xargs cat)",
       "Bash(sort -t: -k2 -n)",
       "Bash(python3 -c ' *)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); cats=sorted\\(set\\(\\(i['category'], i.get\\('subcategory',''\\)\\) for i in data\\)\\); [print\\(c\\) for c in cats]\")"
     ]
   }
 }

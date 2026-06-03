@@ -24,6 +24,8 @@ _nenhum item em andamento_
   - **Critério de aceite:** `npx prisma migrate dev` executa sem erro; `characters.json` não contém mais o campo `runas`; fichas existentes no banco não perdem dados (migration com default `{}` e `[]`)
   - **Arquivos:** `api/prisma/schema.prisma`, `characters.json`
 
+---
+
 ## Backlog
 
 ### Widgets por Capítulo — Pendentes
@@ -57,6 +59,17 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 ---
 
 ## Concluídos
+
+### Agrupamento por Tipo na Tela de Equipamentos
+**Origem:** /task Na tela /capitulo/equipamentos, agrupar e ordenar a lista de equipamentos por tipo (ex: "adaga", "escudo", etc.), exibindo cada grupo com seu título antes dos itens
+**Adicionada:** 2026-06-02 · **Validator:** APROVADO · **Concluída:** 2026-06-02
+
+- [x] Subtask 1 — Definir ordem canônica dos grupos por `subcategory` em `EquipmentWidget.tsx`
+- [x] Subtask 2 — Calcular lista de grupos ordenados a partir dos itens filtrados
+- [x] Subtask 3 — Renderizar cabeçalho de grupo antes dos cards de cada subcategoria
+- [x] Subtask 4 — Ajustar contador de resultados e estado vazio para continuar funcionando corretamente
+
+---
 
 ### Visibilidade e Duplicar Criaturas Customizadas
 **Origem:** /task Implementar para criaturas customizadas as mesmas features que personagens já têm: (1) toggle de visibilidade pública/privada na lista de criaturas; (2) duplicar criatura com modal de confirmação — copiando qualquer criatura que o usuário tem acesso (própria, pública, arcádia/preset)
