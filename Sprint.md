@@ -60,6 +60,18 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Botões de Navegação Anterior/Próximo na Edição de Seção
+**Origem:** /task Adicionar botões de navegação (Anterior / Próximo) na ficha de personagem. Quando o usuário está editando qualquer seção (atributos, perícias, arcano, etc.), deve aparecer um botão "← Anterior" e "Próximo →" ao lado do botão Salvar. Clicar nesses botões salva a seção atual e navega para a seção anterior ou próxima, respectivamente.
+**Adicionada:** 2026-06-02 · **Validator:** APROVADO · **Concluída:** 2026-06-02
+
+- [x] Subtask 1 — Extrair `handleSaveSection(step: number)` em `CharacterCreatorPage.tsx`: lógica de save isolada, retorna `Promise<boolean>`; botão "Salvar" chama via `handleSave` sem regressão
+- [x] Subtask 2 — `handleSaveAndNavigate(targetStep)` salva via `handleSaveSection` e atualiza `?step=` via `setSearchParams` sem sair da tela
+- [x] Subtask 3 — Botões "← Anterior" (`step > 1`) e "Próximo →" (`step < STEPS.length`) renderizados condicionalmente na action bar de `isSectionEdit`; botão "Salvar" com `flex: 1` permanece centralizado
+- [x] Subtask 4 — Botões conectados ao `handleSaveAndNavigate`; erros inline via `saveError` bloqueiam a navegação
+- [x] Subtask 5 — `disabled={saving || !canProceed()}` no botão "Próximo →"; step 1 bloqueia sem nome+raça, step 4 bloqueia sem afinidade+antítese
+
+---
+
 ### Agrupamento por Tipo na Tela de Equipamentos
 **Origem:** /task Na tela /capitulo/equipamentos, agrupar e ordenar a lista de equipamentos por tipo (ex: "adaga", "escudo", etc.), exibindo cada grupo com seu título antes dos itens
 **Adicionada:** 2026-06-02 · **Validator:** APROVADO · **Concluída:** 2026-06-02

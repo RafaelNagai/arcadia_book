@@ -45,7 +45,7 @@ const SUBCATEGORY_ORDER: string[] = [
   "Amuleto",
   "Comestivel",
   "Livro",
-  "Oculos",
+  "Acessório",
 ];
 
 interface GroupedSection {
