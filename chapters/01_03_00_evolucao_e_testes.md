@@ -25,15 +25,20 @@ Se o Resultado Final for **igual ou maior** que a **Dificuldade (DT)** definida 
 
 ### Referência de Dificuldades
 
-O Mestre usa as faixas abaixo como guia ao definir DTs. A escala foi calibrada para que personagens sem investimento sintam pressão a partir de testes Moderados, enquanto veteranos ainda encontrem desafio real em testes Severos e Épicos.
+O Mestre usa as faixas abaixo como guia ao definir DTs. Personagens comuns, sem buffs ou bênçãos, operam de forma plausível até DT 50. Acima disso começa o território dos excepcionais. A descrição completa de cada nível, com exemplos, está no capítulo de [Dificuldade dos Testes](dificuldade-testes).
 
-| Faixa de DT | Nível | Referência |
-|---|---|---|
-| 6 – 15 | **Simples** | Qualquer personagem consegue, mesmo sem treino |
-| 16 – 25 | **Moderado** | Requer algum investimento em Atributo ou Perícia |
-| 26 – 35 | **Difícil** | Requer investimento sólido nos dois |
-| 36 – 45 | **Severo** | Território de veteranos com bônus altos |
-| 46+ | **Épico** | Apenas mestres absolutos têm chance real |
+| Faixa de DT | Nível |
+|---|---|
+| 0 – 10 | **Ínfimo** |
+| 11 – 20 | **Simples** |
+| 21 – 30 | **Moderado** |
+| 31 – 40 | **Considerável** |
+| 41 – 50 | **Grande** |
+| 51 – 60 | **Severo** |
+| 61 – 70 | **Extremo** |
+| 71 – 80 | **Colossal** |
+| 81 – 90 | **Catastrófico** |
+| 91 – 100 | **Absoluto** |
 
 ---
 
@@ -60,7 +65,7 @@ O resultado bruto dos dados — antes de somar qualquer bônus — pode gerar ef
 ### Crítico
 **Condição:** Tirar **12 natural** em qualquer um dos Dados Usados.
 
-Um resultado amplificado. O sucesso vai além do esperado — o Mestre narra um efeito extraordinário além do simples êxito. Em combate, o crítico ativa um multiplicador de dano (ver capítulo de Combate).
+Um resultado amplificado. O sucesso vai além do esperado — o Mestre narra um efeito extraordinário além do simples êxito. Em um Conflito, o crítico ativa um multiplicador de dano (ver capítulo de [Conflito](conflito)).
 
 ### Milagre
 **Condição:** Tirar **12 natural nos dois** Dados Usados.

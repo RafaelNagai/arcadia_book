@@ -12,7 +12,7 @@ Cada slot comporta um único item, independentemente do seu peso.
 
 Equipamentos e armamentos só são válidos e considerados em uso quando estão nos **slots ativos**.
 Apenas amuletos e equipamentos menores (colar, brinco, anel, etc.) mantêm seu efeito mesmo nos **slots passivos**.
-> Em combate, gasta 1 ação para realizar a troca de itens entre os **slots ativos** e **slots passivos**.
+> Em um Conflito, trocar itens entre os **slots ativos** e **slots passivos** conta como uma Ação Simples.
 
 ## Limite de Carga
 

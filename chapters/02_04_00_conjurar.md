@@ -143,6 +143,8 @@ Não é uma DT — é uma referência para o Mestre narrar **como** cada dimens�
 
 **Exemplo:** Bola de fogo exige Potência + Forma. Potência = 35 (Considerável) e Forma = 10 (Ínfimo) — força para afetar um alvo do tamanho de um humano, mas sem forma definida: as chamas explodiram em todas as direções sem controle.
 
+Saiba mais sobre as [DTs](dificuldade-testes).
+
 ## Formas de Conjuração
 
 O arcano pode ser moldado de diversas formas, que representam um estilo de magias. Segue uma lista de algumas ideias de formas:

@@ -63,7 +63,7 @@ E o fracasso? O fracasso não é um fim. É um degrau.
 | **Exploração de Alto Risco** | Navegar entre ilhas flutuantes usando sequências de Constelações, enfrentando tempestades e anomalias do Mar de Nuvens. |
 | **Gestão de Tripulação** | Manter a Moral alta através de Gritos de Guerra, sacrifícios individuais e liderança no momento certo. |
 | **Magia Criativa e Perigosa** | Moldar o Arcano com Elementos, pagando o preço em Sanidade e mergulhando no poder através da Entropia. |
-| **Combate Dinâmico** | Um ritmo de batalha onde reações, esquivas e o desgaste do equipamento ditam quem permanece no convés. |
+| **Conflito Narrativo** | Um ritmo de tensão onde cada participante tem seu momento como Protagonista — e qualquer um pode Intervir ou se Impor para mudar o rumo da cena. |
 
 ---
 
@@ -97,7 +97,7 @@ O eco daqueles que já partiram, flutuando no silêncio. Não é um paraíso nem
 
 Este livro está organizado em quatro partes, pensadas para serem lidas em ordem na primeira vez — mas consultadas em qualquer ordem depois.
 
-**Parte I — Fundamentos:** Apresenta as regras centrais do sistema. Atributos, Perícias, como os dados funcionam, como os personagens evoluem e como o combate é resolvido. Comece aqui.
+**Parte I — Fundamentos:** Apresenta as regras centrais do sistema. Atributos, Perícias, como os dados funcionam, como os personagens evoluem e como o Conflito é resolvido. Comece aqui.
 
 **Parte II — O Arcano:** Aprofunda o sistema de magia, os cinco Elementos, as Afinidades e os efeitos de status e trauma. Leia quando estiver pronto para entender o custo do poder.
 

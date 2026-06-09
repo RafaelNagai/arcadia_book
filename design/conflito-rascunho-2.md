@@ -1,8 +1,11 @@
 # Conflito
 
-> *Há momentos em que o tempo se estreita, os corpos entram em movimento e cada decisão carrega peso real. A esses momentos, chamamos de Conflito.*
+> **Status:** Protótipo v0.3 — sistema de Atos consolidado  
+> **Seção de design — não publicar diretamente**
 
 ---
+
+Há momentos em que o tempo se estreita, os corpos entram em movimento e cada decisão carrega peso real. A esses momentos, chamamos de **Conflito**.
 
 Conflito não é sinônimo de combate — é qualquer situação em que personagens e adversários disputam um resultado sob pressão. Uma briga, uma perseguição, uma negociação que escala para violência — todos são Conflitos. O que os une é a tensão, a urgência e a necessidade de agir.
 
@@ -43,7 +46,7 @@ O autor da intenção — quem quer impor sua vontade sobre a cena. Durante seu 
 
 O ser ou alvo que vai receber a intenção do Protagonista. Pode ser um personagem, múltiplos personagens, um objeto, o ambiente ou o próprio mundo.
 
-O Antagonista não precisa ser ativo: uma parede não resiste voluntariamente, mas impõe uma DT. Um inimigo resiste ativamente e pode Intervir ou se Impor.
+O Antagonista não precisa ser ativo: uma parede não "resiste" voluntariamente, mas impõe uma DT. Um inimigo resiste ativamente e pode Intervir ou se Impor.
 
 > *Exemplo:* Pegar uma adaga na mochila — Protagonista é o personagem, Antagonista é a mochila. Usar a adaga para atacar um inimigo — Protagonista é o personagem, Antagonista é o inimigo.
 
@@ -57,7 +60,7 @@ Qualquer participante do Conflito que não seja o Protagonista nem o Antagonista
 
 Uma **Ação** é qualquer atividade relevante que o Protagonista executa dentro do seu Ato. O Mestre decide o que conta como Ação: atividades que criam aberturas, alteram o estado da cena ou demandam esforço do personagem. Atividades triviais que o Mestre considere irrelevantes para a tensão do momento simplesmente acontecem, sem teste.
 
-Toda Ação declarada pelo Mestre exige um teste de perícia — o contexto determina qual perícia e a dificuldade base.
+Toda Ação declarada pelo Mestre exige um teste de perícia — o contexto determina qual perícia e a dificuldade base. Isso vale para qualquer elemento da cena que o Mestre acredite ter se tornado mais exigente por conta do ambiente, das condições ou das variáveis do momento.
 
 > **Exemplo de arbitragem:** pegar um item na mochila pode não ser uma Ação — ou pode ser, se o Mestre julgar que abre uma brecha real na cena. Nesse caso, pode exigir um teste de Reflexo. Se o Mestre quer agilidade na narração, considera feito e segue.
 
@@ -126,6 +129,8 @@ Ao acumular 2 tokens claros, troca-os por 1 escuro (+1 Exaustão). Cada Ação C
 
 ## Falha no Ato
 
+O resultado de um teste dentro do Ato define o que acontece a seguir.
+
 ### Falha Comum
 
 O Protagonista não atinge a DT do teste, ou perde um confronto de perícias.
@@ -157,7 +162,7 @@ Intervir **não consome o Ato** do participante. Cada participante pode fazer **
 
 ### Como Funciona
 
-O participante declara sua intenção e faz um teste de perícia. O Mestre define a DT com base na complexidade do que o participante quer fazer. O resultado do teste, **dividido por 5 (arredondado para baixo)**, define o valor da interferência — quantos pontos são somados ou subtraídos do teste de quem o participante quer afetar.
+O participante declara sua intenção e faz um teste de perícia. O Mestre define a DT com base na complexidade do que o participante quer fazer — seguindo a tabela de Dificuldade dos Testes. O resultado do teste, **dividido por 5 (arredondado para baixo)**, define o valor da interferência: quantos pontos são somados ou subtraídos do teste de quem o participante quer afetar.
 
 > Resultado 10 → interferência de 2 pontos  
 > Resultado 15 → interferência de 3 pontos  
@@ -171,7 +176,9 @@ Se o teste de Intervenção falhar, **o efeito é invertido**: quem tentou ajuda
 
 Se for **Desastre**, o efeito é invertido e o participante **perde seu próximo Ato**.
 
-> *Exemplo:* Senna tenta intervir para ajudar Aldric, que está atacando o Capitão Garra. Ela faz um teste de Atletismo para travar o braço do Capitão e tira 12. Interferência de 2 pontos — o teste de Aldric ganha +2. Se Senna tivesse falhado, o Capitão receberia +2 na resistência em vez disso.
+**Exemplo:**
+
+Senna tenta intervir para ajudar Aldric, que está atacando o Capitão Garra. Ela faz um teste de Atletismo para travar o braço do Capitão e tira 12. Interferência de 2 pontos — o teste de Aldric ganha +2. Se Senna tivesse falhado, o Capitão receberia +2 na resistência em vez disso.
 
 ---
 
@@ -209,7 +216,7 @@ Quando uma Ação de ataque tem sucesso, o atacante rola os dados de dano. O ní
 - **Antagonista que interveio com sucesso** (aparou, esquivou): dano calculado contra a **DA**.
 - **Antagonista exposto** (não interveio, Intervenção falhou, ou sofreu Desastre): dano calculado contra a **DP**.
 
-As regras completas de DA, DP, Durabilidade e absorção de equipamento estão no capítulo de [Defesa](defesa).
+As regras completas de DA, DP, Durabilidade e absorção de equipamento estão no capítulo de **Defesa**.
 
 ---
 
@@ -222,3 +229,24 @@ Para representar a força do número, cada membro adicional além do primeiro co
 > *Exemplo:* 4 goblins agem juntos. O Mestre usa a ficha de um goblin com +3 nos testes (3 membros extras).
 
 O Mestre decide quando usar essa simplificação. Grupos heterogêneos ou com papéis distintos podem agir separadamente para maior variedade narrativa.
+
+---
+
+## Dificuldade dos Testes
+
+A dificuldade base de um teste é definida pelo Mestre com base no contexto da cena. A Exaustão acumulada durante o Ato soma sobre essa base. A DT não é revelada ao jogador — apenas a tensão do resultado.
+
+| Faixa | Nível |
+|---|---|
+| 0 – 10 | Ínfimo |
+| 11 – 20 | Simples |
+| 21 – 30 | Moderado |
+| 31 – 40 | Considerável |
+| 41 – 50 | Grande |
+| 51 – 60 | Severo |
+| 61 – 70 | Extremo |
+| 71 – 80 | Colossal |
+| 81 – 90 | Catastrófico |
+| 91 – 100 | Absoluto |
+
+*Ver referência completa: [Dificuldade dos Testes](dificuldade-testes-rascunho.md)*

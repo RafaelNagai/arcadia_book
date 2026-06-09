@@ -6,7 +6,7 @@
 
 ## Como Usar Este Capítulo
 
-Este capítulo contém fichas de criaturas prontas para uso e um guia para que o Mestre crie as suas próprias. As fichas seguem um formato padronizado que cobre tudo que o Mestre precisa saber durante uma cena de combate ou interação: o que a criatura faz, como ela reage, e quais são seus limites.
+Este capítulo contém fichas de criaturas prontas para uso e um guia para que o Mestre crie as suas próprias. As fichas seguem um formato padronizado que cobre tudo que o Mestre precisa saber durante um Conflito ou interação: o que a criatura faz, como ela age, e quais são seus limites.
 
 As criaturas em Arcádia **não possuem perícias** — elas agem por instinto, não por treinamento. Quando um teste se fizer necessário (um Pedroso tentando agarrar um personagem, uma ave tentando rastrear uma presa pelo olfato), o Mestre usa os **Atributos** da criatura somados aos seus **Dados Base**.
 
@@ -42,7 +42,7 @@ Quando a criatura fizer um teste relacionado a um atributo, role os **Dados Base
 
 ---
 
-### Estatísticas de Combate
+### Estatísticas de Conflito
 
 | Campo | Descrição |
 |---|---|

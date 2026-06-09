@@ -58,7 +58,7 @@ Cada estilo de luta (espada, lança, garras, punhos) pode ser interpretado dentr
 - Desarmar ou imobilizar um oponente.
 - Aplicar técnicas marciais ou ataques coordenados.
 
-> **Nota:** A perícia de Combate define *o quão bem* o personagem luta. As regras de *como* o combate funciona — ações, reações, dano — estão no capítulo dedicado ao Combate.
+> **Nota:** A perícia de Combate define *o quão bem* o personagem luta. As regras de *como* o Conflito funciona — Atos, Ações, Intervenções e dano — estão no capítulo de [Conflito](conflito).
 
 ---
 

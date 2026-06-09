@@ -104,7 +104,7 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 ### Cura durante o Interlúdio
 
-No **Interlúdio**, personagens podem dedicar ações para tratar condições ativas. A tabela abaixo define o que é necessário para remover cada condição fora de combate:
+No **Interlúdio**, personagens podem dedicar ações para tratar condições ativas. A tabela abaixo define o que é necessário para remover cada condição fora de um Conflito:
 
 | Condição | Ação necessária | Teste | Recurso |
 |---|---|---|---|
@@ -113,7 +113,7 @@ No **Interlúdio**, personagens podem dedicar ações para tratar condições at
 | **Sangramento** | Ação Rápida | Fortitude DT 12 | Atadura ou torniquete (remove todos os stacks) |
 | **Fratura leve** | Ação Longa | Nenhum | Imobilização + descanso (remove 1 penalidade) |
 | **Fratura grave** | Ação Longa | Conhecimento DT 15 | Cirurgia ou cura mágica (remove completamente) |
-| **Atordoado** | — | — | Desaparece automaticamente ao fim do combate |
+| **Atordoado** | — | — | Desaparece automaticamente ao fim do Conflito |
 | **Congelado** | Ação Rápida | Nenhum | Calor, fogo ou bebida quente (remove todos os stacks) |
 | **Paralisado** | Ação Rápida | Atletismo DT 14 | — (falha: tenta de novo na próxima ação) |
 

@@ -66,10 +66,10 @@ O campo de batalha se divide em dois cenários:
 - **Cenário A:** Navio Atacante
 - **Cenário B:** Navio Defensor
 
-Quando a conexão é feita, isso se torna um campo de batalha — usam-se as regras de combate, com apenas estes adendos:
+Quando a conexão é feita, isso se torna um campo de batalha — usam-se as regras de [Conflito](conflito), com apenas estes adendos:
 
 | Situação | Regra |
 |---|---|
-| Combate corpo a corpo | Só pode atacar alvos no mesmo cenário |
+| Ações corpo a corpo | Só podem ter como Antagonista alvos no mesmo cenário |
 | Ataque à distância entre cenários | **Desvantagem** (balanço dos navios e cabos) |
-| Travessia entre navios | Custa **1 Ação** |
+| Travessia entre navios | Conta como **Ação Complexa** |
