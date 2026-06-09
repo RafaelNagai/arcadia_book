@@ -243,7 +243,7 @@ function HeroContent() {
         className="font-body italic text-lg md:text-xl max-w-md mb-12"
         style={{ color: "var(--color-text-secondary)" }}
       >
-        "Entre o abismo e o vacuo, um mar de nuvens
+        "Entre o vazio e o abismo, um mar de nuvens
         <br />
         para explorar."
       </motion.p>

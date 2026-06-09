@@ -1,22 +1,22 @@
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 
 function useScrollReveal() {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
-  return { ref, inView }
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  return { ref, inView };
 }
 
 export function WorldIntro() {
-  const { ref, inView } = useScrollReveal()
+  const { ref, inView } = useScrollReveal();
 
   return (
     <section
       id="mundo"
       ref={ref}
       className="py-24 px-6"
-      style={{ background: 'var(--color-abyss)' }}
+      style={{ background: "var(--color-abyss)" }}
     >
       <div className="max-w-6xl mx-auto">
         <motion.div
@@ -27,13 +27,16 @@ export function WorldIntro() {
         >
           <p
             className="text-xs uppercase tracking-[0.4em] mb-3"
-            style={{ color: 'var(--color-arcano-dim)', fontFamily: 'var(--font-ui)' }}
+            style={{
+              color: "var(--color-arcano-dim)",
+              fontFamily: "var(--font-ui)",
+            }}
           >
             O Cenário
           </p>
           <h2
             className="font-display text-3xl md:text-4xl font-bold"
-            style={{ color: 'var(--color-arcano-glow)' }}
+            style={{ color: "var(--color-arcano-glow)" }}
           >
             O Mar de Nuvens
           </h2>
@@ -48,40 +51,48 @@ export function WorldIntro() {
           >
             <p
               className="font-body text-lg leading-relaxed mb-6"
-              style={{ color: 'var(--color-text-primary)' }}
+              style={{ color: "var(--color-text-primary)" }}
             >
-              Em Arcádia, não existe chão sólido. O mundo é um arquipélago de{' '}
-              <strong style={{ color: 'var(--color-arcano-glow)' }}>ilhas flutuantes</strong>{' '}
-              suspensas sobre um mar infinito de nuvens. Ninguém sabe o que existe lá embaixo —
-              e os que tentaram descobrir nunca voltaram para contar.
+              Em Arcádia, não existe chão sólido. O mundo é um arquipélago de{" "}
+              <strong style={{ color: "var(--color-arcano-glow)" }}>
+                ilhas flutuantes
+              </strong>{" "}
+              suspensas sobre um mar infinito de nuvens. Ninguém sabe o que
+              existe lá embaixo — e os que tentaram descobrir nunca voltaram
+              para contar.
             </p>
             <p
               className="font-body text-lg leading-relaxed mb-6"
-              style={{ color: 'var(--color-text-secondary)' }}
+              style={{ color: "var(--color-text-secondary)" }}
             >
-              As ilhas são conectadas por{' '}
-              <strong style={{ color: 'var(--color-arcano-glow)' }}>constelações</strong> —
-              rotas aéreas marcadas pelas estrelas, conhecidas apenas pelos navegadores experientes.
-              Navios movidos a vento, vapor ou magia cortam o céu entre as nações,
-              carregando mercadores, aventureiros e segredos.
+              As ilhas são conectadas por{" "}
+              <strong style={{ color: "var(--color-arcano-glow)" }}>
+                constelações
+              </strong>{" "}
+              — rotas aéreas marcadas pelas estrelas, conhecidas apenas pelos
+              navegadores experientes. Navios movidos a vento, vapor ou magia
+              cortam o céu entre as nações, carregando mercadores, aventureiros
+              e segredos.
             </p>
             <p
               className="font-body text-lg leading-relaxed mb-8"
-              style={{ color: 'var(--color-text-secondary)' }}
+              style={{ color: "var(--color-text-secondary)" }}
             >
-              Você é um desses navegantes. O que te levou aos céus, só você sabe.
+              Você é um desses navegantes. O que te levou aos céus, só você
+              sabe.
             </p>
 
             {/* Pull quote */}
             <blockquote
               className="font-body italic text-lg border-l-4 pl-5 py-1"
               style={{
-                borderColor: 'var(--color-arcano)',
-                color: 'var(--color-text-secondary)',
+                borderColor: "var(--color-arcano)",
+                color: "var(--color-text-secondary)",
               }}
             >
-              "Fennick sabia que o mar de nuvens escondia mais do que tempestades.
-              Escondia respostas — e às vezes, as respostas eram piores que as perguntas."
+              "Artorious sabia que o mar de nuvens escondia mais do que
+              tempestades. Escondia respostas — e às vezes, as respostas eram
+              piores que as perguntas."
             </blockquote>
           </motion.div>
 
@@ -95,8 +106,8 @@ export function WorldIntro() {
             <div
               className="w-full aspect-square max-w-md mx-auto rounded-sm overflow-hidden"
               style={{
-                background: 'var(--color-deep)',
-                border: '1px solid var(--color-border)',
+                background: "var(--color-deep)",
+                border: "1px solid var(--color-border)",
               }}
             >
               <img
@@ -109,5 +120,5 @@ export function WorldIntro() {
         </div>
       </div>
     </section>
-  )
+  );
 }
