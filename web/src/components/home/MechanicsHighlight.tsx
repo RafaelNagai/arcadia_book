@@ -35,7 +35,7 @@ const MECHANICS = [
     title: '2D12',
     subtitle: 'O Sistema Central',
     body: 'Role 2D12 e some com Atributo + Perícia contra uma Dificuldade. Tire 12 natural nos dois dados — um Milagre — e sua perícia evolui permanentemente. Experiência não é um número: é o que você viveu.',
-    slug: 'evolucao-e-testes',
+    slug: 'testes',
     accent: 'var(--color-arcano-glow)',
   },
   {

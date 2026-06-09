@@ -14,7 +14,7 @@ import { TimelineWidget } from "@/components/widgets/TimelineWidget";
 export const CHAPTER_WIDGETS: Record<string, ReactNode> = {
   timeline: <TimelineWidget />,
   personagem: <CharacterExamplesWidget />,
-  "evolucao-e-testes": <DiceRollerWidget />,
+  "testes": <DiceRollerWidget />,
   defesa: <CombatWidget />,
   traumas: <TraumaWidget />,
   afinidades: <AfinidadeWidget />,

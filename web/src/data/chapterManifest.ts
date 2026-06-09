@@ -20,7 +20,6 @@ export const PARTS: Part[] = [
   'O Arcano',
   'O Navio e a Tripulação',
   'O Mundo',
-  'One-Shots',
 ]
 
 export const CHAPTERS: ChapterMeta[] = [
@@ -30,11 +29,12 @@ export const CHAPTERS: ChapterMeta[] = [
   { id: '01_02_02_vida_e_sanidade',         slug: 'vida-e-sanidade',         title: 'Vida e Sanidade',          part: 'Fundamentos',            order: 22,  subtitle: 'Vida, Sanidade e crise mental', parentSlug: 'personagem' },
   { id: '01_02_03_traumas',                 slug: 'traumas',                 title: 'Traumas',                  part: 'Fundamentos',            order: 23,  subtitle: 'Cicatrizes são personalidade', parentSlug: 'personagem' },
   { id: '01_02_04_inventario',              slug: 'inventario',              title: 'Inventário',               part: 'Fundamentos',            order: 24,  subtitle: 'Como guardar seus itens', parentSlug: 'personagem' },
-  { id: '01_03_00_evolucao_e_testes',       slug: 'evolucao-e-testes',       title: 'Evolução e Testes',        part: 'Fundamentos',            order: 30,  subtitle: 'Como o destino é testado' },
-  { id: '01_03_01_esforco',                 slug: 'esforco',                 title: 'Pontos de Esforço (PE)',   part: 'Fundamentos',            order: 31,  subtitle: 'Falhar é evoluir', parentSlug: 'evolucao-e-testes' },
+  { id: '01_03_00_evolucao_e_testes',       slug: 'testes',                  title: 'Testes',                   part: 'Fundamentos',            order: 30,  subtitle: 'Como o destino é testado' },
+  { id: '01_03_01_esforco',                 slug: 'esforco',                 title: 'Pontos de Esforço (PE)',   part: 'Fundamentos',            order: 31,  subtitle: 'Determinação além do limite', parentSlug: 'testes' },
+  { id: '01_03_02_evolucao',               slug: 'evolucao',                title: 'Evolução',                 part: 'Fundamentos',            order: 32,  subtitle: 'Crescer no momento que importa' },
   { id: '01_04_00_combate',                 slug: 'conflito',                title: 'Conflito',                 part: 'Fundamentos',            order: 40,  subtitle: 'Narração sob pressão' },
   { id: '01_04_01_defesa',                  slug: 'defesa',                  title: 'Defesa',                   part: 'Fundamentos',            order: 41,  subtitle: 'A arte de mitigar o dano', parentSlug: 'conflito' },
-  { id: '01_04_02_dificuldade_testes',      slug: 'dificuldade-testes',      title: 'Dificuldade dos Testes',   part: 'Fundamentos',            order: 42,  subtitle: 'A medida do impossível', parentSlug: 'evolucao-e-testes' },
+  { id: '01_04_02_dificuldade_testes',      slug: 'dificuldade-testes',      title: 'Dificuldade dos Testes',   part: 'Fundamentos',            order: 42,  subtitle: 'A medida do impossível', parentSlug: 'testes' },
   { id: '01_05_00_equipamentos',            slug: 'equipamentos',            title: 'Item e Equipamento',       part: 'Fundamentos',            order: 50,  subtitle: 'Armas, armaduras e o catálogo do Mar de Nuvens' },
   { id: '01_05_01_criar_equipamento',       slug: 'criar-equipamento',       title: 'Criando um Equipamento',   part: 'Fundamentos',            order: 51,  subtitle: 'Como criar um equipamento', parentSlug: 'equipamentos' },
   { id: '01_06_00_condicoes',               slug: 'condicoes',               title: 'Condições',                part: 'Fundamentos',            order: 60,  subtitle: 'Efeitos que persistem no corpo e na mente' },
@@ -61,7 +61,7 @@ export const CHAPTERS: ChapterMeta[] = [
   { id: '04_04_00_dimensoes',               slug: 'dimensoes',               title: 'Plano Dimensional',        part: 'O Mundo',                order: 150, subtitle: 'Além do Plano Material' },
   { id: '04_05_00_religioes',               slug: 'religioes',               title: 'Religiões',                part: 'O Mundo',                order: 160, subtitle: 'Os deuses que respiram' },
   { id: '04_06_00_bestiario',               slug: 'bestiario',               title: 'Bestiário',                part: 'O Mundo',                order: 170, subtitle: 'Criaturas do Mar de Nuvens' },
-  { id: 'a_salvo',                          slug: 'a-salvo',                 title: 'A Salvo',                  part: 'One-Shots',              order: 180, subtitle: '3-4 horas · Iniciante a Intermediário' },
+  { id: '04_06_01_criando_criatura',        slug: 'criando-criatura',        title: 'Criando uma Criatura',     part: 'O Mundo',                order: 171, subtitle: 'Guia para o Mestre criar suas próprias criaturas', parentSlug: 'bestiario' },
 ]
 
 export function getChapterBySlug(slug: string): ChapterMeta | undefined {
