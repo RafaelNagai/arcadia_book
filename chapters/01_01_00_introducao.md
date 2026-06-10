@@ -3,6 +3,8 @@
 > *Um mar de nuvens, tempestades e criaturas nas profundezas.*
 > *Navegar é mais do que um transporte.*
 
+![](/assets/images/chapters/dimensions/dimension_finit_2.jpg)
+
 ---
 
 ## Bem-vindo a Arcádia
@@ -30,6 +32,8 @@ As **constelações** se tornaram rotas seguras e privadas para mercados e explo
 > *Diz-se que o velho cartógrafo Fennick caiu no abismo dos mares, conseguiu retornar, e trouxe consigo o conhecimento para criar uma constelação.*
 
 ---
+
+![](/assets/images/ships/ship_4.jpg)
 
 ## Navios, Velas e Arcano
 
@@ -66,6 +70,8 @@ E o fracasso? O fracasso não é um fim. É um degrau.
 | **Conflito Narrativo** | Um ritmo de tensão onde cada participante tem seu momento como Protagonista — e qualquer um pode Intervir ou se Impor para mudar o rumo da cena. |
 
 ---
+
+![](/assets/images/chapters/dimensions/dimension_all.jpg)
 
 ## As Camadas da Realidade
 
