@@ -6,9 +6,9 @@ Para criar um item, siga estas etapas:
 
 1. **Escolha o Tipo:** Corpo-a-Corpo, Longa-Distância, Munição ou Equipamento (armadura, artefato, utilitário).
 2. **Defina o Tier:** De E (improvisado) a SS (lendário). O Tier determina o poder base e os efeitos possíveis.
-3. **Aplique Efeitos Especiais:** Conforme a tabela acima. Podem ser buffs, debuffs ou qualquer propriedade que faça sentido narrativo.
+3. **Aplique Efeitos Especiais:** Conforme a tabela abaixo. Podem ser buffs, debuffs ou qualquer propriedade que faça sentido narrativo.
 4. **Defina a Durabilidade:** Use as tabelas como referência — o Mestre pode ajustar conforme o contexto da recompensa.
-5. **Defina o Peso:** Use a tabela acima para consistência de inventário.
+5. **Defina o Peso:** Use a tabela abaixo para consistência de inventário.
 6. **Dê nome e descrição:** Um item com história é memorável. Um item com apenas números é descartável.
 
 ---

@@ -40,9 +40,11 @@ O descanso é definido pela combinação de duas escolhas: a **forma** e o **loc
 
 **Local — define a quantidade de dados:**
 
-- **Luxuoso:** 4 dados de recuperação
+- **Luxuoso:** 5 dados de recuperação
+- **Refinado:** 3 dados de recuperação
 - **Normal:** 2 dados de recuperação
-- **Precário:** 1 dado de recuperação
+- **Precário:** 1 dados de recuperação
+- **Miserável:** 1 dado de recuperação - 4.
 
 Role todos os dados e some o resultado. Esse valor é recuperado em **HP**.
 

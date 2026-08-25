@@ -67,7 +67,8 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Choque, concussão ou confusão que impede ações eficientes.
 
-**Mecânica:** Por **1 turno completo**, o personagem **perde todas as ações e reações**. Pode vir em níveis de gravidade: Leve (1 turno), Grave (2 turnos), e assim por diante.
+**Mecânica:** Por **1 turno completo**, o personagem **perde o direito de jogar 1 ato**. Pode vir em níveis de gravidade: Leve (1 turno), Grave (2 turnos), e assim por diante.
+**Todo golpe recebido com esta condição ativa é considerada critico.**.
 
 **Resistência:** Atletismo ou Fortitude.
 
@@ -80,7 +81,7 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Frio extremo que reduz mobilidade e reflexos.
 
-**Mecânica:** Cada stack remove **1 reação** do personagem naquele turno. Se o personagem não tiver mais reações a perder, cada stack excedente remove **1 ação** em vez disso.
+**Mecânica:** Cada stack remove **-2** em testes de FISICO e DESTREZA do personagem naquele turno.
 
 **Resistência:** Fortitude.
 
@@ -92,7 +93,7 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Incapacidade total de movimento — mágica ou física.
 
-**Mecânica:** O personagem não pode se locomover e **todas as reações ficam indisponíveis**.
+**Mecânica:** O personagem não pode se locomover enquanto permanecer com esta condição e **todo golpe recebido com esta condição ativa é considerada critico.**.
 
 **Resistência:** Atletismo.
 
