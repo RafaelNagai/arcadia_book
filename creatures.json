@@ -334,5 +334,487 @@
       { "name": "Agarrar e Derrubar", "description": "Permite defender com a DP. O alvo deve rolar um teste de ATLETISMO, se falhar, o alvo fica imovel. (Dif. 23)" }
     ],
     "variants": []
+  },
+  {
+    "name": "Fuligem",
+    "levelRange": "30 – 40",
+    "style": "Agressivo · Territorial",
+    "image": "/assets/images/creatures/creature_fuligem.jpg",
+    "lore": "Fuligem são criaturas normalmente encontradas nas montanhas de Britannia, andam em bandos e por onde eles passam deixam um rastro de fuligem e cinzas.",
+    "diceBase": "4D8",
+    "hp": 14,
+    "da": 4,
+    "dp": 2,
+    "attributes": { "fisico": 5, "destreza": 4, "intelecto": 3, "influencia": 1 },
+    "immune": ["Fogo"],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Cinzas Curativa", "description": "Se o fogo em suas costas forem apagadas, permite ele recuperar vida da fuligem a sua volta. (2D6) Mas suas habilidades nao causam mais queimadura." }
+    ],
+    "actions": [
+      { "name": "Garras Flamejantes", "description": "Causa 3D8 de dano Cortante. Causa 1 de queimadura." },
+      { "name": "Rastro Flamejante", "description": "Ganha +10 em movimentação, e por onde o fuligem passou fica um rastro de fogo que causa 1 de queimadura." },
+      { "name": "Impeto Flamejante", "description": "Avança acertando até 4 alvos um dano de 4D8 + (3). Causa 1 de queimadura em cada alvo.", "once": "Ver outro fuligem morrer."}
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com a DA. Causa 1 de queimadura ao atacante." },
+      { "name": "Matilha", "description": "Permite outro fuligem ganhar o antagonismo e receber todo o dano." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Ifrit",
+    "levelRange": "120 – 140",
+    "style": "Agressivo",
+    "image": "/assets/images/creatures/creature_ifrit.jpg",
+    "lore": "Ifrit é um dragão que foi abençoado com o elemento das chamas, por onde ele passa sobram apenas cinzas. Uma criatura sem fome ou desejo, apenas o caos encarnado.",
+    "diceBase": "7D12",
+    "hp": 120,
+    "da": 12,
+    "dp": 7,
+    "attributes": { "fisico": 18, "destreza": 18, "intelecto": 10, "influencia": 12 },
+    "immune": ["Fogo"],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Brasas", "description": "Criaturas ao seu redor recebem o 3 QUEIMADURA por turno." },
+      { "name": "Escamas fortificadas", "description": "Reduz todo o dano tomado em 3." },
+      { "name": "Phoenix", "description": "Se estiver com 20 ou menos de vida, suas chamas se apagam, e ele não causará mais QUEIMADURA. Mas terá 5 rodadas para mata-lo. Caso não ocorra, ele se autodestruirá causando um dano de 12D20 + (10) de dano Energia em um raio de 100m. Permitindo usar a habilidade CINZAS, recuperando vida e acendendo suas chamas novamente." }
+    ],
+    "actions": [
+      { "name": "Bafo Radial", "description": "Solta um laser pela boca feito de um fogo ardente. Fica um turno sem ação. Este laser acerta todos num cone de até 20m. Causa XD20 + (10) de dano Energia, sendo X INTELECTUO. Aqueles que decidirem DEFENDER ou forem acertado pelo golpe, tem uma chance de quebrar um equipamento(17 ou mais no D20)." },
+      { "name": "Devorar", "description": "Realiza uma mordida que causa XD8 + (2) de dano PERFURANTE, sendo X de FISICO." },
+      { "name": "Impeto em Chamas", "description": "Projeta uma bola de fogo, que persegue todos que estiverem com o status de QUEIMADURA. Este golpe não pode ser ESQUIVADO. Causa XD10 + (5) de dano Energia, sendo X INTELECTUO."},
+      { "name": "Cinzas", "description": "Permite coletar todas as cinzas que o fogo causou para recuperar em 20 + 10D6 de vida.", "once": "Apenas se ativar a passiva Phoenix"}
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com DA" },
+      { "name": "Subjulgar", "description": "Toma o dano, porem permite morder e agarrar a criatura alvo, sendo necessário um teste de ATLETISMO ou ESQUIVA para sair. Se o alvo falhar, ele sofrera o status IMOBILIZAR." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Karkamano",
+    "levelRange": "60 – 70",
+    "style": "Territorial · Parasita",
+    "image": "/assets/images/creatures/creature_karkamano.jpg",
+    "lore": "Parasitas de cavernas, que consomem todo o recurso de uma ilha flutuante até abrir um novo portal e partir para a ilha mais proxima.",
+    "diceBase": "3D8",
+    "hp": 40,
+    "da": 9,
+    "dp": 3,
+    "attributes": { "fisico": 7, "destreza": 5, "intelecto": 10, "influencia": 9 },
+    "immune": ["Cortante"],
+    "vulnerable": ["Perfurante"],
+    "interactions": [
+      { "name": "Dorminhoco", "description": "Esta criatura tem -5 contra testes relacionados a dormir." },
+      { "name": "Multiverso", "description": "Se for criado 7 ou mais portais em um unico turno, permite invocar um Karkamano de outra dimensão." }
+    ],
+    "actions": [
+      { "name": "Portal", "description": "Permite teleportar 1 ou 2 individuos abrindo um portal. O local é aleatorio." },
+      { "name": "Fenda Cortante", "description": "Corta o tecido do espaço, é um golpe que não pode ser defendido, causando 4D6. Independente da DA, sempre sera considerado 1." }
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com DA" },
+      { "name": "Portal Redirecionado", "description": "Permite redirecionar projeteis a um individuo aleatório." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Marca de Ardrode",
+    "levelRange": "90 – 100",
+    "style": "Curioso · Dimensional · Agressivo",
+    "image": "/assets/images/creatures/creature_marca_de_ardrode.jpg",
+    "lore": "Ardroude estava investigando sobre outros planos, até chamar a atenção de uma criatura ou entidade, que nem mesmo ele percebe que chamou a atencao para o nossa realidade. Este ser não consegue se materializar completamente nesta realidade, porem ele busca o conhecimento que temos nesta realidade. Cada vez que ele aprende algo, aquilo deixa de existir nesta realidade. Ele aprende lendo os livros, e ele se transforma em um tipo de virus que consome os conhecimentos dos livros.",
+    "diceBase": "3D8",
+    "hp": 30,
+    "da": 1,
+    "dp": 1,
+    "attributes": { "fisico": 2, "destreza": 2, "intelecto": 12, "influencia": 12 },
+    "immune": ["Tudo"],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Conhecimento Vulneravel", "description": "Toda vez que Marca de Ardrode ler um livro, roda 1D8 para definir qual tipo de dano ele é VULNERAVEL. 1-Energia, 2-Anomalia, 3-Paradoxo, 4-Astral, 5-Cognitivo, 6-Cortante, 7-Bruto, 8-Perfurante" },
+      { "name": "Esquecimento Vazio", "description": "Personagem com 5 ou mais pericias bloqueadas, não pode mais ser um codjuvante." },
+      { "name": "Link Multiversal", "description": "Ele vem atraves do plano dele para o nosso, usando um conhecimento em comum, esse conhecimento vem atraves de livros ou algo escrito, se destruir esse documento que faz conexão entre os dois planos a criatura deixa de existir." }
+    ],
+    "actions": [
+      { "name": "Vazio", "description": "O Marca de Audrode ataca um alvo, e bloqueia uma pericia escolhida pelo alvo. O dano é XD12 sendo X o nivel da pericia bloqueada. A pericia é bloqueada até o final da batalha." },
+      { "name": "Cintilante", "description": "Todos os alvos com pericias bloqueadas tomam XD20 para cada pericia bloqueada. Os alvos afetados tem suas pericias desbloqueadas." },
+      { "name": "Virada de Pagina", "description": "Permite teleportar pra onde tiver papel, livros ou documentos a vista de Marca de Audrode." }
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com DA." },
+      { "name": "Conhecimento é Defesa", "description": "Anula todo o dano, e desbloqueia uma pericia do atacante." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Raia Costa",
+    "levelRange": "50 – 80",
+    "style": "Neutro · Colossal",
+    "image": "/assets/images/creatures/creature_raia_costa.jpg",
+    "lore": "Raia gigantesca com tentaculos que coletam recursos em ilhas flutuantes menores.",
+    "diceBase": "4D20",
+    "hp": 60,
+    "da": 6,
+    "dp": 2,
+    "attributes": { "fisico": 12, "destreza": 4, "intelecto": 4, "influencia": 4 },
+    "immune": [],
+    "vulnerable": ["Cognitivo"],
+    "interactions": [
+      { "name": "Devorador de Ilhas", "description": "Quando Raia Costa esta com fome, ela se aproxima das ilhas flutuantes menores, e consome todos os recursos possiveis para se alimentar. A sua chegada, faz parecer que anoiteceu no local." },
+      { "name": "Senso de Sobrevivencia", "description": "Luzes muito forte na parte inferior da Raia Costa pode afugentar essa criatura." }
+    ],
+    "actions": [
+      { "name": "Tentaculos Serrilhados", "description": "Imobiliza um alvo para drenar suas energia vital. Cada turno imobilizado, drena 2 de vida." },
+      { "name": "Sugar Alimento", "description": "Uma forte rajada de vento que puxa todos para o centro da Raia Costa, todos devem fazer um teste de Atletismo dt. 22. Se falhar, rode 1D4 para definir quantos itens foram sugados do inventario." },
+      { "name": "Torcer os céus", "description": "Permite se apoiar na ilha flutuante, forçando ela ficar em ponta-cabeça por 1 turno." }
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com DA." },
+      { "name": "Conhecimento é Defesa", "description": "Anula todo o dano, e desbloqueia uma pericia do atacante." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Kalombo",
+    "levelRange": "30 – 50",
+    "style": "Neutro",
+    "image": "/assets/images/creatures/creature_kalombo.jpg",
+    "lore": "Besouro que produz lava dentro de si, para consumir minerios em cavernas.",
+    "diceBase": "3D6",
+    "hp": 20,
+    "da": 5,
+    "dp": 3,
+    "attributes": { "fisico": 3, "destreza": 5, "intelecto": 4, "influencia": 2 },
+    "immune": [],
+    "vulnerable": ["Cognitivo"],
+    "interactions": [
+      { "name": "Auto-Incendiar", "description": "Se a criatura se sentir medo, ela se explode causando 5D12 + (3) de dano e 5 de QUEIMADURA. A criatura morre instantaneamente." },
+      { "name": "Pança Quente", "description": "Ela produz lava em sua barriga que derrete quase todo tipo de mineral." }
+    ],
+    "actions": [
+      { "name": "Barrigada Quente", "description": "O Kalombo voa e encosta sua barriga de lava no alvo. Isso causa 4 de queimadura." },
+      { "name": "Cabeçada Dura", "description": "Causa 2D8 de dano Bruto." },
+      { "name": "Mar de Lava", "description": "O kalombo vomita muita lava criando uma região de 8m que causa 3 Queimadura e 4D12 de dano." }
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com DA." },
+      { "name": "Voar", "description": "Permite defender com DP e se reposicionar em qualquer lugar em até 10m." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Ondariamu",
+    "levelRange": "90 – 120",
+    "style": "Neutro",
+    "image": "/assets/images/creatures/creature_ondariamu.jpg",
+    "lore": "Enguia gigante marinha conhecida por ser a devoradora de tempestades, é necessario varias frotas de navios para conseguir caçar uma Ondariamu, e muitas vezes nem isso é o suficiente.",
+    "diceBase": "2D20",
+    "hp": 70,
+    "da": 10,
+    "dp": 7,
+    "attributes": { "fisico": 12, "destreza": 12, "intelecto": 8, "influencia": 8 },
+    "immune": [],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Trovejar", "description": "Esta criatura faz os sons de trovão quando estão dentro de uma tempestade." },
+      { "name": "Alimentar de Tempestade", "description": "Caso uma Ondariamu se alimentar de tempestade, ela ganha um boost em dano e se torna imune a eletricidade. +(5) em dano." },
+      { "name": "Alimentar de Nuvem", "description": "Caso uma Ondariamu se alimentar de nuvens, ela ganha um boost em todos os seus atributos e se torna imune a gelo. +5 em todos os atributos." },
+      { "name": "Alimentar de Chuva", "description": "Caso uma Ondariamu se alimentar de chuva, ela ganha um boost no dado base e se torna imune a agua. Dados base se torna 4D20." },
+      { "name": "Leviriamu", "description": "Forma final do Ondariamu, quando ele se alimenta dos três tipos diferentes(tempestade, nuvem e chuva). Este modo dura 5 turnos." }
+    ],
+    "actions": [
+      { "name": "Chicotada", "description": "Causa 4D12 + (4) de dano de dano Bruto. Se estiver em modo Leviriamu, causa 6D12 + (5)." },
+      { "name": "Enboscada", "description": "Causa 2D20 + (2) de dano de dano Perfurante. Se estiver em modo Leviriamu, causa 4D20 + (5)." },
+      { "name": "Divisor de Tempestade", "description": "Um disparo radial de 100m que permite cortar os céus e as tempestades ao meio, que causa 12D20 + (5) de dano de Energia.", "once": "apenas no modo Leviriamu" }
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com DA." },
+      { "name": "Voar", "description": "Permite defender com DP e se reposicionar em qualquer lugar em até 20m." },
+      { "name": "Estatica", "description": "Permite realizar um teste de ESQUIVA. Se obter sucesso, o atacante recebe 5D20 + (3) de dano de Energia.", "once": "apenas no modo Leviriamu" }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Umbreu",
+    "levelRange": "5 - 10",
+    "style": "Parasita · Neutro",
+    "image": "/assets/images/creatures/creature_umbreu.jpg",
+    "lore": "A origem do Umbreu, ou Breu, é desconhecida. Alguns acreditam que ele seja um ser vindo de outra dimensão, porém seus motivos e a razão de escolher determinados hospedeiros permanecem um mistério. O Umbreu é uma criatura inteligente que se prende ao corpo dos vivos como uma massa escura e fria, espalhando-se pela pele e pelos músculos. Dentro da mente do hospedeiro, ele se manifesta como uma segunda voz, capaz de influenciar seus pensamentos e ações. Conforme os dias passam, Umbreu e hospedeiro começam a alterar suas personalidades, tornando-se cada vez mais semelhantes. A parasitagem dura aproximadamente 30 dias. Durante esse período, o hospedeiro tem sua sanidade degradada constantemente e adquire uma vulnerabilidade a coisas diversas. Se o Umbreu for removido nos primeiros dias, a sanidade é recuperada completamente. Após 15 dias, porém, a sanidade perdida se torna permanente e a remoção pode causar perda de memórias e traços de personalidade. Caso o hospedeiro perca completamente a sanidade antes dos 30 dias, ele se transforma em um Penunbra. Se sobreviver aos 30 dias, a sanidade perdida é restaurada e a parasitagem é concluída. O hospedeiro adquire as características e capacidades do Umbreu, tornando os dois seres permanentemente ligados dentro do mesmo corpo.", 
+    "diceBase": "1d20",
+    "hp": 5,
+    "da": 0,
+    "dp": 0,
+    "attributes": { "fisico": 1, "destreza": 2, "intelecto": 0, "influencia": 0 },
+    "immune": [],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Parasitagem", "description": "O Umbreu se joga como uma lança em uma criatura viva, tentando parasitá-la, causando 2 de dano. Caso tenha sucesso na parasitagem, o alvo fica com o efeito Hospedeiro e ativa o efeito de Hospedeiro do Umbreu. Realiza um teste de Fortitude ou Reflexo." },
+      { "name": "Hospedeiro", "description": "O Hospedeiro do Umbreu sofre 1 ponto de dano em sanidade permanente durante 30 dias, como é dito em sua lore. Caso sobreviva a Hospedeiro o personagem ganha um aumento significativo em suas habilidades e uma segunda personalidade da forma que o mestre achar melhor." },
+      { "name": "Remoção", "description": "O hospedeiro e o parasita adquirem uma vulnerabilidade. A escolha do mestre está se tornando a única maneira conhecida de se remover o umbreu. O personagem deve se manter exposto à sua vulnerabilidade por um período de tempo determinado pelo mestre, sofrendo o dano caso a vulnerabilidade seja algo que dê dano ou girando testes de vontade para conseguir se manter na situação em que está vulnerável a algo, a DT para passar no teste  determinado pelo mestre" }
+    ]
+  },
+  {
+    "name": "Ia'Axel",
+    "levelRange": "40 – 60",
+    "style": "Agressivo · Predador",
+    "image": "/assets/images/creatures/creature_ia_axel.jpg",
+    "lore": "Todo marinheiro já ouviu falar em Ia'axel, criaturas que seduzem com desejos e instintos ocultos dentro de cada individuo, forçando eles a cairem de seus barcos e se alimentando de suas vitimas, depois delas já estarem despedaçadas.",
+    "diceBase": "2D12",
+    "hp": 50,
+    "da": 2,
+    "dp": 1,
+    "attributes": { "fisico": 6, "destreza": 6, "intelecto": 8, "influencia": 8 },
+    "immune": ["Cognitivo"],
+    "vulnerable": ["Astral"],
+    "interactions": [
+      { "name": "Cabelo veneno", "description": "Toda vez que alguem acertar qualquer golpe CORPO-A-CORPO, deve rodar um teste de FORTITUDE(dt. 16), se não é envenenado." },
+      { "name": "Ineficácia", "description": "Se ficar surdo ou impedir de ouvir qualquer coisa, as ações de Ia'axel são bloqueadas." }
+    ],
+    "actions": [
+      { "name": "Persuação FORÇADA", "description": "O alvo deve rodar PERSUACAO ou DIPLOMACIA, se falhar ela eh obrigado a gasta uma ação do alvo para andar em direção a Ia'axel." },
+      { "name": "Intuição FORÇADA", "description": "O alvo deve rodar INTUICAO ou CONHECIMENTO, se falhar é obrigado a gastar uma ação do alvo atacando um aliado." },
+      { "name": "Vontade FORÇADA", "description": "O alvo deve rodar VONTADE ou ATLETISMO, se falhar é obrigado a gastar uma ação do alvo atacando a si mesmo." }
+    ],
+    "reactions": [
+      { "name": "Dobra dimensional", "description": "Toma o DOBRO de dano, mas fica intangível para os proximos ataques até voltar no turno de Ia'axel." },
+      { "name": "Reflexo com pressas", "description": "Toma o dano, porem devolve 3D12 de dano CORTANTE." },
+      { "name": "Esquivar", "description": "Permite realizar um teste de ESQUIVA.", "once": "apenas quando o atacante esta envenenado" }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Balervo",
+    "levelRange": "30 – 50",
+    "style": "Pacifico",
+    "image": "/assets/images/creatures/creature_balervo.jpg",
+    "lore": "Balervos são criaturas pacificas que evitam nadar durante o dia, se escondendo dentro de grandes nuvens, para não serem alvos facéis. Normalmente se alimenta de pequenos nutrientes e alimentos que ficam vagando no mar durante a noite, sua pele reflete constelação para se camuflar com a noite, e facilmente confundem marinheiros experientes com constelações erradas, fazendo eles se perderem.",
+    "diceBase": "3D12",
+    "hp": 30,
+    "da": 9,
+    "dp": 6,
+    "attributes": { "fisico": 12, "destreza": 6, "intelecto": 8, "influencia": 10 },
+    "immune": [],
+    "vulnerable": ["Luz"],
+    "interactions": [
+      { "name": "Camuflagem", "description": "Durante a noite, os balervos podem aumentar em 2 ou diminuir em 2 os testes de navegação dos marinheiros." },
+      { "name": "Veu Negro", "description": "Durante a noite, se o balervo não for iluminado, toda ação desferida contra um Balervo deve vir com um teste de percepção(dt. 20)" },
+      { "name": "Pacifista", "description": "Se o balervo ficar 3 turnos sem ser notado, ela vai priorizar fugir." }
+    ],
+    "actions": [
+      { "name": "Cabeçada", "description": "Causa 3D20 de dano Bruto." },
+      { "name": "Cabeçada Oculta", "description": "Causa 3D20 de dano Bruto, critico garantido.", "once": "Deve estar furtivo." }
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com a DA." },
+      { "name": "Esquivar", "description": "Permite realizar um teste de ESQUIVA." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Figura de Energia",
+    "levelRange": "80 – 100",
+    "style": "Agressivo",
+    "image": "/assets/images/creatures/creature_figura_de_energia.jpg",
+    "lore": "A figura de energia já foi um ser vivo, que ousou se expor ao arcano e quebrar os seus limites, deixando sua pele queimar e deixar seus músculos expostos. Fazendo o arcano sair de seus olhos, cabeça e mãos. Por onde ele anda, deixa um rastro de destruição e muitos acreditam que ele é um arauto de Gama.",
+    "diceBase": "2D12",
+    "hp": 50,
+    "da": 7,
+    "dp": 4,
+    "attributes": { "fisico": 3, "destreza": 2, "intelecto": 8, "influencia": 4 },
+    "immune": ["Energia"],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Ofuscar", "description": "O seu brilho no peito e na cabeça são forte demais, fazendo personagens dentro de 5m ter DESVANTAGEM(-8) em testes de PONTARIA, PERCEPÇÃO e COMBATE." },
+      { "name": "Explosão", "description": "Após 5 turnos depois de sua morte, seu corpo ou restos vão se autodestruir, causando 8D20 + (4) de dano ao seu redor, em um raio de 10m." },
+      { "name": "Negar Existência", "description": "Se a figura de energia estiver em um ambiente onde não possa usar magia ou arcano, ele simplesmente perde suas ações." }
+    ],
+    "actions": [
+      { "name": "Esfera Elemental", "description": "Cria 1 esferas do elemento que ele estiver que saem das suas mãos, rodeando o seu corpo. A cada esfera da 1D6 de dano para os inimigos corpo-a-corpo ao seu redor por turno." },
+      { "name": "El Thor", "description": "Consome todas as esferas para causar um dano de XD20 + (3) de ENERGIA para cada esfera que tiver.", "once": "Necessário 5 esferas" },
+      { "name": "Soco Elemental", "description": "Consome 1 esfera para dar um soco no ar, soltando um laser do elemento. Causando 4D10 + 6 de dano Energia.", "once": "Necessário 1 esferas" }
+    ],
+    "reactions": [
+      { "name": "Defesa Elemental", "description": "Permite defender com DP e permite consumir 1 esfera para reduzir 10 do dano recebido." },
+      { "name": "Defesa Critica", "description": "Defende com DA, porem aumenta o multiplicador de critico do dano recebido em 1" }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Figura de Anomalia",
+    "levelRange": "80 – 100",
+    "style": "Agressivo",
+    "image": "/assets/images/creatures/creature_figura_de_anomalia.jpg",
+    "lore": "A figura de anomalia, já foi um ser vivo que buscou a liberdade acima de tudo, até mesmo em quebrar seus limites tolerados com o arcano para buscar a verdadeira liberdade. Uma personalidade animalesca que sempre esta caçando e buscando novas presas, nunca descansa.",
+    "diceBase": "3D12",
+    "hp": 60,
+    "da": 8,
+    "dp": 4,
+    "attributes": { "fisico": 8, "destreza": 9, "intelecto": 1, "influencia": 0 },
+    "immune": ["Anomalia"],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Tentaculos", "description": "Tem inumeros tentaculos nas suas costas. Personagens corpo-a-corpo ao seu redor devem passar por um TD de ACROBACIA ou ATLETISMO, para não ser imobilizado." },
+      { "name": "Regeneracao", "description": "A Figura de Anomalia se cura 1D4 por turno." },
+      { "name": "Distorção", "description": "Após 15 de vida ou menos, seus ataques podem quebrar equipamentos ou armas. A cada ataque deve rodar 1D20, se tirar um 19 ou mais ele quebra a arma ou equipamento." },
+      { "name": "Selvageria", "description": "Enquanto a figura de anomalia se mantiver com o status de Imobilizada, ele perde todos os efeitos de regeneração." }
+    ],
+    "actions": [
+      { "name": "Garra Anormais", "description": "Sua garra aumenta de tamanho, acertando até 3m de distancia. Causando 8D8 de Cortante." },
+      { "name": "Garras Divergentes", "description": "Enfia suas garras no chão fazendo com que cause o status Imobilizado em todos em uma distância de 10m." },
+      { "name": "Zona de Caça", "description": "Todo personagem que estiver com o status de agarrado, a figura de anomalia tem uma ação extra e diminui a DA do alvo em 4.", "once": "Alvo com status Imobilizado" }
+    ],
+    "reactions": [
+      { "name": "Maleavel", "description": "Recebe o dano, mas permite a figura de anomalia se mover novamente sem ter ataque de oportunidade" },
+      { "name": "Casca Torcida", "description": "Defende com a DA, se o dano recebido for menor que 2 for menor do que isso ele regenera a diferenca." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Figura de Paradoxo",
+    "levelRange": "80 – 100",
+    "style": "Neutro",
+    "image": "/assets/images/creatures/creature_figura_de_paradoxo.jpg",
+    "lore": "A figura de paradoxo já foi um ser vivo, que quebrou sua mente do seu corpo, buscando poder ou sabedoria em um outro plano. Sua mente ficou perdida em diversos planos, porém resquícios de sua mente no mundo real tentam montar um corpo desdobrando o espaço e tempo a sua volta.",
+    "diceBase": "3D12",
+    "hp": 80,
+    "da": 2,
+    "dp": 1,
+    "attributes": { "fisico": 2, "destreza": 0, "intelecto": 10, "influencia": 8 },
+    "immune": ["paradoxo"],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Nulificador", "description": "Cria uma dimensão ao seu redor em um raio de 30m onde a figura de paradoxo estiver, dentro dessa área NÃO existe a possibilidade de fazer magia. Os personagens terão que rodar um teste de ARCANO ou INTUIÇÃO para adivinhar se estão sendo afetados. Todos dentro da area perdem 1D4 de vida por turno, é como se estivessem envelhecendo rapidamente, mas volta ao normal ao sair do campo." },
+      { "name": "Clone Paradoxal", "description": "Caso algum personagem utilize uma magia dentro desse raio, ele falhará e imediatamente criará um clone exato da figura de paradoxo." },
+      { "name": "Conciência", "description": "Se transferir uma consciência para uma figura de paradoxo, permite a pessoa que se transformou em figura de paradoxo voltar ao seu estado normal. Porém a consciência é consumida no processo." }
+    ],
+    "actions": [
+      { "name": "Teleporte", "description": "Permite escolher um alvo ou a si mesmo para teleportar para um local desejado. Distancia maxima de 10m." },
+      { "name": "Buraco Negro", "description": "Seu corpo se torna um buraco negro, puxando todos para proximo dele. Todos devem fazer um TD de ATLETISMO(dt. 24). Todos que forem puxados tomam 4D12 + 5 de PARADOXO. Não pode ser defendido. A Figura de Paradoxo deixa de existir após esse golpe, sem deixar vestígio. " },
+      { "name": "Multiverso", "description": "A figura de Paradoxo escolhe um tipo de arcano, e todos os alvos que tiver AFINIDADE e ANTITESE desse tipo vai tomar 3 de dano indefensavel. Se tiver Afinidade e Antitese iguais, toma duas vezes.", "once": "Não pode repetir o elemento" }
+    ],
+    "reactions": [
+      { "name": "Contra-Ataque", "description": "Recebe o dano, aumenta o multiplicador de dano critico em 1. porém devolve um dano de 3D6 de dano de PARADOXO." },
+      { "name": "Contra-Tempo", "description": "A figura do paradoxo para o tempo daquele que o ataca. Recebe o dano, porém o atacante deverá rodar um TD de ARCANO, se falhar ficará 1 turno sem fazer nada." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Figura de Cognitivo",
+    "levelRange": "80 – 100",
+    "style": "Agressivo",
+    "image": "/assets/images/creatures/creature_figura_de_cognitivo.jpg",
+    "lore": "A figura de razão já foi um ser vivo, que ousou quebrar os limites do arcano em busca de conhecer ou ser um deus. Todo o seu corpo foi consumido, e a única coisa que o mantém nesse mundo é sua fé naquilo que ele acreditava.",
+    "diceBase": "3D12",
+    "hp": 70,
+    "da": 3,
+    "dp": 2,
+    "attributes": { "fisico": 4, "destreza": 4, "intelecto": 4, "influencia": 4 },
+    "immune": ["paradoxo"],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Vontade de Deus", "description": "Aqueles que NÃO acreditam em alguma fé, e presenciarem a Figura de Cognitivo a primeira vez devem fazer uma TD de VONTADE(dt. 25), se falhar seu corpo será controlado por 2 turnos." },
+      { "name": "Ordem de Deus", "description": "Quando se sentir ameaçado, permite a figura de cognitivo soltar suas correntes, assim aqueles que presenciarem a Figura, independente de religião, devem fazer uma TD de VONTADE(dt. 25), se falhar seu corpo será controlado por 1 turnos. Pode ser usado apenas 1 vez por cena." },
+      { "name": "Crença", "description": "Se a figura do cognitivo acreditar que ela é um deus, seu corpo deixa de existir e a alma da figura de cognitivo pode descansar em paz." }
+    ],
+    "actions": [
+      { "name": "Purgatório", "description": "Faz com que o alvo veja os seus piores medos, causando 1D4 na Vida do alvo, se o alvo não acreditar em alguma religião o dano é crítico. Para cada TRAUMA que o alvo tiver, deverá somar mais 1 no dano total. Dano Indefensavel." },
+      { "name": "Demencia", "description": "Permite causar uma condição DEMENCIA, onde todos os bonus do alvo(atributos, pericias, etc) não são mais somados em seus testes. O alvo pode rodar um TD de Vontade ou Conhecimento(dt. 15) toda rodada para anular esse efeito." },
+      { "name": "Oferenda", "description": "Todos os dados do Pote da Moral(PM) são diminuidos em 1. Para cada dado, que não puder diminuir mais do que 1, causa 1D20 de dano a todos os tripulantes." },
+      { "name": "Penitência", "description": "O alvo deve se auto inflingir dano com sua arma, caso não passe na TD de Vontade(dt. 15)." }
+    ],
+    "reactions": [
+      { "name": "Contra-Ataque", "description": "Permite defender com a DP, porém cria 3 ilusões dele. O alvo atacante pode resistir em um TD de INTUICAO(dt. 19), porém se falhar vai ser aplicado o efeito. Para cada ilusão o alvo terá -(5) em ataques contra a Figura de Razão. 1 ilusão some ao executar um ataque, independente se for com sucesso ou falha. Esta reação só pode ser aplicada quando a figura nao tem ilusoes." },
+      { "name": "Defender", "description": "Permite defender com a DA." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Figura de Astral",
+    "levelRange": "80 – 100",
+    "style": "Agressivo",
+    "image": "/assets/images/creatures/creature_figura_de_astral.jpg",
+    "lore": "A figura de astral já foi um ser vivo que buscou acima de tudo ressuscitar aqueles que se foram. Porém, sua alma atormentada ainda reside no nosso mundo. A figura de astral normalmente é visto perto de cadáveres ou cemitérios onde ele chora por alguem.",
+    "diceBase": "2D12",
+    "hp": 50,
+    "da": 3,
+    "dp": 2,
+    "attributes": { "fisico": 3, "destreza": 6, "intelecto": 6, "influencia": 3 },
+    "immune": ["Cortante", "Perfurante", "Bruto"],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Vislumbre Sombrio", "description": "Em batalha, todos que estiverem dormindo na presença da Figura de Astral, tem seu pior pesadelo e não pode ser acordado naturalmente. Enquanto estiverem dormindo, perdem 1 de SANIDADE, por turno." },
+      { "name": "Cessar", "description": "Se todos os personagens estiverem dormindo, ela não ataca e cessará o combate e o PESADELO SOMBRIO é ativado novamente." },
+      { "name": "Pesadelo Sombrio", "description": "Fora de combate, se ela estiver proxima de um descanso longo rode 2D6 como dano de SANIDADE." },
+      { "name": "Objeto Sagrado", "description": "Caso a figura de astral encoste em um objeto que foi muito importante para a pessoa que era antes de ser a figura de astral, permite selar ela nesse artefato." }
+    ],
+    "actions": [
+      { "name": "Espectral", "description": "O golpe da figura de astral tem chance de fazer seus inimigos dormirem(dt. 17). Dano de 1D4 de SANIDADE" },
+      { "name": "Alma Penada", "description": "Permite possuir construto ou objeto até esse alvo ser destruido." },
+      { "name": "Possessão", "description": "Roda um TD de Vontade(dt. 20). Se o alvo falhar, permite a figura de astral a controlar o corpo de um alvo até passar na TD de VONTADE(dt. 20).", "once": "1 vez por combate" }
+    ],
+    "reactions": [
+      { "name": "Susto", "description": "Recebe todo o dano, porem o atacante rola um TD de Vontade(dt.20) se o atacante falhar, ele sofre MEDO que nao permite o alvo de mover enquanto estiver nesse estado até o proximo turno." },
+      { "name": "Pesadelo", "description": "Se o alvo atacante estiver com o status de MEDO, permite anular todo o dano recebido." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Penumbra",
+    "levelRange": "30-100",
+    "style": "Parasita · Agressivo",
+    "image": "/assets/images/creatures/creature_penumbra.jpg",
+    "lore": "Penumbra é um ser vivo que foi tomado pelo Umbreu, sendo completamente corrompido e assimilado. Penumbra são seres agressivos e destrutivos; eles trazem tudo que existia de ruim dentro do ser que foi assimilado para fora, sem ter memórias ou emoções, apenas instintos e pequenos fragmentos de algo que ele já foi um dia. Penumbra possui todas as habilidades que vinham do seu antigo hospedeiro, que foi assimilado. Ele pode usá-las de maneira instintiva, quase como uma memória muscular, porém sendo usadas de forma irracional e caótica. O Penumbra é um ser humanoide com os traços do antigo hospedeiro que foi assimilado e sempre está com uma feição melancólica e assustada, como se fosse o rosto do hospedeiro coberto por uma grossa camada de piche, com luzes laranjas saindo de suas cavidades oculares e de sua boca. O Penumbra é a fusão de fragmentos de personalidades aleatórias com emoções incontroláveis em um corpo estranho. É como um quebra-cabeça bizarro que busca completar algo que nunca poderá ser consertado. Essa busca desesperada faz com que sua única vontade seja continuar assimilando mais e mais matéria orgânica para tentar ficar completo, porém isso nunca acontecerá...",
+    "diceBase": "2d12",
+    "hp": 30,
+    "da": 3,
+    "dp": 1,
+    "attributes": { "fisico": 6, "destreza": 6, "intelecto": 0, "influencia": 3 },
+    "immune": [],
+    "vulnerable": [],
+    "interactions": [
+      { "name": "Megafone", "description": "O Penumbra é um ser sem forma definida que tenta constantemente ficar inteiro de alguma forma. Ele copia voz, falas e qualquer som que ouvir perfeitamente, podendo fazer sons macabros e assustadores com isso ." },
+      { "name": "Piche", "description": "A forma do Penumbra é completamente insignificante para ele; ele pode caber em qualquer espaço e atravessar qualquer porta, janela, etc., transformando-se em uma poça de piche escura e quente." },
+      { "name": "Assimilar", "description": "Caso um alvo aprisionado seja morto, penumbra grita a palavra ASSIMILAR no interior de seu corpo para o alvo ouvir com uma voz profunda e assustadora e, em seguida, devora e absorve o alvo completamente, criando um rosto extra com a feição do alvo em algum local de seu corpo e roubando seus atributos, fraquezas e imunidades. A cada alvo assimilado, Penumbra ganha mais 1 de DA e mais 1 de DP e +10 de vida/vida maxima. "}
+    ],
+    "actions": [
+      { "name": "Mão de Piche", "description": "Penumbra ataca com a palma de sua mão de piche, dando 6d6 de dano bruto e jogando piche nos olhos do alvo, realiza um TD de Fortitude(dt. 15), deixando-o com -5 em testes de Percepção." },
+      { "name": "Grude", "description": "Penumbra faz com que seus pés soltem uma poça de piche em direção ao inimigo, que deve fazer um teste de reflexo (dt. 20). Caso falhe, o alvo fica paralisado por 3 rodadas ou até que Penumbra seja morto." },
+      { "name": "Aprisionar", "description": "Penumbra pode usar Aprisionar para se envolver ao redor do corpo do alvo, deixando-o em estado de paralisia indefinidamente (deve realizar e obter sucesso nessa ação duas vezes consecutivas, em uma dt. 20). Todo dano causado externamente em Penumbra será dividido com o dano do alvo aprisionado.", "once": "Alvo esteja paralisado" },
+      { "name": "Caixão de Piche", "description": "Causa 3 de dano indefensavel no alvo Aprisionado.", "once": "Ter um alvo aprisionado, e uma vez por turno."}
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com a DA." }
+    ]
+  },
+  {
+    "name": "Chanmosa",
+    "levelRange": "60 – 90",
+    "style": "Agressivo",
+    "image": "/assets/images/creatures/creature_chanmosa.jpg",
+    "lore": "Uma criatura que espreita pela noite, disfarçada entre os humanos, seduzindo eles com uma aura que poucos conseguem resistir. Chanmosa gosta de devorar carne de humanoides, como humanos, elfos, etc. Os seus cabelos fazem parte da suas asas que ficam escondidas quando o cabelo está para baixo. Esta criatura não fala uma linguagem, ela apenas evoluiu para um ser humanoide para atrair suas vitimas.",
+    "diceBase": "2D12",
+    "hp": 80,
+    "da": 5,
+    "dp": 3,
+    "attributes": { "fisico": 7, "destreza": 9, "intelecto": 6, "influencia": 9 },
+    "immune": ["Astral"],
+    "vulnerable": ["Perfurante"],
+    "interactions": [
+      { "name": "Encanto", "description": "Todo Arcadiano, na presença de CHANMOSA ficam extremamente apaixonados, todos devem rodar um TD de VONTADE(dt. 20). Se falhar, rodará -10 em todo teste que fizer contra CHANMOSA, e ficara com a condição de CHARME. Se obter sucesso, rodará apenas -5 DESVANTAGEM em todo teste contra CHANMOSA." },
+      { "name": "Apaixonada", "description": "Se Chanmosa ficar apaixonada por algum indivíduo, este individuo perde a DESVANTAGEM contra a Chanmosa e a condição de CHARME." }
+    ],
+    "actions": [
+      { "name": "Morder", "description": "Permite CHANMOSA a lançar um poderoso feitiço das suas mãos ou boca. Causa 3D10 de Dano Energia, porém se ela beijar na boca do alvo, causa 6D10." },
+      { "name": "Voar", "description": "PPermite voar, isso dobrar sua ação de Deslocamento." },
+      { "name": "Capacho", "description": "Uma vez na cena, permite a todos que falharam no teste do charme da Chanmosa, a atacar os aliados próximos. Todos no charme, perde 1 ação do turno deles para executar esse ataque." },
+      { "name": "Drenar Fluído", "description": "Permite sugar a vida de todos que estiverem no CHARME, causa 1D12 em cada individuo, e recuperando o dano causado em vida." }
+    ],
+    "reactions": [
+      { "name": "Gadiar", "description": "Toma todo o dano, porem se tiver algum alvo no alcance de 10m com CHARME, o alvo deve rodar um teste de VONTADE(dt. 17), se falhar o alvo vai tomar o dano no lugar." },
+      { "name": "Defender", "description": "Permite defender com a DA." }
+    ],
+    "variants": []
   }
 ]
