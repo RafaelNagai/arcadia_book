@@ -113,3 +113,11 @@ export interface DiceLogEntry {
   result: 'critico' | 'acerto' | 'falha' | 'falha_critica'
   timestamp: number
 }
+
+export interface MoralLogEntry {
+  id: string
+  timestamp: number
+  action: 'roll' | 'add' | 'remove' | 'adjust' | 'set'
+  detail: string
+  pool: number[]
+}

@@ -39,6 +39,27 @@ export async function uploadController(fastify: FastifyInstance) {
     return reply.status(204).send()
   })
 
+  fastify.post('/ship-image', async (req, reply) => {
+    await fastify.authenticate(req)
+
+    const data = await req.file()
+    if (!data) throw new ValidationError('Nenhum arquivo enviado')
+
+    const shipId = (data.fields.shipId as { value: string } | undefined)?.value
+    if (!shipId) throw new ValidationError('shipId é obrigatório')
+
+    const buffer = await data.toBuffer()
+    const url = await svc.uploadShipImage(
+      req.user!.id,
+      shipId,
+      buffer,
+      data.mimetype,
+      data.filename,
+    )
+
+    return reply.status(201).send({ url })
+  })
+
   fastify.post('/map-layer', async (req, reply) => {
     await fastify.authenticate(req)
 

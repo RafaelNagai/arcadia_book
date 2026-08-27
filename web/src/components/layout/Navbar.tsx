@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/authContext'
 
 const NAV_LINKS = [
   { to: '/personagens', label: 'Personagens' },
+  { to: '/navios', label: 'Navio' },
   { to: '/campanhas', label: 'Campanhas' },
   { to: '/criaturas', label: 'Criaturas' },
 ]

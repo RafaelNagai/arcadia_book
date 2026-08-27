@@ -43,6 +43,7 @@ model Character {
   states            CharacterState[]
   campaignCharacter CampaignCharacter?
   mapTokens         MapToken[]
+  shipCrew          ShipCrew?
 
   @@map("characters")
 }
@@ -254,4 +255,53 @@ model CharacterState {
 
   @@unique([characterId, userId])
   @@map("character_state")
+}
+
+model Ship {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  name        String
+  motto       String   @default("")
+  type        String   @default("Material")
+  porte       String   @default("")
+  imageUrl    String?  @map("image_url")
+  description String   @default("")
+  slotsTotal  Int      @default(4) @map("slots_total")
+  hp          Int      @default(4)
+  currentHp   Int?     @map("current_hp")
+  sectors     Json     @default("[]")
+  crewCode    String   @unique @map("crew_code")
+  isPublic    Boolean  @default(false) @map("is_public")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  crew  ShipCrew[]
+  state ShipState?
+
+  @@map("ships")
+}
+
+model ShipCrew {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shipId      String   @map("ship_id") @db.Uuid
+  characterId String   @unique @map("character_id") @db.Uuid
+  joinedAt    DateTime @default(now()) @map("joined_at")
+
+  ship      Ship      @relation(fields: [shipId], references: [id], onDelete: Cascade)
+  character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  @@map("ship_crew")
+}
+
+model ShipState {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shipId    String   @unique @map("ship_id") @db.Uuid
+  moralPool Json     @default("[]") @map("moral_pool")
+  moralLog  Json     @default("[]") @map("moral_log")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  ship Ship @relation(fields: [shipId], references: [id], onDelete: Cascade)
+
+  @@map("ship_state")
 }

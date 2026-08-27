@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 import type { CampaignChar, CampaignSummary, CampaignDetail } from '@/data/campaignTypes'
 import type { MapSummary, Measurement } from '@/lib/mapTypes'
 import type { CustomCreature } from '@/data/creatureTypes'
+import type { ApiShip, InstalledSector, MoralAction, ShipStateData } from '@/data/shipTypes'
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string
@@ -380,6 +381,77 @@ export const api = {
       apiFetch<{ door: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/doors/${doorId}/toggle`, { method: 'PATCH' }),
   },
 
+  // ── Ships ───────────────────────────────────────────────────────────────────
+
+  ships: {
+    list: () => apiFetch<{ ships: ApiShip[] }>('/ships'),
+
+    listPublic: () => apiFetch<{ ships: ApiShip[] }>('/ships/public'),
+
+    get: (id: string) => apiFetch<{ ship: ApiShip }>(`/ships/${id}`),
+
+    create: (data: {
+      name: string
+      motto?: string
+      type?: 'Material' | 'Organico'
+      porte?: string
+      image_url?: string | null
+      description?: string
+      slots_total?: number
+      hp?: number
+      sectors?: InstalledSector[]
+      is_public?: boolean
+    }) =>
+      apiFetch<{ ship: ApiShip }>('/ships', { method: 'POST', body: JSON.stringify(data) }),
+
+    update: (id: string, data: Partial<{
+      name: string
+      motto: string
+      type: 'Material' | 'Organico'
+      porte: string
+      image_url: string | null
+      description: string
+      slots_total: number
+      hp: number
+      sectors: InstalledSector[]
+      is_public: boolean
+    }>) =>
+      apiFetch<{ ship: ApiShip }>(`/ships/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+
+    delete: (id: string) => apiFetch(`/ships/${id}`, { method: 'DELETE' }),
+
+    setVisibility: (id: string, isPublic: boolean) =>
+      apiFetch<{ ship: ApiShip }>(`/ships/${id}/visibility`, {
+        method: 'PATCH',
+        body: JSON.stringify({ is_public: isPublic }),
+      }),
+
+    updateCurrentHp: (id: string, currentHp: number) =>
+      apiFetch<{ ship: ApiShip }>(`/ships/${id}/current-hp`, {
+        method: 'PATCH',
+        body: JSON.stringify({ current_hp: currentHp }),
+      }),
+
+    regenerateCode: (id: string) =>
+      apiFetch<{ crewCode: string }>(`/ships/${id}/regenerate-code`, { method: 'POST' }),
+
+    join: (code: string, characterId: string) =>
+      apiFetch('/ships/join', { method: 'POST', body: JSON.stringify({ code, character_id: characterId }) }),
+
+    leave: (shipId: string, characterId: string) =>
+      apiFetch(`/ships/${shipId}/leave`, { method: 'POST', body: JSON.stringify({ character_id: characterId }) }),
+
+    state: {
+      get: (shipId: string) => apiFetch<{ state: ShipStateData }>(`/ships/${shipId}/state`),
+
+      mutateMoral: (shipId: string, action: MoralAction) =>
+        apiFetch<{ state: ShipStateData }>(`/ships/${shipId}/state/moral`, {
+          method: 'PATCH',
+          body: JSON.stringify(action),
+        }),
+    },
+  },
+
   // ── Custom Creatures ─────────────────────────────────────────────────────────
 
   customCreatures: {
@@ -459,6 +531,25 @@ export const api = {
         method: 'DELETE',
         body: JSON.stringify({ path }),
       }),
+
+    shipImage: async (shipId: string, file: File): Promise<{ url: string }> => {
+      const token = await getToken()
+      const form = new FormData()
+      form.append('shipId', shipId)
+      form.append('file', file)
+
+      const headers: Record<string, string> = {}
+      if (token) headers['Authorization'] = `Bearer ${token}`
+
+      const res = await fetch(`${API_BASE}/upload/ship-image`, {
+        method: 'POST',
+        headers,
+        body: form,
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json?.error?.message ?? 'Erro no upload')
+      return json as { url: string }
+    },
 
     mapLayerImage: async (mapId: string, file: File): Promise<{ url: string }> => {
       const token = await getToken()
