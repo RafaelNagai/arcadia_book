@@ -43,6 +43,7 @@ export interface SkillTestData {
     intelecto: number;
     influencia: number;
   };
+  exhaustionPenalty?: number; // already negative — -10 per point of Exaustão
 }
 
 interface SkillTestOverlayProps extends SkillTestData {
@@ -68,6 +69,7 @@ export function SkillTestOverlay({
   defaultAttr,
   attrColor,
   attributes,
+  exhaustionPenalty = 0,
   onClose,
 }: SkillTestOverlayProps) {
   const { addEntry } = useDiceLog();
@@ -102,7 +104,9 @@ export function SkillTestOverlay({
   const diceSum = chosenValues.reduce((a, b) => a + b, 0);
   const noBonus =
     specialState === "falha_critica" || specialState === "desastre";
-  const finalResult = noBonus ? diceSum : diceSum + attrValue + skillTotal;
+  const finalResult = noBonus
+    ? diceSum
+    : diceSum + attrValue + skillTotal + exhaustionPenalty;
 
   const diceRequest = useMemo<DiceRollRequest[]>(
     () => (diceCount > 0 ? [{ dieType: 12, count: diceCount }] : []),
@@ -152,7 +156,9 @@ export function SkillTestOverlay({
       const ss = detectSpecialState(chosenVals);
       const dSum = chosenVals.reduce((a, b) => a + b, 0);
       const noBonus = ss === "falha_critica" || ss === "desastre";
-      const finalRes = noBonus ? dSum : dSum + attrValue + skillTotal;
+      const finalRes = noBonus
+        ? dSum
+        : dSum + attrValue + skillTotal + exhaustionPenalty;
       addEntry({
         type: "skill",
         skillLabel,
@@ -165,6 +171,7 @@ export function SkillTestOverlay({
         diceSum: dSum,
         finalResult: finalRes,
         specialState: ss,
+        exhaustionPenalty,
       });
     },
     [
@@ -175,6 +182,7 @@ export function SkillTestOverlay({
       skillValue,
       modifier,
       selectedAttr,
+      exhaustionPenalty,
     ],
   );
 
@@ -318,6 +326,19 @@ export function SkillTestOverlay({
                       >
                         base {skillValue}{" "}
                         {modifier > 0 ? `+${modifier}` : modifier}
+                      </div>
+                    )}
+                    {exhaustionPenalty !== 0 && (
+                      <div
+                        style={{
+                          fontFamily: "var(--font-ui)",
+                          fontSize: 10,
+                          fontWeight: 700,
+                          color: "#D04040",
+                          letterSpacing: "0.08em",
+                        }}
+                      >
+                        Exaustão {exhaustionPenalty}
                       </div>
                     )}
                   </div>
@@ -750,6 +771,14 @@ export function SkillTestOverlay({
                           <span style={{ color: attrColor }}>
                             {skillLabel} {skillTotal}
                           </span>
+                          {exhaustionPenalty !== 0 && (
+                            <>
+                              <span style={{ color: "#D04040" }}>
+                                {exhaustionPenalty}
+                              </span>
+                              <span style={{ color: "#D04040" }}>Exaustão</span>
+                            </>
+                          )}
                         </>
                       )}
                     </div>

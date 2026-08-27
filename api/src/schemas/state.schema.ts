@@ -31,3 +31,7 @@ export const AppendDiceLogSchema = z.object({
 export const ConditionsSchema = z.object({
   conditions: z.array(z.record(z.unknown())),
 })
+
+export const ExhaustionSchema = z.object({
+  exhaustion: z.number().int().min(0),
+})

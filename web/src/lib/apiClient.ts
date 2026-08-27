@@ -182,6 +182,12 @@ export const api = {
         body: JSON.stringify({ conditions }),
       }),
 
+    updateExhaustion: (characterId: string, exhaustion: number) =>
+      apiFetch(`/characters/${characterId}/state/exhaustion`, {
+        method: 'PATCH',
+        body: JSON.stringify({ exhaustion }),
+      }),
+
     appendDiceLog: (characterId: string, entry: unknown) =>
       apiFetch(`/characters/${characterId}/state/dice-log`, {
         method: 'POST',

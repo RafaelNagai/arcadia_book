@@ -9,6 +9,7 @@ export interface CharacterStatePayload {
   defense_modifiers?: { daBase: number; daBonus: number; dpBonus: number }
   dice_log?: DiceLogEntry[]
   conditions?: Condition[]
+  exhaustion?: number
 }
 
 interface RealtimeHandlers {

@@ -68,6 +68,17 @@ export class StateRepository {
     })
   }
 
+  updateExhaustion(
+    characterId: string,
+    userId: string,
+    exhaustion: number,
+  ): Promise<CharacterState> {
+    return this.db.characterState.update({
+      where: { characterId_userId: { characterId, userId } },
+      data: { exhaustion },
+    })
+  }
+
   async appendDiceLog(
     characterId: string,
     userId: string,

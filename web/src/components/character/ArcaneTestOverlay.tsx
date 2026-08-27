@@ -40,6 +40,7 @@ export interface ArcaneTestData {
   entropia: number;
   arcano: number;
   modificadores: CharacterModificadores;
+  exhaustionPenalty?: number;
 }
 
 interface ArcaneTestOverlayProps extends ArcaneTestData {
@@ -79,6 +80,7 @@ export function ArcaneTestOverlay({
   entropia,
   arcano,
   modificadores,
+  exhaustionPenalty = 0,
   onClose,
 }: ArcaneTestOverlayProps) {
   const { addEntry } = useDiceLog();
@@ -156,7 +158,7 @@ export function ArcaneTestOverlay({
         results[k] = {
           dice,
           score,
-          total: diceSum + score + bonus + elementBonus,
+          total: diceSum + score + bonus + elementBonus + exhaustionPenalty,
           specialState: ss,
         };
       }
@@ -174,9 +176,19 @@ export function ArcaneTestOverlay({
         allocation: { ...alloc },
         modifierResults: results as Record<string, ArcanoModResult>,
         allDiceResults: vals,
+        exhaustionPenalty,
       });
     },
-    [modificadores, elementBonus, selectedElement, afinidade, antitese, entropiaBonus, addEntry],
+    [
+      modificadores,
+      elementBonus,
+      exhaustionPenalty,
+      selectedElement,
+      afinidade,
+      antitese,
+      entropiaBonus,
+      addEntry,
+    ],
   );
 
   return createPortal(
@@ -393,15 +405,22 @@ export function ArcaneTestOverlay({
                           </motion.p>
 
                           {/* Breakdown hint */}
-                          <p style={{ fontFamily: "var(--font-ui)", fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: "0.03em", lineHeight: 1.3 }}>
-                            {(() => {
-                              const bonus = rollingEAllocRef.current[k];
-                              const bonusPart = bonus > 0 ? ` + ${bonus}` : "";
-                              const elPart = elementBonus !== 0 ? ` ${elementBonus > 0 ? `+ ${elementBonus}` : `− ${Math.abs(elementBonus)}`}` : "";
-                              return hasDice
-                                ? `${res.dice.reduce((a,b)=>a+b,0)} + ${res.score}${bonusPart}${elPart}`
-                                : `${res.score}${bonusPart}${elPart} (sem dado)`;
-                            })()}
+                          <p style={{ fontFamily: "var(--font-ui)", fontSize: 9, letterSpacing: "0.03em", lineHeight: 1.3, display: "flex", flexWrap: "wrap", gap: 4 }}>
+                            <span style={{ color: "rgba(255,255,255,0.3)" }}>
+                              {(() => {
+                                const bonus = rollingEAllocRef.current[k];
+                                const bonusPart = bonus > 0 ? ` + ${bonus}` : "";
+                                const elPart = elementBonus !== 0 ? ` ${elementBonus > 0 ? `+ ${elementBonus}` : `− ${Math.abs(elementBonus)}`}` : "";
+                                return hasDice
+                                  ? `${res.dice.reduce((a,b)=>a+b,0)} + ${res.score}${bonusPart}${elPart}`
+                                  : `${res.score}${bonusPart}${elPart} (sem dado)`;
+                              })()}
+                            </span>
+                            {exhaustionPenalty !== 0 && (
+                              <span style={{ color: "#D04040", fontWeight: 700 }}>
+                                Exaustão {exhaustionPenalty}
+                              </span>
+                            )}
                           </p>
                         </motion.div>
                       );

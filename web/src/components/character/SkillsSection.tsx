@@ -15,6 +15,7 @@ export function SkillsSection({
   onEditAttrs,
   onEditSkills,
   onSkillTest,
+  exaustao,
 }: {
   character: Character;
   accentText: string;
@@ -27,6 +28,7 @@ export function SkillsSection({
   onEditAttrs?: () => void;
   onEditSkills?: () => void;
   onSkillTest?: (data: SkillTestData) => void;
+  exaustao: number;
 }) {
   const edits =
     onEditAttrs || onEditSkills
@@ -56,6 +58,7 @@ export function SkillsSection({
             onModifierChange={onModifierChange}
             onModifierReset={onModifierReset}
             onSkillTest={onSkillTest}
+            exaustao={exaustao}
           />
         ))}
       </div>

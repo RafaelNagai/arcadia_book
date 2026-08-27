@@ -61,6 +61,16 @@ export class StateService {
     return this.repo.updateConditions(characterId, stateUserId, conditions)
   }
 
+  async updateExhaustion(
+    characterId: string,
+    userId: string,
+    exhaustion: number,
+  ): Promise<CharacterState> {
+    const stateUserId = await this.resolveStateUserId(characterId, userId)
+    await this.repo.findOrCreate(characterId, stateUserId)
+    return this.repo.updateExhaustion(characterId, stateUserId, exhaustion)
+  }
+
   async appendDiceLog(
     characterId: string,
     userId: string,

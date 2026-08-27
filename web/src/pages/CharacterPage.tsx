@@ -23,6 +23,8 @@ import {
   saveDefenseModifiers,
   loadConditions,
   saveConditions,
+  loadExaustao,
+  saveExaustao,
   loadDiary,
   saveDiary,
 } from "@/lib/localCharacters";
@@ -104,6 +106,7 @@ export function CharacterPage() {
   const [daBonus, setDaBonus] = useState(0);
   const [dpBonus, setDpBonus] = useState(0);
   const [conditions, setConditions] = useState<Condition[]>([]);
+  const [exaustao, setExaustao] = useState<number>(0);
   const [diaryData, setDiaryData] = useState<DiaryData>({ blocks: [], categories: [] });
   const [diaryOpen, setDiaryOpen] = useState(false);
 
@@ -160,6 +163,7 @@ export function CharacterPage() {
           setDpBonus(dm.dpBonus ?? 0);
           setInitialDiceLog((s.diceLog as DiceLogEntry[]) ?? []);
           setConditions((s.conditions as Condition[]) ?? []);
+          setExaustao((s.exhaustion as number) ?? 0);
           if (raw.diary) setDiaryData(raw.diary as DiaryData);
           const pub = (raw.isPublic as boolean) ?? false;
           setIsPublic(pub);
@@ -191,6 +195,7 @@ export function CharacterPage() {
         setDaBonus(dm.daBonus);
         setDpBonus(dm.dpBonus);
         setConditions(loadConditions(id));
+        setExaustao(loadExaustao(id));
         setDiaryData(loadDiary(id));
       }
       setCharLoaded(true);
@@ -284,6 +289,8 @@ export function CharacterPage() {
       if (data.dice_log) diceLogSetterRef.current?.(data.dice_log);
       if (data.conditions && stateGracePassed)
         setConditions(data.conditions as Condition[]);
+      if (data.exhaustion !== undefined && stateGracePassed)
+        setExaustao(data.exhaustion);
     },
     onInventoryChange: async () => {
       if (!id) return;
@@ -483,6 +490,29 @@ export function CharacterPage() {
       }
       return next;
     });
+  }
+
+  /* ── Exaustão ────────────────────────────────────────────────── */
+
+  function handleExaustaoChange(delta: number) {
+    lastLocalStateTime.current = Date.now();
+    setExaustao((prev) => {
+      const next = Math.max(0, prev + delta);
+      if (id) {
+        if (isApiChar) void api.state.updateExhaustion(id, next);
+        else saveExaustao(id, next);
+      }
+      return next;
+    });
+  }
+
+  function handleExaustaoReset() {
+    lastLocalStateTime.current = Date.now();
+    setExaustao(0);
+    if (id) {
+      if (isApiChar) void api.state.updateExhaustion(id, 0);
+      else saveExaustao(id, 0);
+    }
   }
 
   /* ── Diary ───────────────────────────────────────────────────── */
@@ -813,6 +843,9 @@ export function CharacterPage() {
             onDpChange={canEdit ? handleDpChange : undefined}
             onDpReset={canEdit ? handleDpReset : undefined}
             onEdit={canEdit ? () => goEdit(1) : undefined}
+            exaustao={exaustao}
+            onExaustaoChange={canEdit ? handleExaustaoChange : undefined}
+            onExaustaoReset={canEdit ? handleExaustaoReset : undefined}
             conditions={conditions}
             isGm={isGmOfCampaign}
             onAddCondition={isGmOfCampaign ? handleAddCondition : undefined}
@@ -833,6 +866,7 @@ export function CharacterPage() {
             onEditAttrs={canEdit ? () => goEdit(2) : undefined}
             onEditSkills={canEdit ? () => goEdit(3) : undefined}
             onSkillTest={setSkillTest}
+            exaustao={exaustao}
           />
 
           <ArcanoSection
@@ -852,6 +886,7 @@ export function CharacterPage() {
             }}
             arcanoPeChecks={peChecks["arcano"] ?? Array(5).fill(false)}
             onArcanoPeToggle={canEdit ? handleArcanoPeToggle : undefined}
+            exaustao={exaustao}
           />
 
           {/* Antecedentes + Traumas */}

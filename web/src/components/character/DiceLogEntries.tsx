@@ -274,6 +274,11 @@ function SkillEntry({ e }: { e: SkillLogEntry }) {
           {bonusParts.join(' • ')}
         </p>
       )}
+      {!!e.exhaustionPenalty && (
+        <span style={{ fontFamily: 'var(--font-ui)', fontSize: 10, fontWeight: 700, color: '#D04040', letterSpacing: '0.04em' }}>
+          Exaustão −{Math.abs(e.exhaustionPenalty)}
+        </span>
+      )}
       <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', alignItems: 'center' }}>
         {e.results.map((v, i) => (
           <DiceChip key={i} value={v} chosen={chosenSet.has(i)} />
@@ -298,6 +303,11 @@ function ArcanoEntry({ e }: { e: ArcanoLogEntry }) {
         <p style={{ fontFamily: 'var(--font-ui)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: '0.04em' }}>
           {bonusParts.join(' • ')}
         </p>
+      )}
+      {!!e.exhaustionPenalty && (
+        <span style={{ fontFamily: 'var(--font-ui)', fontSize: 10, fontWeight: 700, color: '#D04040', letterSpacing: '0.04em' }}>
+          Exaustão −{Math.abs(e.exhaustionPenalty)}
+        </span>
       )}
       {(e.allDiceResults ?? []).length > 0 && (
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', alignItems: 'center' }}>

@@ -59,6 +59,7 @@ export function AttributeBlock({
   onModifierChange,
   onModifierReset,
   onSkillTest,
+  exaustao,
 }: {
   group: (typeof ATTR_GROUPS)[number];
   character: Character;
@@ -69,6 +70,7 @@ export function AttributeBlock({
   onModifierChange?: (key: string, delta: number) => void;
   onModifierReset?: (key: string) => void;
   onSkillTest?: (data: SkillTestData) => void;
+  exaustao: number;
 }) {
   const [editingSkill, setEditingSkill] = useState<string | null>(null);
 
@@ -210,6 +212,8 @@ export function AttributeBlock({
                               defaultAttr: group.attr,
                               attrColor: group.color,
                               attributes: character.attributes,
+                              exhaustionPenalty:
+                                exaustao > 0 ? -10 * exaustao : 0,
                             })
                         : undefined
                     }

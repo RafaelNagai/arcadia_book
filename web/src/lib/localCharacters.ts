@@ -220,6 +220,29 @@ export function saveConditions(characterId: string, conditions: Condition[]): vo
   } catch {}
 }
 
+/* ─── Exaustão ─────────────────────────────────────────────────── */
+
+const EXAUSTAO_KEY = 'arcadia_exaustao'
+
+export function loadExaustao(characterId: string): number {
+  try {
+    const raw = localStorage.getItem(EXAUSTAO_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, number>) : {}
+    return all[characterId] ?? 0
+  } catch {
+    return 0
+  }
+}
+
+export function saveExaustao(characterId: string, value: number): void {
+  try {
+    const raw = localStorage.getItem(EXAUSTAO_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, number>) : {}
+    all[characterId] = value
+    localStorage.setItem(EXAUSTAO_KEY, JSON.stringify(all))
+  } catch {}
+}
+
 /* ─── Diary ─────────────────────────────────────────────────────── */
 
 const DIARY_KEY = 'arcadia_diary'

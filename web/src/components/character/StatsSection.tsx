@@ -4,6 +4,7 @@ import { HoneycombGrid } from "./HoneycombGrid";
 import { SectionLabel } from "./CharacterUI";
 import { DefenseStats } from "./DefenseStats";
 import { ConditionsSection } from "./ConditionsSection";
+import { ExaustaoSection } from "./ExaustaoSection";
 
 export function StatsSection({
   character,
@@ -21,6 +22,9 @@ export function StatsSection({
   onDaReset,
   onDpChange,
   onDpReset,
+  exaustao,
+  onExaustaoChange,
+  onExaustaoReset,
   conditions,
   isGm,
   onAddCondition,
@@ -42,6 +46,9 @@ export function StatsSection({
   onDpChange?: (delta: number) => void;
   onDpReset?: () => void;
   onEdit?: () => void;
+  exaustao: number;
+  onExaustaoChange?: (delta: number) => void;
+  onExaustaoReset?: () => void;
   conditions: Condition[];
   isGm: boolean;
   onAddCondition?: (c: Condition) => void;
@@ -93,12 +100,19 @@ export function StatsSection({
           onDpChange={owned ? onDpChange : undefined}
           onDpReset={owned ? onDpReset : undefined}
         />
-        <ConditionsSection
-          conditions={conditions}
-          isGm={isGm}
-          onAddCondition={isGm ? onAddCondition : undefined}
-          onRemoveCondition={isGm ? onRemoveCondition : undefined}
-        />
+        <div className="flex flex-col gap-3">
+          <ExaustaoSection
+            exaustao={exaustao}
+            onExaustaoChange={owned ? onExaustaoChange : undefined}
+            onExaustaoReset={owned ? onExaustaoReset : undefined}
+          />
+          <ConditionsSection
+            conditions={conditions}
+            isGm={isGm}
+            onAddCondition={isGm ? onAddCondition : undefined}
+            onRemoveCondition={isGm ? onRemoveCondition : undefined}
+          />
+        </div>
       </div>
     </section>
   );

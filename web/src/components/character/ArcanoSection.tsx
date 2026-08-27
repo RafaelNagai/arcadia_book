@@ -23,6 +23,7 @@ export function ArcanoSection({
   arcanoModifierBonuses,
   arcanoPeChecks,
   onArcanoPeToggle,
+  exaustao,
 }: {
   character: Character;
   accent: Accent;
@@ -38,6 +39,7 @@ export function ArcanoSection({
   };
   arcanoPeChecks?: boolean[];
   onArcanoPeToggle?: (idx: number) => void;
+  exaustao: number;
 }) {
   const [arcaneTest, setArcaneTest] = useState(false);
 
@@ -491,6 +493,7 @@ export function ArcanoSection({
           entropia={character.entropia}
           arcano={arcano}
           modificadores={modWithBonuses}
+          exhaustionPenalty={exaustao > 0 ? -10 * exaustao : 0}
           onClose={() => setArcaneTest(false)}
         />
       )}

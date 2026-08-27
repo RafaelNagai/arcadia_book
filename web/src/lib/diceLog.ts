@@ -27,6 +27,7 @@ export interface SkillLogEntry extends BaseEntry {
   diceSum: number
   finalResult: number
   specialState: SpecialState
+  exhaustionPenalty?: number
 }
 
 export interface ArcanoModResult {
@@ -46,6 +47,7 @@ export interface ArcanoLogEntry extends BaseEntry {
   allocation: Record<string, number>
   modifierResults: Record<string, ArcanoModResult>
   allDiceResults: number[]
+  exhaustionPenalty?: number
 }
 
 export interface DamageLogEntry extends BaseEntry {
