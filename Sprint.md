@@ -10,9 +10,6 @@
 > Sprint atual — sem data de encerramento definida
 
 ### Em andamento
-_nenhum item em andamento_
-
-### A fazer
 
 ---
 
@@ -59,6 +56,205 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 ---
 
 ## Concluídos
+
+### Bug: character_state não sincroniza via Realtime para o GM (RLS bloqueia SELECT)
+**Origem:** /task investigar por que quando o DONO de uma ficha altera Exaustão (ou qualquer campo de `character_state`: conditions, pe_checks, skill_modifiers, defense_modifiers, dice_log), a mudança não sincroniza via Realtime para o GM da campanha vendo a mesma ficha — é estrutural, afeta a tabela inteira, não só exaustão. O caminho inverso (GM altera → dono vê) já funciona normalmente.
+**Adicionada:** 2026-08-28 · **Validator:** APROVADO · **Concluída:** 2026-08-28
+
+> ✅ **Histórico (2026-08-28):** durante a Rodada 1, a policy `character_state_gm_select` chegou a ser aplicada e causou uma regressão (ver achado do Executor abaixo); o orquestrador reverteu na hora (`DROP POLICY`, com aprovação explícita do usuário) para tirar o banco do estado quebrado enquanto a causa raiz (ciclo de recursão em `005_rls_campaigns_maps.sql`) era corrigida. Na **Rodada 2**, a causa raiz foi corrigida (`009_fix_campaign_rls_recursion.sql`) e `character_state_gm_select` foi reaplicada com sucesso — ver Subtasks 6-9 e a validação final abaixo. **Estado atual: corrigido e validado**, nenhuma ação pendente.
+
+**Diagnóstico do Planner (confirmado por leitura de código e reproduzido ao vivo no banco real, não é suposição):**
+- Causa raiz: `api/supabase/migrations/004_rls_policies.sql` define para `character_state` apenas a policy `character_state_owner` (`FOR ALL USING (auth.uid() = user_id)`). `state.service.ts::resolveStateUserId` sempre persiste o estado na linha do DONO do personagem (`character_id` + `user_id` do dono) — mesmo quando é o GM que escreve. A escrita via API (Prisma, `DIRECT_URL`/`DATABASE_URL`) roda como role `postgres`, que tem `rolbypassrls = true` (confirmado via `pg_roles`) — ignora RLS totalmente. A única superfície onde a RLS de fato importa é a subscription de Realtime do navegador (`web/src/hooks/useCharacterRealtime.ts`, filtro `character_id=eq.${characterId}`, sem filtrar por `user_id`), que usa o JWT do usuário logado e portanto RESPEITA RLS. Como o GM nunca tem `auth.uid() = user_id` da linha (que é sempre o dono), a policy `character_state_owner` sempre bloqueia o SELECT do GM — ele nunca recebe eventos de Realtime de `character_state` de fichas de jogadores, mesmo sendo ele mesmo quem escreveu o dado.
+- Nomes de tabela/coluna confirmados exatos via `schema.prisma` + leitura direta do banco: `character_state.character_id`, `character_state.user_id`, `campaign_characters.campaign_id`, `campaign_characters.character_id` (`@unique` — 1 personagem só pode estar em 1 campanha por vez), `campaigns.gm_user_id`. A proposta original de policy bate exatamente com esses nomes.
+- Confirmado que nenhuma migration posterior toca `character_state`: `006_create_ships.sql` só cria tabelas de navio; `007_add_exhaustion.sql` só adiciona a coluna `exhaustion`, sem RLS. Consulta direta a `pg_policies` no banco real confirma hoje só 1 policy na tabela (`character_state_owner`) — nada resolve o bug parcialmente.
+- Confirmado por grep em `web/src/` que não existe nenhum caminho de frontend escrevendo em `character_state` direto via Supabase client (`.from('character_state')`) — toda escrita passa por `api.state.*` → API → Prisma (bypassa RLS). Logo `FOR SELECT` é suficiente para o GM; não há necessidade de INSERT/UPDATE/DELETE via RLS.
+- **Bug reproduzido ao vivo no banco real** (não só análise estática): dentro de uma transação `BEGIN ... ROLLBACK`, com `SET LOCAL ROLE authenticated` + `SET LOCAL request.jwt.claims` simulando um GM real (`gm_user_id` de uma campanha real do banco) tentando ler `character_state` de um personagem real de sua campanha (dono diferente do GM), o `SELECT` retornou **0 linhas** com a policy atual — confirma o bloqueio na prática. Transação sempre revertida; nenhum dado alterado.
+- Approach de teste seguro validado para a Subtask 3: `postgres`/`DIRECT_URL` tem `rolbypassrls = true` (ignora RLS por padrão), mas `authenticated`/`anon` não têm — logo `BEGIN; SET LOCAL ROLE authenticated; SET LOCAL request.jwt.claims = '{"sub":"<uuid real já existente>"}'; <SELECT de teste>; ROLLBACK;` simula fielmente a RLS de um usuário real sem precisar de JWT de sessão nem alterar/expor dado nenhum. `auth.uid()` lê de `request.jwt.claim.sub` / `request.jwt.claims->>'sub'` (confirmado via `pg_get_functiondef(auth.uid)`). Banco tem dados reais suficientes para o teste (3 campanhas, 16 vínculos `campaign_characters`, 25 linhas `character_state`, incluindo pares onde `gm_user_id ≠ owner_user_id`).
+
+**Correção:** nova migration `008_character_state_gm_select.sql`, aditiva (não substitui `character_state_owner`), replicando o padrão já usado em `005_rls_campaigns_maps.sql` (`campaigns_member_select`/`campaign_characters_gm_all`):
+
+```sql
+CREATE POLICY "character_state_gm_select"
+  ON public.character_state FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.campaign_characters cc
+        JOIN public.campaigns camp ON camp.id = cc.campaign_id
+      WHERE cc.character_id = character_state.character_id
+        AND camp.gm_user_id = auth.uid()
+    )
+  );
+```
+
+- [x] Subtask 1 — Criar `api/supabase/migrations/008_character_state_gm_select.sql` com a policy `character_state_gm_select` (SQL exato acima) e um comentário curto explicando o motivo (mesmo padrão de comentário de `007_add_exhaustion.sql`)
+  - **Critério de aceite:** arquivo criado com esse nome exato e esse conteúdo; nenhuma outra migration alterada; `character_state_owner` não é removida nem modificada — a nova policy é puramente aditiva
+  - **Arquivos:** `api/supabase/migrations/008_character_state_gm_select.sql`
+  - **Executado:** arquivo criado com o SQL exato do diagnóstico do Planner, mais o comentário de cabeçalho no mesmo padrão de `007_add_exhaustion.sql`. Nenhuma outra migration tocada (`git status` confirma só o arquivo novo). Conteúdo puramente aditivo — nenhum `DROP`/`ALTER` em `character_state_owner`.
+
+- [x] Subtask 2 — Aplicar a migration ao banco real (script Node + `pg` contra `DIRECT_URL`, mesmo padrão já usado nas tasks de Exaustão/Navio) e confirmar via `pg_policies`
+  - **Critério de aceite:** `SELECT policyname, cmd FROM pg_policies WHERE tablename = 'character_state'` retorna exatamente 2 linhas — `character_state_owner` (cmd=ALL) e `character_state_gm_select` (cmd=SELECT) — com o `qual` da nova policy batendo exatamente o SQL da Subtask 1; script roda apenas o `CREATE POLICY` (nenhum `ALTER TABLE`/`DROP`); nenhuma outra tabela/coluna afetada
+  - **Arquivos:** nenhum arquivo de código novo — ação de infraestrutura; referência `api/supabase/migrations/008_character_state_gm_select.sql`
+  - **Executado — critério literal satisfeito, mas ver bloqueio crítico abaixo:** script Node + `pg` contra `DIRECT_URL` rodou exatamente o `CREATE POLICY` do arquivo da Subtask 1 (nenhum `ALTER TABLE`/`DROP`). Confirmado via `pg_policies`: exatamente 2 linhas — `character_state_owner` (`cmd=ALL`, `qual = (auth.uid() = user_id)`, inalterada) e `character_state_gm_select` (`cmd=SELECT`, `qual` batendo exatamente a estrutura `EXISTS(...)` do arquivo da migration). Nenhuma outra tabela/coluna afetada. **Porém**, ao validar o comportamento real na Subtask 3, descobri que esta policy — apesar de estruturalmente correta e idêntica ao SQL pedido — causa uma regressão grave assim que fica ativa (detalhes abaixo). Tentei reverter com `DROP POLICY "character_state_gm_select" ON public.character_state;` (mesmo padrão de script Node+`pg`) e a ação foi **bloqueada pelo classificador de segurança do meu ambiente** (DDL destrutivo, exige aprovação explícita do usuário) — não tentei contornar o bloqueio. **Resultado: a policy continua ativa no banco real agora**, no estado de regressão descrito abaixo. Confirmei isso com uma query somente-leitura logo após o bloqueio (`pg_policies` ainda mostra as 2 policies).
+
+**⚠️ Achado do Executor (bloqueante, descoberto durante a Subtask 3) — bug estrutural pré-existente e não relacionado nesta task:**
+
+Ao simular os 3 cenários pedidos (dentro de `BEGIN...ROLLBACK`, `SET LOCAL ROLE authenticated` + `SET LOCAL request.jwt.claims`), **os três** cenários — GM, outsider, e até o próprio dono — falharam com o mesmo erro do Postgres:
+
+```
+error: infinite recursion detected in policy for relation "campaign_characters"
+```
+
+Isolei a causa com queries diretas (sem nenhuma referência a `character_state` ou à nova policy): um simples `SELECT * FROM public.campaign_characters` ou `SELECT * FROM public.campaigns`, como role `authenticated`, **já falha isoladamente** com o mesmo erro — confirmando que **não é a nova policy que causa a recursão**, e sim um ciclo mútuo pré-existente em `api/supabase/migrations/005_rls_campaigns_maps.sql`:
+- `campaign_characters_gm_all` (em `campaign_characters`) referencia `campaigns` via `EXISTS`.
+- `campaigns_member_select` (em `campaigns`) referencia `campaign_characters` via `EXISTS` de volta.
+
+Isso forma um ciclo real que o *rewriter* do Postgres nunca havia detectado porque **nada, antes desta task, jamais consultou `campaigns`/`campaign_characters` como role `authenticated`** — toda leitura/escrita dessas tabelas no app real passa pela API (Prisma, role `postgres`, `rolbypassrls = true`, ignora RLS totalmente) e confirmei por grep em `web/src/` que o frontend nunca usa `.from('campaigns')`/`.from('campaign_characters')` via Supabase client direto. A nova policy `character_state_gm_select` foi a **primeira** coisa a de fato acionar esse ciclo em uma consulta real sob RLS, porque seu `EXISTS` faz `JOIN` entre as duas tabelas.
+
+**Gravidade — pior que o bug original:** o *rewriter* do Postgres expande as policies aplicáveis na reescrita da query, não em tempo de execução linha-a-linha — então basta a policy `character_state_gm_select` **existir** na tabela para que **qualquer** `SELECT`/`UPDATE` em `character_state` sob RLS falhe com esse erro, **mesmo quando `character_state_owner` sozinha já resolveria o acesso**. Testei isso explicitamente: o dono da própria linha, que antes desta task conseguia `SELECT`/`UPDATE` normalmente via `character_state_owner`, **agora também recebe o erro de recursão** enquanto `character_state_gm_select` estiver presente. Ou seja: a correção, do jeito que foi especificada, não só não resolve o caso do GM — ela quebra a sincronização via Realtime **para todo mundo**, inclusive o dono (que antes funcionava). Isso não afeta os endpoints REST normais (sempre via Prisma/role `postgres`, bypassa RLS) — o impacto real e atual é 100% na subscription de Realtime do navegador (`useCharacterRealtime.ts`), que respeita RLS.
+
+**Escopo desta task não permite corrigir isso:** o critério de aceite da Subtask 1 exige explicitamente "nenhuma outra migration alterada" — corrigir o ciclo em `005_rls_campaigns_maps.sql` está fora do escopo desta task (é uma correção estrutural em código de outra migration, para um bug não relacionado à sincronização de `character_state`) e exigiria decisão própria do Planner. Não alterei `004`/`005`.
+
+- [x] Subtask 3 — Validar a policy no banco real via simulação segura (`BEGIN` + `SET LOCAL ROLE authenticated` + `SET LOCAL request.jwt.claims` + `ROLLBACK`, usando UUIDs reais já existentes no banco — sem criar/expor dado novo) cobrindo 3 cenários, confirmando correção e ausência de regressão
+  - **Critério de aceite:** (a) o mesmo GM/character_id usado no teste que reproduziu o bug (Subtask do diagnóstico, hoje 0 linhas) passa a retornar 1 linha após a policy aplicada; (b) um `user_id` que não é GM nem dono de nenhuma campanha/personagem envolvido continua retornando 0 linhas; (c) o dono real da linha (`character_state.user_id`) continua enxergando/editando sua própria linha via `character_state_owner` inalterada — sem regressão; todas as transações revertidas com `ROLLBACK`, nenhum dado persistido
+  - **Arquivos:** nenhum (validação); resultado documentado no `Sprint.md` na conclusão da task
+  - **Tentativa original (Rodada 1) bloqueada pelo achado de recursão abaixo** — os 3 cenários falhavam com `infinite recursion detected in policy for relation "campaign_characters"` em vez de retornar as contagens esperadas. **Refeita com sucesso na Rodada 2 (Subtask 8) e novamente pelo Validator**, depois de `009_fix_campaign_rls_recursion.sql` corrigir a causa raiz: (a) GM → 1 linha ✅; (b) outsider → 0 linhas ✅; (c) dono → `SELECT`/`UPDATE` funcionam sem regressão ✅. Ver Subtask 8 e a validação final para os UUIDs e resultados completos.
+
+- [x] Subtask 4 — Documentar no `Sprint.md` o passo a passo de teste manual multi-usuário para o usuário final confirmar a correção na UI real
+  - **Critério de aceite:** passo a passo claro (dono altera Exaustão/Condições/PE/DA-DP/dice-log em uma aba → GM vê refletir na outra sem recarregar; caminho inverso GM→dono serve de controle, já funcionava antes), no mesmo formato já usado na entrada "Bug: Exaustão não persiste no banco real" (menção a fechar/reabrir `npm run dev` da API se havia processo antigo no ar); nota reforça que a mudança é 100% infraestrutura (RLS) — nenhum código de aplicação foi tocado
+  - **Arquivos:** `Sprint.md`
+  - **Executado.** Passo a passo abaixo, atualizado após a Rodada 2 corrigir o bloqueio — pronto para ser executado normalmente pelo usuário, sem nenhuma ressalva pendente.
+
+**Passo a passo para o usuário testar a sincronização multi-usuário manualmente:**
+1. A policy `character_state_gm_select` já está aplicada e validada no banco real (Rodada 2), junto com a correção do ciclo de recursão em `campaigns`/`campaign_characters` (`009_fix_campaign_rls_recursion.sql`) — nenhuma ação prévia necessária, pode testar diretamente.
+2. Se você tinha um `npm run dev` da API já aberto em outro terminal, **feche-o e abra de novo** (`cd api && npm run dev`) — mesma precaução já documentada na task de Exaustão, ainda que esta correção seja 100% infraestrutura (RLS) e não código de aplicação.
+3. Rode o frontend (`cd web && npm run dev`) e abra a ficha de um personagem de uma campanha real (não local/localStorage) em **duas abas ou dois navegadores diferentes**: uma logada como o **dono** do personagem, outra logada como o **GM** da campanha daquele personagem.
+4. Na aba do dono, altere a Exaustão (ou Condições, PE, DA/DP, ou role um dado para o dice-log).
+5. Observe a aba do GM: o valor deve atualizar sozinho, sem recarregar, em poucos segundos — este é o caminho que estava quebrado (o inverso, GM→dono, já funcionava antes e serve de controle: confirme que continua funcionando também).
+6. Nenhum código de aplicação foi alterado nesta task — só a policy RLS de `character_state` (mais a correção pendente em `005`, fora do escopo desta task).
+
+**Nota do Planner:** diagnóstico recebido confirmado correto e completo, sem nenhum ajuste necessário — nomes de tabela/coluna exatos, nenhuma migration concorrente já resolvendo o problema parcial ou totalmente, escopo de `FOR SELECT` (não UPDATE/DELETE) confirmado suficiente já que toda escrita real ignora RLS via `DIRECT_URL`/role `postgres`, e o bug foi reproduzido ao vivo no banco real de forma segura (transação sempre revertida, nenhum dado tocado). Pronto para o Executor.
+
+**Nota do Executor — resumo para o Validator/Planner:** a Subtask 1 e a criação/estrutura da Subtask 2 seguem exatamente o que foi pedido, sem desvio. Porém a validação (Subtask 3, exigida explicitamente antes de considerar a task pronta) revelou que o SQL pedido, embora correto isoladamente, interage mal com um bug estrutural pré-existente e não relacionado em `005_rls_campaigns_maps.sql` (nunca antes exercitado sob RLS real), causando uma regressão pior que o bug original. Não tenho permissão no meu ambiente para rodar o `DROP POLICY` necessário para reverter isso no banco real — só consegui confirmar (leitura) que a policy nociva continua ativa. **Esta task não deve ser marcada como concluída/aprovada** até que: (1) alguém com permissão rode o `DROP POLICY` indicado no topo para tirar o banco real do estado de regressão, e (2) uma nova task (ou um retrabalho desta) corrija o ciclo de recursão em `campaigns`/`campaign_characters` (`005_rls_campaigns_maps.sql`) antes de reaplicar `character_state_gm_select`.
+
+## Rodada 2 (2026-08-28) — Diagnóstico do Planner: extensão do ciclo e correção proposta
+
+**Extensão completa do ciclo (leitura integral de `005_rls_campaigns_maps.sql`, 271 linhas):**
+
+O ciclo real é de exatamente 2 nós — `campaigns` ↔ `campaign_characters` — fechado por 2 policies:
+- `campaigns_member_select` (em `campaigns`, FOR SELECT) → `EXISTS (... FROM campaign_characters cc JOIN characters c ...)` — consulta `campaign_characters`.
+- `campaign_characters_gm_all` (em `campaign_characters`, FOR ALL) → `EXISTS (... FROM campaigns WHERE campaigns.id = campaign_characters.campaign_id ...)` — consulta `campaigns` de volta.
+
+Nenhuma outra policy das duas tabelas participa do ciclo: `campaigns_gm_all` (`auth.uid() = gm_user_id`, sem subquery) e `campaign_characters_owner_select`/`campaign_characters_owner_delete` (subquery só em `characters`, que não referencia `campaigns`/`campaign_characters` de volta) são inertes ao ciclo.
+
+`maps` e as tabelas dependentes (`map_layers`, `map_walls`, `map_doors`, `map_tokens`) **não adicionam nós ao ciclo**, mas todas elas dependem transitivamente das duas tabelas do ciclo: `maps_gm_all`/`map_layers_gm_all`/etc. fazem `JOIN` com `campaigns`, e `maps_member_select`/`*_member_select` fazem `JOIN` com `campaign_characters` + `characters`. Como o rewriter do Postgres expande RLS recursivamente por trás de qualquer subquery, **qualquer SELECT nessas tabelas também dispara o mesmo erro** hoje (confirmado no teste abaixo) — não é só `campaigns`/`campaign_characters` diretamente. Corrigir o ciclo de 2 nós resolve automaticamente todas essas tabelas dependentes, sem precisar tocar nelas.
+
+**Correção proposta:** extrair as duas condições para funções `SECURITY DEFINER` (rodam com privilégio do dono da função — quem aplicar a migration via `DIRECT_URL` é a role `postgres`, confirmado `rolbypassrls = true` — então as queries *dentro* da função não acionam RLS de novo, quebrando o ciclo). Troca via `ALTER POLICY` (não `DROP`/`CREATE`) — preserva nome, permissões e não deixa a tabela sem a policy em nenhum instante. Este é o padrão documentado pelo Supabase para exatamente este erro ("infinite recursion detected in policy for relation").
+
+SQL exato proposto para `api/supabase/migrations/009_fix_campaign_rls_recursion.sql`:
+
+```sql
+-- Corrige recursão infinita entre as policies de campaigns e campaign_characters.
+-- campaigns_member_select (em campaigns) e campaign_characters_gm_all (em
+-- campaign_characters) formam um ciclo mútuo de EXISTS: cada uma consulta a outra
+-- tabela sob RLS, e o rewriter do Postgres nunca conseguia terminar a expansão —
+-- qualquer SELECT em campaigns ou campaign_characters como role authenticated
+-- falhava com "infinite recursion detected in policy for relation ...". Extrai as
+-- duas condições para funções SECURITY DEFINER (rodam com privilégio do dono —
+-- role postgres, rolbypassrls=true — bypassando RLS internamente), padrão
+-- recomendado pela documentação do Supabase para quebrar recursão entre policies
+-- de tabelas que se referenciam mutuamente. Não remove nem recria as policies —
+-- apenas troca a condição via ALTER POLICY, preservando nome/permissões.
+
+CREATE OR REPLACE FUNCTION public.is_campaign_gm(p_campaign_id uuid)
+RETURNS boolean
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+STABLE
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.campaigns
+    WHERE campaigns.id = p_campaign_id
+      AND campaigns.gm_user_id = auth.uid()
+  );
+$$;
+
+CREATE OR REPLACE FUNCTION public.is_campaign_member(p_campaign_id uuid)
+RETURNS boolean
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+STABLE
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.campaign_characters cc
+      JOIN public.characters c ON c.id = cc.character_id
+    WHERE cc.campaign_id = p_campaign_id
+      AND c.user_id = auth.uid()
+  );
+$$;
+
+ALTER POLICY "campaigns_member_select"
+  ON public.campaigns
+  USING (public.is_campaign_member(campaigns.id));
+
+ALTER POLICY "campaign_characters_gm_all"
+  ON public.campaign_characters
+  USING (public.is_campaign_gm(campaign_characters.campaign_id))
+  WITH CHECK (public.is_campaign_gm(campaign_characters.campaign_id));
+```
+
+**Confirmação — testada de forma segura no banco real e revertida (2026-08-28):** rodei, dentro de uma única transação `BEGIN ... ROLLBACK` (nunca commitada), (1) o SQL acima completo (funções + `ALTER POLICY`) e (2) o `CREATE POLICY character_state_gm_select` exato de `008_character_state_gm_select.sql` (temporário, só para validar Parte A+B juntas nesta mesma transação), depois `SET LOCAL ROLE authenticated` + `SET LOCAL request.jwt.claims` simulando 3 identidades reais já existentes no banco (campanha real `ddc3f19d-de08-4c72-90c3-25277a30babf`, GM real `ffeb43bf-8b03-4549-8b95-8524aec747ea`, personagem real `c05d950e-51c8-40f0-b606-cfcec18ccce6` de dono real `5241c9b1-d6cf-4973-8470-cd6889947c67`, outsider real sem nenhum vínculo com essa campanha `6b1118d5-3b6d-4880-801a-26f6829c2137`), depois `ROLLBACK` de tudo. Resultado, sem nenhum erro de recursão em nenhum cenário:
+- **GM:** `SELECT * FROM campaigns` → 2 linhas (suas campanhas), sem erro. `SELECT * FROM campaign_characters WHERE campaign_id = <alvo>` → 4 linhas (todos os membros), sem erro. `SELECT * FROM character_state WHERE character_id = <personagem alvo>` → **1 linha** (o estado do dono, antes bloqueado) — **o bug original está corrigido**. `SELECT * FROM maps` → sem erro de recursão (confirma que as tabelas dependentes também são resolvidas pela correção do ciclo de 2 nós).
+- **Dono (não-GM):** `SELECT campaigns WHERE id = <alvo>` → 1 linha (via `campaigns_member_select`, agora usando a função). `SELECT`/`UPDATE character_state WHERE character_id = <sua ficha>` → funciona normalmente, **sem regressão** — a policy `character_state_owner` (inalterada) continua resolvendo sozinha.
+- **Outsider:** `SELECT campaigns WHERE id = <alvo>` → 0 linhas. `SELECT character_state WHERE character_id = <alvo>` → 0 linhas. Nenhum vazamento de acesso.
+- **Pós-rollback:** confirmado via `pg_proc` que as funções não existem mais; via `pg_policies` que `character_state` só tem `character_state_owner`; e que o `qual` de `campaigns_member_select` voltou exatamente à forma original (`EXISTS (... campaign_characters cc JOIN characters c ...)`). Nenhum dado real foi alterado — a única persistência real desta rodada 2 é este texto no `Sprint.md`.
+
+**Nota sobre numeração de migration:** `008_character_state_gm_select.sql` já existe no repo (criado na rodada 1) com o conteúdo correto — não precisa mudar. A correção do ciclo vai em `009_fix_campaign_rls_recursion.sql`, aplicada **antes** de reaplicar a `CREATE POLICY` de `008` ao banco real (que hoje só tem `character_state_owner` — a policy do GM foi revertida manualmente, ver nota no topo desta task).
+
+### Rodada 2 — Subtasks para o Executor
+
+- [x] Subtask 5 (Parte A) — Criar `api/supabase/migrations/009_fix_campaign_rls_recursion.sql` com o SQL exato acima
+  - **Critério de aceite:** arquivo criado com esse nome exato e esse conteúdo (2 funções `CREATE OR REPLACE FUNCTION ... SECURITY DEFINER` + 2 `ALTER POLICY`); nenhuma outra migration alterada (`005_rls_campaigns_maps.sql` permanece intocado — histórico preservado, é aditiva/corretiva via nova migration, não retroativa); nenhum `DROP POLICY`/`CREATE POLICY` usado (só `ALTER POLICY`, preservando nome e demais atributos das policies existentes)
+  - **Arquivos:** `api/supabase/migrations/009_fix_campaign_rls_recursion.sql`
+  - **Executado:** arquivo criado com o SQL literal validado pelo Planner na Rodada 2 (copiado sem nenhuma variação do bloco acima). `git status` confirma que só este arquivo novo foi adicionado — `005_rls_campaigns_maps.sql` e todas as demais migrations permanecem intocadas.
+
+- [x] Subtask 6 (Parte A) — Aplicar `009` ao banco real (script Node + `pg` contra `DIRECT_URL`, mesmo padrão já usado nesta sprint) e confirmar
+  - **Critério de aceite:** `SELECT proname FROM pg_proc WHERE proname IN ('is_campaign_gm','is_campaign_member')` retorna as 2 funções; `SELECT policyname, qual, with_check FROM pg_policies WHERE tablename IN ('campaigns','campaign_characters') AND policyname IN ('campaigns_member_select','campaign_characters_gm_all')` mostra as condições apontando para `is_campaign_member(...)`/`is_campaign_gm(...)`; nenhuma outra tabela/policy/coluna afetada; um `SELECT` real (via `SET LOCAL ROLE authenticated` + `SET LOCAL request.jwt.claims`, dentro de `BEGIN...ROLLBACK` para não alterar nada) em `campaigns`, `campaign_characters` e `maps` **não reproduz mais** `infinite recursion detected in policy for relation ...`
+  - **Arquivos:** nenhum arquivo de código novo — ação de infraestrutura; referência `api/supabase/migrations/009_fix_campaign_rls_recursion.sql`
+  - **Executado pelo orquestrador (fora do subagente Executor, com aprovação explícita do usuário) após novo bloqueio do classificador na tentativa do Executor.** Script Node+`pg` contra `DIRECT_URL` rodou o SQL literal de `009` (2 `CREATE OR REPLACE FUNCTION ... SECURITY DEFINER` + 2 `ALTER POLICY`). Confirmado via `pg_proc`: `is_campaign_gm` e `is_campaign_member` existem com `prosecdef = true`. Confirmado via `pg_policies`: `campaigns_member_select` e `campaign_characters_gm_all` seguem existindo (mesmo nome/cmd, só a condição mudou via `ALTER POLICY` — não foram recriadas). Nenhuma outra tabela/policy tocada.
+
+- [x] Subtask 7 (Parte B) — Reaplicar `character_state_gm_select` (`008_character_state_gm_select.sql`, conteúdo já correto e sem alteração) ao banco real, agora que o ciclo foi corrigido
+  - **Critério de aceite:** `SELECT policyname, cmd FROM pg_policies WHERE tablename = 'character_state'` retorna exatamente 2 linhas — `character_state_owner` (cmd=ALL) e `character_state_gm_select` (cmd=SELECT); nenhum `ALTER TABLE`/`DROP` executado; nenhuma outra tabela afetada
+  - **Arquivos:** nenhum arquivo de código novo — ação de infraestrutura; referência `api/supabase/migrations/008_character_state_gm_select.sql` (já existe, conteúdo inalterado)
+  - **Executado pelo orquestrador na mesma sessão da Subtask 6.** `CREATE POLICY` de `008` (conteúdo idêntico ao criado na Rodada 1) rodado logo após `009`. Confirmado via `pg_policies`: `character_state` tem exatamente 2 policies — `character_state_owner` (ALL) e `character_state_gm_select` (SELECT).
+
+- [x] Subtask 8 (Parte B) — Validar de fato os 3 cenários pedidos pela task original, agora sem erro (repetir a Subtask 3 original da rodada 1, desta vez com sucesso)
+  - **Critério de aceite:** dentro de `BEGIN...ROLLBACK` (`SET LOCAL ROLE authenticated` + `SET LOCAL request.jwt.claims`, UUIDs reais já existentes, nenhum dado novo criado/exposto): (a) GM de uma campanha real lendo `character_state` de um personagem real de sua campanha (dono diferente do GM) → **1 linha**, sem erro; (b) um `user_id` sem nenhum vínculo com a campanha/personagem → **0 linhas**, sem erro; (c) o dono real da linha consegue `SELECT`/`UPDATE` sua própria linha via `character_state_owner`, sem regressão; todas as transações revertidas com `ROLLBACK`
+  - **Arquivos:** nenhum (validação); resultado documentado no `Sprint.md`
+  - **Executado pelo orquestrador — todos os cenários passaram:** usando um `character_state` real (`character_id=c05d950e-...`, dono `5241c9b1-...`, GM `ffeb43bf-...`) dentro de `BEGIN...ROLLBACK`: GM → 1 linha (esperado 1) ✅; outsider (usuário real sem nenhum vínculo com a campanha) → 0 linhas (esperado 0) ✅; dono → 1 linha, sem regressão (esperado 1) ✅; bônus — `SELECT` em `campaigns` e `campaign_characters` como GM autenticado funcionou sem erro de recursão. Transação revertida com `ROLLBACK` — nada persistido além das migrations 008/009 já aplicadas nas Subtasks 6/7.
+
+- [x] Subtask 9 (encerramento) — Atualizar `Sprint.md`: marcar Subtasks 5-8 como `[x]` com nota de execução, reativar/confirmar o passo a passo de teste manual multi-usuário (já escrito na Subtask 4 da rodada 1 — agora pode ser executado de verdade, sem a ressalva de bloqueio), e deixar a task pronta para o Validator
+  - **Critério de aceite:** todas as subtasks da rodada 2 marcadas `[x]`; nota final resume que a mudança é 100% infraestrutura (RLS + 2 funções auxiliares) — nenhum código de aplicação foi tocado em nenhuma das duas rodadas; task pronta para avaliação do Validator
+  - **Arquivos:** `Sprint.md`
+  - **Executado.** Todas as subtasks das Rodadas 1 e 2 estão `[x]`. Mudança é 100% infraestrutura de banco (2 migrations SQL: `008` policy aditiva, `009` funções + `ALTER POLICY`) — zero código de aplicação (frontend/backend) tocado em qualquer rodada. Passo a passo de teste manual reativado abaixo (Rodada 1 tinha escrito com a ressalva "não executar ainda" — a ressalva foi removida, pode ser testado normalmente). Task pronta para o Validator.
+
+**Nota sobre execução fora do subagente Executor (2026-08-28):** nas duas rodadas desta task, o subagente Executor foi bloqueado pelo classificador de permissão do ambiente ao tentar aplicar DDL ao banco real (Rodada 1: `DROP POLICY` de reversão; Rodada 2: `CREATE FUNCTION`/`ALTER POLICY` de `009`). Em ambos os casos, o orquestrador (fora do protocolo de 3 agentes) executou a ação diretamente, com aprovação explícita do usuário coletada antes de cada ação via pergunta direta. O SQL executado foi, em ambos os casos, exatamente o já planejado/validado pelo Planner — nenhuma correção ad-hoc foi improvisada fora do fluxo Planner→Executor.
+
+**Validação do Validator (2026-08-28):**
+- **Item 1 (banco real):** reconfirmado — todas as consultas e aplicações desta task (Rodadas 1 e 2) rodaram contra o banco real via `DIRECT_URL`/script Node+`pg`, nunca mock; simulações de RLS sempre dentro de `BEGIN...ROLLBACK` revertido.
+- **Item 2 (policies de `character_state`):** reconfirmado nesta rodada via query própria e independente (`pg_policies`) — exatamente 2 linhas: `character_state_owner` (`cmd=ALL`, inalterada) e `character_state_gm_select` (`cmd=SELECT`), batendo exatamente o SQL de `008_character_state_gm_select.sql`.
+- **Item 3 (funções `SECURITY DEFINER` de `009`):** reconfirmado nesta rodada via query própria (`pg_proc`) — `is_campaign_gm` e `is_campaign_member` existem com `prosecdef = true`; `pg_policies` confirma que `campaigns_member_select` e `campaign_characters_gm_all` continuam existindo (mesmo nome/cmd, só a condição trocada via `ALTER POLICY`, não recriadas).
+- **Item 4 (4 cenários de validação):** GM vê a linha do dono (1 linha), outsider bloqueado (0 linhas), dono sem regressão (SELECT/UPDATE via `character_state_owner` funcionando), e `campaigns`/`campaign_characters`/`maps` sem erro de recursão — todos confirmados nas Subtasks 3/8 e na validação de Rodada 2, dentro de transações `BEGIN...ROLLBACK` sempre revertidas.
+- **Item 5 (escopo do git diff):** reconfirmado nesta rodada via `git status`/`git diff --stat` — apenas `Sprint.md` modificado (183 inserções, 2 remoções) e os dois arquivos novos de migration (`008_character_state_gm_select.sql`, `009_fix_campaign_rls_recursion.sql`, ambos conferidos byte a byte contra o SQL documentado abaixo). Nenhum arquivo de código de aplicação (`api/src/**`, `web/src/**`) tocado em nenhuma das duas rodadas.
+- **Item 6 (documentação do `Sprint.md` — foco desta reavaliação):** confirmado que todas as inconsistências do veredito anterior foram corrigidas — callout de topo não afirma mais que o bug "permanece" (agora narra a jornada completa e termina em "corrigido e validado, nenhuma ação pendente"); Subtasks 3 e 4 (Rodada 1) marcadas `[x]`, com nota remetendo à Subtask 8 (Rodada 2) que refez a validação com sucesso; Subtasks 5-9 (Rodada 2) todas `[x]`; passo a passo de teste manual não instrui mais nenhuma reversão/pré-requisito obsoleto (Passo 1 reflete que a policy já está aplicada e validada). As notas históricas do Achado do Executor e da Nota do Executor (Rodada 1) foram mantidas intactas para registro da regressão real que ocorreu em produção — permanecem no corpo da task, precedendo a seção "Rodada 2" que as resolve, sem contradizer o status final.
+- **Item 7 (`CLAUDE.md`):** respeitado — `chapters/` não foi tocado (task é 100% infraestrutura de banco, não mexe em regra de livro); nenhum mock de banco em nenhuma das duas rodadas; nenhuma feature extra além do pedido (escopo estritamente a policy do GM + a correção do ciclo de recursão pré-existente que a validação da Subtask 3 revelou ser bloqueante); comentários de cabeçalho das duas migrations seguem o padrão já estabelecido em `007_add_exhaustion.sql`.
+
+**Resumo da jornada (para referência futura):** bug relatado (dono altera `character_state` — Exaustão, Condições, PE, DA/DP, dice-log — e o GM da campanha não vê a mudança via Realtime, só o caminho inverso funcionava) → causa raiz identificada (`character_state` só tinha a policy `character_state_owner`, sem nenhuma policy de `SELECT` para o GM; a API sempre bypassa RLS via role `postgres`, então o único ponto onde a RLS importa é a subscription de Realtime do navegador, que usa o JWT do usuário e portanto respeita RLS) → migration `008_character_state_gm_select.sql` criada e aplicada ao banco real → **regressão descoberta em produção durante a validação** (a nova policy foi a primeira a exercitar sob RLS real um ciclo de recursão infinita pré-existente e não relacionado entre `campaigns` ↔ `campaign_characters`, em `005_rls_campaigns_maps.sql` — regressão pior que o bug original, pois quebrava até o acesso do próprio dono) → policy revertida temporariamente (`DROP POLICY`, aprovação explícita do usuário) para tirar o banco do estado quebrado enquanto a causa raiz da regressão era investigada → causa raiz da regressão corrigida na Rodada 2 (`009_fix_campaign_rls_recursion.sql`: 2 funções `SECURITY DEFINER` + `ALTER POLICY`, sem tocar `005_rls_campaigns_maps.sql`) → `character_state_gm_select` (`008`) reaplicada ao banco real → todos os cenários revalidados com sucesso (GM vê, outsider bloqueado, dono sem regressão, `campaigns`/`campaign_characters`/`maps` sem recursão) → documentação do `Sprint.md` corrigida para refletir o estado final, sem contradições.
+
+✅ Validado — aprovado sem ressalvas de bloqueio
+
+---
 
 ### Bug: Exaustão não persiste no banco real (migration não aplicada + Prisma Client desatualizado)
 **Origem:** /task Garantir que o campo Exaustão seja salvo e sincronizado em tempo real igual aos outros campos da ficha (ex: Condições, DA/DP). Quando qualquer pessoa com acesso à ficha alterar a Exaustão, todos os outros visualizando a mesma ficha devem ver a atualização automaticamente, sem recarregar. Não se aplica a fichas locais (localStorage) sem backend.
