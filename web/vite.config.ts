@@ -19,6 +19,10 @@ export default defineConfig({
   },
   assetsInclude: ['**/*.md'],
   server: {
+    // Node 22 resolve 'localhost' só para ::1 nesta config de rede, deixando
+    // o Vite acessível apenas via IPv6. host:true escuta em '::' (dual-stack),
+    // aceitando tanto 127.0.0.1 quanto ::1/localhost.
+    host: true,
     fs: {
       // Permite que o dev server sirva arquivos de fora do root (web/)
       // necessário porque chapters/ está em ../chapters (dentro de book/)
