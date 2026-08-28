@@ -24,7 +24,7 @@ function SkeletonCard() {
 
 function CampaignCard({ campaign }: { campaign: CampaignSummary }) {
   return (
-    <Link to={`/campanha/${campaign.id}`} style={{ textDecoration: 'none' }}>
+    <Link to={`/campanha/${campaign.id}`} state={{ fromMenu: true }} style={{ textDecoration: 'none' }}>
       <motion.div
         whileHover={{ y: -2 }}
         transition={{ duration: 0.15 }}

@@ -231,9 +231,21 @@ const TABS: { id: TabId; label: string; description: string }[] = [
   { id: 'arcadia',  label: 'Arcádia',          description: 'NPCs originais do mundo' },
 ]
 
+const CHARACTER_TAB_STORAGE_KEY = 'arcadia_character_list_tab'
+
+function readStoredCharacterTab(): TabId | null {
+  try {
+    const stored = sessionStorage.getItem(CHARACTER_TAB_STORAGE_KEY)
+    if (stored === 'meus' || stored === 'explorar' || stored === 'arcadia') return stored
+  } catch {
+    // sessionStorage indisponível (ex: modo privado)
+  }
+  return null
+}
+
 export function CharacterListPage() {
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const [customChars, setCustomChars] = useState<Character[]>([])
   const [publicChars, setPublicChars] = useState<Character[]>([])
   const [loadingChars, setLoadingChars] = useState(true)
@@ -241,8 +253,17 @@ export function CharacterListPage() {
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
   const [pendingDuplicateChar, setPendingDuplicateChar] = useState<Character | null>(null)
   const [duplicatingId, setDuplicatingId] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<TabId>(() => user ? 'meus' : 'explorar')
+  const usedStoredTab = useRef(false)
+  const [activeTab, setActiveTab] = useState<TabId>(() => {
+    const stored = readStoredCharacterTab()
+    if (stored) {
+      usedStoredTab.current = true
+      return stored
+    }
+    return user ? 'meus' : 'explorar'
+  })
   const styleRef = useRef<HTMLStyleElement | null>(null)
+  const hasSettledAuthTab = useRef(false)
 
   useEffect(() => {
     const el = document.createElement('style')
@@ -284,14 +305,41 @@ export function CharacterListPage() {
       .finally(() => setLoadingPublic(false))
   }, [user])
 
-  // when user logs in, switch to their tab; when they log out, go to explorar
+  // when user logs in, switch to their tab; when they log out, go to explorar.
+  // `authLoading` is true until AuthProvider's initial getSession() resolves,
+  // and the lazy useState initializer above always runs before that resolves
+  // (user is still null there even for an already-logged-in session, e.g. on
+  // F5). So on the first settle we don't blindly force a tab: if a tab was
+  // restored from sessionStorage we only correct it if it turns out to be
+  // wrong (stuck on 'meus' while actually logged out) — otherwise we trust it,
+  // including 'meus' resolving true once the real user loads in. Only with no
+  // stored preference do we compute the tab fresh from the resolved user.
+  // Transitions observed after that first settle are real login/logout events.
   useEffect(() => {
+    if (authLoading) return
+    if (!hasSettledAuthTab.current) {
+      hasSettledAuthTab.current = true
+      if (usedStoredTab.current) {
+        setActiveTab(prev => (prev === 'meus' && !user) ? 'explorar' : prev)
+      } else {
+        setActiveTab(user ? 'meus' : 'explorar')
+      }
+      return
+    }
     if (user) {
       setActiveTab('meus')
     } else {
       setActiveTab(prev => prev === 'meus' ? 'explorar' : prev)
     }
-  }, [user])
+  }, [user, authLoading])
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(CHARACTER_TAB_STORAGE_KEY, activeTab)
+    } catch {
+      // sessionStorage indisponível (ex: modo privado)
+    }
+  }, [activeTab])
 
   async function confirmDelete() {
     if (!pendingDeleteId) return

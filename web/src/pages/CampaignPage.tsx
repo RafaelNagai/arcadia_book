@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom'
+import { useParams, useNavigate, useSearchParams, useLocation, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/lib/authContext'
 import { api } from '@/lib/apiClient'
@@ -7,6 +7,36 @@ import { getAccent } from '@/components/character/types'
 import type { CampaignChar, CampaignDetail } from '@/data/campaignTypes'
 import { MapTab } from '@/components/map/MapTab'
 import { CampaignIntroScreen } from '@/components/CampaignIntroScreen'
+
+const CAMPAIGN_INTRO_SHOWN_KEY = 'arcadia_campaign_intro_shown'
+
+// browser back/forward restores the original location.state of a history
+// entry, so `fromMenu` alone can't tell a real menu click from a back
+// navigation to the same entry. `location.key` is unique per history entry
+// (stable across popstate to that entry, new on every fresh navigate/click),
+// so keying the "already shown" cache by it — not by campaignId — lets the
+// intro show again on every genuine new click from the list while still
+// staying hidden on back/forward to an entry already shown.
+function hasShownCampaignIntro(historyKey: string): boolean {
+  try {
+    const raw = sessionStorage.getItem(CAMPAIGN_INTRO_SHOWN_KEY)
+    return raw ? (JSON.parse(raw) as string[]).includes(historyKey) : false
+  } catch {
+    return false
+  }
+}
+
+function markCampaignIntroShown(historyKey: string) {
+  try {
+    const raw = sessionStorage.getItem(CAMPAIGN_INTRO_SHOWN_KEY)
+    const shown = raw ? (JSON.parse(raw) as string[]) : []
+    if (!shown.includes(historyKey)) {
+      sessionStorage.setItem(CAMPAIGN_INTRO_SHOWN_KEY, JSON.stringify([...shown, historyKey]))
+    }
+  } catch {
+    // sessionStorage indisponível (ex: modo privado)
+  }
+}
 
 // ── CharMiniCard ─────────────────────────────────────────────────────────────
 
@@ -19,6 +49,16 @@ function CharMiniCard({ char, canViewSheet, onRemove, isGm, campaignId, view }: 
   view: 'players' | 'npcs'
 }) {
   const accent = getAccent(char.afinidade)
+  const sheetLinkStyle: React.CSSProperties = {
+    display: 'block', textAlign: 'center',
+    padding: '0.4rem', borderRadius: 3,
+    background: `${accent.text}12`,
+    border: `1px solid ${accent.text}33`,
+    color: accent.text, fontFamily: 'var(--font-ui)',
+    fontSize: '0.68rem', fontWeight: 600,
+    letterSpacing: '0.1em', textDecoration: 'none',
+    textTransform: 'uppercase',
+  }
 
   return (
     <div style={{
@@ -64,19 +104,22 @@ function CharMiniCard({ char, canViewSheet, onRemove, isGm, campaignId, view }: 
         </p>
 
         {canViewSheet ? (
-          <Link to={`/ficha/${char.id}`} state={{ fromCampaignId: campaignId, fromCampaignView: view }}
-            style={{
-              display: 'block', textAlign: 'center',
-              padding: '0.4rem', borderRadius: 3,
-              background: `${accent.text}12`,
-              border: `1px solid ${accent.text}33`,
-              color: accent.text, fontFamily: 'var(--font-ui)',
-              fontSize: '0.68rem', fontWeight: 600,
-              letterSpacing: '0.1em', textDecoration: 'none',
-              textTransform: 'uppercase',
-            }}>
-            Ver ficha
-          </Link>
+          view === 'players' ? (
+            // abre em nova aba: state do React Router não atravessa target="_blank",
+            // por isso campaignId/isGm vão como query string (lidos em CharacterPage.tsx)
+            <Link
+              to={`/ficha/${char.id}?campaignId=${campaignId}${isGm ? '&isGm=1' : ''}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={sheetLinkStyle}>
+              Ver ficha
+            </Link>
+          ) : (
+            <Link to={`/ficha/${char.id}`} state={{ fromCampaignId: campaignId, fromCampaignView: view }}
+              style={sheetLinkStyle}>
+              Ver ficha
+            </Link>
+          )
         ) : (
           <div style={{
             textAlign: 'center', padding: '0.4rem', borderRadius: 3,
@@ -608,9 +651,11 @@ function CampaignSidebar({ campaign, view, isGm, onChangeView, onRegenerateCode,
 export function CampaignPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const location = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
   const { user } = useAuth()
 
+  const cameFromMenu = (location.state as { fromMenu?: boolean } | null)?.fromMenu === true
   const view = (searchParams.get('view') as CampaignView) ?? 'players'
 
   const [campaign, setCampaign] = useState<CampaignDetail | null>(null)
@@ -631,8 +676,9 @@ export function CampaignPage() {
       .then(res => {
         setCampaign(res.campaign)
         document.title = `${res.campaign.title} — Arcádia`
-        if (res.campaign.imageUrl) {
+        if (res.campaign.imageUrl && cameFromMenu && !hasShownCampaignIntro(location.key)) {
           setShowIntro(true)
+          markCampaignIntroShown(location.key)
         }
       })
       .catch(() => setCampaign(null))

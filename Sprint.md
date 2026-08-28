@@ -57,6 +57,175 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Melhorias de Navegação — "Ir para a Mesa" (Personagens, Navio, Campanha)
+**Origem:** /task Melhorias de navegação na área "Ir para a Mesa" (Personagens, Navio, Campanha): (1) persistir a aba selecionada dentro das telas de Personagens/Navio/Campanha — hoje reseta ao usar o botão voltar do navegador ou ao sair/voltar da aba do navegador; (2) na tela de Jogadores de uma Campanha, abrir a ficha do jogador clicado em uma nova aba do navegador (não navegar na mesma aba); a intro da campanha (`CampaignIntroScreen`) não deve reaparecer toda vez que se volta pelo navegador — só deve aparecer quando o usuário entra na campanha vindo do menu principal (aba "Campanhas")
+**Adicionada:** 2026-08-28 · **Validator:** APROVADO · **Concluída:** 2026-08-28
+
+**Diagnóstico do Planner (confirmado por leitura de código):**
+
+- **Ponto 1 — reset de aba:** `CharacterListPage.tsx` (rota `/personagens`) e `NavioListPage.tsx` (rota `/navios`) têm cada um `type TabId = 'meus' | 'explorar' | 'arcadia'` com `const [activeTab, setActiveTab] = useState<TabId>(() => user ? 'meus' : 'explorar')` — estado 100% local ao componente, sem nenhuma persistência (nem URL, nem storage). Como essas páginas desmontam/remontam a cada troca de rota (ex: abrir `/ficha/:id` a partir de um card e voltar pelo botão do navegador), `activeTab` sempre volta ao valor padrão, perdendo a aba que o usuário tinha selecionado (`explorar`/`arcadia`). Ambas têm também um `useEffect` que troca a aba automaticamente ao logar/deslogar (`if (user) setActiveTab('meus'); else setActiveTab(prev => prev === 'meus' ? 'explorar' : prev)`) — a correção precisa conviver com esse efeito, não removê-lo. Confirmado por grep que não existe nenhum uso de `sessionStorage` em `web/src/` hoje (zero ocorrências) — não há mecanismo de persistência de UI reaproveitável já pronto.
+- A tela de Campanha (`CampaignPage.tsx`) já usa `useSearchParams` para a view interna (`players`/`npcs`/`mapa`, via `?view=`) — isso já é restaurado corretamente pelo botão voltar do navegador, pois é parte da própria URL/histórico. Não há bug de reset confirmado aqui; a Subtask 2 abaixo pede apenas uma verificação de regressão, não uma reescrita. `CampaignListPage.tsx` (rota `/campanhas`, lista de campanhas) não tem abas internas — ponto 1 não se aplica a ela.
+- **Ponto 2a — nova aba para "Ver ficha" em Jogadores:** em `CampaignPage.tsx:67`, `CharMiniCard` (compartilhado pelas views `players` e `npcs`) renderiza `<Link to={`/ficha/${char.id}`} state={{ fromCampaignId: campaignId, fromCampaignView: view }}>Ver ficha</Link>` — navegação SPA normal na mesma aba, sem `target="_blank"`. Confirmado em `CharacterPage.tsx:71-80` que a página já tem um caminho alternativo ao `location.state` para descobrir de qual campanha veio: `searchParams.get("campaignId")` e `searchParams.get("isGm") === "1"`, usados quando `state` não está disponível. Como o `state` do React Router não atravessa para uma aba nova (`target="_blank"` é navegação completa do browser, sem o histórico do SPA), a correção precisa colocar `campaignId` (e `isGm`, se aplicável) como query string na própria URL do link, para que o botão "Voltar para campanha" em `CharacterPage.tsx:732,798` continue funcionando a partir da aba nova.
+- **Ponto 2b — intro reaparecendo:** em `CampaignPage.tsx`, o `useEffect` de carregamento (linha ~627-640) faz `if (res.campaign.imageUrl) setShowIntro(true)` incondicionalmente a cada mount — dispara toda vez que a página remonta, inclusive ao voltar pelo navegador de uma ficha ou de qualquer outra tela. Não há hoje nenhum `sessionStorage`/flag de origem controlando isso, apesar de uma nota histórica no `Sprint.md` (task "Sistema de Campanhas", Subtask 5) descrever que a intro usaria `sessionStorage` para "exibição única por sessão" — o mecanismo real no código atual não faz isso mais (ou nunca fez; a `CampaignIntroScreen.tsx` atual não referencia `sessionStorage`). `CampaignListPage.tsx:27` (`CampaignCard`, o card clicável da lista, alcançado pela aba "Campanhas" do menu principal em `Navbar.tsx:9`) usa `<Link to={`/campanha/${campaign.id}`}>` sem nenhum `state` — é o único ponto de entrada que deveria de fato disparar a intro.
+
+**Subtasks para o Executor:**
+
+- [x] Subtask 1 — Persistir a aba selecionada em `/personagens` (`CharacterListPage.tsx`) através de remounts (voltar do navegador, reload da página, trocar e voltar de aba do navegador)
+  - **Critério de aceite:** com a aba "Explorar" ou "Arcádia" selecionada em `/personagens`, ao abrir a ficha de um personagem e voltar pelo botão "voltar" do navegador, a mesma aba continua selecionada (não reseta para "Meus Personagens"); um F5/reload em `/personagens` preserva a última aba selecionada na mesma sessão de navegador; o `useEffect` existente que troca a aba automaticamente ao logar/deslogar continua funcionando sem regressão; se a aba persistida for `meus` mas o usuário estiver deslogado, a página cai graciosamente para `explorar` (nunca fica presa numa aba oculta de `visibleTabs`)
+  - **Arquivos:** `web/src/pages/CharacterListPage.tsx`
+  - **Implementado:** `activeTab` inicializado a partir de `sessionStorage` (chave `arcadia_character_list_tab`, helper `readStoredCharacterTab`), com fallback para `explorar` quando a aba salva é `meus` mas `user` é `null`. Novo `useEffect([activeTab])` persiste a cada troca. O `useEffect` de login/logout existente ganhou um `useRef` (`didSyncLoginTab`) para pular a primeira execução (mount) e não sobrescrever a aba restaurada — só reage a transições reais de login/logout depois do mount.
+  - **Correção pós-Validator (REPROVADO → corrigido):** o guard `didSyncLoginTab` só pulava a 1ª execução do efeito, mas `AuthProvider` (`authContext.tsx`) resolve `user` de forma assíncrona via `getSession().then(...)` — então o efeito roda 2x no mount: 1ª com `user=null` (pulada), 2ª quando a Promise resolve para o `user` real (**não** pulada, forçava `setActiveTab('meus')` e sobrescrevia a aba restaurada). Corrigido usando o `loading` que `useAuth()` já expõe: o efeito agora ignora execuções enquanto `authLoading` é `true` e só marca "settled" (pulando o forçar) na 1ª vez que `authLoading` vira `false` — passou a distinguir a hidratação inicial assíncrona de uma transição real de login/logout depois que o app já carregou. Renomeado `didSyncLoginTab` → `hasSettledAuthTab`; deps do efeito viraram `[user, authLoading]`.
+
+- [x] Subtask 2 — Replicar a mesma persistência de aba em `/navios` (`NavioListPage.tsx`), usando o mesmo mecanismo da Subtask 1, e verificar (sem reescrever se já correto) que a view interna de `/campanha/:id` (`?view=players|npcs|mapa` em `CampaignPage.tsx`) já sobrevive ao botão voltar do navegador
+  - **Critério de aceite:** mesmo critério da Subtask 1 aplicado a `/navios`; adicionalmente, teste manual documentado no Sprint.md confirmando que trocar para a view "NPCs" ou "Mapa" em uma campanha, abrir uma ficha e voltar pelo navegador mantém a view selecionada — se algum bug real for encontrado nesse fluxo, corrigir `CampaignPage.tsx`; se já funcionar (comportamento esperado dado o uso de `useSearchParams`), documentar a confirmação sem alterar o arquivo
+  - **Arquivos:** `web/src/pages/NavioListPage.tsx`; possivelmente `web/src/pages/CampaignPage.tsx` (só se a verificação encontrar regressão real)
+  - **Implementado:** mesmo mecanismo da Subtask 1 aplicado a `NavioListPage.tsx` (chave `arcadia_ship_list_tab`, helper `readStoredShipTab`, `hasSettledAuthTab` ref). **Correção pós-Validator:** mesmo fix da Subtask 1 aplicado aqui — efeito ignora execuções com `authLoading=true` e só trata como "settled" (sem forçar aba) a 1ª vez que `authLoading` vira `false`; deps `[user, authLoading]`. **Verificação de `CampaignPage.tsx`:** confirmado por leitura de código — `view` é lido direto de `searchParams.get('view')` via `useSearchParams` (linha ~655) e todo `setView` faz `setSearchParams({ view: v })`; como isso grava a URL/histórico do próprio browser, o botão "voltar" restaura o `?view=` nativamente sem nenhum código adicional. Nenhum bug encontrado — `CampaignPage.tsx` não foi alterado por este motivo (foi alterado só pelas Subtasks 3 e 4, abaixo).
+
+- [x] Subtask 3 — Abrir a ficha do jogador em nova aba do navegador a partir da tela "Jogadores" de uma Campanha
+  - **Critério de aceite:** em `/campanha/:id` com a view "players" (Jogadores) ativa, clicar em "Ver ficha" de um `CharMiniCard` abre `/ficha/:id` em uma nova aba do navegador (`target="_blank" rel="noopener noreferrer"`), sem navegar a aba da Campanha; a URL usada no link inclui `?campaignId=${campaignId}` (e `&isGm=1` quando `isGm` for verdadeiro) para que o botão "Voltar para campanha" em `CharacterPage.tsx` continue funcionando a partir da aba nova, já que `state` do React Router não atravessa para `target="_blank"`; a mudança é restrita à view "players" — a view "npcs" mantém o comportamento atual (navegação na mesma aba), a menos que o Executor documente um motivo técnico para não conseguir diferenciar as duas
+  - **Arquivos:** `web/src/pages/CampaignPage.tsx` (`CharMiniCard`, linha ~67)
+  - **Implementado:** `CharMiniCard` agora ramifica em `view === 'players'`: nesse caso renderiza `<Link target="_blank" rel="noopener noreferrer" to={`/ficha/${char.id}?campaignId=${campaignId}${isGm ? '&isGm=1' : ''}`}>` (sem `state`); para `view === 'npcs'` mantém o `Link` original na mesma aba com `state={{ fromCampaignId, fromCampaignView }}`. `CharacterPage.tsx` já lia `campaignId`/`isGm` da query string como fallback (linhas ~76-78), então nenhuma mudança foi necessária lá.
+
+- [x] Subtask 4 — Corrigir a exibição da `CampaignIntroScreen` para aparecer apenas ao entrar vindo do menu principal (aba "Campanhas"), nunca ao voltar pelo navegador
+  - **Critério de aceite:** clicar em um card de campanha a partir de `/campanhas` (`CampaignCard`, alcançado pela aba "Campanhas" do menu principal em `Navbar.tsx`) continua exibindo a `CampaignIntroScreen` normalmente quando a campanha tem `imageUrl` (comportamento hoje existente preservado); voltar para essa mesma campanha pelo botão "voltar" do navegador (por exemplo, depois de abrir uma ficha na view Jogadores e voltar, ou depois de navegar entre views internas) NÃO reexibe a intro; acessar a campanha por qualquer caminho que não seja o clique no card da lista (URL direta, botão "Voltar para campanha" a partir de uma ficha) também NÃO exibe a intro; nenhuma mudança de comportamento para campanhas sem `imageUrl`
+  - **Arquivos:** `web/src/pages/CampaignListPage.tsx` (`CampaignCard`, linha ~27 — adicionar `state` sinalizando origem do menu), `web/src/pages/CampaignPage.tsx` (lógica de `showIntro`, linhas ~625-640)
+  - **Implementado:** `CampaignCard` em `CampaignListPage.tsx` agora navega com `state={{ fromMenu: true }}`. Em `CampaignPage.tsx`, `showIntro` só é ativado quando `campaign.imageUrl && cameFromMenu && !hasShownCampaignIntro(id)` (novo `useLocation()` + helpers `hasShownCampaignIntro`/`markCampaignIntroShown` com `sessionStorage`, chave `arcadia_campaign_intro_shown`, array de campaignIds já mostrados). **Desvio documentado:** usar só `location.state?.fromMenu` não seria suficiente — a History API do browser restaura o `state` original de uma entry ao voltar (`popstate`), então voltar para `/campanha/:id` depois de visitar `/ficha/:id` (view NPCs, mesma aba) reapresentaria `fromMenu:true` de novo. Por isso o `sessionStorage` complementar (já sugerido como opção pelo Planner) é necessário para o requisito central funcionar de verdade, não é feature extra. Confirmado também que `CharacterCreatorPage.tsx:271` (`navigate(`/campanha/${campaignId}`)`, após criar ficha vinda de convite) não passa `state`, logo não dispara a intro — comportamento correto sem necessidade de alteração.
+
+**Validação do Validator (2026-08-28): ❌ REPROVADO — 2 problemas encontrados por leitura direta do código (não apenas do relatório do Executor):**
+
+1. **`CharacterListPage.tsx:306-316` e `NavioListPage.tsx:413-420` — F5/reload não preserva a aba para usuário já logado (regressão contra o próprio critério de aceite da Subtask 1/2).** `AuthProvider` (`web/src/lib/authContext.tsx:19-27`) inicializa `user` como `null` e só resolve de forma assíncrona via `supabase.auth.getSession().then(...)`; `App.tsx` não tem nenhum gate de `loading` antes de montar `CharacterListPage`/`NavioListPage` (`web/src/App.tsx:32-54`, rotas montam direto dentro do `AuthProvider`). Isso significa que, em todo F5 com usuário logado: (1º render) `user=null`, o `useEffect([user])` de sync login/logout roda pela 1ª vez e é pulado pelo guard `didSyncLoginTab` — ok; (2º render, quando a Promise de `getSession()` resolve) `user` passa de `null` para o objeto de sessão real, o mesmo `useEffect([user])` dispara de novo, mas dessa vez o guard **não pula** (já foi consumido no mount) e executa `if (user) setActiveTab('meus')` incondicionalmente — sobrescrevendo qualquer aba restaurada do `sessionStorage` (`explorar`/`arcadia`) de volta para `'meus'`. Ou seja: para um usuário logado, um F5 em `/personagens` ou `/navios` com a aba "Explorar"/"Arcádia" selecionada sempre volta para "Meus Personagens"/"Meus Navios" após a página carregar — violação direta do critério "um F5/reload em `/personagens` preserva a última aba selecionada na mesma sessão de navegador". (O caso "voltar pelo botão do navegador" não é afetado, pois `AuthProvider` não desmonta entre rotas da SPA, então `user` já está resolvido quando a página remonta — só o reload de página inteira aciona o bug.) O guard `didSyncLoginTab` precisa distinguir "login/logout real" de "resolução assíncrona inicial da sessão" (por exemplo, usando `loading` do `useAuth()` para só armar o guard depois que `loading` vira `false` pela primeira vez, em vez de no primeiro disparo do efeito).
+
+2. **`CampaignPage.tsx:11-21` (`hasShownCampaignIntro`/`markCampaignIntroShown`) — cache de `sessionStorage` chaveado só por `campaignId` suprime a intro em cliques legítimos repetidos vindos do menu, além do que a Subtask 4 pediu.** O critério de aceite exige que "clicar em um card de campanha a partir de `/campanhas`... continua exibindo a `CampaignIntroScreen` normalmente... comportamento hoje existente preservado". Como a chave do cache é só `campaignId` (não a navegação específica), depois que a intro aparece uma vez para uma campanha em uma sessão de navegador, ela nunca mais aparece de novo nessa sessão — mesmo que o usuário volte para `/campanhas` e clique de novo genuinamente no mesmo card (nova entrada de histórico, `fromMenu: true` de novo). Isso é mais restritivo do que o pedido: o problema real que motivou o `sessionStorage` (restaurar `location.state` original ao apertar "voltar" para a MESMA entry de histórico via `popstate`) pode ser resolvido de forma mais precisa chaveando por `location.key` do React Router (único por entry de histórico, estável em `popstate` para a mesma entry, novo a cada `navigate()`/clique) em vez de `campaignId` — isso resolveria o bug do botão voltar sem suprimir cliques novos e legítimos vindos do menu.
+
+**Build:** `tsc -b` concluído sem erros (reconfirmado nesta validação, rodado de novo do zero). `vite build` (bundling) não foi aguardado até o fim por ser demorado neste sandbox, mas a etapa que importa para correção de tipos (`tsc -b`) passou limpa.
+
+**Chapters/CLAUDE.md:** `chapters/` intocado (`git diff --stat -- 'chapters/*'` vazio); nenhum mock de banco; nenhuma feature extra fora dos 2 pontos acima. `CharacterPage.tsx:71-80` confirmado consumindo `campaignId`/`isGm` da query string como fallback, exatamente como o Executor descreveu.
+
+**Próximo passo:** Executor deve corrigir os 2 pontos acima e o Validator reavalia (ciclo 2/2 já em andamento — não exceder o limite de 2 ciclos do protocolo).
+
+**Correção do Executor (ciclo 2, 2026-08-28):**
+
+1. **Issue 1 corrigido** em `CharacterListPage.tsx` e `NavioListPage.tsx`: `useAuth()` agora também desestrutura `loading: authLoading`. O guard do `useEffect([user])` de sync login/logout (renomeado `didSyncLoginTab` → `hasSettledAuthTab`) passou a ignorar execuções enquanto `authLoading` é `true`, e só marca "settled" (sem forçar troca de aba) na 1ª vez que `authLoading` vira `false` — deps do efeito passaram a `[user, authLoading]`:
+   ```tsx
+   useEffect(() => {
+     if (authLoading) return
+     if (!hasSettledAuthTab.current) {
+       hasSettledAuthTab.current = true
+       return
+     }
+     if (user) setActiveTab('meus')
+     else setActiveTab(prev => prev === 'meus' ? 'explorar' : prev)
+   }, [user, authLoading])
+   ```
+   Isso distingue a hidratação assíncrona inicial de `getSession()` (que agora é sempre esperada via `authLoading` antes de qualquer decisão) de uma transição real de login/logout ocorrendo depois que o app já carregou — preserva a aba restaurada do `sessionStorage` num F5 com usuário logado, sem reintroduzir a perda do auto-switch em login/logout reais.
+
+2. **Issue 2 corrigido** em `CampaignPage.tsx`: `hasShownCampaignIntro`/`markCampaignIntroShown` passaram a ser chaveados por `location.key` (do `useLocation()`, único por entrada de histórico do React Router) em vez de `campaignId`:
+   ```tsx
+   if (res.campaign.imageUrl && cameFromMenu && !hasShownCampaignIntro(location.key)) {
+     setShowIntro(true)
+     markCampaignIntroShown(location.key)
+   }
+   ```
+   `location.key` é estável quando o browser restaura a mesma entry via `popstate` (voltar), mas é novo a cada `navigate()`/clique genuíno no card — resolve o bug do botão voltar sem suprimir a intro em cliques novos e legítimos vindos do menu.
+
+**Build (ciclo 2):** `npm run build` (`tsc -b && vite build`) rodado do zero após as correções — `✓ built in 4m 7s`, `exited with code 0`, zero erros de TypeScript. Nenhum outro arquivo tocado além dos necessários para os 2 pontos acima.
+
+**Validação do Validator — ciclo 2/2 (2026-08-28): ❌ REPROVADO — limite de 2 ciclos do protocolo atingido.**
+
+Reconfirmado por leitura direta do código (`git diff` de cada arquivo, não apenas o relatório do Executor):
+
+- ✅ **Issue 2 (intro chaveada por `campaignId`) — corrigido de verdade.** `CampaignPage.tsx:679-682` lê e escreve `hasShownCampaignIntro(location.key)`/`markCampaignIntroShown(location.key)` (ambos os pontos usam `location.key`, não `campaignId`). Tracei os dois cenários pedidos: (a) clique no card → intro aparece → abre NPC na mesma aba (`state`) → volta pelo browser → mesma entry de histórico (`location.key` idêntico, já marcado) → intro **não** reaparece; (b) volta para `/campanhas` → clica de novo no mesmo card → `navigate` cria uma entry nova com `location.key` novo (nunca marcado) → intro reaparece. `CampaignListPage.tsx:27` continua passando `state={{ fromMenu: true }}`, necessário para `cameFromMenu`. Sem regressão encontrada.
+- ✅ **Build:** rodei `npm run build` (`tsc -b && vite build`) eu mesmo, do zero, independente do Executor — `exited with code 0`, `✓ built in 2m 15s`, zero erros de TypeScript.
+- ✅ `git diff --stat -- 'chapters/*'` vazio — `chapters/` intocado. Sem mocks de banco, sem features extras além dos 2 pontos do ciclo 1. `SPEC.md`/`CLAUDE.md` (raiz e `web/`) conferidos — padrões técnicos respeitados (nenhum comentário desnecessário adicionado; os poucos comentários novos em `CampaignPage.tsx`/`CharacterListPage.tsx`/`NavioListPage.tsx` explicam um "porquê" não-óbvio, dentro da regra).
+- ✅ Subtask 3 (nova aba para "players", `npcs` inalterado) confirmada: `CampaignPage.tsx:107-121` ramifica corretamente por `view`; `CharacterPage.tsx:75-78` já lê `campaignId`/`isGm` da query string como fallback (arquivo não fez parte do diff desta task — mecanismo pré-existente, confirmado funcional).
+- ❌ **Issue 1 (F5 não preserva a aba) — corrigido apenas parcialmente; o cenário central do critério de aceite ainda falha.** O guard `hasSettledAuthTab` em si está correto (resolve o caso "usuário sempre deslogado" sem disparar nada indevido, e não regride o auto-switch em login/logout reais — validei os 3 cenários). O bug remanescente está no **inicializador do `useState<TabId>`**, não no guard:
+
+  `CharacterListPage.tsx:256-260` (idêntico em `NavioListPage.tsx:371-375`):
+  ```tsx
+  const [activeTab, setActiveTab] = useState<TabId>(() => {
+    const stored = readStoredCharacterTab()
+    if (stored && (stored !== 'meus' || user)) return stored
+    return user ? 'meus' : 'explorar'
+  })
+  ```
+  Esse inicializador roda de forma síncrona no **primeiro render**, no mesmo commit em que `AuthProvider` (`authContext.tsx:19-21`) ainda não resolveu `getSession()` — ou seja, `user` é **sempre `null`** neste ponto exato, mesmo que o usuário esteja de fato logado (é garantia do React: um `.then()` de Promise nunca resolve de forma síncrona no primeiro render). Para `stored === 'meus'`: `(stored !== 'meus' || user)` = `(false || null)` = falsy **sempre**, independente do usuário real — a condição cai para `return user ? 'meus' : 'explorar'` com `user` ainda `null`, retornando **`'explorar'`**. Repare que essa mesma expressão para `stored !== 'meus'` (ex.: `'explorar'`/`'arcadia'`) é sempre truthy e funciona bem — o bug é específico e determinístico para `stored === 'meus'`.
+
+  Na sequência, quando `getSession()` resolve (`authLoading` vira `false`, `user` vira o objeto real), o efeito-guard (`CharacterListPage.tsx:310-321`) trata essa **primeira** resolução como "hidratação inicial" por design (`hasSettledAuthTab.current` ainda `false` → marca `true` e `return`, sem chamar `setActiveTab`) — exatamente o comportamento que o próprio ciclo 2 foi pedido para implementar. Resultado: `activeTab` nunca é corrigido de volta para `'meus'`; fica travado em `'explorar'`.
+
+  Pior: o `useEffect(() => sessionStorage.setItem(KEY, activeTab), [activeTab])` (`CharacterListPage.tsx:323-329`; `NavioListPage.tsx:425-431`) dispara no mount com esse `activeTab` já errado e **sobrescreve** o valor `'meus'` salvo no `sessionStorage` por `'explorar'` — não é só um glitch visual de um render, o dado persistido fica corrompido para o resto da sessão do navegador (próximos F5 continuam vendo `'explorar'` como valor salvo).
+
+  **Reprodução concreta:** usuário logado, aba ativa "Meus Personagens" (`sessionStorage` = `'meus'`) → F5 em `/personagens` → página carrega na aba **"Explorar"**, não "Meus Personagens". Isso é exatamente o critério de aceite da Subtask 1/2 ("um F5/reload em `/personagens` preserva a última aba selecionada") e é o cenário mais comum de todos (usuário logado gerenciando as próprias fichas, dá F5). Mesmo bug, mesmo mecanismo, em `NavioListPage.tsx`.
+
+  Casos que **funcionam** corretamente (para não gerar retrabalho desnecessário): F5 com aba salva `'explorar'`/`'arcadia'` (preserva, pois o inicializador retorna `stored` direto sem depender de `user`); troca de aba dentro da mesma sessão SPA (sem reload — `user` já está resolvido antes do mount da página); login/logout reais após a página já carregada; usuário sempre deslogado (nenhum `setActiveTab` indevido); F5 deslogado com `stored === 'meus'` de uma sessão antiga (cai para `'explorar'` corretamente, sem travar numa aba oculta).
+
+**Veredito:** ❌ **REPROVADO — 2º ciclo, limite do protocolo atingido (máx. 2 ciclos, conforme `AGENTS.md:100`).** Issue 2 e o build estão corretos; Issue 1 tem uma correção real mas incompleta — falha exatamente no cenário mais comum do critério de aceite original. Não tentei corrigir. Próximo passo cabe ao orquestrador/usuário: abrir uma nova rodada (fora da contagem dos 2 ciclos deste protocolo, mesmo padrão já usado na task "Bug: character_state..." mais abaixo neste arquivo) para corrigir o inicializador — por exemplo, atrasando a leitura do `useState` até `authLoading` resolver (ex.: inicializar `activeTab` sempre a partir de `stored ?? (user ? 'meus' : 'explorar')`, sem a condicional extra em `user`, já que o próprio guard pós-hidratação existe justamente para corrigir esse valor quando necessário — ou renderizar um skeleton até `authLoading` resolver antes de decidir a aba). Não sugiro a implementação final; é decisão do Executor/Planner na próxima rodada.
+
+**Correção do Executor (rodada extra, fora da contagem dos 2 ciclos, 2026-08-28):**
+
+Causa raiz confirmada exatamente como o Validator descreveu: o inicializador do `useState<TabId>` só confiava em `stored === 'meus'` se `user` já estivesse resolvido *no mesmo render síncrono* — o que nunca acontece, já que `getSession()` é sempre assíncrono. Corrigido em `CharacterListPage.tsx` (~linhas 256-264) e `NavioListPage.tsx` (~linhas 371-379): o inicializador agora confia **sempre** em qualquer `stored` presente (sem checar `user`), e um novo `useRef` (`usedStoredTab`) registra se essa preferência veio do `sessionStorage`. A reconciliação acontece no mesmo "settle" (1ª vez que `authLoading` vira `false`) que já existia — mas agora ela corrige em vez de só pular:
+
+```tsx
+const usedStoredTab = useRef(false)
+const [activeTab, setActiveTab] = useState<TabId>(() => {
+  const stored = readStoredCharacterTab()
+  if (stored) {
+    usedStoredTab.current = true
+    return stored
+  }
+  return user ? 'meus' : 'explorar'
+})
+...
+useEffect(() => {
+  if (authLoading) return
+  if (!hasSettledAuthTab.current) {
+    hasSettledAuthTab.current = true
+    if (usedStoredTab.current) {
+      setActiveTab(prev => (prev === 'meus' && !user) ? 'explorar' : prev)
+    } else {
+      setActiveTab(user ? 'meus' : 'explorar')
+    }
+    return
+  }
+  if (user) setActiveTab('meus')
+  else setActiveTab(prev => prev === 'meus' ? 'explorar' : prev)
+}, [user, authLoading])
+```
+
+Cobertura verificada manualmente (leitura de código) para os 5 cenários que o Validator listou no ciclo 2:
+- Sem tab salva + logado → `usedStoredTab.current=false` → `setActiveTab(user ? 'meus' : 'explorar')` recalcula com `user` já resolvido → `'meus'`. Preservado.
+- Sem tab salva + deslogado → idem → `'explorar'`. Preservado.
+- Tab salva `'meus'` + resolve logado (**o bug reportado**) → inicializador agora retorna `'meus'` direto (otimista, sem depender de `user`); no settle, `prev==='meus' && !user` é `false` (`user` existe) → mantém `'meus'`. **Corrigido.**
+- Tab salva `'meus'` + resolve deslogado (sessão expirada) → inicializador retorna `'meus'` otimisticamente; no settle, `prev==='meus' && !user` é `true` → corrige para `'explorar'`. Fallback gracioso preservado.
+- Tab salva `'explorar'`/`'arcadia'` → inicializador retorna direto; no settle, `prev==='meus'` é sempre falso para essas duas → nunca mexe. Preservado.
+- Login/logout reais depois da página já carregada → `hasSettledAuthTab.current` já é `true` nesse ponto → cai no branch original (`if (user) setActiveTab('meus') else ...`), sem regressão.
+
+**Build (rodada extra):** `npm run build` (`tsc -b && vite build`) rodado do zero — `✓ built in 2m 11s`, `exited with code 0`, zero erros de TypeScript. (Uma tentativa anterior falhou com `sh: .../tsc: Operation timed out` — erro transiente de spawn por carga alta da máquina com múltiplas sessões concorrentes no mesmo repositório, não um erro de TypeScript; a repetição rodou limpa.)
+
+**Validação do Validator — 3º ciclo / rodada extra (2026-08-28): ✅ APROVADO.**
+
+Reli `CharacterListPage.tsx` e `NavioListPage.tsx` na íntegra dos trechos relevantes (não confiei no resumo do orquestrador) e tracei manualmente todos os cenários do critério de aceite original, mais o caso de borda pedido:
+
+- **Tab salva `'meus'` + usuário logado ao resolver (o bug do F5 reportado no ciclo 2) → `'meus'` mantida.** `CharacterListPage.tsx:257-264` (idêntico em `NavioListPage.tsx:372-379`): o inicializador do `useState<TabId>` agora retorna `stored` sempre que existir, sem depender de `user` (que é sempre `null` no 1º render — garantia do React, já que `getSession()` nunca resolve de forma síncrona) — e marca `usedStoredTab.current = true`. No 1º "settle" (`CharacterListPage.tsx:318-334`; `NavioListPage.tsx:425-438`, quando `authLoading` vira `false` pela 1ª vez), como `usedStoredTab.current` é `true`: `setActiveTab(prev => (prev === 'meus' && !user) ? 'explorar' : prev)` — `user` já é o objeto real nesse ponto, `!user` é `false`, a condição não dispara, `'meus'` é preservada. **Bug do ciclo 2 corrigido.**
+- **Tab salva `'meus'` + usuário deslogado ao resolver (sessão expirada) → cai para `'explorar'`.** Mesmo ramo, mas `!user` é `true` → `setActiveTab(...)` resolve para `'explorar'`. Fallback gracioso preservado, sem travar em aba oculta de `visibleTabs`.
+- **Tab salva `'explorar'`/`'arcadia'` → mantida independente do auth.** `prev === 'meus'` é sempre falso para essas duas, a expressão do settle nunca mexe nelas, com ou sem usuário resolvido.
+- **Sem tab salva + logado → `'meus'`; sem tab salva + deslogado → `'explorar'`.** `usedStoredTab.current` fica `false` (nunca setado), o settle cai no `else` (`setActiveTab(user ? 'meus' : 'explorar')`), recalculado com `user` já resolvido — comportamento pré-existente preservado.
+- **Login/logout real depois do 1º settle → continua forçando troca de aba como antes.** `hasSettledAuthTab.current` já é `true` nesse ponto, cai direto no branch original (`if (user) setActiveTab('meus') else setActiveTab(prev => prev === 'meus' ? 'explorar' : prev)`) — sem nenhuma mudança de comportamento aqui, sem regressão.
+- **Usuário sempre deslogado (nunca há transição real) → nenhum `setActiveTab` indevido além do settle inicial**, que roda 1x só e resolve corretamente conforme os casos acima.
+- **Caso de borda pedido pelo orquestrador — `sessionStorage` de `/personagens` vs `/navios`:** chaves `arcadia_character_list_tab` (`CharacterListPage.tsx:234`) e `arcadia_ship_list_tab` (`NavioListPage.tsx:352`) são distintas; `grep` confirma que cada página só lê/escreve a própria chave — nenhuma interferência entre as duas listas.
+- O persist effect (`CharacterListPage.tsx:336-342`; `NavioListPage.tsx:440-446`) agora persiste o valor final já corrigido — não há mais o "double-write" que corrompia o `sessionStorage` no ciclo 2.
+
+**Observação secundária, não bloqueante:** na janela assíncrona entre o mount e `authLoading` resolver (tipicamente poucos ms), se a tab salva era `'meus'`, o conteúdo de "Meus Personagens" pode piscar vazio por um instante — o fetch guiado por `[user]` roda 1ª vez com `user=null` antes de `getSession()` resolver, e `visibleTabs` (que filtra por `user`) momentaneamente não lista o botão "Meus Personagens" mesmo com o conteúdo já sendo o dele. Esse comportamento é pré-existente ao padrão `visibleTabs`/fetch-por-`user`, não foi introduzido por este fix, e não está coberto pelo critério de aceite original (que fala do estado final pós-reload, não de um flash transitório de alguns milissegundos). Não bloqueia a aprovação.
+
+**Build:** rodei `npx tsc -b --force` eu mesmo, do zero, duas vezes de forma independente (não confiei no relatório do orquestrador) — ambas com `exit code 0` e saída vazia (sem erros de TypeScript).
+
+`git diff --stat -- 'chapters/*'` continua vazio; escopo do diff (`git diff --stat`) continua restrito a `CampaignListPage.tsx`, `CampaignPage.tsx`, `CharacterListPage.tsx`, `NavioListPage.tsx` + `Sprint.md`.
+
+**Veredito final:** ✅ **APROVADO.** Os 2 issues do ciclo 2 (F5 não preservava a aba `'meus'`; intro da campanha suprimida em cliques legítimos) estão corrigidos e verificados por leitura direta de código + build independente, cobrindo os 6 cenários do critério de aceite original mais o caso de borda das duas chaves de `sessionStorage` distintas. Task movida para Concluídos — resumo dos 3 ciclos na nota de conclusão abaixo.
+
+**Resumo dos 3 ciclos:** ciclo 1 REPROVADO (2 issues: F5 não preservava aba + intro suprimida em cliques legítimos) → Executor corrigiu ambos; ciclo 2 REPROVADO (issue da intro confirmado corrigido, mas o fix do F5 tinha um caso remanescente: inicializador do `useState` sempre lia `user=null` no 1º render, então tab salva `'meus'` caía para `'explorar'` e ficava presa lá) → Executor corrigiu com um `useRef` (`usedStoredTab`) distinguindo "veio do sessionStorage" de "calculado do zero", reconciliando no mesmo settle; ciclo 3 (rodada extra, fora da contagem de 2 ciclos do protocolo) APROVADO após tracing completo dos 6 cenários + build independente.
+
+---
+
 ### Bug: character_state não sincroniza via Realtime para o GM (RLS bloqueia SELECT)
 **Origem:** /task investigar por que quando o DONO de uma ficha altera Exaustão (ou qualquer campo de `character_state`: conditions, pe_checks, skill_modifiers, defense_modifiers, dice_log), a mudança não sincroniza via Realtime para o GM da campanha vendo a mesma ficha — é estrutural, afeta a tabela inteira, não só exaustão. O caminho inverso (GM altera → dono vê) já funciona normalmente.
 **Adicionada:** 2026-08-28 · **Validator:** APROVADO · **Concluída:** 2026-08-28

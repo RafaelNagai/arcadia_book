@@ -349,18 +349,39 @@ const TABS: { id: TabId; label: string }[] = [
   { id: 'arcadia', label: 'Arcádia' },
 ]
 
+const SHIP_TAB_STORAGE_KEY = 'arcadia_ship_list_tab'
+
+function readStoredShipTab(): TabId | null {
+  try {
+    const stored = sessionStorage.getItem(SHIP_TAB_STORAGE_KEY)
+    if (stored === 'meus' || stored === 'explorar' || stored === 'arcadia') return stored
+  } catch {
+    // sessionStorage indisponível (ex: modo privado)
+  }
+  return null
+}
+
 export function NavioListPage() {
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const [myShips, setMyShips] = useState<ApiShip[]>([])
   const [publicShips, setPublicShips] = useState<ApiShip[]>([])
   const [loadingMine, setLoadingMine] = useState(true)
   const [loadingPublic, setLoadingPublic] = useState(true)
-  const [activeTab, setActiveTab] = useState<TabId>(() => user ? 'meus' : 'explorar')
+  const usedStoredTab = useRef(false)
+  const [activeTab, setActiveTab] = useState<TabId>(() => {
+    const stored = readStoredShipTab()
+    if (stored) {
+      usedStoredTab.current = true
+      return stored
+    }
+    return user ? 'meus' : 'explorar'
+  })
   const [showCreate, setShowCreate] = useState(false)
   const [showJoin, setShowJoin] = useState(false)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
   const styleRef = useRef<HTMLStyleElement | null>(null)
+  const hasSettledAuthTab = useRef(false)
 
   useEffect(() => {
     const el = document.createElement('style')
@@ -392,10 +413,37 @@ export function NavioListPage() {
       .finally(() => setLoadingPublic(false))
   }, [user])
 
+  // wait out AuthProvider's initial getSession() resolution (authLoading); the
+  // lazy useState initializer above always runs before that resolves (user is
+  // still null there even for an already-logged-in session, e.g. on F5). So on
+  // the first settle we don't blindly force a tab: if a tab was restored from
+  // sessionStorage we only correct it if it turns out wrong (stuck on 'meus'
+  // while actually logged out) — otherwise we trust it, including 'meus'
+  // resolving true once the real user loads in. With no stored preference we
+  // compute the tab fresh from the resolved user. Transitions observed after
+  // that first settle are treated as real login/logout events.
   useEffect(() => {
+    if (authLoading) return
+    if (!hasSettledAuthTab.current) {
+      hasSettledAuthTab.current = true
+      if (usedStoredTab.current) {
+        setActiveTab(prev => (prev === 'meus' && !user) ? 'explorar' : prev)
+      } else {
+        setActiveTab(user ? 'meus' : 'explorar')
+      }
+      return
+    }
     if (user) setActiveTab('meus')
     else setActiveTab(prev => prev === 'meus' ? 'explorar' : prev)
-  }, [user])
+  }, [user, authLoading])
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(SHIP_TAB_STORAGE_KEY, activeTab)
+    } catch {
+      // sessionStorage indisponível (ex: modo privado)
+    }
+  }, [activeTab])
 
   async function confirmDelete() {
     if (!pendingDeleteId) return
