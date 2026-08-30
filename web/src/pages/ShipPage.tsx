@@ -128,7 +128,17 @@ export function ShipPage() {
     onStateUpdate: data => {
       const pool = data.moral_pool as number[] | undefined
       const log = data.moral_log as ShipStateData['moralLog'] | undefined
-      if (pool && log) setShipState(prev => prev ? { ...prev, moralPool: pool, moralLog: log } : prev)
+      if (!pool || !log) return
+      setShipState(prev => prev
+        ? { ...prev, moralPool: pool, moralLog: log }
+        : {
+            id: data.id as string,
+            shipId: data.ship_id as string,
+            moralPool: pool,
+            moralLog: log,
+            createdAt: data.created_at as string,
+            updatedAt: data.updated_at as string,
+          })
     },
     onCrewChange: () => { fetchShip().catch(() => {}) },
   })
