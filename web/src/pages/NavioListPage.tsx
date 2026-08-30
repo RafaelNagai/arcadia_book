@@ -496,7 +496,7 @@ export function NavioListPage() {
             </div>
 
             {activeTab === 'meus' && (
-              <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
+              <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0, flexWrap: 'wrap' }}>
                 <motion.button
                   initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                   onClick={() => user ? setShowJoin(true) : navigate('/login')}
@@ -523,7 +523,7 @@ export function NavioListPage() {
             )}
           </div>
 
-          <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid rgba(255,255,255,0.06)', overflowX: 'auto' }}>
             {visibleTabs.map(tab => {
               const isActive = activeTab === tab.id
               const count = counts[tab.id]

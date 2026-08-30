@@ -257,7 +257,7 @@ export function ShipPage() {
       className="min-h-screen" style={{ background: 'var(--color-abyss)' }}>
 
       {/* Hero */}
-      <div style={{ position: 'relative', height: 280, overflow: 'hidden' }}>
+      <div className="h-56 sm:h-[280px]" style={{ position: 'relative', overflow: 'hidden' }}>
         {ship.imageUrl ? (
           <img src={ship.imageUrl} alt={ship.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (
@@ -291,8 +291,8 @@ export function ShipPage() {
           </>
         )}
 
-        <div className="max-w-5xl mx-auto" style={{ position: 'absolute', left: 0, right: 0, bottom: '1.5rem', padding: '0 2rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-8" style={{ position: 'absolute', left: 0, right: 0, bottom: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.6rem', rowGap: '0.4rem', marginBottom: '0.5rem' }}>
             <span style={{
               fontSize: '0.62rem', fontFamily: 'var(--font-ui)', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase',
               color: ACCENT, background: 'rgba(80,200,232,0.15)', border: '1px solid rgba(80,200,232,0.35)', padding: '0.15rem 0.5rem', borderRadius: 3,
@@ -314,7 +314,7 @@ export function ShipPage() {
               </button>
             )}
           </div>
-          <h1 className="font-display font-bold text-4xl" style={{ color: '#EEF4FC', letterSpacing: '-0.01em' }}>
+          <h1 className="font-display font-bold text-3xl sm:text-4xl" style={{ color: '#EEF4FC', letterSpacing: '-0.01em' }}>
             {ship.name}
           </h1>
           {ship.motto && (
@@ -325,7 +325,7 @@ export function ShipPage() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-8" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) 300px', gap: '2rem' }}>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', minWidth: 0 }}>
 
           {/* Stats */}
@@ -392,7 +392,7 @@ export function ShipPage() {
               </p>
             )}
             {isOwner && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1rem' }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" style={{ marginTop: '1rem' }}>
                 <div>
                   <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', marginBottom: '0.3rem' }}>Lema</p>
                   <EditableField label="Lema" value={ship.motto} onSave={v => patchShip({ motto: v })} />

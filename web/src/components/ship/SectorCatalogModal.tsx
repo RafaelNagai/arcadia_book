@@ -29,11 +29,11 @@ export function SectorCatalogModal({ installed, slotsUsed, slotsTotal, onClose, 
         onClick={e => e.stopPropagation()}
         style={{
           background: '#0A0F1E', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8,
-          width: 640, maxWidth: '100%', maxHeight: '100%', display: 'flex', flexDirection: 'column',
+          width: 640, maxWidth: '100%', maxHeight: 'calc(100dvh - 4rem)', display: 'flex', flexDirection: 'column',
           boxShadow: '0 24px 64px rgba(0,0,0,0.85)',
         }}
       >
-        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
           <div>
             <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 700, color: '#EEF4FC' }}>
               Setores
@@ -46,7 +46,7 @@ export function SectorCatalogModal({ installed, slotsUsed, slotsTotal, onClose, 
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '1.2rem', cursor: 'pointer' }}>✕</button>
         </div>
 
-        <div style={{ overflowY: 'auto', padding: '0.75rem 1rem' }}>
+        <div style={{ overflowY: 'auto', padding: '0.75rem 1rem', flex: 1, minHeight: 0 }}>
           {SECTOR_CATALOG.map(category => {
             const isOpen = openCategory === category.key
             const installedCount = installed.filter(s => s.category === category.key).length
