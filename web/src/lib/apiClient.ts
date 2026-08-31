@@ -447,6 +447,9 @@ export const api = {
     leave: (shipId: string, characterId: string) =>
       apiFetch(`/ships/${shipId}/leave`, { method: 'POST', body: JSON.stringify({ character_id: characterId }) }),
 
+    getMembership: (characterId: string) =>
+      apiFetch<{ membership: unknown }>(`/ships/character/${characterId}/membership`),
+
     state: {
       get: (shipId: string) => apiFetch<{ state: ShipStateData }>(`/ships/${shipId}/state`),
 

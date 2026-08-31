@@ -98,6 +98,13 @@ export async function shipsController(fastify: FastifyInstance) {
     return reply.status(204).send()
   })
 
+  fastify.get('/character/:charId/membership', async (req, reply) => {
+    await fastify.authenticate(req)
+    const charId = (req.params as { charId: string }).charId
+    const membership = await svc.getMembership(charId)
+    return reply.send({ membership })
+  })
+
   fastify.get('/:id/state', async (req, reply) => {
     const { id } = UUIDParamSchema.parse(req.params)
     const token = (req.headers.authorization ?? '').slice(7)

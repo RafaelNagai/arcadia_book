@@ -129,6 +129,10 @@ export class ShipsService {
     return this.repo.addCrew(ship.id, characterId)
   }
 
+  async getMembership(characterId: string) {
+    return this.repo.findCrewMembership(characterId)
+  }
+
   async leave(shipId: string, characterId: string, userId: string) {
     const ship = await this.repo.findById(shipId)
     if (!ship) throw new NotFoundError('Navio não encontrado')

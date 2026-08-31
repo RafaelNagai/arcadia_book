@@ -9,7 +9,6 @@ import { computeSlotsUsed } from '@/data/shipSectorCatalog'
 import { useAuth } from '@/lib/authContext'
 import { api } from '@/lib/apiClient'
 import { ShipSummaryCard } from '@/components/ship/ShipSummaryCard'
-import type { CampaignChar } from '@/data/campaignTypes'
 
 const PRESET_SHIPS = (shipsData as Ship[]).map(normalizeShip)
 
@@ -226,121 +225,6 @@ function CreateShipModal({ onClose, onCreated }: { onClose: () => void; onCreate
   )
 }
 
-function JoinShipModal({ onClose, onJoined }: { onClose: () => void; onJoined: (shipId: string) => void }) {
-  const [characters, setCharacters] = useState<CampaignChar[] | null>(null)
-  const [characterId, setCharacterId] = useState('')
-  const [code, setCode] = useState('')
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    api.characters.list()
-      .then(res => {
-        setCharacters(res.characters)
-        if (res.characters[0]) setCharacterId(res.characters[0].id)
-      })
-      .catch(() => setCharacters([]))
-  }, [])
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    if (!characterId || !code.trim()) return
-    setSaving(true)
-    setError(null)
-    try {
-      const res = await api.ships.join(code.trim().toUpperCase(), characterId)
-      const membership = (res as { membership: { shipId: string } }).membership
-      onJoined(membership.shipId)
-    } catch (err) {
-      setError((err as Error).message)
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  const inputStyle: React.CSSProperties = {
-    width: '100%', padding: '0.65rem 0.85rem',
-    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)',
-    borderRadius: 4, color: 'var(--color-text-primary)',
-    fontFamily: 'var(--font-ui)', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box',
-  }
-  const labelStyle: React.CSSProperties = {
-    display: 'block', fontFamily: 'var(--font-ui)', fontSize: '0.7rem', fontWeight: 600,
-    letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: '0.4rem',
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      onClick={onClose}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(4px)',
-      }}
-    >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 12 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
-        transition={{ duration: 0.18 }}
-        onClick={e => e.stopPropagation()}
-        style={{
-          background: '#0A0F1E', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8,
-          padding: '1.75rem', width: 400, maxWidth: 'calc(100vw - 2rem)', boxShadow: '0 24px 64px rgba(0,0,0,0.85)',
-        }}
-      >
-        <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 700, color: '#EEF4FC', marginBottom: '1.25rem' }}>
-          Entrar em uma Tripulação
-        </p>
-
-        {characters !== null && characters.length === 0 ? (
-          <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
-            Você precisa ter uma ficha de personagem para entrar em uma tripulação.
-          </p>
-        ) : (
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div>
-              <label style={labelStyle}>Personagem</label>
-              <select value={characterId} onChange={e => setCharacterId(e.target.value)} style={inputStyle}>
-                {characters === null && <option>Carregando…</option>}
-                {characters?.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
-            </div>
-            <div>
-              <label style={labelStyle}>Código de Convite</label>
-              <input
-                value={code} onChange={e => setCode(e.target.value.toUpperCase())}
-                required placeholder="Ex: A1B2C3D4" style={{ ...inputStyle, letterSpacing: '0.15em', textTransform: 'uppercase' }}
-              />
-            </div>
-
-            {error && (
-              <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.75rem', color: '#E07070', background: 'rgba(200,60,60,0.1)', border: '1px solid rgba(200,60,60,0.25)', borderRadius: 4, padding: '0.5rem 0.75rem' }}>
-                {error}
-              </p>
-            )}
-
-            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', marginTop: '0.25rem' }}>
-              <button type="button" onClick={onClose}
-                style={{ padding: '0.5rem 1rem', borderRadius: 4, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.45)', fontFamily: 'var(--font-ui)', fontSize: '0.75rem', cursor: 'pointer' }}>
-                Cancelar
-              </button>
-              <button type="submit" disabled={saving || !characterId || !code.trim()}
-                style={{
-                  padding: '0.5rem 1.25rem', borderRadius: 4, border: 'none',
-                  background: saving || !characterId || !code.trim() ? 'rgba(255,255,255,0.05)' : '#50C8E8',
-                  color: saving || !characterId || !code.trim() ? 'rgba(255,255,255,0.2)' : '#0A0A0A',
-                  fontFamily: 'var(--font-ui)', fontSize: '0.75rem', fontWeight: 700,
-                  letterSpacing: '0.12em', textTransform: 'uppercase', cursor: saving ? 'not-allowed' : 'pointer',
-                }}>
-                {saving ? 'Entrando…' : 'Entrar'}
-              </button>
-            </div>
-          </form>
-        )}
-      </motion.div>
-    </motion.div>
-  )
-}
-
 type TabId = 'meus' | 'explorar' | 'arcadia'
 
 const TABS: { id: TabId; label: string }[] = [
@@ -378,7 +262,6 @@ export function NavioListPage() {
     return user ? 'meus' : 'explorar'
   })
   const [showCreate, setShowCreate] = useState(false)
-  const [showJoin, setShowJoin] = useState(false)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
   const styleRef = useRef<HTMLStyleElement | null>(null)
   const hasSettledAuthTab = useRef(false)
@@ -497,17 +380,6 @@ export function NavioListPage() {
 
             {activeTab === 'meus' && (
               <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0, flexWrap: 'wrap' }}>
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-                  onClick={() => user ? setShowJoin(true) : navigate('/login')}
-                  style={{
-                    display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.1rem', borderRadius: 4,
-                    background: 'rgba(80,200,232,0.1)', border: '1px solid rgba(80,200,232,0.35)', color: '#50C8E8',
-                    fontFamily: 'var(--font-ui)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.15em',
-                    textTransform: 'uppercase', cursor: 'pointer', whiteSpace: 'nowrap',
-                  }}>
-                  🔑 Entrar com Código
-                </motion.button>
                 <motion.button
                   initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                   onClick={() => user ? setShowCreate(true) : navigate('/login')}
@@ -669,15 +541,6 @@ export function NavioListPage() {
           <CreateShipModal
             onClose={() => setShowCreate(false)}
             onCreated={ship => { setShowCreate(false); navigate(`/navio/${ship.id}`) }}
-          />
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {showJoin && (
-          <JoinShipModal
-            onClose={() => setShowJoin(false)}
-            onJoined={shipId => { setShowJoin(false); navigate(`/navio/${shipId}`) }}
           />
         )}
       </AnimatePresence>

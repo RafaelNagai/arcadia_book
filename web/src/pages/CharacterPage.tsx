@@ -319,6 +319,20 @@ export function CharacterPage() {
   const [joinCode, setJoinCode] = useState("");
   const [joiningCampaign, setJoiningCampaign] = useState(false);
   const [joinError, setJoinError] = useState<string | null>(null);
+
+  // Ship crew membership
+  interface ShipMembership {
+    id: string;
+    shipId: string;
+    ship: { id: string; name: string };
+  }
+
+  const [shipMembership, setShipMembership] = useState<
+    ShipMembership | null | undefined
+  >(undefined);
+  const [shipJoinCode, setShipJoinCode] = useState("");
+  const [joiningShip, setJoiningShip] = useState(false);
+  const [shipJoinError, setShipJoinError] = useState<string | null>(null);
   const [skillTest, setSkillTest] = useState<SkillTestData | null>(null);
   const [pendingDamageRoll, setPendingDamageRoll] = useState<{
     damageStr: string;
@@ -645,6 +659,46 @@ export function CharacterPage() {
     if (!id || !membership) return;
     await api.campaigns.leave(membership.campaignId, id);
     setMembership(null);
+  }
+
+  // Load ship crew membership for owned API chars
+  useEffect(() => {
+    if (!id || !isApiChar || !owned) {
+      setShipMembership(null);
+      return;
+    }
+    api.ships
+      .getMembership(id)
+      .then((res) =>
+        setShipMembership(
+          (res as { membership: ShipMembership | null }).membership,
+        ),
+      )
+      .catch(() => setShipMembership(null));
+  }, [id, isApiChar, owned]);
+
+  async function handleJoinShip() {
+    if (!id || !shipJoinCode.trim()) return;
+    setJoiningShip(true);
+    setShipJoinError(null);
+    try {
+      await api.ships.join(shipJoinCode.trim().toUpperCase(), id);
+      const res = await api.ships.getMembership(id);
+      setShipMembership(
+        (res as { membership: ShipMembership | null }).membership,
+      );
+      setShipJoinCode("");
+    } catch (err) {
+      setShipJoinError((err as Error).message);
+    } finally {
+      setJoiningShip(false);
+    }
+  }
+
+  async function handleLeaveShip() {
+    if (!id || !shipMembership) return;
+    await api.ships.leave(shipMembership.shipId, id);
+    setShipMembership(null);
   }
 
   async function handleToggleVisibility() {
@@ -1236,6 +1290,158 @@ export function CharacterPage() {
                       }}
                     >
                       {joinError}
+                    </p>
+                  )}
+                </div>
+              )}
+            </section>
+          )}
+
+          {/* ── Navio ─────────────────────────────────────── */}
+          {owned && isApiChar && shipMembership !== undefined && (
+            <section>
+              <SectionLabel accent={accent.text}>Navio</SectionLabel>
+              {shipMembership ? (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "0.75rem 1rem",
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: 4,
+                    gap: "0.75rem",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <div>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-ui)",
+                        fontSize: "0.7rem",
+                        color: "var(--color-text-muted)",
+                        marginBottom: "0.2rem",
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Vinculado a
+                    </p>
+                    <button
+                      onClick={() =>
+                        navigate(`/navio/${shipMembership.shipId}`)
+                      }
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontSize: "1rem",
+                        fontWeight: 700,
+                        color: accent.text,
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        padding: 0,
+                      }}
+                    >
+                      {shipMembership.ship.name}
+                    </button>
+                  </div>
+                  <button
+                    onClick={handleLeaveShip}
+                    style={{
+                      padding: "0.4rem 0.85rem",
+                      borderRadius: 4,
+                      background: "rgba(200,60,60,0.1)",
+                      border: "1px solid rgba(200,60,60,0.3)",
+                      color: "#E07070",
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.72rem",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Sair da tripulação
+                  </button>
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.8rem",
+                      color: "var(--color-text-muted)",
+                    }}
+                  >
+                    Este personagem não está em nenhuma tripulação.
+                  </p>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    <input
+                      value={shipJoinCode}
+                      onChange={(e) =>
+                        setShipJoinCode(e.target.value.toUpperCase())
+                      }
+                      placeholder="Código de Convite"
+                      maxLength={10}
+                      style={{
+                        flex: 1,
+                        padding: "0.55rem 0.75rem",
+                        background: "rgba(255,255,255,0.04)",
+                        border: "1px solid rgba(255,255,255,0.12)",
+                        borderRadius: 4,
+                        color: "var(--color-text-primary)",
+                        fontFamily: "var(--font-display)",
+                        fontSize: "0.95rem",
+                        letterSpacing: "0.2em",
+                        textTransform: "uppercase",
+                        outline: "none",
+                      }}
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && handleJoinShip()
+                      }
+                    />
+                    <button
+                      onClick={handleJoinShip}
+                      disabled={joiningShip || !shipJoinCode.trim()}
+                      style={{
+                        padding: "0.55rem 1rem",
+                        borderRadius: 4,
+                        border: "none",
+                        background:
+                          shipJoinCode.trim() && !joiningShip
+                            ? accent.text
+                            : "rgba(255,255,255,0.05)",
+                        color:
+                          shipJoinCode.trim() && !joiningShip
+                            ? "#0A0A0A"
+                            : "rgba(255,255,255,0.2)",
+                        fontFamily: "var(--font-ui)",
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        letterSpacing: "0.1em",
+                        textTransform: "uppercase",
+                        cursor:
+                          shipJoinCode.trim() && !joiningShip
+                            ? "pointer"
+                            : "not-allowed",
+                      }}
+                    >
+                      {joiningShip ? "…" : "Entrar"}
+                    </button>
+                  </div>
+                  {shipJoinError && (
+                    <p
+                      style={{
+                        fontFamily: "var(--font-ui)",
+                        fontSize: "0.75rem",
+                        color: "#E07070",
+                      }}
+                    >
+                      {shipJoinError}
                     </p>
                   )}
                 </div>
