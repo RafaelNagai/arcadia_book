@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import shipsData from '@ships'
-import type { Ship } from '@/data/shipTypes'
+import type { Ship, NormalizedShip } from '@/data/shipTypes'
 import { normalizeShip } from '@/data/shipTypes'
 import type { ApiShip } from '@/data/shipTypes'
 import { computeSlotsUsed } from '@/data/shipSectorCatalog'
@@ -11,6 +11,14 @@ import { api } from '@/lib/apiClient'
 import { ShipSummaryCard } from '@/components/ship/ShipSummaryCard'
 
 const PRESET_SHIPS = (shipsData as Ship[]).map(normalizeShip)
+
+function isPresetShip(ship: ApiShip | NormalizedShip): ship is NormalizedShip {
+  return 'lore' in ship
+}
+
+function deriveShipKind(type: string): 'Material' | 'Organico' {
+  return /^org/i.test(type) ? 'Organico' : 'Material'
+}
 
 const SHIP_TYPES: { value: 'Material' | 'Organico'; label: string }[] = [
   { value: 'Material', label: 'Material' },
@@ -263,6 +271,8 @@ export function NavioListPage() {
   })
   const [showCreate, setShowCreate] = useState(false)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+  const [pendingDuplicateShip, setPendingDuplicateShip] = useState<ApiShip | NormalizedShip | null>(null)
+  const [duplicatingId, setDuplicatingId] = useState<string | null>(null)
   const styleRef = useRef<HTMLStyleElement | null>(null)
   const hasSettledAuthTab = useRef(false)
 
@@ -333,6 +343,48 @@ export function NavioListPage() {
     await api.ships.delete(pendingDeleteId)
     setMyShips(prev => prev.filter(s => s.id !== pendingDeleteId))
     setPendingDeleteId(null)
+  }
+
+  async function handleDuplicate(ship: ApiShip | NormalizedShip) {
+    if (duplicatingId) return
+    setDuplicatingId(ship.id)
+    try {
+      if (!isPresetShip(ship)) {
+        const res = await api.ships.duplicate(ship.id)
+        setMyShips(prev => [res.ship, ...prev])
+      } else {
+        const res = await api.ships.create({
+          name: `Cópia de ${ship.name}`,
+          porte: ship.size,
+          hp: ship.hp,
+          slots_total: ship.slots.total,
+          description: ship.lore,
+          type: deriveShipKind(ship.type),
+          is_public: false,
+          sectors: [],
+        })
+        let newShip = res.ship
+        if (ship.image) {
+          try {
+            const imgRes = await fetch(ship.image)
+            const blob = await imgRes.blob()
+            const ext = ship.image.split('.').pop()?.split('?')[0] ?? 'jpg'
+            const file = new File([blob], `cover.${ext}`, { type: blob.type || 'image/jpeg' })
+            const { url } = await api.upload.shipImage(newShip.id, file)
+            const updated = await api.ships.update(newShip.id, { image_url: url })
+            newShip = updated.ship
+          } catch {
+            // image upload failed, ship still created without image
+          }
+        }
+        setMyShips(prev => [newShip, ...prev])
+      }
+      setActiveTab('meus')
+    } catch (err) {
+      alert((err as Error).message)
+    } finally {
+      setDuplicatingId(null)
+    }
   }
 
   const pendingShip = myShips.find(s => s.id === pendingDeleteId)
@@ -500,16 +552,35 @@ export function NavioListPage() {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {publicShips.map((ship, i) => (
-                    <ShipSummaryCard
-                      key={ship.id}
-                      index={i}
-                      to={`/navio/${ship.id}`}
-                      ship={{
-                        id: ship.id, name: ship.name, subtitle: ship.motto || ship.porte,
-                        imageUrl: ship.imageUrl, type: ship.type, hp: ship.hp, currentHp: ship.currentHp,
-                        slotsTotal: ship.slotsTotal, slotsUsed: computeSlotsUsed(ship.sectors),
-                      }}
-                    />
+                    <div key={ship.id} style={{ position: 'relative' }}>
+                      <ShipSummaryCard
+                        index={i}
+                        to={`/navio/${ship.id}`}
+                        ship={{
+                          id: ship.id, name: ship.name, subtitle: ship.motto || ship.porte,
+                          imageUrl: ship.imageUrl, type: ship.type, hp: ship.hp, currentHp: ship.currentHp,
+                          slotsTotal: ship.slotsTotal, slotsUsed: computeSlotsUsed(ship.sectors),
+                        }}
+                      />
+                      {user && (
+                        <button
+                          onClick={() => setPendingDuplicateShip(ship)}
+                          disabled={duplicatingId === ship.id}
+                          title="Duplicar navio"
+                          style={{
+                            position: 'absolute', top: 8, right: 8, zIndex: 10,
+                            background: 'rgba(4,10,20,0.85)', border: '1px solid rgba(255,255,255,0.12)',
+                            borderRadius: 4, padding: '0.2rem 0.45rem', cursor: duplicatingId === ship.id ? 'not-allowed' : 'pointer',
+                            color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
+                            backdropFilter: 'blur(4px)',
+                          }}
+                          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#50C8E8' }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
+                        >
+                          {duplicatingId === ship.id ? '…' : '⎘'}
+                        </button>
+                      )}
+                    </div>
                   ))}
                 </div>
               )}
@@ -520,15 +591,35 @@ export function NavioListPage() {
             <motion.div key="arcadia" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.22 }}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {PRESET_SHIPS.map((ship, i) => (
-                  <ShipSummaryCard
-                    key={ship.id}
-                    index={i}
-                    ship={{
-                      id: ship.id, name: ship.name, subtitle: `${ship.type} · ${ship.size}`,
-                      imageUrl: ship.image, type: ship.size, hp: ship.hp,
-                      slotsTotal: ship.slots.total, slotsUsed: ship.slots.used,
-                    }}
-                  />
+                  <div key={ship.id} style={{ position: 'relative' }}>
+                    <ShipSummaryCard
+                      index={i}
+                      to={`/navio/arcadia/${ship.id}`}
+                      ship={{
+                        id: ship.id, name: ship.name, subtitle: `${ship.type} · ${ship.size}`,
+                        imageUrl: ship.image, type: ship.size, hp: ship.hp,
+                        slotsTotal: ship.slots.total, slotsUsed: ship.slots.used,
+                      }}
+                    />
+                    {user && (
+                      <button
+                        onClick={() => setPendingDuplicateShip(ship)}
+                        disabled={duplicatingId === ship.id}
+                        title="Duplicar navio"
+                        style={{
+                          position: 'absolute', top: 8, right: 8, zIndex: 10,
+                          background: 'rgba(4,10,20,0.85)', border: '1px solid rgba(255,255,255,0.12)',
+                          borderRadius: 4, padding: '0.2rem 0.45rem', cursor: duplicatingId === ship.id ? 'not-allowed' : 'pointer',
+                          color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)', fontSize: '0.7rem',
+                          backdropFilter: 'blur(4px)',
+                        }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#50C8E8' }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.35)' }}
+                      >
+                        {duplicatingId === ship.id ? '…' : '⎘'}
+                      </button>
+                    )}
+                  </div>
                 ))}
               </div>
             </motion.div>
@@ -573,6 +664,40 @@ export function NavioListPage() {
                 <button onClick={confirmDelete}
                   style={{ background: 'rgba(200,60,60,0.2)', border: '1px solid rgba(200,60,60,0.55)', borderRadius: 4, color: '#E07070', fontFamily: 'var(--font-ui)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', padding: '0.45rem 1rem', cursor: 'pointer' }}>
                   Excluir
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {pendingDuplicateShip && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(4px)' }}
+            onClick={() => setPendingDuplicateShip(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 12 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 8 }}
+              transition={{ duration: 0.18 }}
+              style={{ background: '#0A0F1E', border: '1px solid rgba(80,200,232,0.3)', borderRadius: 8, padding: '1.75rem', width: 360, maxWidth: 'calc(100vw - 2rem)', boxShadow: '0 24px 64px rgba(0,0,0,0.85)' }}
+              onClick={e => e.stopPropagation()}
+            >
+              <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, color: '#EEF4FC', marginBottom: '0.5rem' }}>
+                Duplicar navio?
+              </p>
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: 'var(--color-text-secondary)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
+                Uma cópia de <span style={{ color: '#EEF4FC', fontWeight: 600 }}>{pendingDuplicateShip.name}</span> será criada nos seus navios.
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                <button onClick={() => setPendingDuplicateShip(null)}
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 4, color: 'rgba(255,255,255,0.45)', fontFamily: 'var(--font-ui)', fontSize: '0.75rem', letterSpacing: '0.1em', padding: '0.45rem 1rem', cursor: 'pointer' }}>
+                  Cancelar
+                </button>
+                <button onClick={() => { const s = pendingDuplicateShip; setPendingDuplicateShip(null); handleDuplicate(s) }}
+                  style={{ background: 'rgba(80,200,232,0.15)', border: '1px solid rgba(80,200,232,0.45)', borderRadius: 4, color: '#50C8E8', fontFamily: 'var(--font-ui)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', padding: '0.45rem 1rem', cursor: 'pointer' }}>
+                  Duplicar
                 </button>
               </div>
             </motion.div>

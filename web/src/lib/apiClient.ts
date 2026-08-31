@@ -424,6 +424,9 @@ export const api = {
     }>) =>
       apiFetch<{ ship: ApiShip }>(`/ships/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
 
+    duplicate: (id: string) =>
+      apiFetch<{ ship: ApiShip }>(`/ships/${id}/duplicate`, { method: 'POST' }),
+
     delete: (id: string) => apiFetch(`/ships/${id}`, { method: 'DELETE' }),
 
     setVisibility: (id: string, isPublic: boolean) =>

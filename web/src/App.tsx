@@ -13,6 +13,7 @@ import { CampaignListPage } from '@/pages/CampaignListPage'
 import { CampaignPage } from '@/pages/CampaignPage'
 import { NavioListPage } from '@/pages/NavioListPage'
 import { ShipPage } from '@/pages/ShipPage'
+import { PresetShipPage } from '@/pages/PresetShipPage'
 import { CreatureListPage } from '@/pages/CreatureListPage'
 import { CreaturePage } from '@/pages/CreaturePage'
 import { CustomCreaturePage } from '@/pages/CustomCreaturePage'
@@ -33,6 +34,7 @@ function AppRoutes() {
         <Route path="/" element={<HomePage />} />
         <Route path="personagens" element={<CharacterListPage />} />
         <Route path="navios" element={<NavioListPage />} />
+        <Route path="navio/arcadia/:slug" element={<PresetShipPage />} />
         <Route path="navio/:id" element={<ShipPage />} />
         <Route path="campanhas" element={<CampaignListPage />} />
         <Route path="campanha/:id" element={<CampaignPage />} />

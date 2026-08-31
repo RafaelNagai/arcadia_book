@@ -1,4 +1,4 @@
-import type { PrismaClient } from '../generated/prisma/client.js'
+import type { PrismaClient, Ship } from '../generated/prisma/client.js'
 import type { CreateShipInput } from '../schemas/ship.schema.js'
 
 const CREW_CHARACTER_SELECT = {
@@ -62,6 +62,25 @@ export class ShipsRepository {
 
   update(id: string, patch: Record<string, unknown>) {
     return this.db.ship.update({ where: { id }, data: patch })
+  }
+
+  duplicate(source: Ship, newUserId: string, newName: string, crewCode: string) {
+    return this.db.ship.create({
+      data: {
+        userId: newUserId,
+        name: newName,
+        motto: source.motto,
+        type: source.type,
+        porte: source.porte,
+        imageUrl: source.imageUrl,
+        description: source.description,
+        slotsTotal: source.slotsTotal,
+        hp: source.hp,
+        sectors: source.sectors as object[],
+        isPublic: false,
+        crewCode,
+      },
+    })
   }
 
   delete(id: string) {

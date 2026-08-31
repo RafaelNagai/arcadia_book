@@ -69,6 +69,15 @@ export class ShipsService {
     }
   }
 
+  async duplicate(id: string, requestingUserId: string) {
+    const source = await this.repo.findById(id)
+    if (!source) throw new NotFoundError('Navio não encontrado')
+    if (!source.isPublic && source.userId !== requestingUserId) {
+      throw new ForbiddenError('Este navio é privado')
+    }
+    return this.repo.duplicate(source, requestingUserId, `Cópia de ${source.name}`, generateCrewCode())
+  }
+
   async update(id: string, userId: string, input: UpdateShipInput) {
     const ship = await this.assertOwner(id, userId)
     const patch: Record<string, unknown> = {}
