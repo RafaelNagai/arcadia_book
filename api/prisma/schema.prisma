@@ -271,6 +271,7 @@ model Ship {
   hp          Int      @default(4)
   currentHp   Int?     @map("current_hp")
   sectors     Json     @default("[]")
+  traits      Json     @default("[]")
   crewCode    String   @unique @map("crew_code")
   isPublic    Boolean  @default(false) @map("is_public")
   createdAt   DateTime @default(now()) @map("created_at")

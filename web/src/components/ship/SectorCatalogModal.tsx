@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { SECTOR_CATALOG, type SectorCategoryKey } from '@/data/shipSectorCatalog'
+import { SECTOR_CATALOG, getSectorTestLabel, type SectorCategoryKey } from '@/data/shipSectorCatalog'
 import type { InstalledSector } from '@/data/shipTypes'
 
 export function SectorCatalogModal({ installed, slotsUsed, slotsTotal, onClose, onInstall, onRemove }: {
@@ -76,7 +76,7 @@ export function SectorCatalogModal({ installed, slotsUsed, slotsTotal, onClose, 
                     {category.entries.map(entry => {
                       const count = installed.filter(s => s.category === category.key && s.key === entry.key).length
                       const canInstall = slotsRemaining >= entry.slots
-                      const impliedTest = !entry.test ? entry.description.match(/\(Teste:\s*([^)]+)\)/i)?.[1] : null
+                      const testLabel = getSectorTestLabel(entry)
                       return (
                         <div key={entry.key} style={{
                           display: 'flex', justifyContent: 'space-between', gap: '0.75rem',
@@ -89,8 +89,7 @@ export function SectorCatalogModal({ installed, slotsUsed, slotsTotal, onClose, 
                             </p>
                             <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.68rem', color: '#50C8E8', marginTop: '0.15rem' }}>
                               {entry.effect} · {entry.slots} slot{entry.slots !== 1 ? 's' : ''}
-                              {entry.test && ` · Teste: ${entry.test}`}
-                              {impliedTest && ` · Teste: ${impliedTest}`}
+                              {testLabel && ` · Teste: ${testLabel}`}
                             </p>
                             <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.68rem', color: 'var(--color-text-muted)', marginTop: '0.25rem', lineHeight: 1.4 }}>
                               {entry.description}

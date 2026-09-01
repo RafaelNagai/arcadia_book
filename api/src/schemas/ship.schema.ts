@@ -30,6 +30,7 @@ export const CreateShipSchema = z.object({
   slots_total: z.number().int().min(0).max(999).default(4),
   hp: z.number().int().min(0).default(4),
   sectors: z.array(InstalledSectorSchema).default([]),
+  traits: z.array(z.string().min(1).max(300)).default([]),
   is_public: z.boolean().default(false),
 })
 

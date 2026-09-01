@@ -1,16 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Sparkles } from 'lucide-react'
 import { useAuth } from '@/lib/authContext'
 import { api } from '@/lib/apiClient'
 import type { ApiShip, InstalledSector, MoralAction, ShipStateData } from '@/data/shipTypes'
 import type { SectorCategoryKey } from '@/data/shipSectorCatalog'
-import { computeShipDn, computeSlotsUsed, findSectorEntry, getCategoryLabel } from '@/data/shipSectorCatalog'
+import { computeShipDn, computeSlotsUsed, findSectorEntry, getCategoryLabel, getSectorTestLabel } from '@/data/shipSectorCatalog'
 import { useShipRealtime } from '@/hooks/useShipRealtime'
 import { ShipCrewPanel } from '@/components/ship/ShipCrewPanel'
 import { MoralPotPanel } from '@/components/ship/MoralPotPanel'
 import { ShipCodePanel } from '@/components/ship/ShipCodePanel'
 import { SectorCatalogModal } from '@/components/ship/SectorCatalogModal'
+import { TagInput } from '@/components/creator/CreatorUI'
 
 const ACCENT = '#50C8E8'
 
@@ -78,6 +80,28 @@ function EditableField({ label, value, onSave, textarea, placeholder, numeric, c
       type={numeric ? 'number' : 'text'} min={numeric ? 0 : undefined}
       style={inputStyle}
     />
+  )
+}
+
+function TraitRow({ text, onRemove }: { text: string; onRemove?: () => void }) {
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: '0.75rem',
+      padding: '0.75rem 1rem', borderRadius: 4, background: 'rgba(10,15,30,0.9)', border: '1px solid rgba(255,255,255,0.07)',
+    }}>
+      <Sparkles size={16} style={{ color: 'var(--color-arcano-glow)', flexShrink: 0 }} />
+      <p style={{ flex: 1, fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, margin: 0 }}>
+        {text}
+      </p>
+      {onRemove && (
+        <button onClick={onRemove} style={{
+          flexShrink: 0, background: 'none', border: '1px solid rgba(200,60,60,0.3)', borderRadius: 3,
+          color: '#E07070', fontFamily: 'var(--font-ui)', fontSize: '0.65rem', padding: '0.2rem 0.5rem', cursor: 'pointer',
+        }}>
+          Remover
+        </button>
+      )}
+    </div>
   )
 }
 
@@ -448,28 +472,56 @@ export function ShipPage() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                       {sectors.map(s => {
                         const entry = findSectorEntry(s.category, s.key)
+                        const testLabel = entry ? getSectorTestLabel(entry) : null
                         return (
                           <div key={s.id} style={{
-                            display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem',
-                            padding: '0.55rem 0.75rem', borderRadius: 4, background: 'rgba(10,15,30,0.9)', border: '1px solid rgba(255,255,255,0.07)',
+                            display: 'flex', flexDirection: 'column', gap: '0.6rem',
+                            padding: '0.85rem 1rem', borderRadius: 4, background: 'rgba(10,15,30,0.9)', border: '1px solid rgba(255,255,255,0.07)',
                           }}>
-                            <div>
-                              <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.78rem', fontWeight: 700, color: '#EEF4FC' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.75rem' }}>
+                              <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.85rem', fontWeight: 700, color: '#EEF4FC' }}>
                                 {entry?.name ?? s.key}
                               </p>
-                              {entry && (
-                                <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.66rem', color: ACCENT }}>
-                                  {entry.effect} · {entry.slots} slot{entry.slots !== 1 ? 's' : ''}
-                                </p>
+                              {isOwner && (
+                                <button onClick={() => handleRemoveSector(s.id)} style={{
+                                  flexShrink: 0, background: 'none', border: '1px solid rgba(200,60,60,0.3)', borderRadius: 3,
+                                  color: '#E07070', fontFamily: 'var(--font-ui)', fontSize: '0.65rem', padding: '0.2rem 0.5rem', cursor: 'pointer',
+                                }}>
+                                  Remover
+                                </button>
                               )}
                             </div>
-                            {isOwner && (
-                              <button onClick={() => handleRemoveSector(s.id)} style={{
-                                background: 'none', border: '1px solid rgba(200,60,60,0.3)', borderRadius: 3,
-                                color: '#E07070', fontFamily: 'var(--font-ui)', fontSize: '0.65rem', padding: '0.2rem 0.5rem', cursor: 'pointer',
-                              }}>
-                                Remover
-                              </button>
+
+                            {entry && (
+                              <>
+                                <div style={{
+                                  padding: '0.4rem 0.65rem', borderRadius: 4,
+                                  background: 'rgba(80,200,232,0.1)', border: '1px solid rgba(80,200,232,0.3)',
+                                }}>
+                                  <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.72rem', fontWeight: 700, color: ACCENT, margin: 0 }}>
+                                    {entry.effect}
+                                  </p>
+                                </div>
+
+                                {entry.description && (
+                                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, margin: 0 }}>
+                                    {entry.description}
+                                  </p>
+                                )}
+
+                                <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.68rem', color: 'rgba(255,255,255,0.4)', width: '100%', textAlign: 'left', margin: 0 }}>
+                                  {entry.slots} slot{entry.slots !== 1 ? 's' : ''}
+                                </p>
+
+                                {testLabel && (
+                                  <p style={{
+                                    fontFamily: 'var(--font-ui)', fontSize: '0.68rem', fontWeight: 700, color: 'var(--color-arcano-glow)',
+                                    borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '0.5rem', margin: 0,
+                                  }}>
+                                    Teste: {testLabel}
+                                  </p>
+                                )}
+                              </>
                             )}
                           </div>
                         )
@@ -480,6 +532,29 @@ export function ShipPage() {
               </div>
             )}
           </div>
+
+          {/* Traits */}
+          {(isOwner || ship.traits.length > 0) && (
+            <div>
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: '0.75rem' }}>
+                Traços
+              </p>
+              {isOwner ? (
+                <TagInput
+                  tags={ship.traits}
+                  onChange={next => patchShip({ traits: next })}
+                  placeholder="Ex: Silenciosa — testes de Percepção inimigos têm Desvantagem…"
+                  renderTag={(tag, remove) => <TraitRow text={tag} onRemove={remove} />}
+                />
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {ship.traits.map((t, i) => (
+                    <TraitRow key={i} text={t} />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Crew */}
           <div>

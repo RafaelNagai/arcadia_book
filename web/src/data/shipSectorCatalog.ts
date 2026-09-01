@@ -490,6 +490,11 @@ export function findSectorEntry(category: SectorCategoryKey, key: string): Secto
   return SECTOR_CATALOG.find(c => c.key === category)?.entries.find(e => e.key === key)
 }
 
+export function getSectorTestLabel(entry: SectorCatalogEntry): string | null {
+  if (entry.test) return entry.test
+  return entry.description.match(/\(Teste:\s*([^)]+)\)/i)?.[1] ?? null
+}
+
 export function getCategoryLabel(category: SectorCategoryKey): string {
   return SECTOR_CATALOG.find(c => c.key === category)?.label ?? category
 }

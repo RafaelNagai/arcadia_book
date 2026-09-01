@@ -66,6 +66,7 @@ export interface ApiShip {
   hp: number
   currentHp: number | null
   sectors: InstalledSector[]
+  traits: string[]
   crewCode?: string
   isPublic: boolean
   crew?: ShipCrewMember[]

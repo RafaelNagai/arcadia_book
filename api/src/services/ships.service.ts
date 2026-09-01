@@ -93,6 +93,7 @@ export class ShipsService {
       if (ship.currentHp !== null && ship.currentHp > input.hp) patch.currentHp = input.hp
     }
     if (input.sectors !== undefined) patch.sectors = input.sectors
+    if (input.traits !== undefined) patch.traits = input.traits
     if (input.is_public !== undefined) patch.isPublic = input.is_public
 
     const updated = await this.repo.update(id, patch)

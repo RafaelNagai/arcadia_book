@@ -288,10 +288,12 @@ export function TagInput({
   tags,
   onChange,
   placeholder,
+  renderTag,
 }: {
   tags: string[];
   onChange: (v: string[]) => void;
   placeholder?: string;
+  renderTag?: (tag: string, remove: () => void) => ReactNode;
 }) {
   const [input, setInput] = useState("");
   function add() {
@@ -341,34 +343,40 @@ export function TagInput({
         </button>
       </div>
       {tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-sm text-xs"
-              style={{
-                background: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                color: "var(--color-text-secondary)",
-                fontFamily: "var(--font-ui)",
-              }}
-            >
-              {tag}
-              <button
-                onClick={() => onChange(tags.filter((t) => t !== tag))}
+        <div className={renderTag ? "flex flex-col gap-2" : "flex flex-wrap gap-1.5"}>
+          {tags.map((tag) => {
+            const remove = () => onChange(tags.filter((t) => t !== tag));
+            if (renderTag) {
+              return <div key={tag}>{renderTag(tag, remove)}</div>;
+            }
+            return (
+              <span
+                key={tag}
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-sm text-xs"
                 style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  color: "rgba(255,255,255,0.3)",
-                  fontSize: "0.7rem",
-                  lineHeight: 1,
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: "var(--color-text-secondary)",
+                  fontFamily: "var(--font-ui)",
                 }}
               >
-                ×
-              </button>
-            </span>
-          ))}
+                {tag}
+                <button
+                  onClick={remove}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "rgba(255,255,255,0.3)",
+                    fontSize: "0.7rem",
+                    lineHeight: 1,
+                  }}
+                >
+                  ×
+                </button>
+              </span>
+            );
+          })}
         </div>
       )}
     </div>

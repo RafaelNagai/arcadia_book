@@ -406,6 +406,7 @@ export const api = {
       slots_total?: number
       hp?: number
       sectors?: InstalledSector[]
+      traits?: string[]
       is_public?: boolean
     }) =>
       apiFetch<{ ship: ApiShip }>('/ships', { method: 'POST', body: JSON.stringify(data) }),
@@ -420,6 +421,7 @@ export const api = {
       slots_total: number
       hp: number
       sectors: InstalledSector[]
+      traits: string[]
       is_public: boolean
     }>) =>
       apiFetch<{ ship: ApiShip }>(`/ships/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
