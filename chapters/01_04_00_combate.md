@@ -50,6 +50,8 @@ O Antagonista não precisa ser ativo: uma parede não resiste voluntariamente, m
 ### Coadjuvante
 
 Qualquer participante do Conflito que não seja o Protagonista nem o Antagonista de um Ato específico. Coadjuvantes podem **Intervir** ou se **Impor** no Ato, mas não são o foco da ação.
+Podem ser ativamente alguem querendo Intervir ou Impor suas intenções como um personagem, como podem ser um fenomeno natural como um furação ou terremoto, por exemplo, podendo Intervir positivamente ou negativamente no ato de um protagonista.
+Tudo que interaja com o protagonista e antagonista pode ser considerado um **coadjuvante**.
 
 ---
 
@@ -151,7 +153,7 @@ Tirou 1 natural nos dois dados usados.
 
 ## Intervenção
 
-Qualquer participante do Conflito pode **Intervir** em um Ato em andamento — inclusive enquanto aguarda seu próprio Ato. Intervir significa usar uma perícia para influenciar o resultado de uma Ação: ajudar o Protagonista, atrapalhar, proteger o Antagonista ou criar uma abertura.
+Qualquer coadjuvante do Conflito pode **Intervir** em um Ato em andamento — inclusive enquanto aguarda seu próprio Ato. Intervir significa usar uma perícia para influenciar o resultado de uma Ação: ajudar o Protagonista, atrapalhar, proteger o Antagonista ou criar uma abertura.
 
 Intervir **não consome o Ato** do participante. Cada participante pode fazer **1 Intervenção por Ato** de qualquer outro indivíduo.
 
@@ -177,18 +179,19 @@ Se for **Desastre**, o efeito é invertido e o participante **perde seu próximo
 
 ## Imposição
 
-A **Imposição** ocorre quando um Coadjuvante quer assumir o papel de Protagonista ou Antagonista no meio de um Ato — uma mudança de posição na cena, não uma influência sobre ela.
+A **Imposição** ocorre quando um Coadjuvante quer intervir no papel de Protagonista ou Antagonista no meio de um Ato — uma mudança de posição na cena, não uma influência sobre ela.
 
-### Impor-se como Antagonista
+### Impor-se ao Antagonista
 
 Um Coadjuvante se coloca no lugar do Antagonista original, absorvendo a intenção do Protagonista no lugar de outro.
 
-- Acontece imediatamente, sem teste.
+- Se não houver resistencia, não tem teste.
+- Se houver resistencia, acontece algum teste que o mestre achar necessario.
 - O Coadjuvante passa a ser o novo Antagonista do Ato.
 
 > *Exemplo:* Um inimigo direciona seu Ato contra Lyra. Kael se impõe — passa a ser o Antagonista. É ele quem vai receber o impacto, não Lyra.
 
-### Impor-se como Protagonista
+### Impor-se ao Protagonista
 
 Um Coadjuvante quer interromper a intenção do Protagonista e substituí-la pela sua própria — uma contestação direta de vontades.
 
@@ -197,6 +200,8 @@ Um Coadjuvante quer interromper a intenção do Protagonista e substituí-la pel
 - Quem perde perde também o direito de Intervir até seu próximo Ato.
 
 > *Exemplo:* Valdris decide destruir um objeto sagrado. Mira quer impedir — ela se impõe como Protagonista. Os dois fazem um confronto. Mira vence: é ela quem determina a intenção do Ato. Valdris perde o Protagonismo e o direito de Intervir.
+
+O Ato ainda continua sendo do protagonista original, permitindo realizar mais ações naquele ato, porém aquela intenção em especifico foi alterada pela imposição do coadjuvante.
 
 Lacaios também podem se Impor, seguindo as mesmas regras.
 
