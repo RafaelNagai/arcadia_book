@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import type { Session, User } from '@supabase/supabase-js'
+import type { Session, User, UserIdentity } from '@supabase/supabase-js'
 import { supabase } from './apiClient'
 
 interface AuthContextType {
@@ -11,6 +11,10 @@ interface AuthContextType {
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<void>
   updatePassword: (newPassword: string) => Promise<void>
+  signInWithDiscord: () => Promise<void>
+  linkDiscordIdentity: () => Promise<void>
+  unlinkDiscordIdentity: (identity: UserIdentity) => Promise<void>
+  getIdentities: () => Promise<UserIdentity[]>
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
@@ -67,8 +71,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  async function signInWithDiscord() {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'discord',
+      options: { redirectTo: window.location.origin + '/login' },
+    })
+    if (error) throw new Error(error.message)
+  }
+
+  async function linkDiscordIdentity() {
+    const { error } = await supabase.auth.linkIdentity({
+      provider: 'discord',
+      options: { redirectTo: window.location.origin + '/configuracoes?tab=contas-vinculadas' },
+    })
+    if (error) throw new Error(error.message)
+  }
+
+  async function unlinkDiscordIdentity(identity: UserIdentity) {
+    const { error } = await supabase.auth.unlinkIdentity(identity)
+    if (error) throw new Error(error.message)
+  }
+
+  async function getIdentities() {
+    const { data, error } = await supabase.auth.getUserIdentities()
+    if (error) throw new Error(error.message)
+    return data.identities
+  }
+
   return (
-    <AuthContext.Provider value={{ user, session, loading, signIn, signUp, signOut, resetPassword, updatePassword }}>
+    <AuthContext.Provider value={{
+      user, session, loading, signIn, signUp, signOut, resetPassword, updatePassword,
+      signInWithDiscord, linkDiscordIdentity, unlinkDiscordIdentity, getIdentities,
+    }}>
       {children}
     </AuthContext.Provider>
   )

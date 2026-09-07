@@ -1,18 +1,43 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '@/lib/authContext'
 
 export function LoginPage() {
   const navigate = useNavigate()
-  const { signIn, signUp } = useAuth()
+  const { user, signIn, signUp, signInWithDiscord } = useAuth()
 
   const [mode, setMode] = useState<'login' | 'signup'>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [discordLoading, setDiscordLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const errorDescription = params.get('error_description')
+    if (errorDescription) {
+      setError(errorDescription)
+      window.history.replaceState(null, '', window.location.pathname)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (user) navigate('/personagens')
+  }, [user, navigate])
+
+  async function handleDiscordSignIn() {
+    setError(null)
+    setDiscordLoading(true)
+    try {
+      await signInWithDiscord()
+    } catch (err) {
+      setError((err as Error).message)
+      setDiscordLoading(false)
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -226,20 +251,64 @@ export function LoginPage() {
         </form>
 
         {mode === 'login' && (
-          <p style={{
-            marginTop: '1rem',
-            textAlign: 'center',
-            fontFamily: 'var(--font-ui)',
-            fontSize: '0.72rem',
-            color: 'var(--color-text-muted)',
-          }}>
-            <Link
-              to="/esqueci-senha"
-              style={{ color: 'var(--color-arcano)', textDecoration: 'none', opacity: 0.7 }}
+          <>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              margin: '1.25rem 0',
+            }}>
+              <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }} />
+              <span style={{
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.68rem',
+                color: 'var(--color-text-muted)',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+              }}>
+                ou
+              </span>
+              <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }} />
+            </div>
+
+            <button
+              type="button"
+              onClick={handleDiscordSignIn}
+              disabled={discordLoading}
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                borderRadius: 4,
+                border: '1px solid rgba(255,255,255,0.12)',
+                background: discordLoading ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.04)',
+                color: discordLoading ? 'rgba(255,255,255,0.2)' : 'var(--color-text-primary)',
+                fontFamily: 'var(--font-ui)',
+                fontSize: '0.8rem',
+                fontWeight: 700,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                cursor: discordLoading ? 'not-allowed' : 'pointer',
+                transition: 'all 0.15s',
+              }}
             >
-              Esqueci minha senha
-            </Link>
-          </p>
+              {discordLoading ? 'Aguarde...' : 'Entrar com Discord'}
+            </button>
+
+            <p style={{
+              marginTop: '1rem',
+              textAlign: 'center',
+              fontFamily: 'var(--font-ui)',
+              fontSize: '0.72rem',
+              color: 'var(--color-text-muted)',
+            }}>
+              <Link
+                to="/esqueci-senha"
+                style={{ color: 'var(--color-arcano)', textDecoration: 'none', opacity: 0.7 }}
+              >
+                Esqueci minha senha
+              </Link>
+            </p>
+          </>
         )}
 
         <div style={{

@@ -3,18 +3,25 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '@/lib/authContext'
 import { ChangePasswordSection } from '@/components/settings/ChangePasswordSection'
+import { LinkedAccountsSection } from '@/components/settings/LinkedAccountsSection'
 import { Navbar } from '@/components/layout/Navbar'
 
-type SettingsSection = 'seguranca'
+type SettingsSection = 'seguranca' | 'contas-vinculadas'
 
 const MENU_ITEMS: { id: SettingsSection; label: string }[] = [
   { id: 'seguranca', label: 'Segurança' },
+  { id: 'contas-vinculadas', label: 'Contas Vinculadas' },
 ]
+
+function getInitialSection(): SettingsSection {
+  const tab = new URLSearchParams(window.location.search).get('tab')
+  return tab === 'contas-vinculadas' ? 'contas-vinculadas' : 'seguranca'
+}
 
 export function SettingsPage() {
   const { user, loading } = useAuth()
   const navigate = useNavigate()
-  const [active, setActive] = useState<SettingsSection>('seguranca')
+  const [active, setActive] = useState<SettingsSection>(getInitialSection)
 
   useEffect(() => {
     if (!loading && !user) navigate('/login')
@@ -97,6 +104,7 @@ export function SettingsPage() {
           {/* Content */}
           <div style={{ flex: 1, minWidth: 0 }}>
             {active === 'seguranca' && <ChangePasswordSection />}
+            {active === 'contas-vinculadas' && <LinkedAccountsSection />}
           </div>
         </motion.div>
       </div>
