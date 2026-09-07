@@ -85,7 +85,7 @@ Este arquivo define os três sub-agentes do workflow `/task`. O orquestrador lê
 >
 > **Output esperado:**
 >
-> - ✅ **APROVADO** — task concluída. Atualize o status no Sprint.md movendo os itens para a seção de concluídos.
+> - ✅ **APROVADO** — task concluída. Atualize o status no Sprint.md movendo os itens para a seção de concluídos. Além disso, adicione uma entrada em `CHANGELOG.md` (raiz do projeto), sob a seção `## AAAA-MM-DD` de hoje (crie a seção se não existir), com um bullet curto descrevendo a mudança em linguagem simples e amigável para o leitor do livro — sem jargão técnico, nomes de arquivo ou de função. Esse arquivo é a fonte do aviso automático no Discord quando a branch é mesclada na `main`.
 > - ❌ **REPROVADO** — liste cada problema com arquivo e linha específicos. O Executor deve corrigir antes da aprovação final.
 >
 > Se reprovado, o orquestrador deve spawnar o Executor novamente com os issues listados antes de chamar o Validator de novo.

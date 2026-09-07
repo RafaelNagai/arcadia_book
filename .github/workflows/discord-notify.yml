@@ -1,0 +1,89 @@
+name: Notificar Discord (push na main)
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Montar resumo das mudanças
+        id: changelog
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+        run: |
+          HAS_BEFORE=true
+          if [ "$BEFORE_SHA" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "$BEFORE_SHA" 2>/dev/null; then
+            HAS_BEFORE=false
+          fi
+
+          # Fonte primária: o que foi adicionado ao CHANGELOG.md neste push (linguagem amigável, escrita via /task)
+          CHANGELOG_ADDED=""
+          if [ "$HAS_BEFORE" = true ]; then
+            CHANGELOG_ADDED=$(git diff --unified=0 "$BEFORE_SHA" "$AFTER_SHA" -- CHANGELOG.md \
+              | grep -E '^\+' | grep -Ev '^\+\+\+' | sed 's/^\+//')
+          elif [ -f CHANGELOG.md ]; then
+            CHANGELOG_ADDED=$(tail -n +2 CHANGELOG.md)
+          fi
+
+          # Fallback: log de commits + diffstat, usado se CHANGELOG.md não mudou neste push
+          if [ "$HAS_BEFORE" = true ]; then
+            LOG=$(git log --pretty=format:'- %s (%an)' "$BEFORE_SHA..$AFTER_SHA")
+            STAT=$(git diff --stat "$BEFORE_SHA" "$AFTER_SHA" | tail -n 6)
+          else
+            LOG=$(git log -1 --pretty=format:'- %s (%an)' "$AFTER_SHA")
+            STAT=$(git show --stat --pretty="" "$AFTER_SHA" 2>/dev/null | tail -n 6)
+          fi
+
+          {
+            echo 'changelog<<CHANGELOG_EOF'
+            echo "$CHANGELOG_ADDED"
+            echo 'CHANGELOG_EOF'
+            echo 'log<<COMMITLOG_EOF'
+            echo "$LOG"
+            echo 'COMMITLOG_EOF'
+            echo 'stat<<DIFFSTAT_EOF'
+            echo "$STAT"
+            echo 'DIFFSTAT_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Enviar para o Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          CHANGELOG_ADDED: ${{ steps.changelog.outputs.changelog }}
+          COMMIT_LOG: ${{ steps.changelog.outputs.log }}
+          DIFF_STAT: ${{ steps.changelog.outputs.stat }}
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+          COMPARE_URL: https://github.com/${{ github.repository }}/compare/${{ github.event.before }}...${{ github.sha }}
+        run: |
+          # Remove linhas em branco só pra checar se sobrou conteúdo real no CHANGELOG.md
+          if [ -n "$(echo "$CHANGELOG_ADDED" | tr -d '[:space:]')" ]; then
+            DESCRIPTION=$(printf '%s' "$CHANGELOG_ADDED" | cut -c1-3900)
+          else
+            DESCRIPTION=$(printf 'Sem notas no CHANGELOG.md para este push — resumo por commits:\n\n%s\n\n```\n%s\n```' "$COMMIT_LOG" "$DIFF_STAT" | cut -c1-3900)
+          fi
+
+          PAYLOAD=$(jq -n \
+            --arg title "📚 Arcádia atualizado" \
+            --arg description "$DESCRIPTION" \
+            --arg url "$COMPARE_URL" \
+            --arg footer "por $ACTOR · $REPO" \
+            '{
+              embeds: [{
+                title: $title,
+                description: $description,
+                url: $url,
+                color: 3447003,
+                footer: { text: $footer }
+              }]
+            }')
+
+          curl -sf -H "Content-Type: application/json" -X POST -d "$PAYLOAD" "$DISCORD_WEBHOOK_URL"

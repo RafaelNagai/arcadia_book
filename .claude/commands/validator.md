@@ -29,5 +29,13 @@ Se `$ARGUMENTS` tiver conteúdo: use-o como escopo da validação.
 ### ✅ APROVADO
 Task concluída. Mova os itens validados para a seção "Concluídos" no Sprint.md.
 
+Além disso, adicione uma entrada em `CHANGELOG.md` na raiz do projeto, descrevendo a mudança em linguagem simples e amigável para o leitor do livro (não para devs — evite jargão técnico, nomes de arquivo, nomes de função). Foque no que mudou do ponto de vista de quem lê/joga Arcádia.
+
+- Se já existir uma seção `## AAAA-MM-DD` para a data de hoje, adicione o bullet nela.
+- Se não existir, crie uma nova seção `## AAAA-MM-DD` logo abaixo do cabeçalho do arquivo, com a data de hoje.
+- Um bullet curto (1-2 linhas) por task concluída.
+
+Esse arquivo alimenta o aviso automático no canal do Discord quando a branch for mesclada na `main` — só o que estiver aqui vira mensagem.
+
 ### ❌ REPROVADO
 Liste cada problema com arquivo e linha específicos. O Executor deve corrigir antes da aprovação final. Rode `/executor` com os issues listados e depois `/validator` novamente.
