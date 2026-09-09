@@ -23,6 +23,10 @@ const EnvSchema = z.object({
   SUPABASE_SHIP_BUCKET: z.string().default('ship-images'),
   MAX_IMAGE_SIZE_MB: z.coerce.number().default(15),
   MAX_MAP_IMAGE_SIZE_MB: z.coerce.number().default(30),
+
+  // Cloudflare Realtime (Calls) — proxy autenticado de video call de sessão
+  CLOUDFLARE_CALLS_APP_ID: z.string().min(1),
+  CLOUDFLARE_CALLS_APP_SECRET: z.string().min(1),
 })
 
 const parsed = EnvSchema.safeParse(process.env)

@@ -387,6 +387,33 @@ export const api = {
       apiFetch<{ door: unknown }>(`/campaigns/${campaignId}/maps/${mapId}/layers/${layerId}/doors/${doorId}/toggle`, { method: 'PATCH' }),
   },
 
+  // ── Calls (video call de sessão) ─────────────────────────────────────────────
+
+  calls: {
+    createSession: (campaignId: string) =>
+      apiFetch<{ sessionId: string }>(`/campaigns/${campaignId}/call/session`, { method: 'POST' }),
+
+    negotiateTracks: (campaignId: string, sessionId: string, input: {
+      sessionDescription?: { sdp: string; type: 'offer' | 'answer' }
+      tracks: Array<{ location: 'local' | 'remote'; mid?: string; trackName: string; sessionId?: string; kind?: 'audio' | 'video' }>
+      autoDiscover?: boolean
+    }) =>
+      apiFetch<{
+        requiresImmediateRenegotiation?: boolean
+        tracks?: Array<{ mid?: string; trackName: string; sessionId?: string }>
+        sessionDescription?: { sdp: string; type: 'offer' | 'answer' }
+      }>(`/campaigns/${campaignId}/call/session/${sessionId}/tracks`, {
+        method: 'POST',
+        body: JSON.stringify(input),
+      }),
+
+    renegotiate: (campaignId: string, sessionId: string, sessionDescription: { sdp: string; type: 'offer' | 'answer' }) =>
+      apiFetch<{ sessionDescription?: { sdp: string; type: 'offer' | 'answer' } }>(
+        `/campaigns/${campaignId}/call/session/${sessionId}/renegotiate`,
+        { method: 'PUT', body: JSON.stringify({ sessionDescription }) },
+      ),
+  },
+
   // ── Ships ───────────────────────────────────────────────────────────────────
 
   ships: {

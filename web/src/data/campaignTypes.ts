@@ -8,6 +8,8 @@ export interface CampaignChar {
   userId: string
   level: number
   concept: string
+  hp: number
+  currentHp: number | null
   campaignCharacterId: string
 }
 

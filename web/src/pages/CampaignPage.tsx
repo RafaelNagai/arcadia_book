@@ -6,6 +6,7 @@ import { api } from '@/lib/apiClient'
 import { getAccent } from '@/components/character/types'
 import type { CampaignChar, CampaignDetail } from '@/data/campaignTypes'
 import { MapTab } from '@/components/map/MapTab'
+import { CallTab } from '@/components/call/CallTab'
 import { CampaignIntroScreen } from '@/components/CampaignIntroScreen'
 
 const CAMPAIGN_INTRO_SHOWN_KEY = 'arcadia_campaign_intro_shown'
@@ -482,7 +483,7 @@ function EditCampaignModal({ campaign, onClose, onSave }: {
 
 // ── CampaignSidebar ───────────────────────────────────────────────────────────
 
-type CampaignView = 'players' | 'npcs' | 'mapa'
+type CampaignView = 'players' | 'npcs' | 'mapa' | 'call'
 
 interface CampaignSidebarProps {
   campaign: CampaignDetail
@@ -573,6 +574,7 @@ function CampaignSidebar({ campaign, view, isGm, onChangeView, onRegenerateCode,
           {navItem('players', 'Personagens', campaign.players.length)}
           {isGm && navItem('npcs', 'NPCs', campaign.npcs.length)}
           {navItem('mapa', 'Mapa')}
+          {navItem('call', 'Chamada')}
         </div>
       </div>
 
@@ -792,7 +794,7 @@ export function CampaignPage() {
   }
 
   const isGm = campaign.isGm
-  const listView = view === 'mapa' ? 'players' : view
+  const listView = view === 'mapa' || view === 'call' ? 'players' : view
   const currentList = listView === 'players' ? campaign.players : campaign.npcs
 
   return (
@@ -891,8 +893,10 @@ export function CampaignPage() {
         {/* Main content */}
         {view === 'mapa' ? (
           <MapTab campaign={campaign} />
+        ) : view === 'call' ? (
+          <CallTab campaign={campaign} />
         ) : null}
-        <div style={{ flex: 1, padding: '2rem 1.5rem', overflowY: 'auto', display: view === 'mapa' ? 'none' : undefined }}>
+        <div style={{ flex: 1, padding: '2rem 1.5rem', overflowY: 'auto', display: view === 'mapa' || view === 'call' ? 'none' : undefined }}>
           <div style={{ maxWidth: 900, margin: '0 auto' }}>
 
             {/* Page header */}

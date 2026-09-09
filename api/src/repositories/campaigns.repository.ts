@@ -12,6 +12,7 @@ const CHAR_SELECT = {
   concept: true,
   hp: true,
   sanidade: true,
+  currentHp: true,
   attributes: true,
   skills: true,
   entropia: true,
