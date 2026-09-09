@@ -53,8 +53,14 @@ export function useCampaignCallChannel(
   const knownPayloadsRef = useRef<Map<string, CallPresencePayload>>(new Map())
   const selfId = handlers.selfId
 
+  // DEBUG(call-kick-regression): temporary diagnostic logging for the "GM
+  // leave doesn't kick players" investigation. All lines are tagged
+  // "[call:presence]" — grep/remove them once a live repro (F12 on both
+  // sides) pins down where the chain actually breaks.
   useEffect(() => {
     knownPayloadsRef.current = new Map()
+
+    console.debug('[call:presence] channel created/recreated', { campaignId, selfId })
 
     const channel = supabase
       .channel(`campaign:${campaignId}:call`, { config: { presence: { key: selfId ?? crypto.randomUUID() } } })
@@ -62,12 +68,14 @@ export function useCampaignCallChannel(
         const state = channel.presenceState<CallPresencePayload>()
         const currentKeys = new Set(Object.keys(state).filter(key => key !== selfId))
 
+        const updatedKeys: string[] = []
         for (const key of currentKeys) {
           const latest = state[key][state[key].length - 1]
           if (!latest) continue
           const previous = knownPayloadsRef.current.get(key)
           if (previous && payloadsEqual(previous, latest)) continue
           knownPayloadsRef.current.set(key, latest)
+          updatedKeys.push(key)
           handlersRef.current.onParticipantUpdate(latest.userId, latest.characterId, latest.cloudflareSessionId, latest.accountName, latest.cameraEnabled, latest.layoutMode)
         }
         const staleKeys = [...knownPayloadsRef.current.keys()].filter(key => !currentKeys.has(key))
@@ -75,14 +83,25 @@ export function useCampaignCallChannel(
           knownPayloadsRef.current.delete(key)
           handlersRef.current.onParticipantLeave(key)
         }
+        console.debug('[call:presence] sync received', {
+          totalKeys: currentKeys.size,
+          allKeys: [...currentKeys],
+          updatedKeys,
+          staleKeys,
+        })
       })
       .on('broadcast', { event: 'force_mute' }, ({ payload }) => {
         if (payload?.targetUserId === selfId) handlersRef.current.onForceMute()
       })
-      .subscribe()
+      .subscribe(status => {
+        console.debug('[call:presence] channel subscribe status', { campaignId, selfId, status })
+      })
 
     channelRef.current = channel
-    return () => { void supabase.removeChannel(channel) }
+    return () => {
+      console.debug('[call:presence] channel torn down', { campaignId, selfId })
+      void supabase.removeChannel(channel)
+    }
   }, [campaignId, selfId])
 
   const dispatch = useCallback((event: CampaignCallEvent) => {
@@ -98,7 +117,10 @@ export function useCampaignCallChannel(
         layoutMode: event.layoutMode,
       })
     } else if (event.type === 'PARTICIPANT_LEAVE') {
-      void channel.untrack()
+      console.debug('[call:presence] dispatch PARTICIPANT_LEAVE → untrack() called', { userId: event.userId })
+      void channel.untrack().then(status => {
+        console.debug('[call:presence] untrack() resolved', { userId: event.userId, status })
+      })
     } else {
       void channel.send({ type: 'broadcast', event: 'force_mute', payload: { targetUserId: event.targetUserId } })
     }

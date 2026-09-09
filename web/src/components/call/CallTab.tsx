@@ -163,6 +163,8 @@ export function CallTab({ campaign }: CallTabProps) {
   const broadcast = useCampaignCallChannel(campaign.id, {
     selfId: user?.id,
     onParticipantUpdate: (userId, characterId, cloudflareSessionId, accountName, cameraEnabled, layoutMode) => {
+      // DEBUG(call-kick-regression): see useCampaignCallChannel.ts top-of-file note.
+      console.debug('[call:presence] onParticipantUpdate called', { userId, isGmUser: userId === campaign.gmUserId })
       if (userId === campaign.gmUserId) setGmPresent(true)
       pendingJoinsRef.current.set(userId, { characterId, cloudflareSessionId, accountName, cameraEnabled, layoutMode })
       if (participantsRef.current.some(p => p.userId === userId)) {
@@ -172,6 +174,8 @@ export function CallTab({ campaign }: CallTabProps) {
       }
     },
     onParticipantLeave: userId => {
+      // DEBUG(call-kick-regression): see useCampaignCallChannel.ts top-of-file note.
+      console.debug('[call:presence] onParticipantLeave called', { userId, isGmUser: userId === campaign.gmUserId })
       if (userId === campaign.gmUserId) setGmPresent(false)
       pendingJoinsRef.current.delete(userId)
       setParticipants(prev => prev.filter(p => p.userId !== userId))
@@ -362,8 +366,23 @@ export function CallTab({ campaign }: CallTabProps) {
     }
   }, [waitingForGm, gmPresent, joinCall])
 
+  // DEBUG(call-kick-regression): see useCampaignCallChannel.ts top-of-file
+  // note. Logs every transition of gmPresent (from → to) so a live repro
+  // shows whether it ever flips to false on the player's side at all.
+  const prevGmPresentRef = useRef(gmPresent)
+  useEffect(() => {
+    if (prevGmPresentRef.current !== gmPresent) {
+      console.debug('[call:presence] gmPresent changed', { from: prevGmPresentRef.current, to: gmPresent, isGm, joined })
+      prevGmPresentRef.current = gmPresent
+    }
+  }, [gmPresent, isGm, joined])
+
   const disconnectFromCall = useCallback(() => {
-    if (user) broadcast({ type: 'PARTICIPANT_LEAVE', userId: user.id })
+    if (user) {
+      // DEBUG(call-kick-regression): see useCampaignCallChannel.ts top-of-file note.
+      console.debug('[call:presence] disconnectFromCall → broadcast(PARTICIPANT_LEAVE)', { userId: user.id })
+      broadcast({ type: 'PARTICIPANT_LEAVE', userId: user.id })
+    }
     pcRef.current?.close()
     pcRef.current = null
     pushReadyRef.current = false
