@@ -4,6 +4,7 @@ import { useAuth } from '@/lib/authContext'
 import { useCampaignCallChannel } from '@/hooks/useCampaignCallChannel'
 import type { CampaignDetail } from '@/data/campaignTypes'
 import { CallParticipantTile } from './CallParticipantTile'
+import { CallSidebar } from './CallSidebar'
 
 const ICE_SERVERS: RTCIceServer[] = [{ urls: 'stun:stun.cloudflare.com:3478' }]
 
@@ -14,8 +15,15 @@ interface CallTabProps {
 interface RemoteParticipant {
   userId: string
   characterId: string | null
+  accountName: string
+  cameraEnabled: boolean
   stream: MediaStream
   audioTrack: MediaStreamTrack | null
+}
+
+interface RowState {
+  muted: boolean
+  volume: number
 }
 
 function waitForIceGatheringComplete(pc: RTCPeerConnection): Promise<void> {
@@ -38,22 +46,34 @@ export function CallTab({ campaign }: CallTabProps) {
   const [error, setError] = useState<string | null>(null)
   const [localStream, setLocalStream] = useState<MediaStream | null>(null)
   const [localAudioTrack, setLocalAudioTrack] = useState<MediaStreamTrack | null>(null)
+  const [localVideoTrack, setLocalVideoTrack] = useState<MediaStreamTrack | null>(null)
+  const [cameraOn, setCameraOn] = useState(true)
   const [participants, setParticipants] = useState<RemoteParticipant[]>([])
+  const [rowState, setRowState] = useState<Record<string, RowState>>({})
   const [gmPresent, setGmPresent] = useState(false)
   const [waitingForGm, setWaitingForGm] = useState(false)
+
+  const [audioInputs, setAudioInputs] = useState<MediaDeviceInfo[]>([])
+  const [videoInputs, setVideoInputs] = useState<MediaDeviceInfo[]>([])
+  const [audioOutputs, setAudioOutputs] = useState<MediaDeviceInfo[]>([])
+  const [selectedAudioInput, setSelectedAudioInput] = useState('')
+  const [selectedVideoInput, setSelectedVideoInput] = useState('')
+  const [selectedAudioOutput, setSelectedAudioOutput] = useState('')
 
   const isGm = user?.id === campaign.gmUserId
 
   const pcRef = useRef<RTCPeerConnection | null>(null)
   const sessionIdRef = useRef<string | null>(null)
   const localStreamRef = useRef<MediaStream | null>(null)
+  const audioTransceiverRef = useRef<RTCRtpTransceiver | null>(null)
+  const videoTransceiverRef = useRef<RTCRtpTransceiver | null>(null)
   const pullMidMapRef = useRef<Map<string, { userId: string; kind: 'audio' | 'video' }>>(new Map())
   const participantsRef = useRef<RemoteParticipant[]>([])
   const negotiationQueueRef = useRef<Promise<void>>(Promise.resolve())
   // PARTICIPANT_JOIN can arrive (via presence sync, for peers already in the
   // call) before our own RTCPeerConnection/session exist — buffer it here and
   // drain once joinCall() finishes setting those up, instead of dropping it.
-  const pendingJoinsRef = useRef<Map<string, { characterId: string | null; cloudflareSessionId: string }>>(new Map())
+  const pendingJoinsRef = useRef<Map<string, { characterId: string | null; cloudflareSessionId: string; accountName: string; cameraEnabled: boolean }>>(new Map())
   // Cloudflare Realtime only accepts a track pull once it already knows this
   // session's SDP (from our own push negotiation) — pulling any earlier fails
   // server-side, so this only flips true once the push round-trip is done.
@@ -62,20 +82,45 @@ export function CallTab({ campaign }: CallTabProps) {
 
   const selfCharacter = campaign.players.find(p => p.userId === user?.id) ?? null
 
+  const accountName = (user?.user_metadata?.full_name as string | undefined)
+    ?? (user?.user_metadata?.name as string | undefined)
+    ?? (user?.user_metadata?.custom_claims?.global_name as string | undefined)
+    ?? user?.email
+    ?? 'Jogador'
+
   function enqueueNegotiation<T>(fn: () => Promise<T>): Promise<T> {
     const result = negotiationQueueRef.current.then(fn, fn)
     negotiationQueueRef.current = result.then(() => undefined, () => undefined)
     return result
   }
 
-  const pullParticipant = useCallback(async (userId: string, characterId: string | null, remoteSessionId: string) => {
+  const ensureRowState = useCallback((userId: string, defaultVolume: number) => {
+    setRowState(prev => (prev[userId] ? prev : { ...prev, [userId]: { muted: false, volume: defaultVolume } }))
+  }, [])
+
+  const handleToggleMute = useCallback((userId: string) => {
+    setRowState(prev => ({ ...prev, [userId]: { muted: !(prev[userId]?.muted ?? false), volume: prev[userId]?.volume ?? 1 } }))
+  }, [])
+
+  const handleVolumeChange = useCallback((userId: string, value: number) => {
+    setRowState(prev => ({ ...prev, [userId]: { muted: prev[userId]?.muted ?? false, volume: value } }))
+  }, [])
+
+  const pullParticipant = useCallback(async (
+    userId: string,
+    characterId: string | null,
+    remoteSessionId: string,
+    accountName: string,
+    cameraEnabled: boolean,
+  ) => {
     const pc = pcRef.current
     const mySessionId = sessionIdRef.current
     if (!pc || !mySessionId || !pushReadyRef.current) return
     if (participantsRef.current.some(p => p.userId === userId)) return
 
     const stream = new MediaStream()
-    setParticipants(prev => [...prev, { userId, characterId, stream, audioTrack: null }])
+    setParticipants(prev => [...prev, { userId, characterId, accountName, cameraEnabled, stream, audioTrack: null }])
+    ensureRowState(userId, 1)
 
     try {
       await enqueueNegotiation(async () => {
@@ -100,19 +145,33 @@ export function CallTab({ campaign }: CallTabProps) {
     } catch {
       setParticipants(prev => prev.filter(p => p.userId !== userId))
     }
-  }, [campaign.id])
+  }, [campaign.id, ensureRowState])
 
   const broadcast = useCampaignCallChannel(campaign.id, {
     selfId: user?.id,
-    onParticipantJoin: (userId, characterId, cloudflareSessionId) => {
+    onParticipantUpdate: (userId, characterId, cloudflareSessionId, accountName, cameraEnabled) => {
       if (userId === campaign.gmUserId) setGmPresent(true)
-      pendingJoinsRef.current.set(userId, { characterId, cloudflareSessionId })
-      if (pushReadyRef.current) void pullParticipant(userId, characterId, cloudflareSessionId)
+      pendingJoinsRef.current.set(userId, { characterId, cloudflareSessionId, accountName, cameraEnabled })
+      if (participantsRef.current.some(p => p.userId === userId)) {
+        setParticipants(prev => prev.map(p => (p.userId === userId ? { ...p, characterId, accountName, cameraEnabled } : p)))
+      } else if (pushReadyRef.current) {
+        void pullParticipant(userId, characterId, cloudflareSessionId, accountName, cameraEnabled)
+      }
     },
     onParticipantLeave: userId => {
       if (userId === campaign.gmUserId) setGmPresent(false)
       pendingJoinsRef.current.delete(userId)
       setParticipants(prev => prev.filter(p => p.userId !== userId))
+      setRowState(prev => {
+        if (!(userId in prev)) return prev
+        const next = { ...prev }
+        delete next[userId]
+        return next
+      })
+    },
+    onForceMute: () => {
+      if (localAudioTrack) localAudioTrack.enabled = false
+      if (user) setRowState(prev => ({ ...prev, [user.id]: { muted: true, volume: prev[user.id]?.volume ?? 0 } }))
     },
   })
 
@@ -121,7 +180,36 @@ export function CallTab({ campaign }: CallTabProps) {
     localStreamRef.current = null
     setLocalStream(null)
     setLocalAudioTrack(null)
+    setLocalVideoTrack(null)
   }
+
+  const refreshDevices = useCallback(async () => {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices()
+      setAudioInputs(devices.filter(d => d.kind === 'audioinput'))
+      setVideoInputs(devices.filter(d => d.kind === 'videoinput'))
+      setAudioOutputs(devices.filter(d => d.kind === 'audiooutput'))
+    } catch {
+      // Enumeração pode falhar sem permissão concedida — dropdowns ficam vazios até lá.
+    }
+  }, [])
+
+  useEffect(() => {
+    navigator.mediaDevices.addEventListener('devicechange', refreshDevices)
+    return () => navigator.mediaDevices.removeEventListener('devicechange', refreshDevices)
+  }, [refreshDevices])
+
+  const trackSelf = useCallback((nextCameraEnabled: boolean) => {
+    if (!user) return
+    broadcast({
+      type: 'PARTICIPANT_JOIN',
+      userId: user.id,
+      characterId: selfCharacter?.id ?? null,
+      cloudflareSessionId: sessionIdRef.current ?? '',
+      accountName,
+      cameraEnabled: nextCameraEnabled,
+    })
+  }, [user, selfCharacter, accountName, broadcast])
 
   const joinCall = useCallback(async () => {
     if (!user) return
@@ -134,7 +222,13 @@ export function CallTab({ campaign }: CallTabProps) {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
       localStreamRef.current = stream
       setLocalStream(stream)
-      setLocalAudioTrack(stream.getAudioTracks()[0] ?? null)
+      const audioTrack = stream.getAudioTracks()[0]
+      const videoTrack = stream.getVideoTracks()[0]
+      setLocalAudioTrack(audioTrack ?? null)
+      setLocalVideoTrack(videoTrack ?? null)
+      setSelectedAudioInput(audioTrack?.getSettings().deviceId ?? '')
+      setSelectedVideoInput(videoTrack?.getSettings().deviceId ?? '')
+      void refreshDevices()
 
       const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS, bundlePolicy: 'max-bundle' })
       pcRef.current = pc
@@ -150,10 +244,10 @@ export function CallTab({ campaign }: CallTabProps) {
         }))
       }
 
-      const audioTrack = stream.getAudioTracks()[0]
-      const videoTrack = stream.getVideoTracks()[0]
       const audioTransceiver = pc.addTransceiver(audioTrack, { direction: 'sendonly' })
       const videoTransceiver = pc.addTransceiver(videoTrack, { direction: 'sendonly' })
+      audioTransceiverRef.current = audioTransceiver
+      videoTransceiverRef.current = videoTransceiver
 
       await pc.setLocalDescription(await pc.createOffer())
       await waitForIceGatheringComplete(pc)
@@ -172,16 +266,13 @@ export function CallTab({ campaign }: CallTabProps) {
       }
       pushReadyRef.current = true
 
-      broadcast({
-        type: 'PARTICIPANT_JOIN',
-        userId: user.id,
-        characterId: selfCharacter?.id ?? null,
-        cloudflareSessionId: sessionId,
-      })
+      setCameraOn(true)
+      ensureRowState(user.id, 0)
+      trackSelf(true)
       setJoined(true)
 
       for (const [pendingUserId, info] of pendingJoinsRef.current) {
-        void pullParticipant(pendingUserId, info.characterId, info.cloudflareSessionId)
+        void pullParticipant(pendingUserId, info.characterId, info.cloudflareSessionId, info.accountName, info.cameraEnabled)
       }
     } catch (err) {
       if (err instanceof ApiError && err.code === 'GM_NOT_IN_CALL') {
@@ -197,7 +288,7 @@ export function CallTab({ campaign }: CallTabProps) {
       setConnecting(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [campaign.id, user, selfCharacter, broadcast])
+  }, [campaign.id, user, selfCharacter, broadcast, ensureRowState, trackSelf, pullParticipant, refreshDevices])
 
   const handleJoinClick = useCallback(() => {
     if (!isGm && !gmPresent) {
@@ -236,8 +327,12 @@ export function CallTab({ campaign }: CallTabProps) {
     pcRef.current?.close()
     pcRef.current = null
     pushReadyRef.current = false
+    audioTransceiverRef.current = null
+    videoTransceiverRef.current = null
     stopLocalMedia()
     setParticipants([])
+    setRowState({})
+    setCameraOn(true)
     sessionIdRef.current = null
     pullMidMapRef.current.clear()
     pendingJoinsRef.current.clear()
@@ -276,9 +371,71 @@ export function CallTab({ campaign }: CallTabProps) {
     }
   }, [isGm, campaign.id])
 
+  const handleToggleCamera = useCallback(() => {
+    setCameraOn(prev => {
+      const next = !prev
+      if (localVideoTrack) localVideoTrack.enabled = next
+      trackSelf(next)
+      return next
+    })
+  }, [localVideoTrack, trackSelf])
+
+  const handleForceMuteAll = useCallback((targetUserId: string) => {
+    broadcast({ type: 'FORCE_MUTE', targetUserId })
+  }, [broadcast])
+
+  // replaceTrack() no sender do transceiver já existente evita recriar a
+  // RTCPeerConnection e renegociar do zero — é exatamente o que a Cloudflare
+  // Realtime espera para troca de dispositivo em runtime.
+  const switchAudioInput = useCallback(async (deviceId: string) => {
+    const stream = localStreamRef.current
+    if (!stream || !deviceId) return
+    try {
+      const newStream = await navigator.mediaDevices.getUserMedia({ audio: { deviceId: { exact: deviceId } } })
+      const newTrack = newStream.getAudioTracks()[0]
+      if (!newTrack) return
+      const oldTrack = stream.getAudioTracks()[0]
+      await audioTransceiverRef.current?.sender.replaceTrack(newTrack)
+      if (oldTrack) stream.removeTrack(oldTrack)
+      stream.addTrack(newTrack)
+      newTrack.enabled = oldTrack?.enabled ?? true
+      oldTrack?.stop()
+      setLocalAudioTrack(newTrack)
+      setSelectedAudioInput(deviceId)
+      void refreshDevices()
+    } catch (err) {
+      setError((err as Error).message || 'Não foi possível trocar o microfone')
+    }
+  }, [refreshDevices])
+
+  const switchVideoInput = useCallback(async (deviceId: string) => {
+    const stream = localStreamRef.current
+    if (!stream || !deviceId) return
+    try {
+      const newStream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: deviceId } } })
+      const newTrack = newStream.getVideoTracks()[0]
+      if (!newTrack) return
+      const oldTrack = stream.getVideoTracks()[0]
+      await videoTransceiverRef.current?.sender.replaceTrack(newTrack)
+      if (oldTrack) stream.removeTrack(oldTrack)
+      stream.addTrack(newTrack)
+      newTrack.enabled = oldTrack?.enabled ?? true
+      oldTrack?.stop()
+      setLocalVideoTrack(newTrack)
+      setSelectedVideoInput(deviceId)
+      void refreshDevices()
+    } catch (err) {
+      setError((err as Error).message || 'Não foi possível trocar a câmera')
+    }
+  }, [refreshDevices])
+
+  const switchAudioOutput = useCallback((deviceId: string) => {
+    setSelectedAudioOutput(deviceId)
+  }, [])
+
   return (
     <div style={{ flex: 1, padding: '2rem 1.5rem', overflowY: 'auto' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1350, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 700, color: '#EEF4FC' }}>Chamada de Sessão</p>
@@ -333,40 +490,92 @@ export function CallTab({ campaign }: CallTabProps) {
             Ao entrar, o navegador vai pedir permissão de câmera e microfone.
           </p>
         ) : (
-          <div style={{
-            display: 'grid', gap: '1rem',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-          }}>
-            <CallParticipantTile
-              stream={localStream}
-              audioTrack={localAudioTrack}
-              displayName={selfCharacter?.name ?? 'Você'}
-              subtitle={isGm ? 'Mestre (Você)' : selfCharacter ? 'Você' : undefined}
-              image={selfCharacter?.imageUrl ?? null}
-              characterId={selfCharacter?.id ?? null}
-              hp={selfCharacter ? (selfCharacter.currentHp ?? selfCharacter.hp) : null}
-              maxHp={selfCharacter?.hp ?? null}
-              defaultVolume={0}
-              isGm={isGm}
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+            <div style={{
+              flex: 1, display: 'grid', gap: '1rem',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+            }}>
+              <CallParticipantTile
+                stream={localStream}
+                audioTrack={localAudioTrack}
+                displayName={selfCharacter?.name ?? 'Você'}
+                subtitle={isGm ? 'Mestre (Você)' : selfCharacter ? 'Você' : undefined}
+                image={selfCharacter?.imageUrl ?? null}
+                characterId={selfCharacter?.id ?? null}
+                hp={selfCharacter ? (selfCharacter.currentHp ?? selfCharacter.hp) : null}
+                maxHp={selfCharacter?.hp ?? null}
+                isGm={isGm}
+                muted={user ? (rowState[user.id]?.muted ?? false) : false}
+                volume={user ? (rowState[user.id]?.volume ?? 0) : 0}
+                cameraEnabled={cameraOn}
+                sinkId={selectedAudioOutput}
+              />
+              {participants.map(p => {
+                const char = campaign.players.find(pl => pl.id === p.characterId)
+                const isGmParticipant = campaign.gmUserId === p.userId
+                return (
+                  <CallParticipantTile
+                    key={p.userId}
+                    stream={p.stream}
+                    audioTrack={p.audioTrack}
+                    displayName={char?.name ?? (isGmParticipant ? 'Mestre' : 'Participante')}
+                    subtitle={isGmParticipant ? 'Mestre' : undefined}
+                    image={char?.imageUrl ?? null}
+                    characterId={p.characterId}
+                    hp={char ? (char.currentHp ?? char.hp) : null}
+                    maxHp={char?.hp ?? null}
+                    isGm={isGmParticipant}
+                    muted={rowState[p.userId]?.muted ?? false}
+                    volume={rowState[p.userId]?.volume ?? 1}
+                    cameraEnabled={p.cameraEnabled}
+                    sinkId={selectedAudioOutput}
+                  />
+                )
+              })}
+            </div>
+
+            <CallSidebar
+              viewerIsGm={isGm}
+              rows={user ? [
+                {
+                  userId: user.id,
+                  accountName,
+                  characterName: selfCharacter?.name ?? 'Você',
+                  isGm,
+                  isSelf: true,
+                  muted: rowState[user.id]?.muted ?? false,
+                  volume: rowState[user.id]?.volume ?? 0,
+                  cameraEnabled: cameraOn,
+                },
+                ...participants.map(p => {
+                  const char = campaign.players.find(pl => pl.id === p.characterId)
+                  const isGmParticipant = campaign.gmUserId === p.userId
+                  return {
+                    userId: p.userId,
+                    accountName: p.accountName,
+                    characterName: char?.name ?? (isGmParticipant ? 'Mestre' : 'Participante'),
+                    isGm: isGmParticipant,
+                    isSelf: false,
+                    muted: rowState[p.userId]?.muted ?? false,
+                    volume: rowState[p.userId]?.volume ?? 1,
+                    cameraEnabled: p.cameraEnabled,
+                  }
+                }),
+              ] : []}
+              onToggleMute={handleToggleMute}
+              onVolumeChange={handleVolumeChange}
+              onForceMuteAll={handleForceMuteAll}
+              onToggleCamera={handleToggleCamera}
+              audioInputs={audioInputs}
+              videoInputs={videoInputs}
+              audioOutputs={audioOutputs}
+              selectedAudioInput={selectedAudioInput}
+              selectedVideoInput={selectedVideoInput}
+              selectedAudioOutput={selectedAudioOutput}
+              onAudioInputChange={switchAudioInput}
+              onVideoInputChange={switchVideoInput}
+              onAudioOutputChange={switchAudioOutput}
             />
-            {participants.map(p => {
-              const char = campaign.players.find(pl => pl.id === p.characterId)
-              const isGmParticipant = campaign.gmUserId === p.userId
-              return (
-                <CallParticipantTile
-                  key={p.userId}
-                  stream={p.stream}
-                  audioTrack={p.audioTrack}
-                  displayName={char?.name ?? (isGmParticipant ? 'Mestre' : 'Participante')}
-                  subtitle={isGmParticipant ? 'Mestre' : undefined}
-                  image={char?.imageUrl ?? null}
-                  characterId={p.characterId}
-                  hp={char ? (char.currentHp ?? char.hp) : null}
-                  maxHp={char?.hp ?? null}
-                  isGm={isGmParticipant}
-                />
-              )
-            })}
           </div>
         )}
       </div>

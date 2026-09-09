@@ -10,8 +10,11 @@ interface CallParticipantTileProps {
   characterId: string | null
   hp: number | null
   maxHp: number | null
-  defaultVolume?: number
   isGm: boolean
+  muted: boolean
+  volume: number
+  cameraEnabled: boolean
+  sinkId?: string
 }
 
 export function CallParticipantTile({
@@ -23,12 +26,13 @@ export function CallParticipantTile({
   characterId,
   hp: initialHp,
   maxHp: initialMaxHp,
-  defaultVolume = 1,
   isGm,
+  muted,
+  volume,
+  cameraEnabled,
+  sinkId,
 }: CallParticipantTileProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [muted, setMuted] = useState(false)
-  const [volume, setVolume] = useState(defaultVolume)
   const [hp, setHp] = useState(initialHp)
   const [maxHp, setMaxHp] = useState(initialMaxHp)
 
@@ -43,6 +47,15 @@ export function CallParticipantTile({
   useEffect(() => {
     if (audioTrack) audioTrack.enabled = !muted
   }, [audioTrack, muted])
+
+  useEffect(() => {
+    const el = videoRef.current
+    if (!el || !sinkId || typeof el.setSinkId !== 'function') return
+    // Safari doesn't implement HTMLMediaElement.setSinkId at runtime (even
+    // though the type is in lib.dom.d.ts) — the feature check above makes
+    // this a silent no-op there, deliberately without a polyfill.
+    void el.setSinkId(sinkId).catch(() => {})
+  }, [sinkId])
 
   // campaign.players already carries hp/currentHp for every member (roster-level
   // exposure, independent of a character's is_public flag) — that seeds this tile
@@ -72,6 +85,19 @@ export function CallParticipantTile({
         style={{ width: '100%', height: '100%', objectFit: 'cover', background: '#04060C', display: 'block' }}
       />
 
+      {!cameraEnabled && (
+        <div style={{
+          position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: '#04060C',
+        }}>
+          {image ? (
+            <img src={image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(255,255,255,0.08)' }} />
+          )}
+        </div>
+      )}
+
       <div style={{
         position: 'absolute', top: 8, left: 8, right: 8,
         display: 'flex', alignItems: 'center', gap: '0.5rem',
@@ -94,32 +120,6 @@ export function CallParticipantTile({
             </div>
           )}
         </div>
-      </div>
-
-      <div style={{
-        position: 'absolute', bottom: 8, left: 8, right: 8,
-        display: 'flex', alignItems: 'center', gap: '0.5rem',
-      }}>
-        <button
-          onClick={() => setMuted(v => !v)}
-          title={muted ? 'Ativar áudio' : 'Silenciar'}
-          style={{
-            width: 26, height: 26, borderRadius: '50%', border: 'none', cursor: 'pointer', flexShrink: 0,
-            background: muted ? 'rgba(200,60,60,0.75)' : 'rgba(4,6,12,0.72)', color: '#EEF4FC', fontSize: '0.75rem',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          {muted ? '🔇' : '🔊'}
-        </button>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.05}
-          value={volume}
-          onChange={e => setVolume(Number(e.target.value))}
-          style={{ flex: 1, accentColor: 'var(--color-arcano)' }}
-        />
       </div>
     </div>
   )
