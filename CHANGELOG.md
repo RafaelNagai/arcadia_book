@@ -5,6 +5,7 @@
 
 ## 2026-09-09
 
+- Chegou um convite para o servidor do Discord da comunidade direto na página inicial do site, com o logo e um botão para entrar. O logo do Discord também passou a aparecer no botão de login com Discord e na tela de contas vinculadas, nas Configurações.
 - O menu lateral da chamada de vídeo agora abre e fecha por seções: "Participantes" e "Configurações" (onde ficam microfone, câmera e saída de áudio) podem ser recolhidas independentemente, deixando o painel mais organizado.
 - Chegou um filtro ajustável de ruído para o próprio microfone: um controle com medidor de volume ao vivo deixa você definir a partir de que ponto o som de fundo (ventilador, teclado etc.) é cortado, sem cortar a sua voz.
 - A vida do personagem agora aparece direto na própria câmera durante a chamada de vídeo, em vez de uma barra numérica: a imagem fica com um tom avermelhado conforme a vida cai, e vira preto e branco quando chega a zero. Nome e foto do personagem também ganharam um visual novo, no canto da câmera.

@@ -6,6 +6,7 @@ import { HeroParallax } from '@/components/parallax/HeroParallax'
 import { WorldIntro } from '@/components/home/WorldIntro'
 import { MechanicsHighlight } from '@/components/home/MechanicsHighlight'
 import { CharacterShowcase } from '@/components/home/CharacterShowcase'
+import { DiscordBanner } from '@/components/home/DiscordBanner'
 import versionData from '@version'
 
 const DOORS = [
@@ -193,6 +194,9 @@ export function HomePage() {
 
       {/* Race showcase */}
       <CharacterShowcase />
+
+      {/* Discord community invite */}
+      <DiscordBanner />
 
       {/* Two doors: Livro / Mesa */}
       <TwoDoorsSection />

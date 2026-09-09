@@ -277,6 +277,10 @@ export function LoginPage() {
               disabled={discordLoading}
               style={{
                 width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.6rem',
                 padding: '0.75rem',
                 borderRadius: 4,
                 border: '1px solid rgba(255,255,255,0.12)',
@@ -291,6 +295,11 @@ export function LoginPage() {
                 transition: 'all 0.15s',
               }}
             >
+              <img
+                src="/assets/images/discord-logo.png"
+                alt=""
+                style={{ width: 20, height: 20, borderRadius: '50%', opacity: discordLoading ? 0.4 : 1 }}
+              />
               {discordLoading ? 'Aguarde...' : 'Entrar com Discord'}
             </button>
 

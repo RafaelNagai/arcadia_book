@@ -99,7 +99,14 @@ export function LinkedAccountsSection() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div>
-          <label style={labelStyle}>Discord</label>
+          <label style={{ ...labelStyle, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <img
+              src="/assets/images/discord-logo.png"
+              alt="Discord"
+              style={{ width: 16, height: 16, borderRadius: '50%' }}
+            />
+            Discord
+          </label>
 
           {checking ? (
             <p style={{
