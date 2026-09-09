@@ -25,6 +25,18 @@
 
 ## Backlog
 
+### TURN para Chamada de Vídeo em Redes Móveis (CGNAT) + Validação em Dispositivo Real
+**Origem:** Subtasks 2 e 4 de "Bug: Entrar na Call Não Funciona no Celular" (ver Concluídos, 2026-09-09) — a investigação confirmou que a configuração de ICE hoje usa só STUN (`stun.cloudflare.com`, `web/src/components/call/CallTab.tsx`), sem nenhum servidor TURN, o que pode ser a causa raiz da falha em redes de operadora/CGNAT — ainda não confirmado por teste real em dispositivo móvel.
+
+- [ ] Testar a entrada na call em celular real, comparando Wi-Fi vs dados móveis (4G/5G), em pelo menos dois navegadores (Safari iOS, Chrome Android) — agora com erro visível (já implementado) em vez de trava silenciosa, o teste vai mostrar exatamente onde/como falha, se ainda falhar
+  - **Arquivos:** nenhum (validação manual)
+- [ ] Se o teste acima confirmar falha específica de dados móveis/CGNAT: criar uma TURN Key em Realtime → TURN no dashboard da Cloudflare, adicionar `CLOUDFLARE_TURN_KEY_ID` + `CLOUDFLARE_TURN_KEY_API_TOKEN` em `api/src/config/env.ts` + `.env`/`.env.example`, implementar método em `calls.service.ts` que chama `POST /v1/turn/keys/$TURN_KEY_ID/credentials/generate-ice-servers` (TTL curto) e propagar o `iceServers` retornado (STUN + TURN) para o `RTCPeerConnection` em `CallTab.tsx` (hoje hardcoded só com STUN)
+  - **Critério de aceite:** conectar com sucesso em rede móvel que antes falhava, sem regressão em Wi-Fi/desktop; nenhuma credencial de TURN exposta em `web/src` além do necessário para o `RTCPeerConnection`
+  - **Arquivos:** `api/src/config/env.ts`, `api/src/services/calls.service.ts`, `api/src/controllers/calls.controller.ts`, `web/src/components/call/CallTab.tsx`
+  - **Bloqueado por:** credenciais `TURN_KEY_ID`/`TURN_KEY_API_TOKEN` não existem no projeto hoje — exige criar a chave no dashboard da Cloudflare (ação humana/de produto) antes de codar contra ela, para não introduzir mock nem quebrar o boot do servidor em ambientes sem a env var.
+
+---
+
 ### Widgets por Capítulo — Pendentes
 **Origem:** Subtask 5 da auditoria de consistência (2026-05-08)
 
@@ -56,6 +68,34 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 ---
 
 ## Concluídos
+
+### Bug: Entrar na Call Não Funciona no Celular (Pede Permissão de Câmera mas Não Conecta)
+**Origem:** /task bug: entrar na call não funciona no celular — pede permissão de câmera mas não redireciona para a tela de vídeos e não conecta de fato na call (funciona normalmente no computador)
+**Adicionada:** 2026-09-09 · **Validator:** APROVADO no ciclo 1 (subtasks 1 e 3 — trabalho de código) · **Concluída:** 2026-09-09 — subtask 2 (TURN) e a validação manual em dispositivo real foram movidas para Backlog (ver acima), por dependerem de credenciais externas inexistentes e de ação humana, respectivamente
+
+**Causa raiz identificada pelo Executor:** `waitForIceGatheringComplete()` em `CallTab.tsx` não tinha timeout — se `pc.iceGatheringState` nunca chegasse a `'complete'` (comum em redes de operadora/CGNAT), a Promise nunca resolvia nem rejeitava, travando `joinCall()` para sempre sem cair no `catch`, então nenhum erro aparecia ao usuário — só a tela presa em "Conectando…".
+
+- [x] Subtask 1 — Adicionar timeout de segurança com erro visível em `waitForIceGatheringComplete` e na negociação com o backend dentro de `joinCall()`
+  - **Implementado:** `waitForIceGatheringComplete(pc, timeoutMs = ICE_GATHERING_TIMEOUT_MS = 8_000)` agora resolve (nunca rejeita) ao estourar o timeout, seguindo com os candidatos ICE já coletados em vez de exigir `'complete'` estrito. A chamada de rede (`enqueueNegotiation(() => api.calls.negotiateTracks(...))`) foi envolvida em `Promise.race` contra `rejectAfter(NEGOTIATION_TIMEOUT_MS = 12_000, CONNECTION_TIMEOUT_MESSAGE)`, caindo no `catch` já existente de `joinCall()` que limpa `pcRef`/mídia local e chama `setError(...)`.
+  - **Arquivos:** `web/src/components/call/CallTab.tsx`
+
+- [x] Subtask 3 — Investigar se `window.open(...)` para abrir a call em nova aba se comporta de forma diferente em navegadores mobile e corrigir se confirmado
+  - **Implementado:** botão "Chamada" em `CampaignPage.tsx` trocado de `<button onClick={() => window.open(...)}>` para `<Link to={`/campanha/:id/chamada`} target="_blank" rel="noopener noreferrer">`, igual ao padrão já usado no mesmo arquivo para abrir a ficha de personagem em nova aba.
+  - **Arquivos:** `web/src/pages/CampaignPage.tsx`
+
+**✅ Validação do Validator (2026-09-09):** APROVADO (subtasks 1 e 3 — trabalho de código completo e correto; subtask 2 e a validação manual movidas para Backlog).
+
+- `chapters/` confirmado intocado (`git diff --stat HEAD -- chapters/` vazio) — task é puramente técnica/infraestrutura de call (WebRTC), não mexe em mecânica alguma do livro.
+- **Subtask 1 (`CallTab.tsx`), lida linha a linha:** `waitForIceGatheringComplete` retorna imediatamente (`Promise.resolve()`) quando `iceGatheringState` já é `'complete'` — caso comum em desktop/Wi-Fi bom — então o timeout de 8s não atrasa o caminho feliz, só age como rede de segurança quando o gathering trava. `setTimeout`/listener são corretamente limpos em ambos os caminhos (`clearTimeout` no sucesso, `removeEventListener` no timeout) — sem vazamento. A chamada de rede real (`enqueueNegotiation(...)`, que pode travar indefinidamente por ser um fetch) está protegida por `Promise.race` contra `rejectAfter(12_000, ...)`, que rejeita com mensagem clara e cai no `catch` de `joinCall()` — confirmado: `setError((err as Error).message || ...)` é chamado, e existe `{error && <p>...}` no JSX (linhas 662-670) que renderiza essa mensagem visivelmente, então o erro fica de fato visível ao usuário, não é uma tela "pendurada" silenciosa. Nota não-bloqueante: a chamada de rede perdedora da corrida continua em voo em segundo plano (sem `AbortController`), mas seu resultado é só descartado — `pcRef` já foi fechado/zerado no `catch`, sem efeito colateral observável.
+- **Subtask 3 (`CampaignPage.tsx`):** `Link` já importado de `react-router-dom` no topo do arquivo; `to="/campanha/${campaign.id}/chamada"` bate exatamente com a rota registrada em `App.tsx` (`campanha/:id/chamada`); o botão vive em `CampaignSidebar`, renderizado dentro de `CampaignPage`, já sob `<Routes>`/Router — sem risco de `Link` fora de contexto de Router. `textDecoration: 'none'` adicionado corretamente (só `<a>` sublinha por padrão). Confirmado por grep que não sobra nenhum `window.open` em `web/src/`.
+- **Padrões técnicos (SPEC.md):** React 19 + TypeScript estrito, componente funcional, estilo inline consistente com o resto dos dois arquivos (que já usam `style={{}}`, não Tailwind, nas seções tocadas).
+- **Consistência do projeto (CLAUDE.md):** `chapters/` não tocado; sem mock de banco/credencial; sem feature extra além do pedido; o único comentário novo (em `CallTab.tsx`, explicando por que `waitForIceGatheringComplete` resolve em vez de rejeitar no timeout e por que seguir com candidatos parciais) documenta um "porquê" não-óbvio, consistente com a regra "sem comentários a não ser que o porquê seja não-óbvio".
+- **Build/Lint — reproduzido de forma independente pelo Validator:** `cd web && npx tsc -b --force` → exit 0, zero erros. `npx eslint src/components/call/CallTab.tsx src/pages/CampaignPage.tsx` → 1 erro + 1 warning, ambos em `CampaignPage.tsx` (`react-hooks/set-state-in-effect` + `exhaustive-deps` no `useEffect` de carregamento da campanha) — confirmado pré-existente via `git stash`/`git stash pop`: o mesmo erro aparece na baseline (deslocado só pelas 3 linhas líquidas adicionadas por este diff), não relacionado ao botão "Chamada". `CallTab.tsx` sozinho: zero problemas de lint.
+- **Subtask 2 (TURN):** investigação do Executor confirmada por leitura direta — não há `TURN_KEY_ID`/`TURN_KEY_API_TOKEN` nem qualquer credencial TURN em `api/src/config/env.ts`, `.env.example` ou `web/.env`. Não implementar está correto — geraria código morto e risco de quebrar o boot do servidor em ambientes sem a env var, além de violar a regra de "sem mocks". Movida para Backlog junto com a validação manual em dispositivo real (subtask 4 original).
+
+**Veredito:** ✅ **APROVADO.** Subtasks 1 e 3 corrigem a causa raiz identificada (travamento silencioso sem timeout e sem erro visível) sem quebrar o caminho de sucesso em redes boas, seguindo os padrões já estabelecidos nos arquivos. Subtask 2 (TURN) e a validação manual em dispositivo real ficam registradas no Backlog — bloqueadas por credenciais externas inexistentes e por exigirem ação humana, não por falta de esforço de investigação.
+
+---
 
 ### Divulgação do Servidor do Discord no Site (Home, Login, Contas Vinculadas)
 **Origem:** /task Adicionar divulgação do servidor do Discord no site: (1) card/banner na página inicial convidando para o servidor com o logo e link https://discord.gg/eEs5t7UUUs; (2) logo no botão "Entrar com Discord" da tela de login; (3) logo na seção de contas vinculadas da tela de configurações.

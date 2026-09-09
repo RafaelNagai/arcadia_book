@@ -654,18 +654,21 @@ function CampaignSidebar({ campaign, view, isGm, onChangeView, onRegenerateCode,
           rodapé e separada da navegação normal porque não é uma "view" da
           campanha, e visível pra todo mundo (não só mestre) */}
       <div style={{ padding: '0.75rem', borderTop: '1px solid var(--color-border)', flexShrink: 0 }}>
-        <button
-          onClick={() => window.open(`/campanha/${campaign.id}/chamada`, '_blank', 'noopener,noreferrer')}
+        <Link
+          to={`/campanha/${campaign.id}/chamada`}
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
             width: '100%', padding: '0.65rem 1rem', borderRadius: 4,
             background: 'rgba(200,146,42,0.08)', border: '1px solid rgba(200,146,42,0.25)',
             color: 'var(--color-arcano)', fontFamily: 'var(--font-ui)',
             fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.06em', cursor: 'pointer',
+            textDecoration: 'none',
           }}
         >
           🎥 Chamada
-        </button>
+        </Link>
       </div>
     </div>
   )

@@ -12,6 +12,9 @@ import { CallSpotlightGrid } from './CallSpotlightGrid'
 import type { CallTileData } from './callTypes'
 
 const ICE_SERVERS: RTCIceServer[] = [{ urls: 'stun:stun.cloudflare.com:3478' }]
+const ICE_GATHERING_TIMEOUT_MS = 8_000
+const NEGOTIATION_TIMEOUT_MS = 12_000
+const CONNECTION_TIMEOUT_MESSAGE = 'Não foi possível estabelecer a conexão de vídeo — verifique sua rede'
 
 interface CallTabProps {
   campaign: CampaignDetail
@@ -32,17 +35,31 @@ interface RowState {
   volume: number
 }
 
-function waitForIceGatheringComplete(pc: RTCPeerConnection): Promise<void> {
+// Resolve (never reject) once gathering completes, or after `timeoutMs` —
+// whichever comes first. Some networks (CGNAT, restrictive mobile carriers)
+// never reach 'complete', so we proceed with whatever candidates were
+// collected by the deadline instead of hanging forever; the offer sent to
+// the backend still works with a partial candidate set.
+function waitForIceGatheringComplete(pc: RTCPeerConnection, timeoutMs = ICE_GATHERING_TIMEOUT_MS): Promise<void> {
   if (pc.iceGatheringState === 'complete') return Promise.resolve()
   return new Promise(resolve => {
+    const timer = setTimeout(() => {
+      pc.removeEventListener('icegatheringstatechange', check)
+      resolve()
+    }, timeoutMs)
     function check() {
       if (pc.iceGatheringState === 'complete') {
+        clearTimeout(timer)
         pc.removeEventListener('icegatheringstatechange', check)
         resolve()
       }
     }
     pc.addEventListener('icegatheringstatechange', check)
   })
+}
+
+function rejectAfter(ms: number, message: string): Promise<never> {
+  return new Promise((_, reject) => setTimeout(() => reject(new Error(message)), ms))
 }
 
 export function CallTab({ campaign }: CallTabProps) {
@@ -294,13 +311,16 @@ export function CallTab({ campaign }: CallTabProps) {
       const localDesc = pc.localDescription
       if (!localDesc?.sdp) throw new Error('Falha ao negociar a conexão de vídeo')
 
-      const pushResp = await enqueueNegotiation(() => api.calls.negotiateTracks(campaign.id, sessionId, {
-        sessionDescription: { sdp: localDesc.sdp, type: 'offer' },
-        tracks: [
-          { location: 'local', mid: audioTransceiver.mid ?? undefined, trackName: `${sessionId}-audio`, kind: 'audio' },
-          { location: 'local', mid: videoTransceiver.mid ?? undefined, trackName: `${sessionId}-video`, kind: 'video' },
-        ],
-      }))
+      const pushResp = await Promise.race([
+        enqueueNegotiation(() => api.calls.negotiateTracks(campaign.id, sessionId, {
+          sessionDescription: { sdp: localDesc.sdp, type: 'offer' },
+          tracks: [
+            { location: 'local', mid: audioTransceiver.mid ?? undefined, trackName: `${sessionId}-audio`, kind: 'audio' },
+            { location: 'local', mid: videoTransceiver.mid ?? undefined, trackName: `${sessionId}-video`, kind: 'video' },
+          ],
+        })),
+        rejectAfter(NEGOTIATION_TIMEOUT_MS, CONNECTION_TIMEOUT_MESSAGE),
+      ])
       if (pushResp.sessionDescription) {
         await pc.setRemoteDescription(new RTCSessionDescription(pushResp.sessionDescription))
       }

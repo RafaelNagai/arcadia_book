@@ -12,6 +12,7 @@
 - Corrigido: a foto do personagem no canto da câmera, durante a chamada de vídeo, agora atualiza corretamente para todo mundo — antes, quem já estava conectado antes de você não via sua foto aparecer/trocar em tempo real. Aproveitamos para deixar esse selo de foto um pouco maior, e o mestre não tem mais esse ícone (só aparece para quem tem uma ficha de personagem vinculada).
 - A foto e o nome do personagem na chamada de vídeo agora se ajustam de tamanho automaticamente conforme a câmera fica maior ou menor — por exemplo, quando tem muita gente na call ou no modo de destaque no mestre, com várias câmeras pequenas lado a lado.
 - Corrigido: em alguns casos, quando o mestre saía da chamada de vídeo, os outros participantes não eram desconectados automaticamente como deveriam.
+- Corrigido um problema onde entrar na chamada de vídeo pelo celular podia travar sem aviso: agora, se a conexão falhar, você vê uma mensagem de erro clara em vez de ficar esperando para sempre. O botão de entrar na chamada também ficou mais confiável em navegadores de celular.
 
 ## 2026-09-08
 
