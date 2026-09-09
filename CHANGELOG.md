@@ -9,6 +9,7 @@
 - A chamada de vídeo agora só libera todo mundo depois que o mestre entra — quem chegar antes fica numa telinha de espera e é conectado automaticamente assim que o mestre aparecer. E, por enquanto, essa é uma funcionalidade em teste, liberada só para uma conta.
 - A chamada agora abre numa aba própria do navegador, direto pelo botão no rodapé do menu da campanha — e você já entra sozinho, sem precisar clicar em "Entrar". Se o mestre sair da chamada, todo mundo é desconectado automaticamente e volta pra sala de espera. E o mestre não aparece mais mostrando a própria vida pros outros participantes.
 - Os controles da chamada de vídeo ganharam um menu lateral novo: dá pra ver quem está na call (nome da conta e do personagem), mutar só pra você mesmo ouvir diferente, e — se for o mestre — mutar a mesa toda quando precisar. A câmera também pode ser desligada a qualquer momento, mostrando o retrato do personagem no lugar do vídeo, e agora dá pra trocar microfone, câmera e saída de áudio direto pelo painel, sem sair da chamada.
+- Os vídeos da chamada ficaram bem maiores, e agora o mestre pode escolher entre dois jeitos de organizar a tela: com ele em destaque e o resto da mesa numa fileira embaixo, ou todo mundo do mesmo tamanho se ajustando automaticamente à quantidade de gente. E a chamada finalmente funciona direito no celular, com um menu de participantes que abre como uma gaveta deslizante.
 
 ## 2026-09-07
 

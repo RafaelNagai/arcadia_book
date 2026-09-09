@@ -1,3 +1,5 @@
+import type { LayoutMode } from '@/hooks/useCampaignCallChannel'
+
 export interface CallSidebarRow {
   userId: string
   accountName: string
@@ -47,6 +49,8 @@ function DeviceSelect({ label, devices, selected, fallbackLabel, onChange }: Dev
 interface CallSidebarProps {
   rows: CallSidebarRow[]
   viewerIsGm: boolean
+  activeLayoutMode: LayoutMode
+  onChangeLayoutMode: (mode: LayoutMode) => void
   onToggleMute: (userId: string) => void
   onVolumeChange: (userId: string, value: number) => void
   onForceMuteAll: (userId: string) => void
@@ -62,9 +66,28 @@ interface CallSidebarProps {
   onAudioOutputChange: (deviceId: string) => void
 }
 
+function LayoutModeButton({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        flex: 1, padding: '0.4rem 0.5rem', borderRadius: 4, cursor: 'pointer',
+        border: active ? '1px solid rgba(200,146,42,0.5)' : '1px solid rgba(255,255,255,0.1)',
+        background: active ? 'rgba(200,146,42,0.18)' : 'rgba(4,6,12,0.72)',
+        color: active ? 'var(--color-arcano)' : '#EEF4FC',
+        fontFamily: 'var(--font-ui)', fontSize: '0.7rem', fontWeight: active ? 700 : 400,
+      }}
+    >
+      {label}
+    </button>
+  )
+}
+
 export function CallSidebar({
   rows,
   viewerIsGm,
+  activeLayoutMode,
+  onChangeLayoutMode,
   onToggleMute,
   onVolumeChange,
   onForceMuteAll,
@@ -85,6 +108,21 @@ export function CallSidebar({
       background: 'rgba(10,15,30,0.9)', border: '1px solid rgba(255,255,255,0.07)',
       borderRadius: 6, overflow: 'hidden', alignSelf: 'flex-start',
     }}>
+      {viewerIsGm && (
+        <div style={{ padding: '0.75rem 0.9rem 0.5rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+          <p style={{
+            fontFamily: 'var(--font-ui)', fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase',
+            color: 'var(--color-text-muted)', marginBottom: '0.4rem',
+          }}>
+            Modo de exibição
+          </p>
+          <div style={{ display: 'flex', gap: '0.4rem' }}>
+            <LayoutModeButton label="Destaque no mestre" active={activeLayoutMode === 'spotlight'} onClick={() => onChangeLayoutMode('spotlight')} />
+            <LayoutModeButton label="Grade igual" active={activeLayoutMode === 'gallery'} onClick={() => onChangeLayoutMode('gallery')} />
+          </div>
+        </div>
+      )}
+
       <p style={{
         fontFamily: 'var(--font-ui)', fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase',
         color: 'var(--color-text-muted)', padding: '0.75rem 0.9rem 0.5rem',

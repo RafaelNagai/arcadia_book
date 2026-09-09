@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { api, ApiError } from '@/lib/apiClient'
 import { useAuth } from '@/lib/authContext'
-import { useCampaignCallChannel } from '@/hooks/useCampaignCallChannel'
+import { useCampaignCallChannel, type LayoutMode } from '@/hooks/useCampaignCallChannel'
+import { useGalleryLayout, GALLERY_GAP } from '@/hooks/useGalleryLayout'
 import type { CampaignDetail } from '@/data/campaignTypes'
 import { CallParticipantTile } from './CallParticipantTile'
 import { CallSidebar } from './CallSidebar'
+import { CallSpotlightGrid } from './CallSpotlightGrid'
+import type { CallTileData } from './callTypes'
 
 const ICE_SERVERS: RTCIceServer[] = [{ urls: 'stun:stun.cloudflare.com:3478' }]
 
@@ -17,6 +21,7 @@ interface RemoteParticipant {
   characterId: string | null
   accountName: string
   cameraEnabled: boolean
+  layoutMode: LayoutMode | null
   stream: MediaStream
   audioTrack: MediaStreamTrack | null
 }
@@ -52,6 +57,8 @@ export function CallTab({ campaign }: CallTabProps) {
   const [rowState, setRowState] = useState<Record<string, RowState>>({})
   const [gmPresent, setGmPresent] = useState(false)
   const [waitingForGm, setWaitingForGm] = useState(false)
+  const [layoutMode, setLayoutMode] = useState<LayoutMode>('gallery')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const [audioInputs, setAudioInputs] = useState<MediaDeviceInfo[]>([])
   const [videoInputs, setVideoInputs] = useState<MediaDeviceInfo[]>([])
@@ -73,7 +80,7 @@ export function CallTab({ campaign }: CallTabProps) {
   // PARTICIPANT_JOIN can arrive (via presence sync, for peers already in the
   // call) before our own RTCPeerConnection/session exist — buffer it here and
   // drain once joinCall() finishes setting those up, instead of dropping it.
-  const pendingJoinsRef = useRef<Map<string, { characterId: string | null; cloudflareSessionId: string; accountName: string; cameraEnabled: boolean }>>(new Map())
+  const pendingJoinsRef = useRef<Map<string, { characterId: string | null; cloudflareSessionId: string; accountName: string; cameraEnabled: boolean; layoutMode: LayoutMode | null }>>(new Map())
   // Cloudflare Realtime only accepts a track pull once it already knows this
   // session's SDP (from our own push negotiation) — pulling any earlier fails
   // server-side, so this only flips true once the push round-trip is done.
@@ -112,6 +119,7 @@ export function CallTab({ campaign }: CallTabProps) {
     remoteSessionId: string,
     accountName: string,
     cameraEnabled: boolean,
+    layoutMode: LayoutMode | null,
   ) => {
     const pc = pcRef.current
     const mySessionId = sessionIdRef.current
@@ -119,7 +127,7 @@ export function CallTab({ campaign }: CallTabProps) {
     if (participantsRef.current.some(p => p.userId === userId)) return
 
     const stream = new MediaStream()
-    setParticipants(prev => [...prev, { userId, characterId, accountName, cameraEnabled, stream, audioTrack: null }])
+    setParticipants(prev => [...prev, { userId, characterId, accountName, cameraEnabled, layoutMode, stream, audioTrack: null }])
     ensureRowState(userId, 1)
 
     try {
@@ -149,13 +157,13 @@ export function CallTab({ campaign }: CallTabProps) {
 
   const broadcast = useCampaignCallChannel(campaign.id, {
     selfId: user?.id,
-    onParticipantUpdate: (userId, characterId, cloudflareSessionId, accountName, cameraEnabled) => {
+    onParticipantUpdate: (userId, characterId, cloudflareSessionId, accountName, cameraEnabled, layoutMode) => {
       if (userId === campaign.gmUserId) setGmPresent(true)
-      pendingJoinsRef.current.set(userId, { characterId, cloudflareSessionId, accountName, cameraEnabled })
+      pendingJoinsRef.current.set(userId, { characterId, cloudflareSessionId, accountName, cameraEnabled, layoutMode })
       if (participantsRef.current.some(p => p.userId === userId)) {
-        setParticipants(prev => prev.map(p => (p.userId === userId ? { ...p, characterId, accountName, cameraEnabled } : p)))
+        setParticipants(prev => prev.map(p => (p.userId === userId ? { ...p, characterId, accountName, cameraEnabled, layoutMode } : p)))
       } else if (pushReadyRef.current) {
-        void pullParticipant(userId, characterId, cloudflareSessionId, accountName, cameraEnabled)
+        void pullParticipant(userId, characterId, cloudflareSessionId, accountName, cameraEnabled, layoutMode)
       }
     },
     onParticipantLeave: userId => {
@@ -199,7 +207,7 @@ export function CallTab({ campaign }: CallTabProps) {
     return () => navigator.mediaDevices.removeEventListener('devicechange', refreshDevices)
   }, [refreshDevices])
 
-  const trackSelf = useCallback((nextCameraEnabled: boolean) => {
+  const trackSelf = useCallback((nextCameraEnabled: boolean, nextLayoutMode: LayoutMode) => {
     if (!user) return
     broadcast({
       type: 'PARTICIPANT_JOIN',
@@ -208,8 +216,18 @@ export function CallTab({ campaign }: CallTabProps) {
       cloudflareSessionId: sessionIdRef.current ?? '',
       accountName,
       cameraEnabled: nextCameraEnabled,
+      layoutMode: isGm ? nextLayoutMode : null,
     })
-  }, [user, selfCharacter, accountName, broadcast])
+  }, [user, selfCharacter, accountName, isGm, broadcast])
+
+  const handleChangeLayoutMode = useCallback((mode: LayoutMode) => {
+    setLayoutMode(mode)
+    trackSelf(cameraOn, mode)
+  }, [cameraOn, trackSelf])
+
+  const activeLayoutMode: LayoutMode = isGm
+    ? layoutMode
+    : (participants.find(p => p.userId === campaign.gmUserId)?.layoutMode ?? 'gallery')
 
   const joinCall = useCallback(async () => {
     if (!user) return
@@ -268,11 +286,11 @@ export function CallTab({ campaign }: CallTabProps) {
 
       setCameraOn(true)
       ensureRowState(user.id, 0)
-      trackSelf(true)
+      trackSelf(true, layoutMode)
       setJoined(true)
 
       for (const [pendingUserId, info] of pendingJoinsRef.current) {
-        void pullParticipant(pendingUserId, info.characterId, info.cloudflareSessionId, info.accountName, info.cameraEnabled)
+        void pullParticipant(pendingUserId, info.characterId, info.cloudflareSessionId, info.accountName, info.cameraEnabled, info.layoutMode)
       }
     } catch (err) {
       if (err instanceof ApiError && err.code === 'GM_NOT_IN_CALL') {
@@ -288,7 +306,7 @@ export function CallTab({ campaign }: CallTabProps) {
       setConnecting(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [campaign.id, user, selfCharacter, broadcast, ensureRowState, trackSelf, pullParticipant, refreshDevices])
+  }, [campaign.id, user, selfCharacter, broadcast, ensureRowState, trackSelf, pullParticipant, refreshDevices, layoutMode])
 
   const handleJoinClick = useCallback(() => {
     if (!isGm && !gmPresent) {
@@ -375,10 +393,10 @@ export function CallTab({ campaign }: CallTabProps) {
     setCameraOn(prev => {
       const next = !prev
       if (localVideoTrack) localVideoTrack.enabled = next
-      trackSelf(next)
+      trackSelf(next, layoutMode)
       return next
     })
-  }, [localVideoTrack, trackSelf])
+  }, [localVideoTrack, trackSelf, layoutMode])
 
   const handleForceMuteAll = useCallback((targetUserId: string) => {
     broadcast({ type: 'FORCE_MUTE', targetUserId })
@@ -433,49 +451,137 @@ export function CallTab({ campaign }: CallTabProps) {
     setSelectedAudioOutput(deviceId)
   }, [])
 
+  const selfTile: CallTileData = {
+    key: 'self',
+    userId: user?.id ?? 'self',
+    stream: localStream,
+    audioTrack: localAudioTrack,
+    displayName: selfCharacter?.name ?? 'Você',
+    subtitle: isGm ? 'Mestre (Você)' : selfCharacter ? 'Você' : undefined,
+    image: selfCharacter?.imageUrl ?? null,
+    characterId: selfCharacter?.id ?? null,
+    hp: selfCharacter ? (selfCharacter.currentHp ?? selfCharacter.hp) : null,
+    maxHp: selfCharacter?.hp ?? null,
+    isGm,
+    muted: user ? (rowState[user.id]?.muted ?? false) : false,
+    volume: user ? (rowState[user.id]?.volume ?? 0) : 0,
+    cameraEnabled: cameraOn,
+  }
+
+  const remoteVideoTiles: CallTileData[] = participants.map(p => {
+    const char = campaign.players.find(pl => pl.id === p.characterId)
+    const isGmParticipant = campaign.gmUserId === p.userId
+    return {
+      key: p.userId,
+      userId: p.userId,
+      stream: p.stream,
+      audioTrack: p.audioTrack,
+      displayName: char?.name ?? (isGmParticipant ? 'Mestre' : 'Participante'),
+      subtitle: isGmParticipant ? 'Mestre' : undefined,
+      image: char?.imageUrl ?? null,
+      characterId: p.characterId,
+      hp: char ? (char.currentHp ?? char.hp) : null,
+      maxHp: char?.hp ?? null,
+      isGm: isGmParticipant,
+      muted: rowState[p.userId]?.muted ?? false,
+      volume: rowState[p.userId]?.volume ?? 1,
+      cameraEnabled: p.cameraEnabled,
+    }
+  })
+
+  const videoTiles: CallTileData[] = [selfTile, ...remoteVideoTiles]
+  const masterTile = videoTiles.find(t => t.isGm)
+  const otherTiles = videoTiles.filter(t => t !== masterTile)
+
+  const galleryContainerRef = useRef<HTMLDivElement>(null)
+  const galleryLayout = useGalleryLayout(galleryContainerRef, joined ? videoTiles.length : 0)
+
+  const sidebarRows = user ? [
+    {
+      userId: user.id,
+      accountName,
+      characterName: selfCharacter?.name ?? 'Você',
+      isGm,
+      isSelf: true,
+      muted: rowState[user.id]?.muted ?? false,
+      volume: rowState[user.id]?.volume ?? 0,
+      cameraEnabled: cameraOn,
+    },
+    ...participants.map(p => {
+      const char = campaign.players.find(pl => pl.id === p.characterId)
+      const isGmParticipant = campaign.gmUserId === p.userId
+      return {
+        userId: p.userId,
+        accountName: p.accountName,
+        characterName: char?.name ?? (isGmParticipant ? 'Mestre' : 'Participante'),
+        isGm: isGmParticipant,
+        isSelf: false,
+        muted: rowState[p.userId]?.muted ?? false,
+        volume: rowState[p.userId]?.volume ?? 1,
+        cameraEnabled: p.cameraEnabled,
+      }
+    }),
+  ] : []
+
   return (
-    <div style={{ flex: 1, padding: '2rem 1.5rem', overflowY: 'auto' }}>
-      <div style={{ maxWidth: 1350, margin: '0 auto' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+    <div style={{ flex: 1, padding: '2rem 1.5rem', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ maxWidth: 1350, margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem', flexShrink: 0 }}>
           <div>
             <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 700, color: '#EEF4FC' }}>Chamada de Sessão</p>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
               Vídeo e áudio ao vivo entre os participantes desta campanha.
             </p>
           </div>
-          {!joined && !waitingForGm ? (
-            <button
-              onClick={handleJoinClick}
-              disabled={connecting}
-              style={{
-                padding: '0.6rem 1.25rem', borderRadius: 4,
-                background: 'rgba(200,146,42,0.15)', border: '1px solid rgba(200,146,42,0.4)',
-                color: 'var(--color-arcano)', fontFamily: 'var(--font-ui)', fontWeight: 700,
-                fontSize: '0.8rem', cursor: connecting ? 'default' : 'pointer', opacity: connecting ? 0.6 : 1,
-              }}
-            >
-              {connecting ? 'Conectando…' : 'Entrar na chamada'}
-            </button>
-          ) : joined ? (
-            <button
-              onClick={leaveCall}
-              style={{
-                padding: '0.6rem 1.25rem', borderRadius: 4,
-                background: 'rgba(200,60,60,0.12)', border: '1px solid rgba(200,60,60,0.35)',
-                color: 'rgba(220,100,100,0.85)', fontFamily: 'var(--font-ui)', fontWeight: 700,
-                fontSize: '0.8rem', cursor: 'pointer',
-              }}
-            >
-              Sair da chamada
-            </button>
-          ) : null}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            {joined && (
+              <button
+                className="lg:hidden"
+                onClick={() => setSidebarOpen(v => !v)}
+                title="Participantes"
+                style={{
+                  background: 'rgba(4,6,12,0.72)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 4,
+                  cursor: 'pointer', color: '#EEF4FC', fontSize: '1.1rem', width: 36, height: 36,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}
+              >
+                ☰
+              </button>
+            )}
+            {!joined && !waitingForGm ? (
+              <button
+                onClick={handleJoinClick}
+                disabled={connecting}
+                style={{
+                  padding: '0.6rem 1.25rem', borderRadius: 4,
+                  background: 'rgba(200,146,42,0.15)', border: '1px solid rgba(200,146,42,0.4)',
+                  color: 'var(--color-arcano)', fontFamily: 'var(--font-ui)', fontWeight: 700,
+                  fontSize: '0.8rem', cursor: connecting ? 'default' : 'pointer', opacity: connecting ? 0.6 : 1,
+                }}
+              >
+                {connecting ? 'Conectando…' : 'Entrar na chamada'}
+              </button>
+            ) : joined ? (
+              <button
+                onClick={leaveCall}
+                style={{
+                  padding: '0.6rem 1.25rem', borderRadius: 4,
+                  background: 'rgba(200,60,60,0.12)', border: '1px solid rgba(200,60,60,0.35)',
+                  color: 'rgba(220,100,100,0.85)', fontFamily: 'var(--font-ui)', fontWeight: 700,
+                  fontSize: '0.8rem', cursor: 'pointer',
+                }}
+              >
+                Sair da chamada
+              </button>
+            ) : null}
+          </div>
         </div>
 
         {error && (
           <p style={{
             fontFamily: 'var(--font-ui)', fontSize: '0.8rem', color: '#C05050',
             background: 'rgba(200,60,60,0.08)', border: '1px solid rgba(200,60,60,0.25)',
-            borderRadius: 4, padding: '0.65rem 0.9rem', marginBottom: '1.25rem',
+            borderRadius: 4, padding: '0.65rem 0.9rem', marginBottom: '1.25rem', flexShrink: 0,
           }}>
             {error}
           </p>
@@ -490,92 +596,106 @@ export function CallTab({ campaign }: CallTabProps) {
             Ao entrar, o navegador vai pedir permissão de câmera e microfone.
           </p>
         ) : (
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-            <div style={{
-              flex: 1, display: 'grid', gap: '1rem',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-            }}>
-              <CallParticipantTile
-                stream={localStream}
-                audioTrack={localAudioTrack}
-                displayName={selfCharacter?.name ?? 'Você'}
-                subtitle={isGm ? 'Mestre (Você)' : selfCharacter ? 'Você' : undefined}
-                image={selfCharacter?.imageUrl ?? null}
-                characterId={selfCharacter?.id ?? null}
-                hp={selfCharacter ? (selfCharacter.currentHp ?? selfCharacter.hp) : null}
-                maxHp={selfCharacter?.hp ?? null}
-                isGm={isGm}
-                muted={user ? (rowState[user.id]?.muted ?? false) : false}
-                volume={user ? (rowState[user.id]?.volume ?? 0) : 0}
-                cameraEnabled={cameraOn}
-                sinkId={selectedAudioOutput}
-              />
-              {participants.map(p => {
-                const char = campaign.players.find(pl => pl.id === p.characterId)
-                const isGmParticipant = campaign.gmUserId === p.userId
-                return (
-                  <CallParticipantTile
-                    key={p.userId}
-                    stream={p.stream}
-                    audioTrack={p.audioTrack}
-                    displayName={char?.name ?? (isGmParticipant ? 'Mestre' : 'Participante')}
-                    subtitle={isGmParticipant ? 'Mestre' : undefined}
-                    image={char?.imageUrl ?? null}
-                    characterId={p.characterId}
-                    hp={char ? (char.currentHp ?? char.hp) : null}
-                    maxHp={char?.hp ?? null}
-                    isGm={isGmParticipant}
-                    muted={rowState[p.userId]?.muted ?? false}
-                    volume={rowState[p.userId]?.volume ?? 1}
-                    cameraEnabled={p.cameraEnabled}
-                    sinkId={selectedAudioOutput}
-                  />
-                )
-              })}
+          <div style={{ display: 'flex', gap: '1rem', flex: 1, minHeight: 0 }}>
+            <div ref={galleryContainerRef} style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+              {activeLayoutMode === 'spotlight' && masterTile ? (
+                <CallSpotlightGrid master={masterTile} others={otherTiles} sinkId={selectedAudioOutput} />
+              ) : (
+                <div style={{
+                  flex: 1, minHeight: 0, overflowY: 'auto', display: 'flex', flexWrap: 'wrap',
+                  alignContent: 'flex-start', justifyContent: 'center', gap: GALLERY_GAP,
+                }}>
+                  {videoTiles.map(t => (
+                    <div
+                      key={t.key}
+                      style={galleryLayout
+                        ? { width: galleryLayout.tileWidth, height: galleryLayout.tileHeight, flexShrink: 0 }
+                        : { width: 240, flex: '0 1 240px' }}
+                    >
+                      <CallParticipantTile
+                        stream={t.stream}
+                        audioTrack={t.audioTrack}
+                        displayName={t.displayName}
+                        subtitle={t.subtitle}
+                        image={t.image}
+                        characterId={t.characterId}
+                        hp={t.hp}
+                        maxHp={t.maxHp}
+                        isGm={t.isGm}
+                        muted={t.muted}
+                        volume={t.volume}
+                        cameraEnabled={t.cameraEnabled}
+                        sinkId={selectedAudioOutput}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
-            <CallSidebar
-              viewerIsGm={isGm}
-              rows={user ? [
-                {
-                  userId: user.id,
-                  accountName,
-                  characterName: selfCharacter?.name ?? 'Você',
-                  isGm,
-                  isSelf: true,
-                  muted: rowState[user.id]?.muted ?? false,
-                  volume: rowState[user.id]?.volume ?? 0,
-                  cameraEnabled: cameraOn,
-                },
-                ...participants.map(p => {
-                  const char = campaign.players.find(pl => pl.id === p.characterId)
-                  const isGmParticipant = campaign.gmUserId === p.userId
-                  return {
-                    userId: p.userId,
-                    accountName: p.accountName,
-                    characterName: char?.name ?? (isGmParticipant ? 'Mestre' : 'Participante'),
-                    isGm: isGmParticipant,
-                    isSelf: false,
-                    muted: rowState[p.userId]?.muted ?? false,
-                    volume: rowState[p.userId]?.volume ?? 1,
-                    cameraEnabled: p.cameraEnabled,
-                  }
-                }),
-              ] : []}
-              onToggleMute={handleToggleMute}
-              onVolumeChange={handleVolumeChange}
-              onForceMuteAll={handleForceMuteAll}
-              onToggleCamera={handleToggleCamera}
-              audioInputs={audioInputs}
-              videoInputs={videoInputs}
-              audioOutputs={audioOutputs}
-              selectedAudioInput={selectedAudioInput}
-              selectedVideoInput={selectedVideoInput}
-              selectedAudioOutput={selectedAudioOutput}
-              onAudioInputChange={switchAudioInput}
-              onVideoInputChange={switchVideoInput}
-              onAudioOutputChange={switchAudioOutput}
-            />
+            <div className="hidden lg:flex" style={{ flexShrink: 0 }}>
+              <CallSidebar
+                viewerIsGm={isGm}
+                activeLayoutMode={activeLayoutMode}
+                onChangeLayoutMode={handleChangeLayoutMode}
+                rows={sidebarRows}
+                onToggleMute={handleToggleMute}
+                onVolumeChange={handleVolumeChange}
+                onForceMuteAll={handleForceMuteAll}
+                onToggleCamera={handleToggleCamera}
+                audioInputs={audioInputs}
+                videoInputs={videoInputs}
+                audioOutputs={audioOutputs}
+                selectedAudioInput={selectedAudioInput}
+                selectedVideoInput={selectedVideoInput}
+                selectedAudioOutput={selectedAudioOutput}
+                onAudioInputChange={switchAudioInput}
+                onVideoInputChange={switchVideoInput}
+                onAudioOutputChange={switchAudioOutput}
+              />
+            </div>
+
+            <AnimatePresence>
+              {sidebarOpen && (
+                <>
+                  <motion.div
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    onClick={() => setSidebarOpen(false)}
+                    style={{ position: 'fixed', inset: 0, zIndex: 80, background: 'rgba(0,0,0,0.6)' }}
+                  />
+                  <motion.div
+                    initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
+                    transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+                    style={{
+                      position: 'fixed', top: 52, right: 0, bottom: 0,
+                      width: 280, zIndex: 81,
+                      background: 'var(--color-deep)',
+                      borderLeft: '1px solid var(--color-border)',
+                    }}
+                  >
+                    <CallSidebar
+                      viewerIsGm={isGm}
+                      activeLayoutMode={activeLayoutMode}
+                      onChangeLayoutMode={handleChangeLayoutMode}
+                      rows={sidebarRows}
+                      onToggleMute={handleToggleMute}
+                      onVolumeChange={handleVolumeChange}
+                      onForceMuteAll={handleForceMuteAll}
+                      onToggleCamera={handleToggleCamera}
+                      audioInputs={audioInputs}
+                      videoInputs={videoInputs}
+                      audioOutputs={audioOutputs}
+                      selectedAudioInput={selectedAudioInput}
+                      selectedVideoInput={selectedVideoInput}
+                      selectedAudioOutput={selectedAudioOutput}
+                      onAudioInputChange={switchAudioInput}
+                      onVideoInputChange={switchVideoInput}
+                      onAudioOutputChange={switchAudioOutput}
+                    />
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </div>
         )}
       </div>

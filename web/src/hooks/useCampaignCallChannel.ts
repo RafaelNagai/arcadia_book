@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/apiClient'
 
+export type LayoutMode = 'spotlight' | 'gallery'
+
 export type CampaignCallEvent =
-  | { type: 'PARTICIPANT_JOIN'; userId: string; characterId: string | null; cloudflareSessionId: string; accountName: string; cameraEnabled: boolean }
+  | { type: 'PARTICIPANT_JOIN'; userId: string; characterId: string | null; cloudflareSessionId: string; accountName: string; cameraEnabled: boolean; layoutMode: LayoutMode | null }
   | { type: 'PARTICIPANT_LEAVE'; userId: string }
   | { type: 'FORCE_MUTE'; targetUserId: string }
 
@@ -12,6 +14,7 @@ interface CallPresencePayload {
   cloudflareSessionId: string
   accountName: string
   cameraEnabled: boolean
+  layoutMode: LayoutMode | null
 }
 
 function payloadsEqual(a: CallPresencePayload, b: CallPresencePayload): boolean {
@@ -20,11 +23,12 @@ function payloadsEqual(a: CallPresencePayload, b: CallPresencePayload): boolean 
     && a.cloudflareSessionId === b.cloudflareSessionId
     && a.accountName === b.accountName
     && a.cameraEnabled === b.cameraEnabled
+    && a.layoutMode === b.layoutMode
 }
 
 interface CampaignCallHandlers {
   selfId: string | undefined
-  onParticipantUpdate: (userId: string, characterId: string | null, cloudflareSessionId: string, accountName: string, cameraEnabled: boolean) => void
+  onParticipantUpdate: (userId: string, characterId: string | null, cloudflareSessionId: string, accountName: string, cameraEnabled: boolean, layoutMode: LayoutMode | null) => void
   onParticipantLeave: (userId: string) => void
   onForceMute: () => void
 }
@@ -64,7 +68,7 @@ export function useCampaignCallChannel(
           const previous = knownPayloadsRef.current.get(key)
           if (previous && payloadsEqual(previous, latest)) continue
           knownPayloadsRef.current.set(key, latest)
-          handlersRef.current.onParticipantUpdate(latest.userId, latest.characterId, latest.cloudflareSessionId, latest.accountName, latest.cameraEnabled)
+          handlersRef.current.onParticipantUpdate(latest.userId, latest.characterId, latest.cloudflareSessionId, latest.accountName, latest.cameraEnabled, latest.layoutMode)
         }
         const staleKeys = [...knownPayloadsRef.current.keys()].filter(key => !currentKeys.has(key))
         for (const key of staleKeys) {
@@ -91,6 +95,7 @@ export function useCampaignCallChannel(
         cloudflareSessionId: event.cloudflareSessionId,
         accountName: event.accountName,
         cameraEnabled: event.cameraEnabled,
+        layoutMode: event.layoutMode,
       })
     } else if (event.type === 'PARTICIPANT_LEAVE') {
       void channel.untrack()
