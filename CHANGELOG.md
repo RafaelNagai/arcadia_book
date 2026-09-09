@@ -7,6 +7,9 @@
 
 - O menu lateral da chamada de vídeo agora abre e fecha por seções: "Participantes" e "Configurações" (onde ficam microfone, câmera e saída de áudio) podem ser recolhidas independentemente, deixando o painel mais organizado.
 - Chegou um filtro ajustável de ruído para o próprio microfone: um controle com medidor de volume ao vivo deixa você definir a partir de que ponto o som de fundo (ventilador, teclado etc.) é cortado, sem cortar a sua voz.
+- A vida do personagem agora aparece direto na própria câmera durante a chamada de vídeo, em vez de uma barra numérica: a imagem fica com um tom avermelhado conforme a vida cai, e vira preto e branco quando chega a zero. Nome e foto do personagem também ganharam um visual novo, no canto da câmera.
+- Corrigido: a foto do personagem no canto da câmera, durante a chamada de vídeo, agora atualiza corretamente para todo mundo — antes, quem já estava conectado antes de você não via sua foto aparecer/trocar em tempo real. Aproveitamos para deixar esse selo de foto um pouco maior, e o mestre não tem mais esse ícone (só aparece para quem tem uma ficha de personagem vinculada).
+- A foto e o nome do personagem na chamada de vídeo agora se ajustam de tamanho automaticamente conforme a câmera fica maior ou menor — por exemplo, quando tem muita gente na call ou no modo de destaque no mestre, com várias câmeras pequenas lado a lado.
 
 ## 2026-09-08
 
