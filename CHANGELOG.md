@@ -6,6 +6,7 @@
 ## 2026-09-08
 
 - Agora dá pra fazer chamada de vídeo com a galera direto na página da campanha, com a ficha de cada um (nome, foto e vida) aparecendo ao vivo durante a call. Antes de usar pela primeira vez, é preciso configurar uma credencial gratuita de video call — peça pro mestre ou responsável técnico da mesa cuidar disso uma vez.
+- A chamada de vídeo agora só libera todo mundo depois que o mestre entra — quem chegar antes fica numa telinha de espera e é conectado automaticamente assim que o mestre aparecer. E, por enquanto, essa é uma funcionalidade em teste, liberada só para uma conta.
 
 ## 2026-09-07
 

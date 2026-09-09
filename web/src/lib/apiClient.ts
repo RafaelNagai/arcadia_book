@@ -10,6 +10,16 @@ const API_BASE = (import.meta.env.VITE_API_URL as string) ?? 'http://localhost:3
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
+export class ApiError extends Error {
+  readonly code: string
+
+  constructor(message: string, code: string) {
+    super(message)
+    this.name = 'ApiError'
+    this.code = code
+  }
+}
+
 async function getToken(): Promise<string | null> {
   const {
     data: { session },
@@ -32,7 +42,7 @@ async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const json = await res.json()
   if (!res.ok) {
     const msg = json?.error?.message ?? 'Erro desconhecido'
-    throw new Error(msg)
+    throw new ApiError(msg, json?.error?.code ?? 'UNKNOWN')
   }
   return json as T
 }
@@ -392,6 +402,9 @@ export const api = {
   calls: {
     createSession: (campaignId: string) =>
       apiFetch<{ sessionId: string }>(`/campaigns/${campaignId}/call/session`, { method: 'POST' }),
+
+    leaveSession: (campaignId: string) =>
+      apiFetch<void>(`/campaigns/${campaignId}/call/session/leave`, { method: 'POST' }),
 
     negotiateTracks: (campaignId: string, sessionId: string, input: {
       sessionDescription?: { sdp: string; type: 'offer' | 'answer' }
