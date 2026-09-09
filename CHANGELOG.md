@@ -3,6 +3,11 @@
 > Registro de atualizações em linguagem simples, para quem acompanha o livro — não é um log técnico de commits.
 > Cada task concluída via `/task` adiciona um item aqui, sob a data do dia. Este arquivo alimenta o aviso automático no Discord.
 
+## 2026-09-09
+
+- O menu lateral da chamada de vídeo agora abre e fecha por seções: "Participantes" e "Configurações" (onde ficam microfone, câmera e saída de áudio) podem ser recolhidas independentemente, deixando o painel mais organizado.
+- Chegou um filtro ajustável de ruído para o próprio microfone: um controle com medidor de volume ao vivo deixa você definir a partir de que ponto o som de fundo (ventilador, teclado etc.) é cortado, sem cortar a sua voz.
+
 ## 2026-09-08
 
 - Agora dá pra fazer chamada de vídeo com a galera direto na página da campanha, com a ficha de cada um (nome, foto e vida) aparecendo ao vivo durante a call. Antes de usar pela primeira vez, é preciso configurar uma credencial gratuita de video call — peça pro mestre ou responsável técnico da mesa cuidar disso uma vez.

@@ -4,6 +4,7 @@ import { api, ApiError } from '@/lib/apiClient'
 import { useAuth } from '@/lib/authContext'
 import { useCampaignCallChannel, type LayoutMode } from '@/hooks/useCampaignCallChannel'
 import { useGalleryLayout, GALLERY_GAP } from '@/hooks/useGalleryLayout'
+import { createNoiseGate, type NoiseGate } from '@/lib/noiseGate'
 import type { CampaignDetail } from '@/data/campaignTypes'
 import { CallParticipantTile } from './CallParticipantTile'
 import { CallSidebar } from './CallSidebar'
@@ -59,6 +60,7 @@ export function CallTab({ campaign }: CallTabProps) {
   const [waitingForGm, setWaitingForGm] = useState(false)
   const [layoutMode, setLayoutMode] = useState<LayoutMode>('gallery')
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [noiseGateThresholdDb, setNoiseGateThresholdDb] = useState(-70)
 
   const [audioInputs, setAudioInputs] = useState<MediaDeviceInfo[]>([])
   const [videoInputs, setVideoInputs] = useState<MediaDeviceInfo[]>([])
@@ -74,6 +76,9 @@ export function CallTab({ campaign }: CallTabProps) {
   const localStreamRef = useRef<MediaStream | null>(null)
   const audioTransceiverRef = useRef<RTCRtpTransceiver | null>(null)
   const videoTransceiverRef = useRef<RTCRtpTransceiver | null>(null)
+  const audioContextRef = useRef<AudioContext | null>(null)
+  const noiseGateRef = useRef<NoiseGate | null>(null)
+  const rawAudioTrackRef = useRef<MediaStreamTrack | null>(null)
   const pullMidMapRef = useRef<Map<string, { userId: string; kind: 'audio' | 'video' }>>(new Map())
   const participantsRef = useRef<RemoteParticipant[]>([])
   const negotiationQueueRef = useRef<Promise<void>>(Promise.resolve())
@@ -237,12 +242,25 @@ export function CallTab({ campaign }: CallTabProps) {
       const { sessionId } = await api.calls.createSession(campaign.id)
       sessionIdRef.current = sessionId
 
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+        video: true,
+      })
       localStreamRef.current = stream
       setLocalStream(stream)
       const audioTrack = stream.getAudioTracks()[0]
       const videoTrack = stream.getVideoTracks()[0]
-      setLocalAudioTrack(audioTrack ?? null)
+      rawAudioTrackRef.current = audioTrack ?? null
+
+      const audioContext = new AudioContext()
+      audioContextRef.current = audioContext
+      const noiseGate = createNoiseGate(audioContext)
+      noiseGateRef.current = noiseGate
+      noiseGate.setInputTrack(audioTrack)
+      noiseGate.setThresholdDb(noiseGateThresholdDb)
+      const processedAudioTrack = noiseGate.destinationTrack
+
+      setLocalAudioTrack(processedAudioTrack)
       setLocalVideoTrack(videoTrack ?? null)
       setSelectedAudioInput(audioTrack?.getSettings().deviceId ?? '')
       setSelectedVideoInput(videoTrack?.getSettings().deviceId ?? '')
@@ -262,7 +280,7 @@ export function CallTab({ campaign }: CallTabProps) {
         }))
       }
 
-      const audioTransceiver = pc.addTransceiver(audioTrack, { direction: 'sendonly' })
+      const audioTransceiver = pc.addTransceiver(processedAudioTrack, { direction: 'sendonly' })
       const videoTransceiver = pc.addTransceiver(videoTrack, { direction: 'sendonly' })
       audioTransceiverRef.current = audioTransceiver
       videoTransceiverRef.current = videoTransceiver
@@ -301,12 +319,16 @@ export function CallTab({ campaign }: CallTabProps) {
       pushReadyRef.current = false
       pcRef.current?.close()
       pcRef.current = null
+      noiseGateRef.current?.destroy()
+      noiseGateRef.current = null
+      void audioContextRef.current?.close()
+      audioContextRef.current = null
       stopLocalMedia()
     } finally {
       setConnecting(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [campaign.id, user, selfCharacter, broadcast, ensureRowState, trackSelf, pullParticipant, refreshDevices, layoutMode])
+  }, [campaign.id, user, selfCharacter, broadcast, ensureRowState, trackSelf, pullParticipant, refreshDevices, layoutMode, noiseGateThresholdDb])
 
   const handleJoinClick = useCallback(() => {
     if (!isGm && !gmPresent) {
@@ -347,6 +369,11 @@ export function CallTab({ campaign }: CallTabProps) {
     pushReadyRef.current = false
     audioTransceiverRef.current = null
     videoTransceiverRef.current = null
+    noiseGateRef.current?.destroy()
+    noiseGateRef.current = null
+    void audioContextRef.current?.close()
+    audioContextRef.current = null
+    rawAudioTrackRef.current = null
     stopLocalMedia()
     setParticipants([])
     setRowState({})
@@ -385,6 +412,8 @@ export function CallTab({ campaign }: CallTabProps) {
     return () => {
       pcRef.current?.close()
       localStreamRef.current?.getTracks().forEach(track => track.stop())
+      noiseGateRef.current?.destroy()
+      void audioContextRef.current?.close()
       if (isGm) void api.calls.leaveSession(campaign.id)
     }
   }, [isGm, campaign.id])
@@ -402,29 +431,43 @@ export function CallTab({ campaign }: CallTabProps) {
     broadcast({ type: 'FORCE_MUTE', targetUserId })
   }, [broadcast])
 
-  // replaceTrack() no sender do transceiver já existente evita recriar a
-  // RTCPeerConnection e renegociar do zero — é exatamente o que a Cloudflare
-  // Realtime espera para troca de dispositivo em runtime.
+  const handleNoiseGateThresholdChange = useCallback((db: number) => {
+    setNoiseGateThresholdDb(db)
+    noiseGateRef.current?.setThresholdDb(db)
+  }, [])
+
+  const getMicLevelDb = useCallback(() => noiseGateRef.current?.getLevelDb() ?? -100, [])
+
+  // O transceiver de áudio sempre envia noiseGateRef.current.destinationTrack,
+  // cuja identidade é estável durante toda a call — trocar de mic só troca a
+  // fonte que alimenta o grafo do gate (setInputTrack), sem precisar chamar
+  // replaceTrack() no sender nem recriar o resto do grafo. localAudioTrack
+  // (state) também não muda de identidade nessa troca.
   const switchAudioInput = useCallback(async (deviceId: string) => {
     const stream = localStreamRef.current
     if (!stream || !deviceId) return
     try {
-      const newStream = await navigator.mediaDevices.getUserMedia({ audio: { deviceId: { exact: deviceId } } })
+      const newStream = await navigator.mediaDevices.getUserMedia({
+        audio: { deviceId: { exact: deviceId }, echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+      })
       const newTrack = newStream.getAudioTracks()[0]
       if (!newTrack) return
       const oldTrack = stream.getAudioTracks()[0]
-      await audioTransceiverRef.current?.sender.replaceTrack(newTrack)
+      noiseGateRef.current?.setInputTrack(newTrack)
       if (oldTrack) stream.removeTrack(oldTrack)
       stream.addTrack(newTrack)
-      newTrack.enabled = oldTrack?.enabled ?? true
       oldTrack?.stop()
-      setLocalAudioTrack(newTrack)
+      rawAudioTrackRef.current = newTrack
       setSelectedAudioInput(deviceId)
       void refreshDevices()
     } catch (err) {
       setError((err as Error).message || 'Não foi possível trocar o microfone')
     }
   }, [refreshDevices])
+
+  // replaceTrack() no sender do transceiver já existente evita recriar a
+  // RTCPeerConnection e renegociar do zero — é exatamente o que a Cloudflare
+  // Realtime espera para troca de dispositivo em runtime.
 
   const switchVideoInput = useCallback(async (deviceId: string) => {
     const stream = localStreamRef.current
@@ -652,6 +695,9 @@ export function CallTab({ campaign }: CallTabProps) {
                 onAudioInputChange={switchAudioInput}
                 onVideoInputChange={switchVideoInput}
                 onAudioOutputChange={switchAudioOutput}
+                noiseGateThresholdDb={noiseGateThresholdDb}
+                onNoiseGateThresholdChange={handleNoiseGateThresholdChange}
+                getMicLevelDb={getMicLevelDb}
               />
             </div>
 
@@ -691,6 +737,9 @@ export function CallTab({ campaign }: CallTabProps) {
                       onAudioInputChange={switchAudioInput}
                       onVideoInputChange={switchVideoInput}
                       onAudioOutputChange={switchAudioOutput}
+                      noiseGateThresholdDb={noiseGateThresholdDb}
+                      onNoiseGateThresholdChange={handleNoiseGateThresholdChange}
+                      getMicLevelDb={getMicLevelDb}
                     />
                   </motion.div>
                 </>
