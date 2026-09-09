@@ -96,7 +96,7 @@ Se falhar 2 vezes, quebra.
 Para criar qualquer item, o processo é dividido em três etapas: **Dificuldade**, **Ferramenta** e **Aposta do Refino**.
 
 ### A. Dificuldade do Material (DT)
-O Mestre define a **DT (Dificuldade-Alvo)** com base na raridade e resistência dos ingredientes/recursos utilizados na fabricação.
+O Mestre define a **DT (Dificuldade-Alvo)** com base na raridade e resistência dos ingredientes/recursos utilizados na fabricação, que vai de 1 - 10.
 
 ### B. A Ferramenta de Trabalho
 A qualidade do equipamento do artesão determina o **Dado de Refino** rolado a cada etapa:
@@ -106,7 +106,7 @@ A qualidade do equipamento do artesão determina o **Dado de Refino** rolado a c
 * **Oficina de Mestre / Ferramentas Raras:** d10
 
 ### C. O Ciclo de Rolagem
-O jogador rola seu Dado de Refino uma vez por turno e vai somando os resultados em uma **Pontuação Total**. O jogador pode **parar de rolar a qualquer momento**, mas a pontuação final determinará o destino do item.
+O jogador rola seu Dado de Refino uma vez por turno e cada dado consome 1 recurso(-1 PM), cada dado que obtiver ou ultrapassar o valor da DT, vai obter **1 ponto de efetividade**. O jogador pode **parar de rolar a qualquer momento**, mas a pontuação final determinará o destino do item.
 
 ---
 
@@ -116,26 +116,31 @@ O jogador rola seu Dado de Refino uma vez por turno e vai somando os resultados 
 * **Parar Dentro da DT (Item Sucesso):** Ao atingir ou ultrapassar a DT, o item é criado perfeitamente e concede sua **Efetividade Total**.
 * **Sobrerrefino (Aprofundar a Arte):** Se o jogador já atingiu a DT e optar por rolar **mais um dado** para tentar aumentar a pontuação final, ele entra na zona de risco. Se o dado adicional resultar em **1, 2 ou 3**, o material cede à tensão e o item é **completamente quebrado/destruído**, perdendo-se os recursos.
 
-### Calculando a Efetividade
-A cada **5 pontos completos** acumulados na Pontuação Total, o item recebe **1 Ponto de Efetividade**.
-
-* **Alquimia:** 1 Ponto = `+1d6` de cura ou dano elemental.
-* **Forja de Armaduras:** 1 Ponto = `+1` de DA.
-* **Forja de Armas:** 1 Ponto = `+1` de Dano Bônus.
-* **Costura/Outros:** 1 Ponto = `+1` de Carga de Uso ou Qualidade Estética.
-
 ---
 
 ## 3. Exemplos Práticos de Jogo
 
 ### Exemplo 1: Preparando uma Poção de Cura (Alquimia)
-* **Cenário:** O alquimista usa ervas raras (**DT 10**) e possui um Kit Profissional (**d8**).
-* **1ª Rolagem:** Rola **4** (Total = 4).
-* **2ª Rolagem:** Rola **5** (Total = 9).
-* **Decisão:** O jogador fica receoso e decide parar em **9** (abaixo da DT 10).
-* **Resultado:** 9 pontos ÷ 5 = **1 Ponto de Efetividade**. Como parou antes da DT, o item é imperfeito e sofre metade da efetividade. A poção cura apenas **1d3** (metade de 1d6).
+* **Cenário:** O alquimista usa ervas raras (**DT 4**) e possui um Kit Profissional (**D8**).
+* **1ª Rolagem:** Rola **4**.
+* **2ª Rolagem:** Rola **5**.
+* O jogador fica receoso e decide parar com **2** efetividade. (abaixo da DT 4).
+* **Resultado:** Uma poção de **2 efetividade** seria 1D6, so que como parou antes, ela é um item imperfeito dai sua efetividade vai ser (1D6 / 2).
 
-> *Caso tivesse arriscado a 3ª rolagem e tirado um 4 (Total = 13):* Teria atingido a DT 10! Com 13 pontos, receberia **2 Pontos de Efetividade**, criando uma poção completa de **2d6 de cura**.
+> *Caso tivesse arriscado a 3ª e 4ª rolagem e tirado um 4:* Teria atingido a DT 10! Com 13 pontos, receberia **2 Pontos de Efetividade**, criando uma poção completa de **2d6 de cura**.
+
+| Pontos de Efetividade | Poção |
+| --                    | -- |
+| 🔸[1]                 | Improvisado
+| 🔸🔸[2]               | Amador
+| 🔸🔸🔸[3]              | Basico
+| 🔸🔸🔸🔸[4]            | Normal
+| 🔸🔸🔸🔸🔸[5]           | 
+| 🔸🔸🔸🔸🔸🔸[6]         |
+| 🔸🔸🔸🔸🔸🔸🔸[7]       |
+| 🔸🔸🔸🔸🔸🔸🔸🔸[8]      |
+| 🔸🔸🔸🔸🔸🔸🔸🔸🔸[9]    |
+| 🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸[10] |
 
 ### Exemplo 2: Forjando um Escudo de Aço (Metalurgia)
 * **Cenário:** O ferreiro utiliza lingotes de ferro batido (**DT 20**) em uma Oficina Mestre (**d10**).
@@ -146,19 +151,6 @@ A cada **5 pontos completos** acumulados na Pontuação Total, o item recebe **1
 * **O Risco do Sobrerrefino:** O ferreiro quer alcançar 25 pontos para obter +5 de Defesa. Ele decide rolar um 4º dado:
   * Se rolar **4 ou mais**, ele atinge o objetivo (+5 de Defesa).
   * Se rolar **1, 2 ou 3**, a lâmina da forja trinca e o escudo é destruído no processo.
-
-| Pontos de Efetividade | Poção
-| --                    | -- |
-| 🔸[1]                 | 
-| 🔸🔸[2]               |
-| 🔸🔸🔸[3]              |
-| 🔸🔸🔸🔸[4]            |
-| 🔸🔸🔸🔸🔸[5]           |
-| 🔸🔸🔸🔸🔸🔸[6]         |
-| 🔸🔸🔸🔸🔸🔸🔸[7]       |
-| 🔸🔸🔸🔸🔸🔸🔸🔸[8]      |
-| 🔸🔸🔸🔸🔸🔸🔸🔸🔸[9]    |
-| 🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸[10] |
 
 ---
 
