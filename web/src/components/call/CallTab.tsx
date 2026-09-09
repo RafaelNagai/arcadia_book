@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { api } from '@/lib/apiClient'
+import { api, ApiError } from '@/lib/apiClient'
 import { useAuth } from '@/lib/authContext'
 import { useCampaignCallChannel } from '@/hooks/useCampaignCallChannel'
 import type { CampaignDetail } from '@/data/campaignTypes'
@@ -39,6 +39,10 @@ export function CallTab({ campaign }: CallTabProps) {
   const [localStream, setLocalStream] = useState<MediaStream | null>(null)
   const [localAudioTrack, setLocalAudioTrack] = useState<MediaStreamTrack | null>(null)
   const [participants, setParticipants] = useState<RemoteParticipant[]>([])
+  const [gmPresent, setGmPresent] = useState(false)
+  const [waitingForGm, setWaitingForGm] = useState(false)
+
+  const isGm = user?.id === campaign.gmUserId
 
   const pcRef = useRef<RTCPeerConnection | null>(null)
   const sessionIdRef = useRef<string | null>(null)
@@ -101,10 +105,12 @@ export function CallTab({ campaign }: CallTabProps) {
   const broadcast = useCampaignCallChannel(campaign.id, {
     selfId: user?.id,
     onParticipantJoin: (userId, characterId, cloudflareSessionId) => {
+      if (userId === campaign.gmUserId) setGmPresent(true)
       pendingJoinsRef.current.set(userId, { characterId, cloudflareSessionId })
       if (pushReadyRef.current) void pullParticipant(userId, characterId, cloudflareSessionId)
     },
     onParticipantLeave: userId => {
+      if (userId === campaign.gmUserId) setGmPresent(false)
       pendingJoinsRef.current.delete(userId)
       setParticipants(prev => prev.filter(p => p.userId !== userId))
     },
@@ -122,6 +128,9 @@ export function CallTab({ campaign }: CallTabProps) {
     setConnecting(true)
     setError(null)
     try {
+      const { sessionId } = await api.calls.createSession(campaign.id)
+      sessionIdRef.current = sessionId
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
       localStreamRef.current = stream
       setLocalStream(stream)
@@ -140,9 +149,6 @@ export function CallTab({ campaign }: CallTabProps) {
           return info.kind === 'audio' ? { ...p, audioTrack: event.track } : { ...p }
         }))
       }
-
-      const { sessionId } = await api.calls.createSession(campaign.id)
-      sessionIdRef.current = sessionId
 
       const audioTrack = stream.getAudioTracks()[0]
       const videoTrack = stream.getVideoTracks()[0]
@@ -178,7 +184,11 @@ export function CallTab({ campaign }: CallTabProps) {
         void pullParticipant(pendingUserId, info.characterId, info.cloudflareSessionId)
       }
     } catch (err) {
-      setError((err as Error).message || 'Não foi possível iniciar a chamada')
+      if (err instanceof ApiError && err.code === 'GM_NOT_IN_CALL') {
+        setWaitingForGm(true)
+      } else {
+        setError((err as Error).message || 'Não foi possível iniciar a chamada')
+      }
       pushReadyRef.current = false
       pcRef.current?.close()
       pcRef.current = null
@@ -189,7 +199,39 @@ export function CallTab({ campaign }: CallTabProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campaign.id, user, selfCharacter, broadcast])
 
-  const leaveCall = useCallback(() => {
+  const handleJoinClick = useCallback(() => {
+    if (!isGm && !gmPresent) {
+      setWaitingForGm(true)
+      return
+    }
+    void joinCall()
+  }, [isGm, gmPresent, joinCall])
+
+  // CallTab só é montado dentro de CampaignCallPage (página própria, aberta
+  // em nova aba) — entra na call (ou cai na sala de espera, se o mestre ainda
+  // não estiver presente) automaticamente ao carregar, sem exigir clique.
+  // Guard via ref (não state): em StrictMode o React invoca todo efeito de
+  // mount duas vezes (mount→cleanup→mount) antes do primeiro setState ser
+  // processado, então checar `connecting`/`joined` não impediria a segunda
+  // chamada — ela leria o mesmo estado inicial da primeira. O ref muda de
+  // valor de forma síncrona e sobrevive ao ciclo cleanup→mount do
+  // StrictMode, então a segunda invocação vira no-op de verdade.
+  const autoJoinedRef = useRef(false)
+  useEffect(() => {
+    if (autoJoinedRef.current) return
+    autoJoinedRef.current = true
+    handleJoinClick()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (waitingForGm && gmPresent) {
+      setWaitingForGm(false)
+      void joinCall()
+    }
+  }, [waitingForGm, gmPresent, joinCall])
+
+  const disconnectFromCall = useCallback(() => {
     if (user) broadcast({ type: 'PARTICIPANT_LEAVE', userId: user.id })
     pcRef.current?.close()
     pcRef.current = null
@@ -202,12 +244,37 @@ export function CallTab({ campaign }: CallTabProps) {
     setJoined(false)
   }, [broadcast, user])
 
+  const leaveCall = useCallback(() => {
+    disconnectFromCall()
+    if (isGm) void api.calls.leaveSession(campaign.id)
+  }, [disconnectFromCall, isGm, campaign.id])
+
+  // Se o mestre sair/fechar a aba, o Presence (useCampaignCallChannel) já
+  // propaga isso como gmPresent=false para quem estiver conectado — só
+  // faltava reagir a essa transição depois de já estar dentro da call (hoje
+  // gmPresent só era checado antes de entrar). `!isGm` é defesa em
+  // profundidade, não a única proteção: a própria presença do mestre nunca
+  // chega a este componente (o hook filtra `key !== selfId`), então
+  // `gmPresent` nunca vira `true`/`false` por causa dele mesmo.
+  // `joined` e `waitingForGm` são mutuamente exclusivos — toda transição
+  // passa por `disconnectFromCall()` (zera `joined`) antes deste efeito
+  // setar `waitingForGm`, e o efeito acima só reconecta quando `waitingForGm`
+  // já está true, então não há sobreposição nem condição de corrida entre os
+  // dois efeitos.
+  useEffect(() => {
+    if (!isGm && joined && !gmPresent) {
+      disconnectFromCall()
+      setWaitingForGm(true)
+    }
+  }, [isGm, joined, gmPresent, disconnectFromCall])
+
   useEffect(() => {
     return () => {
       pcRef.current?.close()
       localStreamRef.current?.getTracks().forEach(track => track.stop())
+      if (isGm) void api.calls.leaveSession(campaign.id)
     }
-  }, [])
+  }, [isGm, campaign.id])
 
   return (
     <div style={{ flex: 1, padding: '2rem 1.5rem', overflowY: 'auto' }}>
@@ -219,9 +286,9 @@ export function CallTab({ campaign }: CallTabProps) {
               Vídeo e áudio ao vivo entre os participantes desta campanha.
             </p>
           </div>
-          {!joined ? (
+          {!joined && !waitingForGm ? (
             <button
-              onClick={() => void joinCall()}
+              onClick={handleJoinClick}
               disabled={connecting}
               style={{
                 padding: '0.6rem 1.25rem', borderRadius: 4,
@@ -232,7 +299,7 @@ export function CallTab({ campaign }: CallTabProps) {
             >
               {connecting ? 'Conectando…' : 'Entrar na chamada'}
             </button>
-          ) : (
+          ) : joined ? (
             <button
               onClick={leaveCall}
               style={{
@@ -244,7 +311,7 @@ export function CallTab({ campaign }: CallTabProps) {
             >
               Sair da chamada
             </button>
-          )}
+          ) : null}
         </div>
 
         {error && (
@@ -257,7 +324,11 @@ export function CallTab({ campaign }: CallTabProps) {
           </p>
         )}
 
-        {!joined ? (
+        {waitingForGm ? (
+          <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+            Aguardando o mestre entrar na chamada… você será conectado automaticamente assim que ele entrar.
+          </p>
+        ) : !joined ? (
           <p style={{ fontFamily: 'var(--font-ui)', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
             Ao entrar, o navegador vai pedir permissão de câmera e microfone.
           </p>
@@ -270,12 +341,13 @@ export function CallTab({ campaign }: CallTabProps) {
               stream={localStream}
               audioTrack={localAudioTrack}
               displayName={selfCharacter?.name ?? 'Você'}
-              subtitle={selfCharacter ? 'Você' : undefined}
+              subtitle={isGm ? 'Mestre (Você)' : selfCharacter ? 'Você' : undefined}
               image={selfCharacter?.imageUrl ?? null}
               characterId={selfCharacter?.id ?? null}
               hp={selfCharacter ? (selfCharacter.currentHp ?? selfCharacter.hp) : null}
               maxHp={selfCharacter?.hp ?? null}
               defaultVolume={0}
+              isGm={isGm}
             />
             {participants.map(p => {
               const char = campaign.players.find(pl => pl.id === p.characterId)
@@ -286,10 +358,12 @@ export function CallTab({ campaign }: CallTabProps) {
                   stream={p.stream}
                   audioTrack={p.audioTrack}
                   displayName={char?.name ?? (isGmParticipant ? 'Mestre' : 'Participante')}
+                  subtitle={isGmParticipant ? 'Mestre' : undefined}
                   image={char?.imageUrl ?? null}
                   characterId={p.characterId}
                   hp={char ? (char.currentHp ?? char.hp) : null}
                   maxHp={char?.hp ?? null}
+                  isGm={isGmParticipant}
                 />
               )
             })}

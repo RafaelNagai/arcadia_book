@@ -11,6 +11,7 @@ interface CallParticipantTileProps {
   hp: number | null
   maxHp: number | null
   defaultVolume?: number
+  isGm: boolean
 }
 
 export function CallParticipantTile({
@@ -23,6 +24,7 @@ export function CallParticipantTile({
   hp: initialHp,
   maxHp: initialMaxHp,
   defaultVolume = 1,
+  isGm,
 }: CallParticipantTileProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [muted, setMuted] = useState(false)
@@ -86,7 +88,7 @@ export function CallParticipantTile({
           }}>
             {displayName}{subtitle ? ` · ${subtitle}` : ''}
           </span>
-          {hpRatio != null && (
+          {!isGm && hpRatio != null && (
             <div style={{ width: '100%', maxWidth: 100, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.12)', overflow: 'hidden', marginTop: 3 }}>
               <div style={{ width: `${hpRatio * 100}%`, height: '100%', background: hpColor }} />
             </div>

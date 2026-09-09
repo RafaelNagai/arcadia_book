@@ -11,6 +11,7 @@ import { RedefinirSenhaPage } from '@/pages/RedefinirSenhaPage'
 import { SettingsPage } from '@/pages/SettingsPage'
 import { CampaignListPage } from '@/pages/CampaignListPage'
 import { CampaignPage } from '@/pages/CampaignPage'
+import { CampaignCallPage } from '@/pages/CampaignCallPage'
 import { NavioListPage } from '@/pages/NavioListPage'
 import { ShipPage } from '@/pages/ShipPage'
 import { PresetShipPage } from '@/pages/PresetShipPage'
@@ -38,6 +39,7 @@ function AppRoutes() {
         <Route path="navio/:id" element={<ShipPage />} />
         <Route path="campanhas" element={<CampaignListPage />} />
         <Route path="campanha/:id" element={<CampaignPage />} />
+        <Route path="campanha/:id/chamada" element={<CampaignCallPage />} />
         <Route path="ficha/:id" element={<CharacterPage />} />
         <Route path="criar-ficha" element={<CharacterCreatorPage />} />
         <Route path="editar-ficha/:id" element={<CharacterCreatorPage />} />

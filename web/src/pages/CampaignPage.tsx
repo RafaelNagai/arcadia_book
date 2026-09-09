@@ -6,7 +6,6 @@ import { api } from '@/lib/apiClient'
 import { getAccent } from '@/components/character/types'
 import type { CampaignChar, CampaignDetail } from '@/data/campaignTypes'
 import { MapTab } from '@/components/map/MapTab'
-import { CallTab } from '@/components/call/CallTab'
 import { CampaignIntroScreen } from '@/components/CampaignIntroScreen'
 
 const CAMPAIGN_INTRO_SHOWN_KEY = 'arcadia_campaign_intro_shown'
@@ -483,7 +482,14 @@ function EditCampaignModal({ campaign, onClose, onSave }: {
 
 // ── CampaignSidebar ───────────────────────────────────────────────────────────
 
-type CampaignView = 'players' | 'npcs' | 'mapa' | 'call'
+type CampaignView = 'players' | 'npcs' | 'mapa'
+
+// Fallback defensivo: URLs antigas com `?view=call` (ex. salvas em favoritos,
+// de antes da call virar página própria) caem em `players` em vez de
+// vazarem um valor de view inválido pra dentro de `listView`/`currentList`.
+function normalizeView(raw: string | null): CampaignView {
+  return raw === 'npcs' || raw === 'mapa' ? raw : 'players'
+}
 
 interface CampaignSidebarProps {
   campaign: CampaignDetail
@@ -574,7 +580,6 @@ function CampaignSidebar({ campaign, view, isGm, onChangeView, onRegenerateCode,
           {navItem('players', 'Personagens', campaign.players.length)}
           {isGm && navItem('npcs', 'NPCs', campaign.npcs.length)}
           {navItem('mapa', 'Mapa')}
-          {navItem('call', 'Chamada')}
         </div>
       </div>
 
@@ -644,6 +649,24 @@ function CampaignSidebar({ campaign, view, isGm, onChangeView, onRegenerateCode,
           </button>
         </div>
       )}
+
+      {/* Chamada de vídeo — página própria, aberta em nova aba; fixa no
+          rodapé e separada da navegação normal porque não é uma "view" da
+          campanha, e visível pra todo mundo (não só mestre) */}
+      <div style={{ padding: '0.75rem', borderTop: '1px solid var(--color-border)', flexShrink: 0 }}>
+        <button
+          onClick={() => window.open(`/campanha/${campaign.id}/chamada`, '_blank', 'noopener,noreferrer')}
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
+            width: '100%', padding: '0.65rem 1rem', borderRadius: 4,
+            background: 'rgba(200,146,42,0.08)', border: '1px solid rgba(200,146,42,0.25)',
+            color: 'var(--color-arcano)', fontFamily: 'var(--font-ui)',
+            fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.06em', cursor: 'pointer',
+          }}
+        >
+          🎥 Chamada
+        </button>
+      </div>
     </div>
   )
 }
@@ -658,7 +681,7 @@ export function CampaignPage() {
   const { user } = useAuth()
 
   const cameFromMenu = (location.state as { fromMenu?: boolean } | null)?.fromMenu === true
-  const view = (searchParams.get('view') as CampaignView) ?? 'players'
+  const view = normalizeView(searchParams.get('view'))
 
   const [campaign, setCampaign] = useState<CampaignDetail | null>(null)
   const [loading, setLoading] = useState(true)
@@ -794,7 +817,7 @@ export function CampaignPage() {
   }
 
   const isGm = campaign.isGm
-  const listView = view === 'mapa' || view === 'call' ? 'players' : view
+  const listView = view === 'mapa' ? 'players' : view
   const currentList = listView === 'players' ? campaign.players : campaign.npcs
 
   return (
@@ -893,10 +916,8 @@ export function CampaignPage() {
         {/* Main content */}
         {view === 'mapa' ? (
           <MapTab campaign={campaign} />
-        ) : view === 'call' ? (
-          <CallTab campaign={campaign} />
         ) : null}
-        <div style={{ flex: 1, padding: '2rem 1.5rem', overflowY: 'auto', display: view === 'mapa' || view === 'call' ? 'none' : undefined }}>
+        <div style={{ flex: 1, padding: '2rem 1.5rem', overflowY: 'auto', display: view === 'mapa' ? 'none' : undefined }}>
           <div style={{ maxWidth: 900, margin: '0 auto' }}>
 
             {/* Page header */}
