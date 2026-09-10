@@ -13,6 +13,23 @@
 
 ---
 
+### Call: Limitar Qualidade de Vídeo — Validação Manual Pendente (Subtask 3)
+**Origem:** /task Limitar qualidade de vídeo da call (CallTab.tsx) para reduzir consumo de banda no Cloudflare Realtime: constranger `getUserMedia` (resolução/frameRate) e capar o bitrate do encoder via `sendEncodings` no `addTransceiver` de vídeo. Sem toggle de "economizar dados" — valor fixo, mantendo usabilidade razoável para uma chamada de RPG (personagens visíveis, sem travar/pixelizar a ponto de atrapalhar).
+**Adicionada:** 2026-09-09 · **Validator:** APROVADO (subtasks 1 e 2 — trabalho de código; ver `## Concluídos`) · Subtask 3 abaixo permanece pendente nesta Sprint Ativa — depende de teste manual humano em call real, fora do alcance de um agente sem navegador.
+
+**Verificação de duplicidade (Sprint.md):** busquei por "bitrate"/"bandwidth"/"banda"/"qualidade"/"sendEncodings"/"resolução" em Sprint Ativa, Backlog e Concluídos — nenhuma ocorrência relacionada a limitar qualidade/bitrate de vídeo da call. O único item de Backlog que toca `CallTab.tsx`/ICE é "TURN para Chamada de Vídeo em Redes Móveis (CGNAT)" — sobre conectividade (STUN/TURN), camada totalmente diferente de qualidade de encoding/bitrate. Trabalho novo, sem duplicidade.
+
+**Contexto técnico (confirmado por leitura completa de `CallTab.tsx`):** o backend (`api/src/services/calls.service.ts`) é sinalização pura (cria sessão, troca SDP/tracks via REST contra a Cloudflare Calls API) — não define nem pode limitar qualidade de mídia; o único ponto de controle é client-side. A Cloudflare Realtime cobra por GB relayado pelo SFU, e o consumo escala com bitrate × duração × (participantes − 1).
+
+> Subtasks 1 e 2 (as correções de código) foram concluídas e aprovadas — ver entrada completa em `## Concluídos`. Fica pendente aqui apenas a validação manual abaixo (Subtask 3), que exige um humano em call real.
+
+- [ ] Subtask 3 — Validar manualmente qualidade e teto real de bitrate em uma call real (ação humana, fora do alcance de um agente sem navegador)
+  - **Descrição:** com as Subtasks 1 e 2 aplicadas, entrar numa call real (pelo menos 2 participantes) e (a) confirmar visualmente que rosto/personagem continuam reconhecíveis e a call não trava/pixeliza a ponto de atrapalhar uma sessão de RPG; (b) abrir `chrome://webrtc-internals` (ou equivalente) durante a call e confirmar que o vídeo enviado (outbound-rtp) fica em torno de 640×360 e não ultrapassa ~400-450kbps de forma sustentada; (c) trocar de câmera durante a call e confirmar que o teto se mantém (não volta para a resolução default do dispositivo).
+  - **Critério de aceite:** qualidade visual aprovada pelo usuário como utilizável para uma call de RPG; `webrtc-internals` confirma resolução ≤640×360 e bitrate de saída de vídeo ≤~450kbps antes e depois de trocar de câmera; se a qualidade for considerada ruim demais ou o teto não for respeitado, documentar aqui o valor real observado para ajuste numa rodada seguinte.
+  - **Arquivos:** nenhum (validação manual)
+
+---
+
 ### Bug: 3 Problemas na Call — Validação Manual Pendente (Subtasks 3 e 5)
 **Origem:** /task bug: 3 problemas na call — relatados pelo usuário após teste real: (1) trocar o switch de layout desmuta outros participantes sem atualizar o botão de mute; (2) 2 usuários entrando quase ao mesmo tempo faz um deles virar "fantasma" (não vê nem é visto pelos outros); (3) no mobile, encerrar a call pelo mestre não fecha a tela do lado do celular.
 **Adicionada:** 2026-09-09 · **Validator:** APROVADO no ciclo 2 (subtasks 1, 2 e 4 — trabalho de código; ver `## Concluídos`) · Subtasks 3 e 5 abaixo permanecem pendentes nesta Sprint Ativa — dependem de teste manual humano (2 abas simultâneas / dispositivo mobile real), fora do alcance de um agente sem navegador.
@@ -98,6 +115,34 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 ---
 
 ## Concluídos
+
+### Call: Limitar Qualidade de Vídeo para Reduzir Consumo de Banda no Cloudflare Realtime
+**Origem:** /task Limitar qualidade de vídeo da call (CallTab.tsx) para reduzir consumo de banda no Cloudflare Realtime: constranger `getUserMedia` (resolução/frameRate) e capar o bitrate do encoder via `sendEncodings` no `addTransceiver` de vídeo. Sem toggle de "economizar dados" — valor fixo, mantendo usabilidade razoável para uma chamada de RPG (personagens visíveis, sem travar/pixelizar a ponto de atrapalhar).
+**Adicionada:** 2026-09-09 · **Validator:** APROVADO no ciclo 1 · **Concluída:** 2026-09-09 — subtasks 1 e 2 (trabalho de código). Subtask 3 (validação manual em call real) permanece pendente na Sprint Ativa (ver acima).
+
+**Valores escolhidos:** resolução 640×360 (ideal e teto), frameRate 18fps ideal / 24fps teto, `maxBitrate` 400kbps via `sendEncodings` — aplicados nos dois pontos de captura de vídeo (`joinCall`, `switchVideoInput`) e no `addTransceiver` de vídeo. Ver investigação completa do Planner na Sprint Ativa (seção acima).
+
+- [x] Subtask 1 — Constranger resolução e frameRate da captura de vídeo local nos dois pontos de `getUserMedia`
+  - **Implementado:** constante de módulo `VIDEO_CAPTURE_CONSTRAINTS` (`width`/`height` ideal e max 640×360, `frameRate` ideal 18/max 24) criada em `CallTab.tsx` e reaproveitada nos dois `getUserMedia` de vídeo — `joinCall()` (linha 302, antes `video: true`) e `switchVideoInput()` (linha 550, spread de `VIDEO_CAPTURE_CONSTRAINTS` junto com `deviceId: { exact: deviceId }`).
+  - **Arquivos:** `web/src/components/call/CallTab.tsx`
+
+- [x] Subtask 2 — Capar o bitrate do encoder de vídeo via `sendEncodings` no `addTransceiver`
+  - **Implementado:** constante `VIDEO_SEND_ENCODINGS` (`[{ maxBitrate: 400_000, maxFramerate: 24 }]`) adicionada só ao `addTransceiver` de vídeo (linha 339); `addTransceiver` de áudio (linha 338, linha imediatamente acima) intocado, sem `sendEncodings`.
+  - **Arquivos:** `web/src/components/call/CallTab.tsx`
+
+**✅ Validação do Validator (2026-09-09): APROVADO.**
+- Confirmado por leitura completa de `web/src/components/call/CallTab.tsx` (constantes de módulo, `joinCall`, `switchVideoInput`, bloco de `addTransceiver`) que as duas chamadas de `getUserMedia` para vídeo usam exatamente a mesma fonte de constraints (`VIDEO_CAPTURE_CONSTRAINTS`, sem divergência) — `joinCall()` linha 302, `switchVideoInput()` linha 550 (spread junto com `deviceId: { exact: deviceId }`, sem sobrescrever). `grep` confirma que só existem 3 chamadas de `getUserMedia` no arquivo: as 2 de vídeo (ambas usando a constante) e uma de áudio (`switchAudioInput`, linha 523), fora de escopo e corretamente não tocada.
+- `addTransceiver` de vídeo (linha 339) confirmado com `sendEncodings: VIDEO_SEND_ENCODINGS` (`maxBitrate: 400_000`, `maxFramerate: 24`); `addTransceiver` de áudio (linha 338) confirmado sem `sendEncodings`.
+- `switchVideoInput` (linha 545-566) confirmado íntegro: `deviceId: { exact: deviceId }` ainda presente, `replaceTrack()` no sender do transceiver de vídeo existente mantido, cleanup de tracks (`stop()`, `removeTrack`/`addTrack`) inalterado — nenhuma regressão na troca de câmera.
+- Valores checados por bom senso: 640×360 a 18fps ideal (24fps teto) e 400kbps de teto de bitrate são comparáveis à faixa que Zoom/Meet usam para vídeo ~360p em chamadas de grupo — suficiente para reconhecer rosto/personagem numa call de RPG (talking heads), bem abaixo do padrão de webcam sem teto (1080p30+, vários Mbps); não considerado inutilizável.
+- `chapters/` confirmado intocado (`git status` mostra só `Sprint.md` e `web/src/components/call/CallTab.tsx` modificados) — task puramente técnica de infraestrutura de call, sem mecânica de livro envolvida.
+- `web/CLAUDE.md` respeitado: TypeScript estrito, componente funcional, sem novo estado global; único comentário novo (acima das duas constantes) explica o "porquê" não-óbvio (custo por GB da Cloudflare Realtime), consistente com o estilo de comentários já usado no resto do arquivo (ex.: comentário sobre `replaceTrack` acima de `switchVideoInput`).
+- `npx tsc -b --force` e `npx eslint src/components/call/CallTab.tsx` rodados de forma independente pelo Validator (não apenas relato do Executor), dentro de `web/`: ambos limpos, zero erros/avisos.
+- `CLAUDE.md` (raiz) respeitado: nenhum toggle/UI de "economizar dados" foi adicionado — confirmado pelo diff isolado do arquivo (só as 2 constantes de módulo + as 3 linhas de call site alteradas, nenhuma mudança de JSX/UI); valor fixo, conforme pedido explicitamente pelo usuário. Nenhuma feature extra.
+
+**Veredito final:** ✅ **APROVADO.** As duas subtasks de código atendem exatamente aos critérios de aceite, sem regressão em `switchVideoInput`/troca de câmera, sem tocar no transceiver de áudio, sem feature extra, e sem tocar `chapters/`. Subtask 3 (validação manual em call real com `chrome://webrtc-internals`) permanece pendente na Sprint Ativa, por depender de ação humana.
+
+---
 
 ### Bug: Spotlight Centraliza Verticalmente o Bloco de Vídeos (Regressão Cosmética não-bloqueante)
 **Origem:** Achado adicional do Validator (ciclo 2, 2026-09-09) durante a validação de "Bug: 3 Problemas na Call" (ver entrada abaixo) — registrado então como follow-up não-bloqueante; promovido a subtask ativa via `/task bug: no modo spotlight da call, o bloco de vídeos centraliza verticalmente quando sobra altura na tela — antes ficava colado no topo`.

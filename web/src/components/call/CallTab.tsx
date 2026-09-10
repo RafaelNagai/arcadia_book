@@ -24,6 +24,15 @@ const NEGOTIATION_TIMEOUT_MS = 12_000
 const CONNECTION_TIMEOUT_MESSAGE = 'Não foi possível estabelecer a conexão de vídeo — verifique sua rede'
 const PULL_RETRY_MAX_ATTEMPTS = 3
 const PULL_RETRY_BASE_DELAY_MS = 600
+// Cloudflare Realtime cobra por GB relayado pelo SFU (bitrate × duração ×
+// participantes) — 360p/18-24fps é o suficiente para reconhecer rosto numa
+// call de RPG (talking heads) e mantém o custo baixo sem travar/pixelizar.
+const VIDEO_CAPTURE_CONSTRAINTS: MediaTrackConstraints = {
+  width: { ideal: 640, max: 640 },
+  height: { ideal: 360, max: 360 },
+  frameRate: { ideal: 18, max: 24 },
+}
+const VIDEO_SEND_ENCODINGS: RTCRtpEncodingParameters[] = [{ maxBitrate: 400_000, maxFramerate: 24 }]
 
 interface CallTabProps {
   campaign: CampaignDetail
@@ -290,7 +299,7 @@ export function CallTab({ campaign }: CallTabProps) {
 
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
-        video: true,
+        video: VIDEO_CAPTURE_CONSTRAINTS,
       })
       localStreamRef.current = stream
       setLocalStream(stream)
@@ -327,7 +336,7 @@ export function CallTab({ campaign }: CallTabProps) {
       }
 
       const audioTransceiver = pc.addTransceiver(processedAudioTrack, { direction: 'sendonly' })
-      const videoTransceiver = pc.addTransceiver(videoTrack, { direction: 'sendonly' })
+      const videoTransceiver = pc.addTransceiver(videoTrack, { direction: 'sendonly', sendEncodings: VIDEO_SEND_ENCODINGS })
       audioTransceiverRef.current = audioTransceiver
       videoTransceiverRef.current = videoTransceiver
 
@@ -537,7 +546,9 @@ export function CallTab({ campaign }: CallTabProps) {
     const stream = localStreamRef.current
     if (!stream || !deviceId) return
     try {
-      const newStream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: deviceId } } })
+      const newStream = await navigator.mediaDevices.getUserMedia({
+        video: { ...VIDEO_CAPTURE_CONSTRAINTS, deviceId: { exact: deviceId } },
+      })
       const newTrack = newStream.getVideoTracks()[0]
       if (!newTrack) return
       const oldTrack = stream.getVideoTracks()[0]

@@ -17,6 +17,7 @@
 - Corrigido: quando duas pessoas entravam na chamada de vídeo quase ao mesmo tempo, uma delas podia ficar "fantasma" — sem ver nem ser vista pelos outros — pelo resto da call.
 - Corrigido: no celular, quando o mestre encerrava a chamada de vídeo, a tela do jogador às vezes não fechava sozinha.
 - Ajustado o alinhamento dos vídeos no modo de destaque da chamada: agora eles ficam encostados no topo da tela, como antes, em vez de flutuar no meio quando sobra espaço.
+- A chamada de vídeo agora consome bem menos internet: a qualidade da câmera foi ajustada para um nível que continua mostrando todo mundo com clareza numa sessão de RPG, sem gastar dados à toa.
 
 ## 2026-09-08
 
