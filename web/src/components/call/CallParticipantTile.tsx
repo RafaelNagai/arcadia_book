@@ -14,6 +14,7 @@ const MIN_FONT = 0.55;
 const MAX_FONT = 0.7;
 
 interface CallParticipantTileProps {
+  userId: string;
   stream: MediaStream | null;
   audioTrack: MediaStreamTrack | null;
   displayName: string;
@@ -30,6 +31,7 @@ interface CallParticipantTileProps {
 }
 
 export function CallParticipantTile({
+  userId,
   stream,
   audioTrack,
   displayName,
@@ -65,6 +67,13 @@ export function CallParticipantTile({
     return () => observer.disconnect();
   }, []);
 
+  // DEBUG(call-mute-sync): confirms live whether the layout-switch fix in
+  // CallTab.tsx actually stops tiles from unmounting — this should log once
+  // per participant for the whole call, never again on a layout toggle.
+  useEffect(() => {
+    console.debug('[call:mute] tile mounted', { userId });
+  }, [userId]);
+
   useEffect(() => {
     if (videoRef.current) videoRef.current.srcObject = stream;
   }, [stream]);
@@ -74,8 +83,11 @@ export function CallParticipantTile({
   }, [volume]);
 
   useEffect(() => {
-    if (audioTrack) audioTrack.enabled = !muted;
-  }, [audioTrack, muted]);
+    if (audioTrack) {
+      audioTrack.enabled = !muted;
+      console.debug('[call:mute] tile audioTrack.enabled applied', { userId, muted, actualEnabled: audioTrack.enabled });
+    }
+  }, [audioTrack, muted, userId]);
 
   useEffect(() => {
     const el = videoRef.current;

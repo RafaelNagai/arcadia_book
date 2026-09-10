@@ -33,6 +33,37 @@ interface CampaignCallHandlers {
   onForceMute: () => void
 }
 
+type CallChannel = ReturnType<typeof supabase.channel>
+
+// Extraída do handler de 'sync' para ser reaproveitada pelo re-sync de
+// visibilitychange/online abaixo — mesma lógica de diff, uma só implementação.
+function diffPresenceState(
+  channel: CallChannel,
+  selfId: string | undefined,
+  knownPayloads: Map<string, CallPresencePayload>,
+  handlers: CampaignCallHandlers,
+) {
+  const state = channel.presenceState<CallPresencePayload>()
+  const currentKeys = new Set(Object.keys(state).filter(key => key !== selfId))
+
+  const updatedKeys: string[] = []
+  for (const key of currentKeys) {
+    const latest = state[key][state[key].length - 1]
+    if (!latest) continue
+    const previous = knownPayloads.get(key)
+    if (previous && payloadsEqual(previous, latest)) continue
+    knownPayloads.set(key, latest)
+    updatedKeys.push(key)
+    handlers.onParticipantUpdate(latest.userId, latest.characterId, latest.cloudflareSessionId, latest.accountName, latest.cameraEnabled, latest.layoutMode)
+  }
+  const staleKeys = [...knownPayloads.keys()].filter(key => !currentKeys.has(key))
+  for (const key of staleKeys) {
+    knownPayloads.delete(key)
+    handlers.onParticipantLeave(key)
+  }
+  return { currentKeys, updatedKeys, staleKeys }
+}
+
 // Presence (not broadcast) backs this hook: broadcast messages aren't replayed
 // to clients that subscribe after they were sent, so a participant who joins
 // the call after others would never discover who's already connected.
@@ -65,24 +96,7 @@ export function useCampaignCallChannel(
     const channel = supabase
       .channel(`campaign:${campaignId}:call`, { config: { presence: { key: selfId ?? crypto.randomUUID() } } })
       .on('presence', { event: 'sync' }, () => {
-        const state = channel.presenceState<CallPresencePayload>()
-        const currentKeys = new Set(Object.keys(state).filter(key => key !== selfId))
-
-        const updatedKeys: string[] = []
-        for (const key of currentKeys) {
-          const latest = state[key][state[key].length - 1]
-          if (!latest) continue
-          const previous = knownPayloadsRef.current.get(key)
-          if (previous && payloadsEqual(previous, latest)) continue
-          knownPayloadsRef.current.set(key, latest)
-          updatedKeys.push(key)
-          handlersRef.current.onParticipantUpdate(latest.userId, latest.characterId, latest.cloudflareSessionId, latest.accountName, latest.cameraEnabled, latest.layoutMode)
-        }
-        const staleKeys = [...knownPayloadsRef.current.keys()].filter(key => !currentKeys.has(key))
-        for (const key of staleKeys) {
-          knownPayloadsRef.current.delete(key)
-          handlersRef.current.onParticipantLeave(key)
-        }
+        const { currentKeys, updatedKeys, staleKeys } = diffPresenceState(channel, selfId, knownPayloadsRef.current, handlersRef.current)
         console.debug('[call:presence] sync received', {
           totalKeys: currentKeys.size,
           allKeys: [...currentKeys],
@@ -103,6 +117,38 @@ export function useCampaignCallChannel(
       void supabase.removeChannel(channel)
     }
   }, [campaignId, selfId])
+
+  // Um evento de Presence (ex.: o mestre saindo) pode ser perdido enquanto a
+  // aba mobile está suspensa (background/tela bloqueada) — ao voltar ao
+  // primeiro plano ou recuperar rede, reaplica o mesmo diff do handler de
+  // 'sync' acima contra o presenceState() atual, sem depender de um novo
+  // evento de servidor para descobrir que alguém já não está mais presente.
+  useEffect(() => {
+    function resync(source: string) {
+      const channel = channelRef.current
+      if (!channel) return
+      const { currentKeys, updatedKeys, staleKeys } = diffPresenceState(channel, selfId, knownPayloadsRef.current, handlersRef.current)
+      console.debug('[call:presence] visibility/online resync triggered', {
+        source,
+        totalKeys: currentKeys.size,
+        allKeys: [...currentKeys],
+        updatedKeys,
+        staleKeys,
+      })
+    }
+    function handleVisibilityChange() {
+      if (document.visibilityState === 'visible') resync('visibilitychange')
+    }
+    function handleOnline() {
+      resync('online')
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('online', handleOnline)
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('online', handleOnline)
+    }
+  }, [selfId])
 
   const dispatch = useCallback((event: CampaignCallEvent) => {
     const channel = channelRef.current

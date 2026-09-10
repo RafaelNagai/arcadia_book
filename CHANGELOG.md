@@ -13,6 +13,10 @@
 - A foto e o nome do personagem na chamada de vídeo agora se ajustam de tamanho automaticamente conforme a câmera fica maior ou menor — por exemplo, quando tem muita gente na call ou no modo de destaque no mestre, com várias câmeras pequenas lado a lado.
 - Corrigido: em alguns casos, quando o mestre saía da chamada de vídeo, os outros participantes não eram desconectados automaticamente como deveriam.
 - Corrigido um problema onde entrar na chamada de vídeo pelo celular podia travar sem aviso: agora, se a conexão falhar, você vê uma mensagem de erro clara em vez de ficar esperando para sempre. O botão de entrar na chamada também ficou mais confiável em navegadores de celular.
+- Corrigido: trocar o jeito de organizar as câmeras na chamada de vídeo (destaque no mestre / todo mundo igual) podia fazer o mute de alguém voltar sozinho, sem o botão avisar.
+- Corrigido: quando duas pessoas entravam na chamada de vídeo quase ao mesmo tempo, uma delas podia ficar "fantasma" — sem ver nem ser vista pelos outros — pelo resto da call.
+- Corrigido: no celular, quando o mestre encerrava a chamada de vídeo, a tela do jogador às vezes não fechava sozinha.
+- Ajustado o alinhamento dos vídeos no modo de destaque da chamada: agora eles ficam encostados no topo da tela, como antes, em vez de flutuar no meio quando sobra espaço.
 
 ## 2026-09-08
 

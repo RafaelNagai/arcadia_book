@@ -8,13 +8,22 @@ import { createNoiseGate, type NoiseGate } from '@/lib/noiseGate'
 import type { CampaignDetail } from '@/data/campaignTypes'
 import { CallParticipantTile } from './CallParticipantTile'
 import { CallSidebar } from './CallSidebar'
-import { CallSpotlightGrid } from './CallSpotlightGrid'
+import {
+  getMasterWrapperStyle,
+  getOtherTileClassName,
+  getOthersWrapperClassName,
+  getOthersWrapperStyle,
+  getTileWrapperStyle,
+  isSpotlightActive,
+} from './CallSpotlightGrid'
 import type { CallTileData } from './callTypes'
 
 const ICE_SERVERS: RTCIceServer[] = [{ urls: 'stun:stun.cloudflare.com:3478' }]
 const ICE_GATHERING_TIMEOUT_MS = 8_000
 const NEGOTIATION_TIMEOUT_MS = 12_000
 const CONNECTION_TIMEOUT_MESSAGE = 'Não foi possível estabelecer a conexão de vídeo — verifique sua rede'
+const PULL_RETRY_MAX_ATTEMPTS = 3
+const PULL_RETRY_BASE_DELAY_MS = 600
 
 interface CallTabProps {
   campaign: CampaignDetail
@@ -152,29 +161,44 @@ export function CallTab({ campaign }: CallTabProps) {
     setParticipants(prev => [...prev, { userId, characterId, accountName, cameraEnabled, layoutMode, stream, audioTrack: null }])
     ensureRowState(userId, 1)
 
-    try {
-      await enqueueNegotiation(async () => {
-        const resp = await api.calls.negotiateTracks(campaign.id, mySessionId, {
-          tracks: [
-            { location: 'remote', sessionId: remoteSessionId, trackName: `${remoteSessionId}-audio` },
-            { location: 'remote', sessionId: remoteSessionId, trackName: `${remoteSessionId}-video` },
-          ],
+    let lastError: unknown = null
+    for (let attempt = 1; attempt <= PULL_RETRY_MAX_ATTEMPTS; attempt++) {
+      // Sessão pode ter sido encerrada (leaveCall/disconnect) entre tentativas
+      // de retry — aborta silenciosamente em vez de tratar como falha real.
+      if (pcRef.current !== pc || sessionIdRef.current !== mySessionId) return
+      try {
+        await enqueueNegotiation(async () => {
+          const resp = await api.calls.negotiateTracks(campaign.id, mySessionId, {
+            tracks: [
+              { location: 'remote', sessionId: remoteSessionId, trackName: `${remoteSessionId}-audio` },
+              { location: 'remote', sessionId: remoteSessionId, trackName: `${remoteSessionId}-video` },
+            ],
+          })
+          for (const t of resp.tracks ?? []) {
+            if (!t.mid) continue
+            const kind: 'audio' | 'video' = t.trackName.endsWith('-audio') ? 'audio' : 'video'
+            pullMidMapRef.current.set(t.mid, { userId, kind })
+          }
+          if (resp.requiresImmediateRenegotiation && resp.sessionDescription) {
+            await pc.setRemoteDescription(new RTCSessionDescription(resp.sessionDescription))
+            const answer = await pc.createAnswer()
+            await pc.setLocalDescription(answer)
+            if (answer.sdp) await api.calls.renegotiate(campaign.id, mySessionId, { sdp: answer.sdp, type: 'answer' })
+          }
         })
-        for (const t of resp.tracks ?? []) {
-          if (!t.mid) continue
-          const kind: 'audio' | 'video' = t.trackName.endsWith('-audio') ? 'audio' : 'video'
-          pullMidMapRef.current.set(t.mid, { userId, kind })
+        return
+      } catch (err) {
+        lastError = err
+        console.debug('[call:pull] negotiateTracks failed, retrying', { userId, attempt, error: err })
+        if (attempt < PULL_RETRY_MAX_ATTEMPTS) {
+          await new Promise(resolve => setTimeout(resolve, PULL_RETRY_BASE_DELAY_MS * 2 ** (attempt - 1)))
         }
-        if (resp.requiresImmediateRenegotiation && resp.sessionDescription) {
-          await pc.setRemoteDescription(new RTCSessionDescription(resp.sessionDescription))
-          const answer = await pc.createAnswer()
-          await pc.setLocalDescription(answer)
-          if (answer.sdp) await api.calls.renegotiate(campaign.id, mySessionId, { sdp: answer.sdp, type: 'answer' })
-        }
-      })
-    } catch {
-      setParticipants(prev => prev.filter(p => p.userId !== userId))
+      }
     }
+
+    if (pcRef.current !== pc || sessionIdRef.current !== mySessionId) return
+    console.error('[call:pull] all retries exhausted, giving up on participant', { userId, attempts: PULL_RETRY_MAX_ATTEMPTS, error: lastError })
+    setParticipants(prev => prev.filter(p => p.userId !== userId))
   }, [campaign.id, ensureRowState])
 
   const broadcast = useCampaignCallChannel(campaign.id, {
@@ -247,6 +271,7 @@ export function CallTab({ campaign }: CallTabProps) {
   }, [user, selfCharacter, accountName, isGm, broadcast])
 
   const handleChangeLayoutMode = useCallback((mode: LayoutMode) => {
+    console.debug('[call:mute] layout mode changed', { mode })
     setLayoutMode(mode)
     trackSelf(cameraOn, mode)
   }, [cameraOn, trackSelf])
@@ -574,9 +599,31 @@ export function CallTab({ campaign }: CallTabProps) {
   const videoTiles: CallTileData[] = [selfTile, ...remoteVideoTiles]
   const masterTile = videoTiles.find(t => t.isGm)
   const otherTiles = videoTiles.filter(t => t !== masterTile)
+  const spotlightActive = isSpotlightActive(activeLayoutMode, masterTile)
 
   const galleryContainerRef = useRef<HTMLDivElement>(null)
   const galleryLayout = useGalleryLayout(galleryContainerRef, joined ? videoTiles.length : 0)
+
+  function renderParticipantTile(t: CallTileData) {
+    return (
+      <CallParticipantTile
+        userId={t.userId}
+        stream={t.stream}
+        audioTrack={t.audioTrack}
+        displayName={t.displayName}
+        subtitle={t.subtitle}
+        image={t.image}
+        characterId={t.characterId}
+        hp={t.hp}
+        maxHp={t.maxHp}
+        isGm={t.isGm}
+        muted={t.muted}
+        volume={t.volume}
+        cameraEnabled={t.cameraEnabled}
+        sinkId={selectedAudioOutput}
+      />
+    )
+  }
 
   const sidebarRows = user ? [
     {
@@ -680,39 +727,32 @@ export function CallTab({ campaign }: CallTabProps) {
         ) : (
           <div style={{ display: 'flex', gap: '1rem', flex: 1, minHeight: 0 }}>
             <div ref={galleryContainerRef} style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-              {activeLayoutMode === 'spotlight' && masterTile ? (
-                <CallSpotlightGrid master={masterTile} others={otherTiles} sinkId={selectedAudioOutput} />
-              ) : (
-                <div style={{
-                  flex: 1, minHeight: 0, overflowY: 'auto', display: 'flex', flexWrap: 'wrap',
-                  alignContent: 'flex-start', justifyContent: 'center', gap: GALLERY_GAP,
-                }}>
-                  {videoTiles.map(t => (
+              <div style={{
+                flex: 1, minHeight: 0, overflowY: 'auto', display: 'flex',
+                flexDirection: spotlightActive ? 'column' : 'row',
+                flexWrap: spotlightActive ? 'nowrap' : 'wrap',
+                alignContent: 'flex-start', justifyContent: spotlightActive ? 'flex-start' : 'center', gap: spotlightActive ? '1rem' : GALLERY_GAP,
+              }}>
+                {masterTile && (
+                  <div style={getMasterWrapperStyle(spotlightActive)}>
+                    <div style={getTileWrapperStyle(spotlightActive, galleryLayout, videoTiles.indexOf(masterTile))}>
+                      {renderParticipantTile(masterTile)}
+                    </div>
+                  </div>
+                )}
+
+                <div className={getOthersWrapperClassName(spotlightActive)} style={getOthersWrapperStyle(spotlightActive)}>
+                  {otherTiles.map(t => (
                     <div
                       key={t.key}
-                      style={galleryLayout
-                        ? { width: galleryLayout.tileWidth, height: galleryLayout.tileHeight, flexShrink: 0 }
-                        : { width: 240, flex: '0 1 240px' }}
+                      className={getOtherTileClassName(spotlightActive)}
+                      style={getTileWrapperStyle(spotlightActive, galleryLayout, videoTiles.indexOf(t))}
                     >
-                      <CallParticipantTile
-                        stream={t.stream}
-                        audioTrack={t.audioTrack}
-                        displayName={t.displayName}
-                        subtitle={t.subtitle}
-                        image={t.image}
-                        characterId={t.characterId}
-                        hp={t.hp}
-                        maxHp={t.maxHp}
-                        isGm={t.isGm}
-                        muted={t.muted}
-                        volume={t.volume}
-                        cameraEnabled={t.cameraEnabled}
-                        sinkId={selectedAudioOutput}
-                      />
+                      {renderParticipantTile(t)}
                     </div>
                   ))}
                 </div>
-              )}
+              </div>
             </div>
 
             <div className="hidden lg:flex" style={{ flexShrink: 0 }}>
