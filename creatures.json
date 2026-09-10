@@ -816,5 +816,94 @@
       { "name": "Defender", "description": "Permite defender com a DA." }
     ],
     "variants": []
+  },
+  {
+    "name": "Sorvareia",
+    "levelRange": "30 – 50",
+    "style": "Territorial · Emboscada",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad311-6b96-6e90-aba3-1ae642055a15/gemini-2.5-flash-image_Faça_esta_criatura_em_seu_habitat_natural_mude_ela_de_pose_faça_ela_saindo_de_-0.jpg",
+    "lore": "Sorvareia vive enterrada sob as dunas de Rubra, imóvel por dias inteiros, esperando a vibração de passos que denuncie uma presa por perto. Não possui olhos — sente o mundo através de cerdas sensíveis nas patas dianteiras, capazes de distinguir o peso e o ritmo de cada passada a metros de distância. Sua carapaça setorizada acumula pequenos cristais de quartzo formados pelo calor constante do deserto, o que fez da caça — viva, com a carapaça intacta — um rito de passagem entre os jovens caçadores de Rubra. Raramente persegue: prefere puxar a presa para debaixo da areia e esperar.",
+    "diceBase": "3D10",
+    "hp": 35,
+    "da": 5,
+    "dp": 2,
+    "attributes": { "fisico": 6, "destreza": 2, "intelecto": 1, "influencia": 0 },
+    "immune": ["Cego", "Veneno"],
+    "vulnerable": ["Esmagamento"],
+    "interactions": [
+      { "name": "Sentido Sísmico", "description": "Enquanto enterrada, Sorvareia detecta automaticamente qualquer criatura que se mova a até 15m — Furtividade não impede essa detecção. Criaturas voando ou completamente imóveis passam despercebidas." },
+      { "name": "Duna Movediça", "description": "O solo em um raio de 4m ao redor de Sorvareia é instável. Qualquer personagem que se mover nessa área precisa de um teste de Atletismo (DT 14) ou fica Imobilizado até seu próximo turno." },
+      { "name": "Carapaça Cravejada", "description": "Se for morta sem sofrer dano de Esmagamento no turno anterior, deixa 1D4 fragmentos de quartzo intactos — muito valorizados por artesãos de Rubra." }
+    ],
+    "actions": [
+      { "name": "Emboscada de Areia", "description": "Se ainda estiver enterrada e não detectada quando ataca, seu golpe é automaticamente crítico. Causa 4D8 de dano Perfurante.", "once": "Enterrada e não detectada" },
+      { "name": "Ferrão Encurvado", "description": "Golpeia com a cauda. Causa 2D10 de dano Perfurante. O alvo atingido testa Fortitude (DT 16) ou fica Paralisado por 1 turno." },
+      { "name": "Sorver na Areia", "description": "Agarra um alvo Imobilizado ou Paralisado e o puxa para debaixo da areia. O alvo é removido do combate e sofre 1D6 de dano por turno enquanto estiver enterrado. Aliados podem escavar (Atletismo, DT 18) ou seguir o rastro na areia (Percepção, DT 16) para resgatá-lo.", "once": "Alvo Imobilizado ou Paralisado" }
+    ],
+    "reactions": [
+      { "name": "Submergir", "description": "Permite defender com a DP e reenterrar-se por completo, reativando Sentido Sísmico e ficando não detectada até agir novamente." },
+      { "name": "Defender", "description": "Permite defender com a DA." }
+    ],
+    "variants": [
+      { "name": "Sorvareia Jovem", "diceBase": "3D10", "hp": 18, "da": 4, "note": "Mesmos atributos e ações, sem Sorver na Areia." }
+    ]
+  },
+  {
+    "name": "Nevomanto",
+    "levelRange": "40 – 60",
+    "style": "Territorial · Predador",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad32d-f418-6860-bf48-3a8dc20c5b2e/gemini-2.5-flash-image_Faça_esta_criatura_andando_em_uma_nevasca_com_dificuldade_em_enxergar_enquanto_-1.jpg",
+    "lore": "Nevomanto habita os picos congelados do Norte de Galahad, onde a nevasca nunca cessa e o ar rarefeito corta os pulmões de quem não nasceu ali. Seu pelame grosso e pálido reflete a neve ao redor — parado, é indistinguível de uma duna de gelo. As tribos nômades do Norte o encaram quase como um igual: ele não mata por prazer, apenas para se alimentar, e arrasta suas presas ainda vivas para despensas escavadas no gelo, onde as preserva por dias antes de devorá-las — um espelho perturbador dos próprios costumes do Norte. Quem perde um companheiro para um Nevomanto sabe que ainda há tempo, se encontrar a despensa antes que o gelo derreta.",
+    "diceBase": "3D12",
+    "hp": 45,
+    "da": 5,
+    "dp": 3,
+    "attributes": { "fisico": 7, "destreza": 5, "intelecto": 4, "influencia": 2 },
+    "immune": ["Congelado"],
+    "vulnerable": ["Fogo"],
+    "interactions": [
+      { "name": "Pelagem Nevada", "description": "Enquanto imóvel sobre neve ou gelo, Nevomanto se camufla completamente. Personagens precisam de um teste de Percepção (DT 18) para notá-lo antes que ele aja." },
+      { "name": "Hálito Gélido", "description": "Toda vez que ataca ou é atacado corpo a corpo, libera uma nuvem de vapor congelante em 3m ao redor. Todos na área, exceto Nevomanto, sofrem Desvantagem em testes de Percepção até o fim do próximo turno." },
+      { "name": "Despensa de Gelo", "description": "Nevomanto não busca matar — busca guardar. Ver a ação Selar Presa." }
+    ],
+    "actions": [
+      { "name": "Investida Silenciosa", "description": "Avança até 12m sem gerar oportunidade de ataque e desfere uma mordida. Causa 4D10 de dano Perfurante." },
+      { "name": "Golpe de Garras", "description": "Causa 3D12 de dano Cortante. Causa 1 de Sangramento." },
+      { "name": "Selar Presa", "description": "Só pode ser usada contra um alvo em Estado Morrendo. No lugar de finalizar o golpe, Nevomanto envolve o alvo em uma grossa camada de gelo: ele é retirado do Estado Morrendo (estabilizado, inconsciente, sem disputar o minijogo Entre a Vida e a Morte) e carregado para uma despensa em até 500m dali. Aliados que seguirem o rastro de gelo (Percepção ou Investigação, DT 17) e destruírem a despensa antes de 7 dias resgatam o alvo, ainda em 0 de Vida e inconsciente.", "once": "Alvo em Estado Morrendo" }
+    ],
+    "reactions": [
+      { "name": "Couraça de Gelo", "description": "Permite defender com a DA e ganha +2 de DA neste turno, endurecendo a pelagem congelada." },
+      { "name": "Recuo na Nevasca", "description": "Recebe o dano, mas se move até 8m em direção à neve ou nevasca mais próxima, reativando Pelagem Nevada." }
+    ],
+    "variants": []
+  },
+  {
+    "name": "Arfante",
+    "levelRange": "30 – 50",
+    "style": "Furtivo · Predador",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad33e-d791-69b0-90ae-e94a31815959/gemini-2.5-flash-image_A_majestic_wolf-like_creature_its_fur_a_blend_of_silver_and_midnight_black_stand-2.jpg",
+    "lore": "Ninguém sabe ao certo o que o Arfante é — um cão selvagem que aprendeu a caçar de um jeito cruel demais para ser natural, ou algo mais antigo usando essa forma emprestada. É comum nas estradas e campos abertos de Camelot, mas raramente ataca de frente. Prefere seguir viajantes a uma distância segura, esperando a respiração deles ficar mais pesada e os passos mais descoordenados — só avança quando sente que a presa já gastou tudo o que tinha. Soldados imperiais contam histórias de recrutas que correram demais numa perseguição e nunca mais voltaram: dizem que dá pra ouvir o Arfante respirando junto, no mesmo ritmo, logo atrás.",
+    "diceBase": "3D8",
+    "hp": 28,
+    "da": 5,
+    "dp": 2,
+    "attributes": { "fisico": 4, "destreza": 8, "intelecto": 3, "influencia": 0 },
+    "immune": [],
+    "vulnerable": ["Perfurante"],
+    "interactions": [
+      { "name": "Fome de Fadiga", "description": "Enquanto o alvo tiver 2 ou mais pontos de Exaustão acumulados em seu último Ato, os ataques do Arfante contra ele são considerados Críticos com resultado 7 ou 8 (Arfante joga D8 em testes.)." },
+      { "name": "Respiração Sincronizada", "description": "Fora de combate, o Arfante pode seguir um grupo por horas sem ser notado, a menos que alguém role Percepção (DT 20). Nunca ataca enquanto o grupo estiver descansado." },
+      { "name": "Covardia Calculada", "description": "Se estiver claramente perdendo o confronto — a critério do Mestre — o Arfante interrompe o ataque e foge, guardando fôlego para a próxima presa." }
+    ],
+    "actions": [
+      { "name": "Mordida Oportunista", "description": "Causa 3D8 de dano Cortante. Se o alvo tiver 2 ou mais pontos de Exaustão, causa 1 de Sangramento adicional." },
+      { "name": "Investida Final", "description": "Usa toda a velocidade acumulada para golpear em linha reta. Causa 5D10 de dano Bruto, mas o Arfante termina o seu ato imediatamente.", "once": "Alvo com 3 ou mais pontos de Exaustão" },
+      { "name": "Espreitar", "description": "Recua até 10m e se mantém imóvel tentando não ser notado. Não pode ser usada em dois turnos seguidos." }
+    ],
+    "reactions": [
+      { "name": "Defender", "description": "Permite defender com a DA." },
+      { "name": "Esquivar", "description": "Permite realizar um teste de Esquiva usando 3D8 + Destreza." }
+    ],
+    "variants": []
   }
 ]
