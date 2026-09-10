@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useCharacterRealtime } from "@/hooks/useCharacterRealtime";
 
+interface ContextMenuState {
+  x: number;
+  y: number;
+}
+
 // Curva de escala do selo/nome com a largura real do tile (medida via
 // ResizeObserver abaixo) — 140/480 cobrem do filmstrip mobile ao ponto em que
 // Grade Igual já bate o teto; 32-60px/0.55-0.7rem preservam os valores
@@ -28,6 +33,8 @@ interface CallParticipantTileProps {
   volume: number;
   cameraEnabled: boolean;
   sinkId?: string;
+  canViewSheet: boolean;
+  onViewSheet: (() => void) | null;
 }
 
 export function CallParticipantTile({
@@ -45,6 +52,8 @@ export function CallParticipantTile({
   volume,
   cameraEnabled,
   sinkId,
+  canViewSheet,
+  onViewSheet,
 }: CallParticipantTileProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const tileRef = useRef<HTMLDivElement>(null);
@@ -52,6 +61,35 @@ export function CallParticipantTile({
   const [maxHp, setMaxHp] = useState(initialMaxHp);
   const [image, setImage] = useState(initialImage);
   const [tileWidth, setTileWidth] = useState<number | null>(null);
+  const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
+  const viewSheetEnabled = canViewSheet && onViewSheet != null;
+
+  useEffect(() => {
+    if (!contextMenu) return;
+    const close = () => setContextMenu(null);
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+    };
+    document.addEventListener("mousedown", close);
+    document.addEventListener("keydown", onKeyDown);
+    window.addEventListener("scroll", close, true);
+    return () => {
+      document.removeEventListener("mousedown", close);
+      document.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("scroll", close, true);
+    };
+  }, [contextMenu]);
+
+  function handleContextMenu(e: React.MouseEvent) {
+    e.preventDefault();
+    setContextMenu({ x: e.clientX, y: e.clientY });
+  }
+
+  function handleViewSheetClick() {
+    if (!viewSheetEnabled) return;
+    setContextMenu(null);
+    onViewSheet?.();
+  }
 
   useEffect(() => {
     const el = tileRef.current;
@@ -145,7 +183,11 @@ export function CallParticipantTile({
   const nameFontSize = MIN_FONT + t * (MAX_FONT - MIN_FONT);
 
   return (
-    <div ref={tileRef} style={{ position: "relative", aspectRatio: "16 / 9" }}>
+    <div
+      ref={tileRef}
+      onContextMenu={handleContextMenu}
+      style={{ position: "relative", aspectRatio: "16 / 9" }}
+    >
       <div
         style={{
           position: "absolute",
@@ -264,6 +306,52 @@ export function CallParticipantTile({
           {subtitle ? ` · ${subtitle}` : ""}
         </span>
       </div>
+
+      {contextMenu && (
+        <div
+          onMouseDown={(e) => e.stopPropagation()}
+          style={{
+            position: "fixed",
+            left: contextMenu.x,
+            top: contextMenu.y,
+            zIndex: 1000,
+            minWidth: 170,
+            background: "rgba(10,15,30,0.97)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            borderRadius: 6,
+            padding: "0.3rem",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.45)",
+          }}
+        >
+          <button
+            type="button"
+            disabled={!viewSheetEnabled}
+            onClick={handleViewSheetClick}
+            style={{
+              display: "block",
+              width: "100%",
+              textAlign: "left",
+              padding: "0.45rem 0.6rem",
+              borderRadius: 4,
+              border: "none",
+              background: "transparent",
+              fontFamily: "var(--font-ui)",
+              fontSize: "0.78rem",
+              fontWeight: 600,
+              color: viewSheetEnabled ? "#EEF4FC" : "rgba(238,244,252,0.35)",
+              cursor: viewSheetEnabled ? "pointer" : "not-allowed",
+            }}
+            onMouseEnter={(e) => {
+              if (viewSheetEnabled) e.currentTarget.style.background = "rgba(200,146,42,0.15)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "transparent";
+            }}
+          >
+            Visualizar Ficha
+          </button>
+        </div>
+      )}
     </div>
   );
 }

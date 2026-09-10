@@ -5,6 +5,7 @@
 
 ## 2026-09-09
 
+- Agora é possível ver a ficha de outros jogadores diretamente da chamada de vídeo, clicando com o botão direito na câmera deles (respeitando as permissões de cada ficha).
 - Chegou um convite para o servidor do Discord da comunidade direto na página inicial do site, com o logo e um botão para entrar. O logo do Discord também passou a aparecer no botão de login com Discord e na tela de contas vinculadas, nas Configurações.
 - O menu lateral da chamada de vídeo agora abre e fecha por seções: "Participantes" e "Configurações" (onde ficam microfone, câmera e saída de áudio) podem ser recolhidas independentemente, deixando o painel mais organizado.
 - Chegou um filtro ajustável de ruído para o próprio microfone: um controle com medidor de volume ao vivo deixa você definir a partir de que ponto o som de fundo (ventilador, teclado etc.) é cortado, sem cortar a sua voz.

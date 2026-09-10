@@ -13,4 +13,5 @@ export interface CallTileData {
   muted: boolean
   volume: number
   cameraEnabled: boolean
+  canViewSheet: boolean
 }

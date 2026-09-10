@@ -584,6 +584,7 @@ export function CallTab({ campaign }: CallTabProps) {
     muted: user ? (rowState[user.id]?.muted ?? false) : false,
     volume: user ? (rowState[user.id]?.volume ?? 0) : 0,
     cameraEnabled: cameraOn,
+    canViewSheet: !!selfCharacter && (selfCharacter.isPublic || selfCharacter.userId === user?.id || isGm),
   }
 
   const remoteVideoTiles: CallTileData[] = participants.map(p => {
@@ -604,6 +605,7 @@ export function CallTab({ campaign }: CallTabProps) {
       muted: rowState[p.userId]?.muted ?? false,
       volume: rowState[p.userId]?.volume ?? 1,
       cameraEnabled: p.cameraEnabled,
+      canViewSheet: !!char && (char.isPublic || char.userId === user?.id || isGm),
     }
   })
 
@@ -632,6 +634,12 @@ export function CallTab({ campaign }: CallTabProps) {
         volume={t.volume}
         cameraEnabled={t.cameraEnabled}
         sinkId={selectedAudioOutput}
+        canViewSheet={t.canViewSheet}
+        onViewSheet={
+          t.canViewSheet && t.characterId
+            ? () => window.open(`/ficha/${t.characterId}?campaignId=${campaign.id}${isGm ? '&isGm=1' : ''}`, '_blank', 'noopener,noreferrer')
+            : null
+        }
       />
     )
   }
