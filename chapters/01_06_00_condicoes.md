@@ -4,7 +4,7 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 ---
 
-### Queimado
+### Queimadura
 
 **Descrição:** Dano térmico contínuo causado por fogo ou calor extremo.
 
@@ -103,13 +103,41 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 ---
 
+### Cego
+
+**Descrição:** Perda temporária da visão — por luz ofuscante, fumaça, poeira ou dano direto aos olhos.
+
+**Mecânica:** Puramente narrativa: enquanto durar, o personagem sofre **Desvantagem** em qualquer teste de perícia que dependa da visão (Percepção, Precisão, Reflexo, Combate, e outras a critério do Mestre). Não causa dano nem impede movimento.
+
+**Resistência:** Reflexo — teste bem-sucedido evita a aplicação.
+
+**Cura e redução:**
+- Passa automaticamente ao fim da duração indicada pela fonte do efeito.
+- Água, um pano limpo ou cura mágica removem antes do previsto, se a causa for irritante físico.
+
+---
+
+### Surdo
+
+**Descrição:** Perda temporária da audição — por explosão, trovão ou dano sônico.
+
+**Mecânica:** Puramente narrativa: enquanto durar, o personagem sofre **Desvantagem** em qualquer teste de perícia que dependa da audição (Percepção, Intuição, e outras a critério do Mestre) e não é alertado por sons ou gritos.
+
+**Resistência:** Fortitude — teste bem-sucedido evita a aplicação.
+
+**Cura e redução:**
+- Passa automaticamente ao fim da duração indicada pela fonte do efeito.
+- Cura mágica remove antes do previsto.
+
+---
+
 ### Cura durante o Interlúdio
 
 No **Interlúdio**, personagens podem dedicar ações para tratar condições ativas. A tabela abaixo define o que é necessário para remover cada condição fora de um Conflito:
 
 | Condição | Ação necessária | Teste | Recurso |
 |---|---|---|---|
-| **Queimado** | Ação Rápida | Nenhum | Água ou curativo básico (remove todos os stacks) |
+| **Queimadura** | Ação Rápida | Nenhum | Água ou curativo básico (remove todos os stacks) |
 | **Envenenamento** | Ação Longa | Conhecimento (DT = 10 + intensidade atual) | Antídoto adequado ao veneno |
 | **Sangramento** | Ação Rápida | Fortitude DT 12 | Atadura ou torniquete (remove todos os stacks) |
 | **Fratura leve** | Ação Longa | Nenhum | Imobilização + descanso (remove 1 penalidade) |
@@ -117,6 +145,8 @@ No **Interlúdio**, personagens podem dedicar ações para tratar condições at
 | **Atordoado** | — | — | Desaparece automaticamente ao fim do Conflito |
 | **Congelado** | Ação Rápida | Nenhum | Calor, fogo ou bebida quente (remove todos os stacks) |
 | **Paralisado** | Ação Rápida | Atletismo DT 14 | — (falha: tenta de novo na próxima ação) |
+| **Cego** | — | — | Desaparece automaticamente ao fim da duração |
+| **Surdo** | — | — | Desaparece automaticamente ao fim da duração |
 
 > Cura mágica (conjuração Arcana com intenção de cura) pode remove/reduzir qualquer condição, portanto que passe na DT.
 

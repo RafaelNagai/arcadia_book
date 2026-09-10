@@ -330,7 +330,7 @@
     "maxDurability": 3,
     "effects": [
       "Para cada valor repetido nos dados de ataque, causa 1 de dano ao alvo.",
-      "Avaros ganham +3 de Combate com esta arma."
+      "Se o portador estiver com a vida abaixo da metade, ganha +3 de Combate com esta arma."
     ],
     "description": "Os artesões de Rubra projetaram esta arma, para proteger e minerar em seu vasto deserto.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/a790ecfd-eba6-4360-ae4d-0b7ee02518ee/segments/2:4:1/Lucid_Origin_A_highly_detailed_fullview_illustration_of_a_medi_1.jpg"
@@ -590,7 +590,7 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao causar dano, o alvo deve realizar um teste de Atletismo ou Fortitude dif. 15, se falhar o alvo fica enraizado."
+      "Ao causar dano, o alvo deve realizar um teste de Atletismo ou Fortitude dif. 15, se falhar o alvo fica Paralisado."
     ],
     "description": "Cada bala carrega um inverno gelido de Norte de Galahad, são capsulas de puro gelo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/3bfdbe27-00fc-4d22-b251-d8a8bf86169b/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_an_iceformed_ma_0.jpg"
@@ -853,7 +853,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Ganha +2 em testes de montaria."
+      "Ganha +2 em qualquer teste relacionado a montaria (guiar, controlar ou acalmar uma montaria)."
     ],
     "description": "Chapéu tradicional dos capivaqueiros.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f3a4-ac7f-6ef0-b744-437c73b0c2f6/lucid-origin_A_highly_detailed_illustration_of_a_unique_fantasy_hat_blending_the_iconic_struc-0.jpg"
@@ -1078,7 +1078,7 @@
     "weight": "leve",
     "isEquipment": true,
     "maxDurability": 1,
-    "effects": ["Se o portador for de Union, testes de Intimidação ganham +3 com esta faca à vista."],
+    "effects": ["Se o portador for de Union, testes relacionados a intimidar alguém ganham +3 com esta faca à vista."],
     "description": "Esculpida do osso de uma criatura que nunca deveria ter sido caçada.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed07-ddb7-6960-bcab-2c8d47430793/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_bone_dagger_displayed_diagonally_fro-0.jpg"
   },
@@ -1092,7 +1092,7 @@
     "weight": "leve",
     "isEquipment": true,
     "maxDurability": 2,
-    "effects": ["Ao causar dano, aplica Veneno. Aplica até no máximo 3 stacks."],
+    "effects": ["Ao causar dano, aplica Envenenamento. Aplica até no máximo 3 stacks."],
     "description": "Fabricado nas vielas de Union por farmacêuticos que não escolhem quem serve.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed0f-bd36-6620-b807-3d240642b99f/lucid-origin_A_highly_detailed_illustration_of_a_poison-infused_fantasy_dagger_displayed_diag-0.jpg"
   },
@@ -1302,7 +1302,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Uma vez por cena, ao realizar uma conjuração, pode realizar um ataque extra corpo-a-corpo com esta arma como Ação Gratuita.",
+      "Uma vez por cena, ao realizar uma conjuração, pode realizar um ataque extra corpo-a-corpo com esta arma sem gerar Exaustão.",
       "Se o portador tiver ao menos 1 ponto em qualquer modificador arcano (Potência, Complexidade, Forma ou Controle), ganha +2 em todos os testes de Combate com esta lâmina."
     ],
     "description": "Forjada por um ferreiro que era também arcanista. Ele queria que as duas coisas conversassem. Funcionou.",
@@ -1439,7 +1439,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Portadores ganham +2 em testes de Sobrevivência e Percepção.",
+      "Portadores ganham +2 em qualquer teste relacionado à sobrevivência selvagem (rastrear água, encontrar abrigo, resistir aos elementos), e em testes de Percepção.",
       "Uma vez por sessão, permite rerolar um teste de intuição."
     ],
     "description": "Desgastado por mil estradas. Cada mancha é uma história que o dono prefere não contar.",
@@ -1515,7 +1515,7 @@
     "isEquipment": true,
     "maxDurability": 5,
     "effects": [
-      "Portadores ganham +2 em testes de Rastreamento e Percepção contra criaturas.",
+      "Portadores ganham +2 em qualquer teste relacionado a rastrear criaturas, e em testes de Percepção contra criaturas.",
       "Se o portador estiver com a faca do caçador ou pistola do caçador, permite descobrir as interações da criatura escolhida."
     ],
     "description": "Leve o suficiente para correr. Resistente o suficiente para errar. Os caçadores de Union não pedem mais do que isso.",
@@ -1573,7 +1573,7 @@
     "weight": "leve",
     "isEquipment": true,
     "maxDurability": 1,
-    "effects": ["Ao disparar, cria um sinal luminoso visível a até 2km. Pode cegar alvos adjacentes por 1 turno (Reflexo dif. 10 para evitar)."],
+    "effects": ["Ao disparar, cria um sinal luminoso visível a até 2km. Pode aplicar Cego por 1 turno em alvos adjacentes (Reflexo dif. 10 para evitar)."],
     "description": "Projetada para pedir socorro. Ninguém diz que não pode ser usada pra outra coisa.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed5b-fc3e-6f10-a7d8-7470f595d0f5/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_industrial_flare_pistol_displayed_di-3.jpg"
   },
@@ -1636,7 +1636,7 @@
     "maxDurability": 3,
     "effects": [
       "Ocupa os dois espaços de mão. Permite disparar em dois alvos diferentes na mesma Ação, com Desvantagem em ambos.",
-      "Ao acertar os dois alvos no mesmo turno, ambos ficam enraizado por 1 turno."
+      "Ao acertar os dois alvos no mesmo turno, ambos ficam Paralisados."
     ],
     "description": "Dois canos. Um gatilho. A matemática da violência simplificada.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed6b-3886-69f0-9aba-ba17b7ee41f1/lucid-origin_A_detailed_illustration_of_an_ominous_masterfully_crafted_twin-barrel_pistol_dis-1.jpg"
@@ -1798,7 +1798,7 @@
     "maxDurability": 3,
     "effects": [
       "O portador não tem penalidade ao atirar em ambientes como névoa, fumaça e neblina.",
-      "Uma vez por combate, ao acertar, o alvo fica cego por 2 turnos."
+      "Uma vez por combate, ao acertar, aplica Cego no alvo por 2 turnos."
     ],
     "description": "Os exploradores de North Galahad precisavam de algo que funcionasse nas neblinas densas. Rubra entregou. Cobrou muito.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed80-d5a8-68e0-adec-3a0cf510d4e9/lucid-origin_A_highly_detailed_illustration_of_a_legendary_fantasy_rifle_displayed_diagonally-0.jpg"
@@ -1814,7 +1814,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Ao causar dano, o alvo deve realizar Atletismo ou Fortitude dif. 18 ou fica Enraizado por 1 turnos.",
+      "Ao causar dano, o alvo deve realizar Atletismo ou Fortitude dif. 18 ou fica Paralisado.",
       "Em ambientes frios, ganha +2 em todos os dados de ataque."
     ],
     "description": "Usa cristais de gelo de North Galahad como projéteis. Ao impactar, o cristal se expande. O resultado é espetacular e brutal.",
@@ -1893,7 +1893,7 @@
     "maxDurability": 3,
     "effects": [
       "Ao causar dano, permite evitar o consumo da munição.",
-      "Se o portador for Elfo, ao realizar um ataque com sucesso, pode disparar uma segunda flecha com 2x Desvantagem."
+      "Se o portador tiver Talento em Precisão, ao realizar um ataque com sucesso, pode disparar uma segunda flecha com 2x Desvantagem."
     ],
     "description": "Curvado com resina de árvore-mãe e polido com paciência élfica. Cada arco leva uma geração para amadurecer.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed8c-37d9-6450-a63a-5266ac6ea6c2/lucid-origin_A_highly_detailed_illustration_of_a_legendary_fantasy_elven_longbow_displayed_ve-3.jpg"
@@ -2040,7 +2040,7 @@
     "weight": "super_leve",
     "isEquipment": false,
     "maxDurability": null,
-    "effects": ["Ao causar dano, o alvo deve realizar Atletismo dif. 14 ou fica Enraizado por 1 turno."],
+    "effects": ["Ao causar dano, o alvo deve realizar Atletismo dif. 14 ou fica Paralisado."],
     "description": "Cultivadas nos campos de gelo de North Galahad. Derretem rápido — precisam ser usadas antes.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee04-98b5-67b0-9bb2-d7abcdad5a48/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_B_Flechas_d-2.jpg"
   },
@@ -2088,7 +2088,7 @@
     "weight": "super_leve",
     "isEquipment": false,
     "maxDurability": null,
-    "effects": ["Ao causar dano, aplica Veneno até no maximo 5."],
+    "effects": ["Ao causar dano, aplica Envenenamento até no máximo intensidade 5."],
     "description": "Pontas banhadas em extrato de planta carnívora de Galahad. Colher o veneno é mais difícil do que usá-lo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee19-e1ef-6ec0-8215-6e011672290a/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_B_Flecha_Ve-0.jpg"
   },
@@ -2233,7 +2233,7 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao causar dano, o alvo fica com Desvantagem em testes de Concentração por 2 turnos.",
+      "Ao causar dano em um alvo que esteja mantendo uma conjuração Concentrada, o teste de Vontade para manter a concentração é feito com Desvantagem.",
       "Ao impactar, emite uma onda sonora que revela todos em 10m que falhem em Percepção dif. 15."
     ],
     "description": "Contém uma runa de amplificação sônica. O som do impacto reverbera nos ossos do alvo.",
@@ -2301,7 +2301,7 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao causar dano, o alvo deve realizar Fortitude dif. 20 ou ficará surdo por 5 turno.",
+      "Ao causar dano, o alvo deve realizar Fortitude dif. 20 ou fica Surdo por 5 turnos.",
       "Ao impactar, emite um trovão que pode ser ouvido em 500m de raio."
     ],
     "description": "Carregadas com energia de relâmpago comprimida. O disparo soa como um trovão. Os inimigos aprendem rápido o que isso significa.",
@@ -2386,7 +2386,7 @@
     "maxDurability": 4,
     "effects": [
       "Requer duas mãos. Ao atacar, cause 1 dano adicional igual ao número de dados que saíram com valor máximo.",
-      "Anões ganham Vantagem ao atacar com esta arma."
+      "Se o portador tiver Talento em Combate, ganha Vantagem ao atacar com esta arma."
     ],
     "description": "Forjado pelos anões mais velhos de Britannia. Ninguém faz machados como eles fazem. Ninguém precisaria de algo tão grande — mas os anões discordam.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/aef3f69c-8068-4f2f-8eb5-8c32cdd17f29/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_massive_fanta_0.jpg"
@@ -2402,7 +2402,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Ao causar dano, o alvo deve realizar Atletismo ou Fortitude dif. 17 ou fica Enraizado por 1 turnos.",
+      "Ao causar dano, o alvo deve realizar Atletismo ou Fortitude dif. 17 ou fica Paralisado.",
       "Por turno, permite remover 3 stacks de queimadura."
     ],
     "description": "Solidificada do gelo eterno de North Galahad. Nunca derrete. Exceto ao impactar algo vivo — então dissolve completamente.",
@@ -2519,7 +2519,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "O portador ganha +3 em testes de movimentação.",
+      "O portador ganha +3 em qualquer teste relacionado a movimentação (Atletismo ou Acrobacia para correr, saltar ou escalar).",
       "Ganha +1 em testes de Esquiva."
     ],
     "description": "Encantado por arcanistas de Galahad. O fio do colar parece vibrar mesmo parado.",
@@ -2882,5 +2882,172 @@
     ],
     "description": "Um dos grande rei, Dagdir, forjou este baralho para ajudar a escolher seu destino. Ele era um pessoa com bastante azar, mas este baralho que lhe garantir salvar a cidade de Herion.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15eeac-e395-6ca0-b708-ca5d43810bd5/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_SS_Baralho_-0.jpg"
+  },
+  {
+    "id": "cajado-improvisado",
+    "name": "Cajado Improvisado",
+    "category": "Item Arcano",
+    "subcategory": "Cajado",
+    "tier": "D",
+    "damage": null,
+    "arcaneBonus": 1,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [],
+    "description": "Um galho comum, entalhado à mão com runas copiadas de um livro velho. Funciona. Mal, mas funciona.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace12-8e28-6930-9614-d6eb06585b9e/lucid-origin_A_highly_detailed_illustration_of_Improvised_Staff_a_simple_fantasy_wooden_staff-0.jpg"
+  },
+  {
+    "id": "pocao-de-vida-menor",
+    "name": "Poção de Vida Menor",
+    "category": "Acessório",
+    "subcategory": "Comestivel",
+    "tier": "C",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": false,
+    "effects": [
+      "Uso único. É consumido após ser usado.",
+      "Recupera 1D6 de VIDA."
+    ],
+    "description": "Vendida aos montes nas boticas de Union. Gosto ruim, efeito confiável — o combo favorito de quem sobrevive por pouco.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace19-0495-64a0-bb53-be75604127a1/lucid-origin_A_highly_detailed_illustration_of_Minor_Health_Potion_a_small_fantasy_healing_po-0.jpg"
+  },
+  {
+    "id": "livro-glacial",
+    "name": "Livro Glacial",
+    "category": "Acessório",
+    "subcategory": "Livro",
+    "tier": "C",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Ao conjurar com intenção de gelo, frio ou congelamento, ganha +5 no resultado de todos os modificadores."
+    ],
+    "description": "As páginas ficam frias ao toque, mesmo longe da neve. Escrito por um monge de North Galahad que preferia o silêncio do inverno a qualquer conversa.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace1b-c1db-6a80-a657-6e54c860668c/lucid-origin_A_highly_detailed_illustration_of_Glacial_Book_an_old_fantasy_spellbook_displaye-0.jpg"
+  },
+  {
+    "id": "foice-ceifa-vento",
+    "name": "Foice Ceifa-Vento",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Foice",
+    "tier": "C",
+    "damage": "2D8",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Requer duas mãos. Possui alcance de 3m.",
+      "Ao matar um alvo de tamanho medio/grande com esta foice, o portador recupera 1 de vida."
+    ],
+    "description": "Antes de jurar lealdade à Irmandade dos Ceifadores, todo aspirante de Union colhe trigo — e, quando precisa, colhe outra coisa — com uma foice como esta.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace1e-a3de-6520-a3ff-bb27d9ca063e/lucid-origin_A_highly_detailed_illustration_of_Wind-Reaper_Scythe_a_large_two-handed_fantasy_-1.jpg"
+  },
+  {
+    "id": "manopla-de-eco",
+    "name": "Manopla de Eco",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Manopla",
+    "tier": "B",
+    "damage": "2D10",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ao defender e remover 1 de durabilidade desse equipamento, o próximo ataque realizado com esta manopla neste turno ganha Vantagem."
+    ],
+    "description": "Câmaras de pressão movidas a vapor, projetadas nas oficinas de Rubra para lutadores que preferem esperar o golpe errado do oponente.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace23-5717-6390-bec2-47ccdd7a2ded/lucid-origin_A_highly_detailed_illustration_of_Echo_Gauntlet_a_lightweight_fantasy_steam-powe-0.jpg"
+  },
+  {
+    "id": "chicote-do-domador",
+    "name": "Chicote do Domador",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Chicote",
+    "tier": "B",
+    "damage": "2D6",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Possui alcance de 4m.",
+      "Ao acertar um ataque, pode puxar o alvo até 3m em direção ao portador, ou puxar-se até 3m em direção ao alvo."
+    ],
+    "description": "Usado pelos domadores de capivacas de Union para guiar — e, quando preciso, corrigir — as feras mais teimosas da fazenda.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace2b-fe24-6720-a470-7c2044315b2e/lucid-origin_A_highly_detailed_illustration_of_Tamer_s_Whip_a_lightweight_fantasy_animal-tami-0.jpg"
+  },
+  {
+    "id": "besta-perfurante",
+    "name": "Besta Perfurante de Britannia",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Besta",
+    "tier": "B",
+    "damage": "2D12",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Após disparar, é necessário gastar uma Ação Complexa para recarregar antes do próximo disparo.",
+      "O dano desta arma ignora 2 pontos de DA do alvo."
+    ],
+    "description": "As bestas de Britannia não disparam rápido — mas o que atravessam, não se levanta de novo.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace2f-59d2-6920-aba1-12642d3adeeb/lucid-origin_A_highly_detailed_illustration_of_Britannia_Piercing_Crossbow_a_heavy_medieval_f-0.jpg"
+  },
+  {
+    "id": "botas-do-vento",
+    "name": "Botas do Vento de Galahad",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Botas",
+    "tier": "B",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Ignora completamente dano de queda, se cair de pé.",
+      "Uma vez por cena, permite planar por até 10m horizontais antes de tocar o chão."
+    ],
+    "description": "Os batedores de Galahad cruzam o vão entre ilhas flutuantes sem pensar duas vezes. Estas botas são o motivo.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace36-0451-65d0-8b51-87e96469ff5f/lucid-origin_A_highly_detailed_illustration_of_Boots_of_the_Wind_of_Galahad_a_pair_of_lightwe-0.jpg"
+  },
+  {
+    "id": "anel-do-duelista",
+    "name": "Anel do Duelista",
+    "category": "Acessório",
+    "subcategory": "Anel",
+    "tier": "A",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Se nenhum coadjuvante intervir ou impor, o valor para obter um crítico em ataques corpo-a-corpo é reduzido em 1.",
+      "Ao acertar um crítico corpo-a-corpo, o próximo ataque corpo-a-corpo realizado antes do fim do Ato ganha Vantagem."
+    ],
+    "description": "Passado entre os duelistas de Camelot que nunca perderam um confronto de honra — e nunca precisaram de uma segunda estocada.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace3a-4017-6a70-a104-09a7a4a7033b/lucid-origin_A_highly_detailed_illustration_of_Duelist_s_Ring_an_elegant_fantasy_dueling_ring-0.jpg"
+  },
+  {
+    "id": "escudo-da-ultima-muralha",
+    "name": "Escudo da Última Muralha",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Escudo",
+    "tier": "S",
+    "damage": null,
+    "da": 5,
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 7,
+    "effects": [
+      "Concede +1 de DA a todos os aliados em um raio de 3m do portador.",
+      "Uma vez por combate, pode ser erguido para formar uma barreira estacionária de 5m que bloqueia ataques à distância físicos por 2 turnos. Enquanto ergue a barreira, o portador não pode se mover nem atacar.",
+      "Se o portador tiver Talento em Fortitude, a durabilidade máxima deste escudo aumenta em 3."
+    ],
+    "description": "Forjado pela guilda de escudeiros que protege as minas de Britannia. Cada peça carrega o nome de uma colônia que ainda está de pé por causa dele.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace46-1217-66a0-92be-201a0cd73d99/lucid-origin_A_highly_detailed_illustration_of_Shield_of_the_Last_Wall_a_massive_heavy_fantas-3.jpg"
   }
 ]

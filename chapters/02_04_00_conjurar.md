@@ -116,9 +116,7 @@ O **resultado mais alto** entre todos os modificadores testados na conjuração 
 
 A natureza do efeito — dano, cura, condição ou combinação — é determinada pela intenção descrita e confirmada pelo Mestre.
 
-> Em caso de **Crítico** (dado natural 12): efeito dobrado. 
->
-> Em caso de **Milagre** (dois 12s naturais): efeito triplicado.
+> O multiplicador de Crítico (x2) e Milagre (x3) segue a mesma tabela centralizada do capítulo de [Conflito](conflito) — dano, cura e stacks de condição são afetados igualmente.
 
 Os dados de dano arcano funcionam como qualquer outro dano — cada resultado é comparado à DA do alvo individualmente.
 

@@ -124,6 +124,14 @@ Cada jogador mantém dois tipos de tokens à sua frente:
 
 Ao acumular 2 tokens claros, troca-os por 1 escuro (+1 Exaustão). Cada Ação Complexa adiciona 1 escuro diretamente. O número de tokens escuros é a Exaustão atual — a dificuldade sobe 10 por token. Ao fim do Ato, todos os tokens são removidos.
 
+### Ações que Ignoram Exaustão
+
+Alguns Talentos, magias ou equipamentos concedem uma Ação extra que **não gera Exaustão** — descrita no efeito como *"sem gerar Exaustão"* ou *"um ataque adicional que não conta para a Exaustão"*.
+
+Essa Ação continua existindo normalmente dentro do Ato (ainda é uma Ação Simples ou Complexa, ainda precisa de um teste quando aplicável) — a única exceção é que ela **não adiciona token escuro** ao contador. Como a Exaustão só existe durante o Ato do Protagonista, esse tipo de efeito só faz sentido enquanto o personagem está agindo como Protagonista.
+
+> *Exemplo: A Lâmina Rúnica permite, uma vez por cena, um ataque extra corpo a corpo sem gerar Exaustão. Kael já fez 1 Ação Complexa nesse Ato (1 Exaustão) e usa o efeito da lâmina para atacar de novo — a Exaustão continua em 1, não sobe para 2.*
+
 ---
 
 ## Falha no Ato
@@ -215,6 +223,19 @@ Quando uma Ação de ataque tem sucesso, o atacante rola os dados de dano. O ní
 - **Antagonista exposto** (não interveio, Intervenção falhou, ou sofreu Desastre): dano calculado contra a **DP**.
 
 As regras completas de DA, DP, Durabilidade e absorção de equipamento estão no capítulo de [Defesa](defesa).
+
+### Multiplicador de Dano Crítico
+
+O dano funciona por **sucessos individuais** (ver [Defesa](defesa)): cada dado de dano que atinja a DA ou DP do alvo causa 1 ponto de dano. Quando o teste de ataque resulta em **Crítico** ou **Milagre** (ver [Testes](evolucao)), esse valor é multiplicado — de forma centralizada, para **qualquer tipo de dano**: corpo a corpo, à distância ou arcano.
+
+| Resultado do teste de ataque | Multiplicador |
+|---|---|
+| Crítico (12 natural em um Dado Usado) | **x2** |
+| Milagre (12 natural nos dois Dados Usados) | **x3** |
+
+> O multiplicador se aplica ao dano causado pelo ataque que gerou o Crítico ou Milagre — não a efeitos contínuos já ativos, como o dano por turno de Queimadura ou Envenenamento.
+
+Alguns equipamentos ou efeitos especiais aumentam esse multiplicador (ex: *"o multiplicador de crítico é aumentado em 1"* transforma um Crítico normal de x2 em x3). Esses bônus são cumulativos entre itens diferentes, salvo indicação contrária.
 
 ---
 
