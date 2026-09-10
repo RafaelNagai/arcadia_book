@@ -863,7 +863,7 @@ export function CampaignPage() {
         </button>
       </div>
 
-      <div style={{ display: 'flex', flex: 1 }}>
+      <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
         {/* Desktop Sidebar */}
         <div className="hidden lg:flex" style={{
           width: 240, flexShrink: 0,

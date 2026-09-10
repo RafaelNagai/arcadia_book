@@ -5,6 +5,7 @@
 
 ## 2026-09-09
 
+- Corrigido: agora é possível rolar a tela para ver todos os personagens e NPCs de uma campanha, mesmo em telas pequenas/celular — antes, quando havia gente demais para caber na tela, o final da lista ficava cortado e inacessível.
 - Agora é possível ver a ficha de outros jogadores diretamente da chamada de vídeo, clicando com o botão direito na câmera deles (respeitando as permissões de cada ficha).
 - Chegou um convite para o servidor do Discord da comunidade direto na página inicial do site, com o logo e um botão para entrar. O logo do Discord também passou a aparecer no botão de login com Discord e na tela de contas vinculadas, nas Configurações.
 - O menu lateral da chamada de vídeo agora abre e fecha por seções: "Participantes" e "Configurações" (onde ficam microfone, câmera e saída de áudio) podem ser recolhidas independentemente, deixando o painel mais organizado.
