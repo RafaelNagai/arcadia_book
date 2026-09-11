@@ -58,6 +58,7 @@ Se o Validator reprovar, o Executor corrige e o Validator reavalia (máximo 2 ci
 - Sem comentários no código a não ser que o porquê seja não-óbvio
 - Sem mocks de banco de dados
 - Sem features extras além do que foi pedido
+- Toda task concluída deve adicionar uma entrada em `CHANGELOG.md`, sob a data atual, em linguagem simples e sem jargão técnico.
 
 ---
 

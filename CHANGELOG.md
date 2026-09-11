@@ -7,6 +7,11 @@
 
 - O mestre agora pode remover um jogador da chamada de voz/vídeo direto pelo menu de clique direito na câmera dele; a pessoa removida pode tentar entrar de novo na chamada quando quiser, sem afetar os outros participantes.
 
+## 2026-09-11
+
+- A ficha de personagem agora reúne inventário, diário, dados e mecânicas em um único menu flutuante, que abre e fecha com uma animação.
+- A Parte 4 do livro agora reúne as mecânicas especiais, começando pelo capítulo Destrancar; as ideias de minigames futuros ficaram preservadas para desenvolvimento posterior.
+
 ## 2026-09-09
 
 - Corrigido: agora é possível rolar a tela para ver todos os personagens e NPCs de uma campanha, mesmo em telas pequenas/celular — antes, quando havia gente demais para caber na tela, o final da lista ficava cortado e inacessível.

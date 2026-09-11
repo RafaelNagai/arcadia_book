@@ -94,6 +94,12 @@ Este arquivo define os três sub-agentes do workflow `/task`. O orquestrador lê
 
 ## Regras de Orquestração
 
+## Regra obrigatória de changelog
+
+- Toda task concluída que altere o projeto deve atualizar `CHANGELOG.md` na raiz, sob a data atual (`## AAAA-MM-DD`).
+- A entrada deve ser um bullet curto, em linguagem simples e amigável ao leitor, sem nomes de arquivos, funções ou jargão técnico.
+- Essa atualização faz parte da conclusão da task e deve ser validada antes de considerá-la pronta.
+
 - Os agentes são **sempre sequenciais**: Planner → Executor → Validator
 - O Executor só começa após o Planner entregar a lista de subtasks
 - O Validator só começa após o Executor confirmar o que foi feito
