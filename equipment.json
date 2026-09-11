@@ -1046,7 +1046,7 @@
     "category": "Arma Corpo-a-Corpo",
     "subcategory": "Adaga",
     "tier": "C",
-    "damage": "2D6",
+    "damage": "2 dados",
     "weight": "leve",
     "isEquipment": true,
     "maxDurability": 2,
@@ -2986,7 +2986,7 @@
     "category": "Arma Longa-Distância",
     "subcategory": "Besta",
     "tier": "B",
-    "damage": "2D12",
+    "damage": "2 dados",
     "weight": "pesado",
     "isEquipment": true,
     "maxDurability": 3,
@@ -3353,5 +3353,261 @@
     ],
     "description": "A Antítese não é escolhida e não é dócil — é um elemento que se instala à força em todo conjurador, puxando pro lado oposto sempre que ele tenta usá-la. A maioria dos arcanistas trata isso como um fardo pra suportar. O autor deste livro, um Sincronômante que passou a carreira tratando magos exauridos pela própria Antítese, discordava: escreveu que o problema nunca foi o elemento, mas a recusa em aceitá-lo. As páginas não ensinam nenhum feitiço novo — ensinam, com paciência quase irritante, a parar de lutar contra a própria natureza dividida.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad92e-2429-61c0-bf04-909644c26c2b/lucid-origin_ighly_detailed_illustration_of_Book_of_Reconciliation_a_lightweight_fantasy_tome-0.jpg"
+  },
+  {
+    "id": "alabarda-da-guarda-real",
+    "name": "Alabarda da Guarda Real",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Alabarda",
+    "tier": "A",
+    "damage": "3D10",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Requer duas mãos. Possui alcance de 3m.",
+      "Ao acertar um crítico, o alvo fica Paralisado até o fim do próximo Ato dele (Atletismo dif. 20 para resistir)."
+    ],
+    "description": "A Guarda Real de Camelot não escolhe quem carrega esta alabarda — a arma escolhe, num sentido bem literal: cada peça é forjada sob medida para um único guardião, com o peso e o balanço calibrados ao corpo de quem vai empunhá-la pelo resto da carreira. Ornamentada o suficiente para desfiles, afiada o suficiente para o que acontece quando os desfiles terminam mal. Dizem que nenhum atentado contra o trono chegou perto do Imperador enquanto um portador desta alabarda ainda estava de pé.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad9fb-7a00-6940-9c3f-bece3e3a255f/lucid-origin_highly_detailed_illustration_of_Royal_Guard_Halberd_a_heavy_fantasy_polearm_disp-0.jpg"
+  },
+  {
+    "id": "besta-de-repeticao",
+    "name": "Besta de Repetição",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Besta",
+    "tier": "A",
+    "damage": "3 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Após disparar, recarregar custa apenas uma Ação Simples (em vez de Ação Complexa).",
+      "O dano desta arma ignora 2 pontos de DA do alvo."
+    ],
+    "description": "As bestas comuns de Britannia pagam o preço do impacto com o tempo de recarga — um problema que a guilda de engenheiros da capital decidiu não aceitar como definitivo. A Besta de Repetição usa um sistema de manivela e trilho que reduz a recarga a um único gesto treinado, sem sacrificar a tensão do arco nem a força do virote. Levou onze protótipos e dois dedos perdidos até funcionar direito. O engenheiro responsável considera a troca justa.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada03-a02a-6320-a42f-5a1dd2d97ca0/lucid-origin_highly_detailed_illustration_of_Repeating_Crossbow_a_heavy_fantasy_ranged_weapon-0.jpg"
+  },
+  {
+    "id": "chicote-de-espinhos",
+    "name": "Chicote de Espinhos",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Chicote",
+    "tier": "A",
+    "damage": "3D8",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Possui alcance de 5m.",
+      "Ao causar dano, o alvo deve realizar Atletismo dif. 20 ou fica Paralisado por 1 turno."
+    ],
+    "description": "Depois do Chicote do Domador vem este — não mais uma ferramenta de fazenda, mas algo desenhado por quem decidiu que capturar vivo é mais lucrativo que matar. As farpas de metal entrelaçadas no couro não cortam fundo, mas prendem: um golpe bem colocado trava músculo e articulação por tempo suficiente para decidir o resto da luta sem pressa. Caçadores de recompensa de Union pagam caro por um — e pagam ainda mais caro por quem ensina a usá-lo direito.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada0a-ddf9-6640-bddd-88a0f64183a6/lucid-origin_highly_detailed_illustration_of_Thorn_Whip_a_lightweight_fantasy_melee_weapon_co-2.jpg"
+  },
+  {
+    "id": "martelo-do-colapso",
+    "name": "Martelo do Colapso",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Martelo",
+    "tier": "A",
+    "damage": "4D10",
+    "weight": "super_pesado",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Requer duas mãos.",
+      "Ao acertar um ataque crítico, todos os inimigos em 3m fazem Atletismo dif. 14 ou ficam Atordoados por 1 turno."
+    ],
+    "description": "Depois do Martelo de Ferreiro vem este — feito não para forjar, mas para desmoronar. Os anões que o constroem dizem que todo material tem um ponto de colapso, uma frequência exata de impacto que faz até a pedra ceder de uma vez. O Martelo do Colapso é ajustado para encontrar esse ponto em qualquer coisa que golpeie, incluindo o que está por perto quando o golpe finalmente acontece. Nenhum forjador orgulhoso admite ter feito um só para quebrar coisas — mas todos sabem qual martelo pegar quando é isso que precisa acontecer.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada10-172d-69c0-b265-c44014b93007/lucid-origin_highly_detailed_illustration_of_Collapse_Hammer_a_super-heavy_fantasy_warhammer_-0.jpg"
+  },
+  {
+    "id": "tridente-da-mare-alta",
+    "name": "Tridente da Maré Alta",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Tridente",
+    "tier": "A",
+    "damage": "3D10",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ao causar dano, pode escolher puxar o alvo até 5m em direção ao portador, ou empurrá-lo 5m para longe (Atletismo do alvo dif. 18 para resistir).",
+      "Em combate próximo à água ou sob chuva intensa, ganha +2 em todos os dados de dano."
+    ],
+    "description": "O Tridente Farpado prende. O Tridente da Maré Alta decide — puxa o que precisa vir perto, empurra o que precisa ir embora, na mesma lâmina, na mesma respiração. Forjado nos estaleiros costeiros entre Union e Galahad, onde pescadores e guerreiros compartilham as mesmas oficinas há gerações, ele reconhece a água como aliada: perto do mar, sob chuva forte, o metal parece vibrar com uma força que não vem só do braço de quem o segura.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada12-85d0-6240-9db7-e68c2dc683b4/lucid-origin_highly_detailed_illustration_of_High_Tide_Trident_a_medium-weight_fantasy_polear-0.jpg"
+  },
+  {
+    "id": "espada-de-escoria",
+    "name": "Espada de Escória",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Espada",
+    "tier": "C",
+    "damage": "2D6",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Ao causar dano, aplica 1 de Queimadura."
+    ],
+    "description": "Nenhuma forja de Rubra desperdiça a escória que sobra do minério fundido — sobra sempre o suficiente para um aprendiz malhar sua primeira lâmina. O metal nunca perde totalmente o calor do forno: mesmo fria ao toque, a espada mantém um brilho baço avermelhado nas bordas, e o que corta com ela sai chamuscado além do corte. É a primeira arma de metade dos ferreiros da cidade — e a última de alguns.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada25-9eed-6e90-861d-c8a6e8b2af1c/lucid-origin_highly_detailed_illustration_of_Slag_Sword_a_medium-weight_fantasy_sword_display-0.jpg"
+  },
+  {
+    "id": "lamina-a-pressao",
+    "name": "Lâmina a Pressão",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Espada",
+    "tier": "B",
+    "damage": "2D8",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 5,
+    "effects": [
+      "Uma vez por turno, ao acertar um ataque, o portador pode liberar a pressão acumulada na lâmina para causar +1D8 de dano adicional — a arma perde 1 de durabilidade ao fazer isso."
+    ],
+    "description": "Um projeto que nasceu do orgulho ferido: um ferreiro de Rubra, cansado de ouvir que espada nenhuma competia com as máquinas a vapor da cidade, decidiu colocar uma dentro de uma espada. A lâmina esconde uma câmara de pressão ao longo da espinha, que se acumula a cada golpe e pode ser liberada num único corte devastador. O preço é o próprio metal: cada explosão controlada desgasta a lâmina um pouco mais do que deveria.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada29-3f46-6290-bdcb-35c71762b6e7/lucid-origin_highly_detailed_illustration_of_Pressure_Blade_a_medium-weight_fantasy_sword_dis-0.jpg"
+  },
+  {
+    "id": "armadura-de-placas-vulcanicas",
+    "name": "Armadura de Placas Vulcânicas",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "B",
+    "damage": null,
+    "da": 4,
+    "weight": "super_pesado",
+    "isEquipment": true,
+    "maxDurability": 8,
+    "effects": [
+      "Reduz em 2 o dano recebido de Queimadura por turno."
+    ],
+    "description": "Forjada com placas de rocha vulcânica resfriada e prensada, retiradas das encostas que ainda fumegam ao redor das minas de Rubra. O processo de resfriamento controlado é o segredo do ofício: pedra que esfria rápido racha, pedra que esfria devagar aguenta um martelo em cima. Quem usa carrega um pouco do calor da montanha nas costas — o suficiente pra sentir menos o fogo alheio.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada34-6464-61c0-b797-1d9870ee4156/lucid-origin_highly_detailed_illustration_of_Blast_Furnace_Cuirass_a_super-heavy_fantasy_brea-3.jpg"
+  },
+  {
+    "id": "couraca-do-alto-forno",
+    "name": "Couraça do Alto-Forno",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "A",
+    "damage": null,
+    "da": 5,
+    "weight": "super_pesado",
+    "isEquipment": true,
+    "maxDurability": 7,
+    "effects": [
+      "O portador é reduz 2 da condição Queimadura por turno.",
+      "Uma vez por combate, ao receber dano corpo a corpo, pode devolver 1D4 de Queimadura ao atacante."
+    ],
+    "description": "Só existe um Alto-Forno em Rubra grande o bastante pra têmperar uma couraça inteira de uma só vez, e a fila de encomendas leva anos. O metal passa por tantos ciclos de aquecimento e resfriamento que deixa de reagir ao fogo como qualquer metal deveria — não aquece, não amolece, não queima quem o veste. Os mestres-forjadores dizem que a couraça não resiste ao fogo. Ela simplesmente decidiu que fogo é problema de outra pessoa.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada2e-4e0f-6010-aada-cf71bcd3bf9e/lucid-origin_highly_detailed_illustration_of_Armadura_de_Placas_Vulcânicas_a_super_heavy_fan-3.jpg"
+  },
+  {
+    "id": "manto-de-cinzas",
+    "name": "Manto de Cinzas",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Manto",
+    "tier": "C",
+    "damage": null,
+    "da": 2,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Em ambientes com fumaça, cinzas ou neblina vulcânica, o portador ganha +3 em testes de Furtividade."
+    ],
+    "description": "Tecido cinza-claro, quase branco, que os catadores das encostas de Rubra usam pra vasculhar os campos de cinza fria em busca do que sobrou de erupções antigas. Não é feito pra impressionar — é feito pra desaparecer contra o pano de fundo cinzento das encostas, algo que os catadores aprenderam a valorizar depois de cruzar caminho com o que também gosta de se esconder nas cinzas.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada39-3ddf-6ef0-9d53-76fa2d1f2f2f/lucid-origin_highly_detailed_illustration_of_Ash_Cloak_a_lightweight_fantasy_cloak_displayed_-0.jpg"
+  },
+  {
+    "id": "manto-a-vapor",
+    "name": "Manto a Vapor",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Manto",
+    "tier": "B",
+    "damage": null,
+    "da": 2,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Uma vez por combate, libera uma nuvem de vapor de 3m que concede Vantagem no próximo teste de Furtividade do portador."
+    ],
+    "description": "Um engenheiro de Rubra especializado em sistemas de escape de emergência decidiu, num momento de inspiração duvidosa, que o mesmo princípio funcionaria pra escapar de conversas indesejadas — e de coisas piores. Válvulas costuradas na bainha liberam uma nuvem de vapor quente o suficiente pra confundir os sentidos sem queimar ninguém. Funciona bem contra perseguidores. Funciona ainda melhor contra credores.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada3e-40f7-69d0-942f-40e2202e6350/lucid-origin_highly_detailed_illustration_of_Steam_Cloak_a_lightweight_fantasy_cloak_displaye-2.jpg"
+  },
+  {
+    "id": "manto-do-vulcao-adormecido",
+    "name": "Manto do Vulcão Adormecido",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Manto",
+    "tier": "A",
+    "damage": null,
+    "da": 2,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Uma vez por sessão, permite entrar em erupção controlada: causa 4D10 de dano de fogo a todos em 5m ao redor do portador, que é imune a esse dano.",
+      "Reduz em 1 o dano recebido de Queimadura por turno."
+    ],
+    "description": "Tecido nas encostas do único vulcão de Rubra classificado como 'adormecido, provavelmente' — um título que os moradores locais repetem com o mesmo respeito nervoso que reservam pra parentes imprevisíveis. Diz a lenda que a tecelã que criou o primeiro manto passou anos aprendendo a ouvir a montanha antes de tocar nela, e que o tecido guarda um eco pequeno demais pra ser perigoso todo santo dia, mas grande o bastante pra valer a pena quando precisa.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada42-d8ca-65b0-8ccc-f30407a3f8fd/lucid-origin_ighly_detailed_illustration_of_Dormant_Volcano_Cloak_a_lightweight_fantasy_cloak-2.jpg"
+  },
+  {
+    "id": "cajado-de-engrenagens",
+    "name": "Cajado de Engrenagens",
+    "category": "Item Arcano",
+    "subcategory": "Cajado",
+    "tier": "C",
+    "damage": null,
+    "arcaneBonus": 2,
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Antes de rolar uma conjuração, o portador pode girar a engrenagem do cajado: o resultado de um modificador escolhido é travado em 15 (independente de bonus e entropia), sem precisar rolar dados para ele."
+    ],
+    "description": "A maioria dos arcanistas de Rubra olha pra cajados de madeira e vê tradição. Um relojoeiro aposentado olhou e viu um problema de engenharia mal resolvido: por que confiar no acaso quando um mecanismo bem calibrado entrega o mesmo resultado toda vez? O Cajado de Engrenagens não promete grandeza — promete consistência, o tipo de virtude que nenhum mago de verdade valoriza até precisar dela.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada45-e77b-6020-a68a-5a796a04b524/lucid-origin_highly_detailed_illustration_of_Gearshaft_Staff_a_medium-weight_fantasy_arcane_s-1.jpg"
+  },
+  {
+    "id": "cajado-a-vapor",
+    "name": "Cajado a Vapor",
+    "category": "Item Arcano",
+    "subcategory": "Cajado",
+    "tier": "B",
+    "damage": null,
+    "arcaneBonus": 2,
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 6,
+    "effects": [
+      "Uma vez por cena, ao conjurar, pode liberar vapor pressurizado para adicionar +1D12 à pool de dados dessa conjuração — o cajado perde 1 de durabilidade ao fazer isso."
+    ],
+    "description": "Nas oficinas de Rubra, arcanistas e engenheiros dividem bancada com mais frequência do que gostariam de admitir um pro outro. O Cajado a Vapor é fruto dessa convivência forçada: uma caldeira em miniatura embutida no cabo, que converte pressão acumulada em ímpeto arcano puro. Funciona bem. Também explode, ocasionalmente, o suficiente pra manter todo mundo com respeito saudável pela válvula de escape.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada4c-874d-6de0-bf3c-e84ffc2fbf45/lucid-origin_highly_detailed_illustration_of_Steam-Powered_Staff_a_medium-weight_fantasy_arca-0.jpg"
+  },
+  {
+    "id": "cajado-do-nucleo-magmatico",
+    "name": "Cajado do Núcleo Magmático",
+    "category": "Item Arcano",
+    "subcategory": "Cajado",
+    "tier": "A",
+    "damage": null,
+    "arcaneBonus": 3,
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "O núcleo nunca esfria: para cada ponto de Entropia do portador, libera 1 de Queimadura em todos os adjacentes ao portador no início de cada Ato dele(3m), isso inclui o próprio portador. Se tiver 0 de entropia, ele não queima porém mantem-se quente.",
+      "Toda vez que o portador conjurar uma magia, permite absorver a queimadura de todos a 3m, cada stack adiciona +1 no modificador de Potencia."
+    ],
+    "description": "No centro exato de Rubra existe uma câmara que nenhum mapa oficial marca, onde um punhado de arcanistas obcecados passou uma geração tentando engarrafar magma vivo dentro de um cajado. A maioria morreu tentando. Os poucos cajados que sobreviveram ao processo carregam um núcleo que nunca esfria de verdade — ele só espera. Quem o empunha aprende rápido que pedir mais poder ao cajado é sempre possível. O problema nunca foi conseguir. Foi pagar.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada50-c665-6c40-a99f-1b01ca5f4efe/lucid-origin_highly_detailed_illustration_of_Magma_Core_Staff_a_medium-weight_fantasy_arcane_-3.jpg"
   }
 ]

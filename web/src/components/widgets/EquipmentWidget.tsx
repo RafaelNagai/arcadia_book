@@ -40,6 +40,7 @@ const SUBCATEGORY_ORDER: string[] = [
   "Flecha",
   "Munição",
   "Armadura",
+  "Manto",
   "Botas",
   "Capacete",
   "Coroa",
