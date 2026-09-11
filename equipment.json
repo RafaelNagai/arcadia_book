@@ -3287,7 +3287,7 @@
       "Ao mover-se ao menos 5m antes de atacar corpo a corpo no seu Ato, o ataque ganha +4 em Combate."
     ],
     "description": "A cavalaria leve de Camelot vive de um princípio simples: chegar primeiro, chegar forte, e não dar ao inimigo tempo de se reorganizar. As Botas de Investida foram desenvolvidas pelos próprios ferreiros do regimento depois de perceberem que a maioria das lesões de batalha não vinha do combate em si, mas do impacto da corrida antes dele. O solado reforçado absorve esse choque e devolve como impulso — quem usa aprende rápido que parar no meio da investida é mais difícil do que continuar.",
-    "image": "assets/images/equipments/equipment_botas-de-investida.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad922-7064-69b0-9c6f-eb92f3499842/lucid-origin_highly_detailed_illustration_of_Charge_Boots_a_pair_of_lightweight_fantasy_comba-0.jpg"
   },
   {
     "id": "estimulante-de-rubra",
@@ -3303,7 +3303,7 @@
       "Remove toda a Exaustão acumulada no Ato atual."
     ],
     "description": "Nas oficinas de Rubra, onde turnos de trabalho se estendem além do que qualquer corpo deveria aguentar, os engenheiros desenvolveram algo pra empurrar o cansaço pra depois — não resolver, só adiar. O estimulante mistura vapor comprimido com uma erva local que cresce perto dos vulcões, cultivada especificamente por resistir ao calor que mataria qualquer outra planta. O efeito é imediato e cruel com quem abusa: o corpo esquece que está exausto, mas a conta chega inteira assim que o frasco para de fazer efeito.",
-    "image": "assets/images/equipments/equipment_estimulante-de-rubra.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad924-f5af-6eb0-ad89-2f83fc1d9efa/lucid-origin_highly_detailed_illustration_of_Rubra_Stimulant_a_small_fantasy_consumable_vial_-0.jpg"
   },
   {
     "id": "anel-do-guardiao",
@@ -3319,7 +3319,7 @@
       "Ao Intervir no Ato de um aliado, garante um bonus de +2."
     ],
     "description": "Não existe registro de quem forjou o primeiro Anel do Guardião — só existe o costume, entre grupos de aventureiros de todas as regiões, de que ele deve ser dado, nunca comprado, por alguém que já foi salvo por causa de quem o usava. Passa de aliado em aliado, sempre do protegido pro protetor, e carrega consigo uma reputação maior do que qualquer efeito escrito nele. Quem usa um sabe: a glória de vencer sozinho nunca valeu tanto quanto trazer todo mundo pra casa.",
-    "image": "assets/images/equipments/equipment_anel-do-guardiao.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad927-883a-6580-8380-fd6b0427977b/lucid-origin_highly_detailed_illustration_of_Guardian_s_Ring_a_super_lightweight_fantasy_acce-0.jpg"
   },
   {
     "id": "elmo-do-vigia",
@@ -3336,7 +3336,7 @@
       "Ataques recebidos vindos de Furtividade não recebem os bônus normais dessa condição contra o portador."
     ],
     "description": "As torres de vigia nas fronteiras de Union e Galahad compartilham um problema antigo: quem ataca de surpresa quase sempre vence, não importa o treino de quem vigia. O Elmo do Vigia nasceu de gerações de ajustes — cada vigia que sobreviveu a uma emboscada contribuiu com uma modificação, até o design se estabilizar no formato atual. Não é confortável, não é bonito, mas os registros das torres que o adotaram têm uma coisa em comum: nenhum ataque surpresa registrado desde então.",
-    "image": "assets/images/equipments/equipment_elmo-do-vigia.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad92a-4a31-6e20-a0a0-b25655e834b6/lucid-origin_highly_detailed_illustration_of_Watcher_s_Helm_a_lightweight_fantasy_defensive_h-0.jpg"
   },
   {
     "id": "livro-da-reconciliacao",
@@ -3352,6 +3352,6 @@
       "Reduz a penalidade de conjurar com o elemento de Antítese de −10 para 0."
     ],
     "description": "A Antítese não é escolhida e não é dócil — é um elemento que se instala à força em todo conjurador, puxando pro lado oposto sempre que ele tenta usá-la. A maioria dos arcanistas trata isso como um fardo pra suportar. O autor deste livro, um Sincronômante que passou a carreira tratando magos exauridos pela própria Antítese, discordava: escreveu que o problema nunca foi o elemento, mas a recusa em aceitá-lo. As páginas não ensinam nenhum feitiço novo — ensinam, com paciência quase irritante, a parar de lutar contra a própria natureza dividida.",
-    "image": "assets/images/equipments/equipment_livro-da-reconciliacao.jpg"
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad92e-2429-61c0-bf04-909644c26c2b/lucid-origin_ighly_detailed_illustration_of_Book_of_Reconciliation_a_lightweight_fantasy_tome-0.jpg"
   }
 ]
