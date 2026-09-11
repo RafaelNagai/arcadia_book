@@ -2,6 +2,7 @@ export type Part =
   | 'Fundamentos'
   | 'O Arcano'
   | 'O Navio e a Tripulação'
+  | 'Mecânicas'
   | 'O Mundo'
   | 'One-Shots'
 
@@ -19,6 +20,7 @@ export const PARTS: Part[] = [
   'Fundamentos',
   'O Arcano',
   'O Navio e a Tripulação',
+  'Mecânicas',
   'O Mundo',
 ]
 
@@ -54,14 +56,16 @@ export const CHAPTERS: ChapterMeta[] = [
   { id: '03_02_01_combate_naval',           slug: 'combate-naval',           title: 'Combate Naval',            part: 'O Navio e a Tripulação', order: 101, subtitle: 'Batalhas nos céus', parentSlug: 'navios' },
   { id: '03_03_00_constelacao_e_navegacao', slug: 'constelacao-e-navegacao', title: 'Constelação e Navegação',  part: 'O Navio e a Tripulação', order: 110, subtitle: 'Lendo o céu sem bússola' },
   { id: '03_04_00_interludio',              slug: 'interludio',              title: 'Intervalo de Capítulo',    part: 'O Navio e a Tripulação', order: 120, subtitle: 'O tempo entre as tempestades' },
-  { id: '04_01_00_origem',                  slug: 'origem',                  title: 'Origem do Universo',       part: 'O Mundo',                order: 121, subtitle: 'Conceito, Essências e os Planos da existência' },
-  { id: '00_timeline',                      slug: 'timeline',                title: 'Timeline',                 part: 'O Mundo',                order: 122, subtitle: 'As cinco eras de Fragnéia' },
-  { id: '04_02_00_racas',                   slug: 'racas',                   title: 'Raças',                    part: 'O Mundo',                order: 130, subtitle: 'Povos do Mar de Nuvens' },
-  { id: '04_03_00_regioes',                 slug: 'regioes',                 title: 'Regiões',                  part: 'O Mundo',                order: 140, subtitle: 'As nações do arquipélago' },
-  { id: '04_04_00_dimensoes',               slug: 'dimensoes',               title: 'Plano Dimensional',        part: 'O Mundo',                order: 150, subtitle: 'Além do Plano Material' },
-  { id: '04_05_00_religioes',               slug: 'religioes',               title: 'Religiões',                part: 'O Mundo',                order: 160, subtitle: 'Os deuses que respiram' },
-  { id: '04_06_00_bestiario',               slug: 'bestiario',               title: 'Bestiário',                part: 'O Mundo',                order: 170, subtitle: 'Criaturas do Mar de Nuvens' },
-  { id: '04_06_01_criando_criatura',        slug: 'criando-criatura',        title: 'Criando uma Criatura',     part: 'O Mundo',                order: 171, subtitle: 'Guia para o Mestre criar suas próprias criaturas', parentSlug: 'bestiario' },
+  { id: '04_01_00_mecanicas',               slug: 'mecanicas',               title: 'Mecânicas',                part: 'Mecânicas',               order: 121, subtitle: 'Desafios especiais para a mesa' },
+  { id: '04_01_01_destrancar',              slug: 'destrancar',              title: 'Destrancar',               part: 'Mecânicas',               order: 122, subtitle: 'Dedução, risco e ferramentas' },
+  { id: '05_01_00_origem',                  slug: 'origem',                  title: 'Origem do Universo',       part: 'O Mundo',                order: 130, subtitle: 'Conceito, Essências e os Planos da existência' },
+  { id: '00_timeline',                      slug: 'timeline',                title: 'Timeline',                 part: 'O Mundo',                order: 131, subtitle: 'As cinco eras de Fragnéia' },
+  { id: '05_02_00_racas',                   slug: 'racas',                   title: 'Raças',                    part: 'O Mundo',                order: 140, subtitle: 'Povos do Mar de Nuvens' },
+  { id: '05_03_00_regioes',                 slug: 'regioes',                 title: 'Regiões',                  part: 'O Mundo',                order: 150, subtitle: 'As nações do arquipélago' },
+  { id: '05_04_00_dimensoes',               slug: 'dimensoes',               title: 'Plano Dimensional',        part: 'O Mundo',                order: 160, subtitle: 'Além do Plano Material' },
+  { id: '05_05_00_religioes',               slug: 'religioes',               title: 'Religiões',                part: 'O Mundo',                order: 170, subtitle: 'Os deuses que respiram' },
+  { id: '05_06_00_bestiario',               slug: 'bestiario',               title: 'Bestiário',                part: 'O Mundo',                order: 180, subtitle: 'Criaturas do Mar de Nuvens' },
+  { id: '05_06_01_criando_criatura',        slug: 'criando-criatura',        title: 'Criando uma Criatura',     part: 'O Mundo',                order: 181, subtitle: 'Guia para o Mestre criar suas próprias criaturas', parentSlug: 'bestiario' },
 ]
 
 export function getChapterBySlug(slug: string): ChapterMeta | undefined {

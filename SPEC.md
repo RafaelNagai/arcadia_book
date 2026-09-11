@@ -85,6 +85,19 @@ Tabela de referência (dos capítulos `07_vida_e_sanidade.md` e `07_traumas.md`)
 
 ### Capítulos — Mapa de Conteúdo
 
+As Partes 4 e 5 seguem a organização editorial abaixo. Os slugs públicos continuam estáveis mesmo quando o nome do arquivo muda.
+
+| Arquivo | Slug | Conteúdo |
+|---|---|---|
+| `04_01_00_mecanicas.md` | `mecanicas` | Base para mecânicas especiais e minigames |
+| `04_01_01_destrancar.md` | `destrancar` | Mecânica de abrir fechaduras e trancas |
+| `05_01_00_origem.md` | `origem` | Origem do universo, cosmologia, conceitos fundamentais |
+| `05_02_00_racas.md` | `racas` | Raças jogáveis e povos do Mar de Nuvens |
+| `05_03_00_regioes.md` | `regioes` | Nações, culturas, recursos e política |
+| `05_04_00_dimensoes.md` | `dimensoes` | Planos de existência |
+| `05_05_00_religioes.md` | `religioes` | Religiões e cosmologias |
+| `05_06_00_bestiario.md` | `bestiario` | Templates de criaturas e blocos de estatísticas |
+
 | Arquivo | Slug | Conteúdo |
 |---|---|---|
 | `00_origem.md` | `origem` | Origem do universo, cosmologia, conceitos fundamentais |
