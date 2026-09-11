@@ -36,6 +36,28 @@ import { DroppableSection } from "./DroppableSection";
 import { BagSection } from "./BagSection";
 import { ImageZoomOverlay } from "@/components/ImageZoomOverlay";
 
+const LONG_RANGE_WEAPON_SUBCATEGORIES = new Set([
+  "arco",
+  "besta",
+  "pistola",
+  "rifle",
+  "baralho",
+]);
+const AMMUNITION_SUBCATEGORIES = new Set(["flecha", "munição"]);
+const DAMAGE_DIE_COLORS: Record<number, string> = {
+  4: "#7dd8f0",
+  6: "#e8b84b",
+  8: "#90d8a8",
+  10: "#f0a060",
+  12: "#d0a8f8",
+  20: "#f07080",
+};
+
+function getDamageDieColor(damage: string): string {
+  const dieType = Number(damage.match(/D(\d+)/i)?.[1]);
+  return DAMAGE_DIE_COLORS[dieType] ?? "#E8803A";
+}
+
 export function InventoryPanel({
   characterId,
   fisico,
@@ -63,6 +85,10 @@ export function InventoryPanel({
   const [bags, setBags] = useState<InventoryBag[]>([]);
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
   const [activeItemId, setActiveItemId] = useState<string | null>(null);
+  const [pendingArrowRoll, setPendingArrowRoll] = useState<{
+    damageStr: string;
+    equipmentName: string;
+  } | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -115,9 +141,40 @@ export function InventoryPanel({
 
   /* ── Damage roll ──────────────────────────────────────────────── */
 
-  function handleRollDamage(damageStr: string, equipmentName: string) {
+  function handleRollDamage(
+    damageStr: string,
+    equipmentName: string,
+    item: InventoryItem,
+  ) {
+    const isLongRangeWeapon = LONG_RANGE_WEAPON_SUBCATEGORIES.has(
+      item.catalogSubcategory?.toLowerCase() ?? "",
+    );
+    const diceCount = damageStr.match(/^(\d+)/)?.[1];
+    if (isLongRangeWeapon && diceCount) {
+      setPendingArrowRoll({ damageStr, equipmentName });
+      return;
+    }
     onClose();
     onRollDamage?.(damageStr, equipmentName);
+  }
+
+  function handleArrowSelect(arrow: InventoryItem) {
+    if (!pendingArrowRoll || !arrow.damage) return;
+    const weaponDice = Number(
+      pendingArrowRoll.damageStr.match(/^(\d+)/)?.[1] ?? 0,
+    );
+    const arrowMatch = arrow.damage
+      .replace(/\s+/g, "")
+      .match(/^(\d+)?D(\d+)(.*)$/i);
+    if (!arrowMatch || weaponDice < 1) return;
+    const arrowDice = Number(arrowMatch[1] ?? 1);
+    const damageStr = `${weaponDice * arrowDice}D${arrowMatch[2]}${arrowMatch[3]}`;
+    setPendingArrowRoll(null);
+    onClose();
+    onRollDamage?.(
+      damageStr,
+      `${pendingArrowRoll.equipmentName} · ${arrow.name}`,
+    );
   }
 
   /* ── Persistence helpers (localStorage chars only) ────────────── */
@@ -1109,6 +1166,192 @@ export function InventoryPanel({
             onCancel={() => setModal(null)}
             accentColor={accentColor}
           />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {pendingArrowRoll && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setPendingArrowRoll(null)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 120,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "1rem",
+              background: "rgba(0,0,0,0.7)",
+              backdropFilter: "blur(3px)",
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 12, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 12, scale: 0.96 }}
+              onClick={(event) => event.stopPropagation()}
+              style={{
+                width: "min(100%, 26rem)",
+                maxHeight: "80vh",
+                overflowY: "auto",
+                padding: "1.25rem",
+                border: "1px solid rgba(232,184,75,0.45)",
+                borderRadius: 8,
+                background: "#0b1020",
+                boxShadow: "0 18px 60px rgba(0,0,0,0.6)",
+              }}
+            >
+              <p
+                style={{
+                  margin: "0 0 0.25rem",
+                  color: "#E8B84B",
+                  fontFamily: "var(--font-display)",
+                  fontSize: "1.1rem",
+                  fontWeight: 700,
+                }}
+              >
+                Escolha a munição
+              </p>
+              <p
+                style={{
+                  margin: "0 0 1rem",
+                  color: "rgba(220,230,245,0.65)",
+                  fontFamily: "var(--font-ui)",
+                  fontSize: "0.75rem",
+                }}
+              >
+                {pendingArrowRoll.equipmentName} · {pendingArrowRoll.damageStr}
+              </p>
+              <div style={{ display: "grid", gap: "0.5rem" }}>
+                {allItems
+                  .filter(
+                    (item) =>
+                      AMMUNITION_SUBCATEGORIES.has(
+                        item.catalogSubcategory?.toLowerCase() ?? "",
+                      ) && item.damage,
+                  )
+                  .map((arrow) => (
+                    <button
+                      key={arrow.id}
+                      onClick={() => handleArrowSelect(arrow)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        width: "100%",
+                        padding: "0.7rem 0.8rem",
+                        border: "1px solid rgba(255,255,255,0.12)",
+                        borderRadius: 5,
+                        background: "rgba(255,255,255,0.05)",
+                        color: "#EEF4FC",
+                        cursor: "pointer",
+                        fontFamily: "var(--font-ui)",
+                        textAlign: "left",
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.7rem",
+                          minWidth: 0,
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: 42,
+                            height: 42,
+                            flexShrink: 0,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            overflow: "hidden",
+                            borderRadius: 4,
+                            background: "rgba(0,0,0,0.35)",
+                            border: "1px solid rgba(255,255,255,0.1)",
+                            color: "rgba(255,255,255,0.3)",
+                            fontSize: "1.1rem",
+                          }}
+                        >
+                          {arrow.image || arrow.catalogImage ? (
+                            <img
+                              src={
+                                arrow.image || arrow.catalogImage || undefined
+                              }
+                              alt=""
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                              }}
+                            />
+                          ) : (
+                            "?"
+                          )}
+                        </span>
+                        <span
+                          style={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {arrow.name}
+                        </span>
+                      </span>
+                      <strong
+                        style={{
+                          flexShrink: 0,
+                          padding: "0.25rem 0.4rem",
+                          borderRadius: 4,
+                          color: getDamageDieColor(arrow.damage ?? ""),
+                          background: `${getDamageDieColor(arrow.damage ?? "")}18`,
+                          border: `1px solid ${getDamageDieColor(arrow.damage ?? "")}55`,
+                        }}
+                      >
+                        {arrow.damage}
+                      </strong>
+                    </button>
+                  ))}
+                {allItems.every(
+                  (item) =>
+                    !AMMUNITION_SUBCATEGORIES.has(
+                      item.catalogSubcategory?.toLowerCase() ?? "",
+                    ) || !item.damage,
+                ) && (
+                  <p
+                    style={{
+                      margin: 0,
+                      color: "rgba(220,230,245,0.65)",
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    Nenhuma munição com dano foi encontrada no inventário.
+                  </p>
+                )}
+              </div>
+              <button
+                onClick={() => setPendingArrowRoll(null)}
+                style={{
+                  marginTop: "1rem",
+                  width: "100%",
+                  padding: "0.55rem",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  borderRadius: 4,
+                  background: "transparent",
+                  color: "rgba(255,255,255,0.6)",
+                  cursor: "pointer",
+                  fontFamily: "var(--font-ui)",
+                }}
+              >
+                Cancelar
+              </button>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
 

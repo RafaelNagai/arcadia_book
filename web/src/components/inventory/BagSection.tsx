@@ -1,4 +1,4 @@
-import type { InventoryBag } from "@/data/characterTypes";
+import type { InventoryBag, InventoryItem } from "@/data/characterTypes";
 import { DroppableSection } from "./DroppableSection";
 import { ItemCard } from "./ItemCard";
 import { EmptySlot } from "./EmptySlot";
@@ -26,7 +26,7 @@ export function BagSection({
   onDelete?: (itemId: string) => void;
   onDurabilityChange: (itemId: string, delta: number) => void;
   onZoom: (src: string) => void;
-  onRollDamage?: (damageStr: string, name: string) => void;
+  onRollDamage?: (damageStr: string, name: string, item: InventoryItem) => void;
 }) {
   return (
     <div
@@ -50,7 +50,9 @@ export function BagSection({
           gap: "0.5rem",
         }}
       >
-        <span style={{ fontSize: "0.9rem", lineHeight: 1, flexShrink: 0 }}>🎒</span>
+        <span style={{ fontSize: "0.9rem", lineHeight: 1, flexShrink: 0 }}>
+          🎒
+        </span>
         <input
           value={bag.name}
           onChange={(e) => onRename?.(e.target.value)}
@@ -70,7 +72,14 @@ export function BagSection({
 
         {/* Slot counter */}
         {onChangeSlots && (
-          <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", flexShrink: 0 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.3rem",
+              flexShrink: 0,
+            }}
+          >
             <button
               disabled={bag.slots <= 1}
               onClick={() => onChangeSlots(-1)}
@@ -78,7 +87,10 @@ export function BagSection({
                 width: 20,
                 height: 20,
                 borderRadius: 3,
-                background: bag.slots > 1 ? "rgba(200,146,42,0.2)" : "rgba(255,255,255,0.03)",
+                background:
+                  bag.slots > 1
+                    ? "rgba(200,146,42,0.2)"
+                    : "rgba(255,255,255,0.03)",
                 border: `1px solid ${bag.slots > 1 ? "rgba(200,146,42,0.5)" : "rgba(255,255,255,0.07)"}`,
                 color: bag.slots > 1 ? BAG_ACCENT : "rgba(255,255,255,0.15)",
                 fontSize: "0.85rem",
@@ -181,7 +193,9 @@ export function BagSection({
                 accentColor={BAG_ACCENT}
                 onEdit={onEdit ? () => onEdit(item.id) : undefined}
                 onDelete={onDelete ? () => onDelete(item.id) : undefined}
-                onDurabilityChange={(delta) => onDurabilityChange(item.id, delta)}
+                onDurabilityChange={(delta) =>
+                  onDurabilityChange(item.id, delta)
+                }
                 onZoom={onZoom}
                 onRollDamage={onRollDamage}
               />
