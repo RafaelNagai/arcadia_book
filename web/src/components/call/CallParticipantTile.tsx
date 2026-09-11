@@ -35,6 +35,7 @@ interface CallParticipantTileProps {
   sinkId?: string;
   canViewSheet: boolean;
   onViewSheet: (() => void) | null;
+  onRemove: (() => void) | null;
 }
 
 export function CallParticipantTile({
@@ -54,6 +55,7 @@ export function CallParticipantTile({
   sinkId,
   canViewSheet,
   onViewSheet,
+  onRemove,
 }: CallParticipantTileProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const tileRef = useRef<HTMLDivElement>(null);
@@ -89,6 +91,12 @@ export function CallParticipantTile({
     if (!viewSheetEnabled) return;
     setContextMenu(null);
     onViewSheet?.();
+  }
+
+  function handleRemoveClick() {
+    if (!onRemove) return;
+    setContextMenu(null);
+    onRemove();
   }
 
   useEffect(() => {
@@ -350,6 +358,35 @@ export function CallParticipantTile({
           >
             Visualizar Ficha
           </button>
+
+          {onRemove && (
+            <button
+              type="button"
+              onClick={handleRemoveClick}
+              style={{
+                display: "block",
+                width: "100%",
+                textAlign: "left",
+                padding: "0.45rem 0.6rem",
+                borderRadius: 4,
+                border: "none",
+                background: "transparent",
+                fontFamily: "var(--font-ui)",
+                fontSize: "0.78rem",
+                fontWeight: 600,
+                color: "#E27D7D",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(200,60,60,0.15)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+              }}
+            >
+              Remover
+            </button>
+          )}
         </div>
       )}
     </div>

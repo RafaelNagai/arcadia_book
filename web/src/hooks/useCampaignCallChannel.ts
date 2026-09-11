@@ -7,6 +7,7 @@ export type CampaignCallEvent =
   | { type: 'PARTICIPANT_JOIN'; userId: string; characterId: string | null; cloudflareSessionId: string; accountName: string; cameraEnabled: boolean; layoutMode: LayoutMode | null }
   | { type: 'PARTICIPANT_LEAVE'; userId: string }
   | { type: 'FORCE_MUTE'; targetUserId: string }
+  | { type: 'FORCE_KICK'; targetUserId: string }
 
 interface CallPresencePayload {
   userId: string
@@ -31,6 +32,7 @@ interface CampaignCallHandlers {
   onParticipantUpdate: (userId: string, characterId: string | null, cloudflareSessionId: string, accountName: string, cameraEnabled: boolean, layoutMode: LayoutMode | null) => void
   onParticipantLeave: (userId: string) => void
   onForceMute: () => void
+  onForceKick: () => void
 }
 
 type CallChannel = ReturnType<typeof supabase.channel>
@@ -71,8 +73,9 @@ function diffPresenceState(
 // against the last payload we've seen per key to derive updates either way —
 // both a brand-new key and a re-`track()` of an already-known key (e.g. to
 // propagate `cameraEnabled` changing mid-call) must reach `onParticipantUpdate`.
-// FORCE_MUTE rides a plain broadcast on this same channel: it's a one-off
-// directed action, not state that needs to survive for someone joining later.
+// FORCE_MUTE and FORCE_KICK ride a plain broadcast on this same channel:
+// they're one-off directed actions, not state that needs to survive for
+// someone joining later.
 export function useCampaignCallChannel(
   campaignId: string,
   handlers: CampaignCallHandlers,
@@ -106,6 +109,9 @@ export function useCampaignCallChannel(
       })
       .on('broadcast', { event: 'force_mute' }, ({ payload }) => {
         if (payload?.targetUserId === selfId) handlersRef.current.onForceMute()
+      })
+      .on('broadcast', { event: 'force_kick' }, ({ payload }) => {
+        if (payload?.targetUserId === selfId) handlersRef.current.onForceKick()
       })
       .subscribe(status => {
         console.debug('[call:presence] channel subscribe status', { campaignId, selfId, status })
@@ -167,8 +173,10 @@ export function useCampaignCallChannel(
       void channel.untrack().then(status => {
         console.debug('[call:presence] untrack() resolved', { userId: event.userId, status })
       })
-    } else {
+    } else if (event.type === 'FORCE_MUTE') {
       void channel.send({ type: 'broadcast', event: 'force_mute', payload: { targetUserId: event.targetUserId } })
+    } else {
+      void channel.send({ type: 'broadcast', event: 'force_kick', payload: { targetUserId: event.targetUserId } })
     }
   }, [])
 

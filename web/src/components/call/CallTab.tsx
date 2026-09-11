@@ -93,6 +93,7 @@ export function CallTab({ campaign }: CallTabProps) {
   const [rowState, setRowState] = useState<Record<string, RowState>>({})
   const [gmPresent, setGmPresent] = useState(false)
   const [waitingForGm, setWaitingForGm] = useState(false)
+  const [kickedByGm, setKickedByGm] = useState(false)
   const [layoutMode, setLayoutMode] = useState<LayoutMode>('gallery')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [noiseGateThresholdDb, setNoiseGateThresholdDb] = useState(-70)
@@ -240,6 +241,7 @@ export function CallTab({ campaign }: CallTabProps) {
       if (localAudioTrack) localAudioTrack.enabled = false
       if (user) setRowState(prev => ({ ...prev, [user.id]: { muted: true, volume: prev[user.id]?.volume ?? 0 } }))
     },
+    onForceKick: () => setKickedByGm(true),
   })
 
   function stopLocalMedia() {
@@ -481,6 +483,19 @@ export function CallTab({ campaign }: CallTabProps) {
     }
   }, [isGm, joined, gmPresent, disconnectFromCall])
 
+  // Mesmo padrão do efeito acima (state flag + useEffect): o handler passado
+  // a useCampaignCallChannel (onForceKick) é montado antes de
+  // disconnectFromCall existir neste componente, então só pode sinalizar via
+  // state. Nunca chama setWaitingForGm aqui — diferente de "mestre saiu",
+  // quem foi removido só reentra clicando em "Entrar na chamada".
+  useEffect(() => {
+    if (kickedByGm) {
+      setKickedByGm(false)
+      disconnectFromCall()
+      setError('Você foi removido da chamada pelo mestre.')
+    }
+  }, [kickedByGm, disconnectFromCall])
+
   useEffect(() => {
     return () => {
       pcRef.current?.close()
@@ -502,6 +517,10 @@ export function CallTab({ campaign }: CallTabProps) {
 
   const handleForceMuteAll = useCallback((targetUserId: string) => {
     broadcast({ type: 'FORCE_MUTE', targetUserId })
+  }, [broadcast])
+
+  const handleKickParticipant = useCallback((targetUserId: string) => {
+    broadcast({ type: 'FORCE_KICK', targetUserId })
   }, [broadcast])
 
   const handleNoiseGateThresholdChange = useCallback((db: number) => {
@@ -640,6 +659,7 @@ export function CallTab({ campaign }: CallTabProps) {
             ? () => window.open(`/ficha/${t.characterId}?campaignId=${campaign.id}${isGm ? '&isGm=1' : ''}`, '_blank', 'noopener,noreferrer')
             : null
         }
+        onRemove={isGm && !t.isGm ? () => handleKickParticipant(t.userId) : null}
       />
     )
   }

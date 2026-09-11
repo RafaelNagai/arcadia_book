@@ -3,6 +3,10 @@
 > Registro de atualizações em linguagem simples, para quem acompanha o livro — não é um log técnico de commits.
 > Cada task concluída via `/task` adiciona um item aqui, sob a data do dia. Este arquivo alimenta o aviso automático no Discord.
 
+## 2026-09-10
+
+- O mestre agora pode remover um jogador da chamada de voz/vídeo direto pelo menu de clique direito na câmera dele; a pessoa removida pode tentar entrar de novo na chamada quando quiser, sem afetar os outros participantes.
+
 ## 2026-09-09
 
 - Corrigido: agora é possível rolar a tela para ver todos os personagens e NPCs de uma campanha, mesmo em telas pequenas/celular — antes, quando havia gente demais para caber na tela, o final da lista ficava cortado e inacessível.
