@@ -3609,5 +3609,89 @@
     ],
     "description": "No centro exato de Rubra existe uma câmara que nenhum mapa oficial marca, onde um punhado de arcanistas obcecados passou uma geração tentando engarrafar magma vivo dentro de um cajado. A maioria morreu tentando. Os poucos cajados que sobreviveram ao processo carregam um núcleo que nunca esfria de verdade — ele só espera. Quem o empunha aprende rápido que pedir mais poder ao cajado é sempre possível. O problema nunca foi conseguir. Foi pagar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada50-c665-6c40-a99f-1b01ca5f4efe/lucid-origin_highly_detailed_illustration_of_Magma_Core_Staff_a_medium-weight_fantasy_arcane_-3.jpg"
+  },
+  {
+    "id": "pastilha-de-enxofre",
+    "name": "Pastilha de Enxofre",
+    "category": "Acessório",
+    "subcategory": "Comestivel",
+    "tier": "D",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": false,
+    "effects": [
+      "Uso único. É consumido após ser usado.",
+      "Por 5 turnos, ganha +3 em testes de Fortitude contra fumaça, gases ou vapores tóxicos."
+    ],
+    "description": "Todo minerador de Rubra carrega um punhado no bolso antes de descer num poço novo — os poços velhos já mataram gente demais pra alguém descer sem. A pastilha tem gosto de fósforo queimado e deixa a língua dormente por horas, mas os pulmões aguentam mais um pouco do ar que nenhum poço deveria ter. Baratas, feitas aos milhares, vendidas em qualquer entrada de mina por quem já perdeu contas de quantas vidas ajudaram a esticar.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1adfae-ba31-69c0-a3bd-203e74bb6958/lucid-origin_highly_detailed_illustration_of_Sulfur_Lozenge_a_super-lightweight_consumable_fa-0.jpg"
+  },
+  {
+    "id": "extrato-de-pimenta-vulcanica",
+    "name": "Extrato de Pimenta Vulcânica",
+    "category": "Acessório",
+    "subcategory": "Comestivel",
+    "tier": "C",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": false,
+    "effects": [
+      "Uso único. É consumido após ser usado.",
+      "Por 5 turnos, reduz em 2 o dano recebido de Queimadura por turno."
+    ],
+    "description": "Cresce só nas fendas onde o calor da rocha escapa pra superfície, e só quem já se acostumou ao próprio clima de Rubra consegue colher sem chorar. O extrato é vendido em frascos pequenos porque a dose certa é pequena — engolir demais de uma vez queima a garganta por dentro tanto quanto o que promete evitar por fora. Os forjadores mais velhos bebem um trago antes de qualquer turno longo no alto-forno.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1adfb1-d679-6440-bce8-c8da278cd617/lucid-origin_ighly_detailed_illustration_of_Volcanic_Pepper_Extract_a_super-lightweight_consu-0.jpg"
+  },
+  {
+    "id": "oleo-de-combustao",
+    "name": "Óleo de Combustão",
+    "category": "Acessório",
+    "subcategory": "Comestivel",
+    "tier": "B",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": false,
+    "effects": [
+      "Uso único. É consumido após ser usado.",
+      "Nos próximos 3 turnos, todo ataque corpo a corpo ou à distância realizado pelo portador aplica 1 de Queimadura adicional.",
+      "Se o portador sofrer dano de Queimadura enquanto o efeito estiver ativo, esse dano é dobrado."
+    ],
+    "description": "Formulado originalmente como lubrificante industrial pras engrenagens que giram nas profundezas das minas de Rubra, até um engenheiro decidir — sem aprovação de ninguém — testar o que aconteceria bebendo uma dose diluída. O que aconteceu foi que o suor, o hálito e, em casos extremos, o próprio sangue do sujeito passaram a pegar fogo com uma facilidade preocupante. Proibido em pelo menos três outras regiões. Vendido livremente nas oficinas de Rubra, com um aviso que ninguém lê até ser tarde.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1adfb6-eea9-6560-9c3e-2db8c5166e1b/lucid-origin_highly_detailed_illustration_of_Combustion_Oil_a_super-lightweight_consumable_fa-0.jpg"
+  },
+  {
+    "id": "capsula-de-detonacao-controlada",
+    "name": "Cápsula de Detonação Controlada",
+    "category": "Acessório",
+    "subcategory": "Comestivel",
+    "tier": "A",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": false,
+    "effects": [
+      "Uso único. É consumido após ser usado.",
+      "Após ser ingerido, o alvo deve fazer um teste de Fortitude(dt. 24), caso falhe: causa 7D10 de dano e não pode ser defendido.",
+      "Se conseguir passar no teste de fortitude, o alvo ganha +15 de todos os modificadores de magia."
+    ],
+    "description": "O mercado negro de Rubra vende isso com o mesmo tom de quem vende fruta — 'fresquinha, feita hoje, funciona garantido' — sem mencionar que o comprador é, tecnicamente, o próprio explosivo a partir do momento em que engole. A cápsula se aloja no corpo e espera um comando mental específico pra detonar, ou dez turnos de paciência pra ser digerida sem drama. Ninguém que vende sabe explicar por que engolir é mais confiável que carregar na mão. Todo mundo que compra prefere não perguntar.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1adfbb-344c-60a0-b985-e9c63f992b5a/lucid-origin_highly_detailed_illustration_of_Controlled_Detonation_Capsule_a_super-lightweigh-0.jpg"
+  },
+  {
+    "id": "coracao-de-magma-liquido",
+    "name": "Coração de Magma Líquido",
+    "category": "Acessório",
+    "subcategory": "Comestivel",
+    "tier": "S",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": false,
+    "effects": [
+      "Uso único. É consumido após ser usado.",
+      "Recupera toda a Vida e remove todos os stacks de Queimadura, Envenenamento e Sangramento.",
+      "Por 3 turnos, o portador ganha +5 em todos os dados de dano e é imune à condição Atordoado.",
+      "Ao término do efeito, o portador perde 10 de Sanidade — o corpo lembra que não devia ter sobrevivido àquilo."
+    ],
+    "description": "Toda criatura elemental de fogo jovem o suficiente pra ser caçada tem um núcleo pulsante no lugar de coração, líquido demais pra ter forma e quente demais pra ser guardado em qualquer recipiente comum. Extrair um sem que ele endureça ou exploda já matou mais caçadores de Rubra do que a própria criatura. Quem consegue engolir um inteiro — e sobreviver aos primeiros segundos — sente o próprio corpo discordar da decisão por dias depois. A maioria concorda que valeu a pena. A minoria não está mais em condições de opinar.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1adfcb-6b75-6cb0-805c-144901d87afc/lucid-origin_highly_detailed_illustration_of_Liquid_Magma_Heart_a_super-lightweight_consumabl-0.jpg"
   }
 ]
