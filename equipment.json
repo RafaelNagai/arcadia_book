@@ -2895,7 +2895,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [],
-    "description": "Um galho comum, entalhado à mão com runas copiadas de um livro velho. Funciona. Mal, mas funciona.",
+    "description": "Todo arcanista de Union começa em algum lugar, e a maioria começa aqui: um graveto qualquer, arrancado de uma árvore que não perguntou se concordava, entalhado à luz de vela com runas copiadas — mal copiadas — de um livro emprestado, roubado ou encontrado no espólio de algum mago morto. As runas nem sempre significam o que o dono pensa que significam. Funciona mesmo assim, na maior parte das vezes. Quando não funciona, o cheiro de madeira queimada costuma ser o primeiro aviso.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace12-8e28-6930-9614-d6eb06585b9e/lucid-origin_A_highly_detailed_illustration_of_Improvised_Staff_a_simple_fantasy_wooden_staff-0.jpg"
   },
   {
@@ -2911,7 +2911,7 @@
       "Uso único. É consumido após ser usado.",
       "Recupera 1D6 de VIDA."
     ],
-    "description": "Vendida aos montes nas boticas de Union. Gosto ruim, efeito confiável — o combo favorito de quem sobrevive por pouco.",
+    "description": "Toda botica de Union tem uma prateleira inteira dedicada a isso — frascos idênticos, rolha de cortiça, líquido de um vermelho que não existe em nenhuma fruta conhecida. A receita não é segredo: raiz de Union fervida com um pingo de sangue de capivaca e reza suficiente pra dar liga. Não fecha um corte fundo nem cura o que está quebrado por dentro, mas empurra o corpo pra frente por mais um instante — e para quem vive à base de decisões ruins e prazos apertados, isso já é o bastante.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace19-0495-64a0-bb53-be75604127a1/lucid-origin_A_highly_detailed_illustration_of_Minor_Health_Potion_a_small_fantasy_healing_po-0.jpg"
   },
   {
@@ -2927,7 +2927,7 @@
     "effects": [
       "Ao conjurar com intenção de gelo, frio ou congelamento, ganha +5 no resultado de todos os modificadores."
     ],
-    "description": "As páginas ficam frias ao toque, mesmo longe da neve. Escrito por um monge de North Galahad que preferia o silêncio do inverno a qualquer conversa.",
+    "description": "O monge que o escreveu nunca disse seu nome a ninguém que perguntasse — os moradores da vila mais próxima só o conheciam como 'aquele do topo da montanha que não fala.' Passou trinta anos catalogando o silêncio da neve antes de decidir que valia a pena anotar como reproduzi-lo. As páginas nunca aqueceram desde então, nem perto do fogo, nem debaixo do sol de Rubra. Dizem que, se lido em voz alta num quarto fechado, dá pra ouvir o vento que não está lá.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace1b-c1db-6a80-a657-6e54c860668c/lucid-origin_A_highly_detailed_illustration_of_Glacial_Book_an_old_fantasy_spellbook_displaye-0.jpg"
   },
   {
@@ -2944,7 +2944,7 @@
       "Requer duas mãos. Possui alcance de 3m.",
       "Ao matar um alvo de tamanho medio/grande com esta foice, o portador recupera 1 de vida."
     ],
-    "description": "Antes de jurar lealdade à Irmandade dos Ceifadores, todo aspirante de Union colhe trigo — e, quando precisa, colhe outra coisa — com uma foice como esta.",
+    "description": "A Irmandade dos Ceifadores não recruta — espera. Observa quem trabalha a terra de Union por anos sem nunca afiar a lâmina além do necessário, e só depois oferece a segunda pergunta, a que não é sobre plantação. Esta foice é a primeira arma que um aspirante recebe: sem ornamento, sem bênção, só o peso familiar de uma ferramenta que já conhece a mão que a segura. O resto — o que ela aprende a colher além do trigo — vem depois.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace1e-a3de-6520-a3ff-bb27d9ca063e/lucid-origin_A_highly_detailed_illustration_of_Wind-Reaper_Scythe_a_large_two-handed_fantasy_-1.jpg"
   },
   {
@@ -2960,7 +2960,7 @@
     "effects": [
       "Ao defender e remover 1 de durabilidade desse equipamento, o próximo ataque realizado com esta manopla neste turno ganha Vantagem."
     ],
-    "description": "Câmaras de pressão movidas a vapor, projetadas nas oficinas de Rubra para lutadores que preferem esperar o golpe errado do oponente.",
+    "description": "Nas arenas clandestinas de Rubra, os melhores lutadores não são os mais fortes — são os que sabem escutar. As Manoplas de Eco nasceram de um projeto que originalmente não tinha nada a ver com combate: válvulas de pressão pensadas para amortecer o impacto de maquinário pesado. Um lutador aposentado, cansado de perder pela velocidade dos outros, viu potencial onde os engenheiros só viam segurança industrial. A câmara libera vapor no instante exato do bloqueio — e transforma paciência em vantagem.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace23-5717-6390-bec2-47ccdd7a2ded/lucid-origin_A_highly_detailed_illustration_of_Echo_Gauntlet_a_lightweight_fantasy_steam-powe-0.jpg"
   },
   {
@@ -2977,7 +2977,7 @@
       "Possui alcance de 4m.",
       "Ao acertar um ataque, pode puxar o alvo até 3m em direção ao portador, ou puxar-se até 3m em direção ao alvo."
     ],
-    "description": "Usado pelos domadores de capivacas de Union para guiar — e, quando preciso, corrigir — as feras mais teimosas da fazenda.",
+    "description": "Capivacas são criaturas gentis até o momento em que decidem não ser — e nesse momento, gentileza não resolve mais nada. Os domadores de Union aprenderam cedo que a distância é tão importante quanto a firmeza: perto demais, e o bicho reage; longe demais, e ele foge. O chicote resolve os dois problemas ao mesmo tempo, puxando o que precisa vir e afastando o que precisa ir. Fora da fazenda, funciona igualmente bem em criaturas de duas pernas que também não sabem a hora de parar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace2b-fe24-6720-a470-7c2044315b2e/lucid-origin_A_highly_detailed_illustration_of_Tamer_s_Whip_a_lightweight_fantasy_animal-tami-0.jpg"
   },
   {
@@ -2994,7 +2994,7 @@
       "Após disparar, é necessário gastar uma Ação Complexa para recarregar antes do próximo disparo.",
       "O dano desta arma ignora 2 pontos de DA do alvo."
     ],
-    "description": "As bestas de Britannia não disparam rápido — mas o que atravessam, não se levanta de novo.",
+    "description": "Os engenheiros anões de Britannia nunca se impressionaram com velocidade de disparo — impressionam-se com o que sobra do outro lado do alvo. Cada besta perfurante leva semanas para ser calibrada: a tensão do arco de aço, o ângulo da ponta, o peso exato do virote. O resultado é lento no gatilho e implacável no impacto. Nas minas onde criaturas de pedra e carapaça patrulham a escuridão, ninguém reclama do tempo de recarga — reclamam é de quem esquece de recarregar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace2f-59d2-6920-aba1-12642d3adeeb/lucid-origin_A_highly_detailed_illustration_of_Britannia_Piercing_Crossbow_a_heavy_medieval_f-0.jpg"
   },
   {
@@ -3011,7 +3011,7 @@
       "Ignora completamente dano de queda, se cair de pé.",
       "Uma vez por cena, permite planar por até 10m horizontais antes de tocar o chão."
     ],
-    "description": "Os batedores de Galahad cruzam o vão entre ilhas flutuantes sem pensar duas vezes. Estas botas são o motivo.",
+    "description": "Entre uma ilha flutuante e outra existe só o vazio — e os batedores de Galahad atravessam esse vazio como quem atravessa uma rua. As Botas do Vento são tecidas com fibra de penas de aves que nunca pousam, colhida nos penhascos mais altos onde nenhum humano sobe sem ajuda. A lenda entre os recrutas é que a primeira batedora a usá-las pulou de propósito, só para provar que valia a pena — e sobreviveu contando a história tantas vezes que ninguém mais lembra se era verdade.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace36-0451-65d0-8b51-87e96469ff5f/lucid-origin_A_highly_detailed_illustration_of_Boots_of_the_Wind_of_Galahad_a_pair_of_lightwe-0.jpg"
   },
   {
@@ -3028,7 +3028,7 @@
       "Se nenhum coadjuvante intervir ou impor, o valor para obter um crítico em ataques corpo-a-corpo é reduzido em 1.",
       "Ao acertar um crítico corpo-a-corpo, o próximo ataque corpo-a-corpo realizado antes do fim do Ato ganha Vantagem."
     ],
-    "description": "Passado entre os duelistas de Camelot que nunca perderam um confronto de honra — e nunca precisaram de uma segunda estocada.",
+    "description": "Em Camelot, um duelo de honra tem regras: um padrinho de cada lado, uma testemunha imparcial, e a promessa de que ninguém vai interferir. O Anel do Duelista respeita essa promessa ao pé da letra — só desperta seu poder quando o confronto é limpo, um contra um, sem ajuda de fora. Passa de mão em mão há gerações, sempre do vencedor pro próximo que provar merecer, e carrega gravado em letras miúdas os nomes de quem o usou. A lista nunca teve uma derrota anotada.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace3a-4017-6a70-a104-09a7a4a7033b/lucid-origin_A_highly_detailed_illustration_of_Duelist_s_Ring_an_elegant_fantasy_dueling_ring-0.jpg"
   },
   {
@@ -3047,7 +3047,311 @@
       "Uma vez por combate, pode ser erguido para formar uma barreira estacionária de 5m que bloqueia ataques à distância físicos por 2 turnos. Enquanto ergue a barreira, o portador não pode se mover nem atacar.",
       "Se o portador tiver Talento em Fortitude, a durabilidade máxima deste escudo aumenta em 3."
     ],
-    "description": "Forjado pela guilda de escudeiros que protege as minas de Britannia. Cada peça carrega o nome de uma colônia que ainda está de pé por causa dele.",
+    "description": "A Guilda da Última Muralha existe desde antes de Britannia ter esse nome, formada por escudeiros que juraram nunca recuar de uma posição enquanto houvesse gente atrás deles. Cada escudo forjado pela guilda recebe o nome de uma colônia mineira que sobreviveu a um cerco — não como homenagem vazia, mas como lembrete: este escudo já segurou uma linha antes, e vai segurar de novo. O metal é pesado o suficiente para cansar quem não treinou pra carregá-lo, e isso é proposital — a guilda não empresta a última muralha pra qualquer um.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace46-1217-66a0-92be-201a0cd73d99/lucid-origin_A_highly_detailed_illustration_of_Shield_of_the_Last_Wall_a_massive_heavy_fantas-3.jpg"
+  },
+  {
+    "id": "broquel",
+    "name": "Broquel",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Escudo",
+    "tier": "B",
+    "damage": null,
+    "da": 3,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Uma vez por turno, ao defender, o próximo ataque do portador em seu Ato ganha Vantagem."
+    ],
+    "description": "Um escudo grande protege o corpo; um broquel protege a decisão. Nos becos e arenas improvisadas de Union, onde os duelos raramente seguem regra nenhuma, ninguém quer carregar peso que atrase a resposta. O broquel cobre só o essencial — o antebraço, um giro de pulso, o instante exato entre o golpe do outro e o seu. Os mestres de esgrima da cidade dizem que quem aprende a usar um broquel direito nunca mais confia num escudo grande de novo.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad390-a70c-65e0-99c7-883cb64330df/lucid-origin_A_highly_detailed_illustration_of_Buckler_a_small_lightweight_fantasy_dueling_sh-0.jpg"
+  },
+  {
+    "id": "maca-de-ferro",
+    "name": "Maça de Ferro",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Maça",
+    "tier": "C",
+    "damage": "2D6",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Ao acertar um alvo derrubado, adiciona +3 nos dados de dano."
+    ],
+    "description": "A milícia de Union não tem tempo pra arte marcial refinada — tem turnos de guarda, salário atrasado e uma cidade cheia de gente que precisa de motivo pra se comportar. A Maça de Ferro é a resposta padrão da guilda de ferreiros da cidade a esse problema: barata de produzir, fácil de manter, difícil de argumentar contra. Nenhum miliciano se orgulha de carregar uma, mas todos concordam que, na hora certa, ela resolve mais discussões do que qualquer discurso.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad394-0c96-6e80-a8cb-a75193cd1027/lucid-origin_A_highly_detailed_illustration_of_Iron_Mace_a_heavy_standard-issue_fantasy_milit-0.jpg"
+  },
+  {
+    "id": "manopla-de-treino",
+    "name": "Manopla de Treino",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Manopla",
+    "tier": "D",
+    "damage": "1D8",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Não pode reduzir a vida de uma criatura abaixo de 1."
+    ],
+    "description": "Todo recruta da guarda imperial de Camelot passa pelos mesmos meses de treino de punho antes de tocar em aço de verdade — e todo instrutor sabe que o primeiro instinto de um recruta assustado é golpear com força demais. A Manopla de Treino existe pra ensinar controle antes de ensinar dano: o couro amortece, a madeira machuca sem quebrar, e o limite embutido garante que nenhum treino termine numa investigação. Os instrutores mais antigos ainda usam a deles fora de serviço — dizem que é mais confortável que as luvas de gala.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad396-10f9-6bb0-b3f9-c4140c50114f/lucid-origin_A_highly_detailed_illustration_of_Training_Gauntlet_a_lightweight_fantasy_practi-0.jpg"
+  },
+  {
+    "id": "tridente-rustico",
+    "name": "Tridente Rústico",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Tridente",
+    "tier": "D",
+    "damage": "1D8",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [],
+    "description": "As águas ao redor de Union escondem coisas maiores do que peixe, e os pescadores que trabalham ali cedo aprendem a distinguir uma sombra normal de uma sombra com fome. O tridente rústico não promete vitória contra o que vem lá de baixo — promete só uma chance de reagir antes de virar almoço. Talhado à mão, sem escola, sem selo de forjador, é herdado mais do que comprado: de pai pra filho, de quem sobreviveu pra quem ainda está aprendendo a distância certa.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad398-3d2d-66d0-b68b-bb08727be6d1/lucid-origin_A_highly_detailed_illustration_of_Rustic_Trident_a_simple_fantasy_fishing_triden-0.jpg"
+  },
+  {
+    "id": "gibao-de-couro",
+    "name": "Gibão de Couro",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Armadura",
+    "tier": "D",
+    "damage": null,
+    "da": 2,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [],
+    "description": "Antes de qualquer aventureiro de Union decidir qual caminho vai seguir — lâmina, arco, ou algo mais estranho — passa pela mesma prateleira na mesma loja de equipamentos de partida. O gibão de couro fervido é o item mais vendido da cidade: barato, leve, feito em camadas suficientes pra desviar um corte de raspão sem impedir que o dono corra se precisar. Nenhuma história épica começa com um gibão de couro. Quase todas continuam por causa dele.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad6c6-5c86-60a0-b889-fd3bf5f3eb76/lucid-origin_A_highly_detailed_illustration_of_Leather_Jerkin_a_simple_lightweight_fantasy_le-0.jpg"
+  },
+  {
+    "id": "capacete-de-ferro-batido",
+    "name": "Capacete de Ferro Batido",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Capacete",
+    "tier": "D",
+    "damage": null,
+    "da": 1,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [],
+    "description": "Não existem dois capacetes de ferro batido exatamente iguais — cada um carrega os amassados e imperfeições do ferreiro que o fez, quase sempre um aprendiz cumprindo as primeiras encomendas da carreira. A forma nunca é perfeitamente redonda, o encaixe nunca é perfeitamente confortável, mas o metal aguenta o que precisa aguentar. Vendido a preço de sucata nas forjas menores de Camelot e Union, é o primeiro capacete de metade dos recrutas que um dia usaram algo melhor — e o único que a outra metade jamais trocou.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad6cd-12bd-6520-83cd-b27c136dacd0/lucid-origin_A_highly_detailed_illustration_of_Hammered_Iron_Helmet_a_simple_lightweight_fant-0.jpg"
+  },
+  {
+    "id": "botas-de-couro",
+    "name": "Botas de Couro",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Botas",
+    "tier": "D",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [],
+    "description": "Todo sapateiro que monta banca nas estradas de Union vende a mesma bota, com pequenas variações de costura que ele jura fazer toda a diferença. Não fazem. O que fazem é aguentar uma temporada de chuva, duas de poeira, e o tipo de caminhada que a maioria das pessoas nunca precisa fazer. Não são bonitas, não duram para sempre, e ninguém as compra por vaidade — compra porque o par anterior finalmente rasgou no meio de uma estrada, longe de qualquer cidade.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad6d1-d664-6c40-8eee-18e1d4c230f5/lucid-origin_A_highly_detailed_illustration_of_Leather_Boots_a_pair_of_simple_lightweight_fan-0.jpg"
+  },
+  {
+    "id": "botas-do-patrulheiro",
+    "name": "Botas do Patrulheiro",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Botas",
+    "tier": "C",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Não deixam pegadas visíveis em terrenos macios (lama, neve, areia)."
+    ],
+    "description": "A fronteira de Galahad é vigiada, mas ninguém deveria saber exatamente onde — e os batedores que cobrem essa linha aprendem a andar como se o chão fosse feito de vidro. A sola dividida das Botas do Patrulheiro distribui o peso de um jeito que nenhum bicho e nenhuma lama registram direito. Foram desenhadas por uma batedora que passou anos sendo seguida por rastreadores rivais até decidir que a melhor defesa era simplesmente parar de existir aos olhos deles.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad6d4-d39c-6c30-b531-fe91e5b6acab/lucid-origin_A_highly_detailed_illustration_of_Ranger_s_Boots_a_pair_of_lightweight_fantasy_s-2.jpg"
+  },
+  {
+    "id": "botas-elficas-da-trilha",
+    "name": "Botas Élficas da Trilha",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Botas",
+    "tier": "A",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Movimentar em terreno difícil é considerado uma ação simples.",
+      "Uma vez por cena, permite realizar um Movimento sem que ele conte como Ação."
+    ],
+    "description": "As árvores-mãe de Galahad vivem séculos e só cedem fibra pra quem elas escolhem — não há colheita forçada, só oferta. Os tecelões que recebem esse material passam a vida aprendendo a trançá-lo sem quebrar a fibra, um ofício ensinado de mestre pra aprendiz ao longo de décadas. O resultado, quando calçado, parece se antecipar ao pensamento: raízes que pareciam armadilhas se tornam apoio, pedras soltas se tornam degrau. Os caminhantes de trilha dizem que não é a bota que aprende o caminho — é você que finalmente aprende a confiar nela.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad6d7-97d4-6790-8bbf-1b0246a3198f/lucid-origin_A_highly_detailed_illustration_of_Elven_Trail_Boots_a_pair_of_lightweight_elegan-2.jpg"
+  },
+  {
+    "id": "foice-de-colheita",
+    "name": "Foice de Colheita",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Foice",
+    "tier": "B",
+    "damage": "2D10",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Requer duas mãos. Possui alcance de 3m.",
+      "Sacrifique 10 pontos no PM, para recuperar 3 pontos de vida."
+    ],
+    "description": "Depois da foice de treino vem esta — a última etapa antes da consagração completa na Irmandade dos Ceifadores. Quem chega até aqui já provou que consegue trabalhar a terra sem hesitar e já colheu, pelo menos uma vez, algo que não crescia do solo. A lâmina é mais pesada, mais afiada, forjada pra durar o tempo que um ceifador de verdade precisa durar. Os irmãos mais velhos dizem que dá pra saber quem está pronto pra Foice das Sombras só de ver como alguém segura esta.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad6dd-5656-6ab0-ae4c-e7ed0df680d5/lucid-origin_A_highly_detailed_illustration_of_Harvest_Scythe_a_heavy_two-handed_fantasy_scyt-3.jpg"
+  },
+  {
+    "id": "martelo-de-ferreiro",
+    "name": "Martelo de Ferreiro",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Martelo",
+    "tier": "B",
+    "damage": "3D10",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Requer duas mãos.",
+      "Testes para forjar ou reparar equipamentos usando este martelo ganham +5."
+    ],
+    "description": "Toda forja de Britannia tem um martelo assim pendurado perto da bigorna — ferramenta de trabalho, não arma, até o dia em que precisa ser as duas coisas. Os anões que passam a vida moldando metal desenvolvem um instinto de força e precisão que nenhum treino de combate reproduz exatamente igual, e quando a forja é atacada — o que acontece mais do que gostariam de admitir — é esse instinto que decide quem sai andando. Ainda cheira a fumaça de carvão mesmo depois de limpo.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad6e7-4e97-6220-95d7-b6893c6cb103/lucid-origin_A_highly_detailed_illustration_of_Blacksmith_s_Hammer_a_massive_two-handed_fanta-2.jpg"
+  },
+  {
+    "id": "tridente-farpado",
+    "name": "Tridente Farpado",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Tridente",
+    "tier": "B",
+    "damage": "2D10",
+    "weight": "medio",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ao causar dano, pode escolher puxar o alvo até 3m em direção ao portador (Atletismo do alvo dif. 15 para resistir)."
+    ],
+    "description": "A diferença entre pescar e caçar, para quem usa este tridente, é só o tamanho do que puxa a linha de volta. As farpas voltadas pra trás — um design que se espalhou entre caçadores de Union e batedores de Galahad quase ao mesmo tempo, sem que ninguém soubesse dizer quem inventou primeiro — garantem que o que for fisgado não escapa fácil. Funciona em peixe grande, funciona em fera de floresta, e funciona, segundo alguns relatos incômodos, em coisas que corriam em duas pernas.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad6e9-d0bf-6390-b4bf-658450d102b3/lucid-origin_A_highly_detailed_illustration_of_Barbed_Trident_a_medium-weight_fantasy_hunting-0.jpg"
+  },
+  {
+    "id": "alabarda-da-milicia",
+    "name": "Alabarda da Milícia",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Alabarda",
+    "tier": "B",
+    "damage": "3D10",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Requer duas mãos. Possui alcance de 3m.",
+      "Ao atacar, pode atingir dois alvos adjacentes na mesma linha — o segundo ataque causa metade do dano."
+    ],
+    "description": "Ninguém aprende a usar uma alabarda da milícia sozinho — o treino é sempre em grupo, ombro a ombro, porque a arma só funciona de verdade quando toda uma fileira se move junto. As guardas de fronteira entre Camelot e Union adotaram o modelo há gerações, não porque seja elegante, mas porque disciplina de formação vence bravura individual toda vez que os dois se encontram num campo aberto. Um miliciano sozinho com essa arma é só um sujeito carregando um cabo comprido. Uma fileira inteira é uma parede que anda.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad6eb-a9bb-6350-965f-74eab7253f3d/lucid-origin_A_highly_detailed_illustration_of_Militia_Halberd_a_heavy_two-handed_fantasy_hal-0.jpg"
+  },
+  {
+    "id": "mangual-cravejado",
+    "name": "Mangual Cravejado",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Maça",
+    "tier": "B",
+    "damage": "3D8",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Ataques realizados em DA ou DP igual ou menor que 2 aumenta o modificador de critico em 1."
+    ],
+    "description": "Os mercenários de Union não têm tempo pra duelos justos — têm contratos, prazos, e adversários que raramente estão bem armados quando o combate realmente começa. O mangual cravejado foi desenhado pra explorar exatamente esse instante: a brecha de quem já está exposto, defesa baixa, guarda quebrada. A corrente balança de um jeito imprevisível o bastante pra confundir até quem sabe o que esperar, e os cravos fazem o resto quando o golpe finalmente encontra espaço.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad6ed-df22-6dc0-a053-1dd6c5af3068/lucid-origin_A_highly_detailed_illustration_of_Spiked_Flail_a_heavy_fantasy_flail_displayed_d-1.jpg"
+  },
+  {
+    "id": "botas-de-investida",
+    "name": "Botas de Investida",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Botas",
+    "tier": "B",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Ao mover-se ao menos 5m antes de atacar corpo a corpo no seu Ato, o ataque ganha +4 em Combate."
+    ],
+    "description": "A cavalaria leve de Camelot vive de um princípio simples: chegar primeiro, chegar forte, e não dar ao inimigo tempo de se reorganizar. As Botas de Investida foram desenvolvidas pelos próprios ferreiros do regimento depois de perceberem que a maioria das lesões de batalha não vinha do combate em si, mas do impacto da corrida antes dele. O solado reforçado absorve esse choque e devolve como impulso — quem usa aprende rápido que parar no meio da investida é mais difícil do que continuar.",
+    "image": "assets/images/equipments/equipment_botas-de-investida.jpg"
+  },
+  {
+    "id": "estimulante-de-rubra",
+    "name": "Estimulante de Rubra",
+    "category": "Acessório",
+    "subcategory": "Comestivel",
+    "tier": "B",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": false,
+    "effects": [
+      "Uso único. É consumido após ser usado.",
+      "Remove toda a Exaustão acumulada no Ato atual."
+    ],
+    "description": "Nas oficinas de Rubra, onde turnos de trabalho se estendem além do que qualquer corpo deveria aguentar, os engenheiros desenvolveram algo pra empurrar o cansaço pra depois — não resolver, só adiar. O estimulante mistura vapor comprimido com uma erva local que cresce perto dos vulcões, cultivada especificamente por resistir ao calor que mataria qualquer outra planta. O efeito é imediato e cruel com quem abusa: o corpo esquece que está exausto, mas a conta chega inteira assim que o frasco para de fazer efeito.",
+    "image": "assets/images/equipments/equipment_estimulante-de-rubra.jpg"
+  },
+  {
+    "id": "anel-do-guardiao",
+    "name": "Anel do Guardião",
+    "category": "Acessório",
+    "subcategory": "Anel",
+    "tier": "B",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Ao Intervir no Ato de um aliado, garante um bonus de +2."
+    ],
+    "description": "Não existe registro de quem forjou o primeiro Anel do Guardião — só existe o costume, entre grupos de aventureiros de todas as regiões, de que ele deve ser dado, nunca comprado, por alguém que já foi salvo por causa de quem o usava. Passa de aliado em aliado, sempre do protegido pro protetor, e carrega consigo uma reputação maior do que qualquer efeito escrito nele. Quem usa um sabe: a glória de vencer sozinho nunca valeu tanto quanto trazer todo mundo pra casa.",
+    "image": "assets/images/equipments/equipment_anel-do-guardiao.jpg"
+  },
+  {
+    "id": "elmo-do-vigia",
+    "name": "Elmo do Vigia",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Capacete",
+    "tier": "B",
+    "damage": null,
+    "da": 2,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 4,
+    "effects": [
+      "Ataques recebidos vindos de Furtividade não recebem os bônus normais dessa condição contra o portador."
+    ],
+    "description": "As torres de vigia nas fronteiras de Union e Galahad compartilham um problema antigo: quem ataca de surpresa quase sempre vence, não importa o treino de quem vigia. O Elmo do Vigia nasceu de gerações de ajustes — cada vigia que sobreviveu a uma emboscada contribuiu com uma modificação, até o design se estabilizar no formato atual. Não é confortável, não é bonito, mas os registros das torres que o adotaram têm uma coisa em comum: nenhum ataque surpresa registrado desde então.",
+    "image": "assets/images/equipments/equipment_elmo-do-vigia.jpg"
+  },
+  {
+    "id": "livro-da-reconciliacao",
+    "name": "Livro da Reconciliação",
+    "category": "Acessório",
+    "subcategory": "Livro",
+    "tier": "B",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 1,
+    "effects": [
+      "Reduz a penalidade de conjurar com o elemento de Antítese de −10 para 0."
+    ],
+    "description": "A Antítese não é escolhida e não é dócil — é um elemento que se instala à força em todo conjurador, puxando pro lado oposto sempre que ele tenta usá-la. A maioria dos arcanistas trata isso como um fardo pra suportar. O autor deste livro, um Sincronômante que passou a carreira tratando magos exauridos pela própria Antítese, discordava: escreveu que o problema nunca foi o elemento, mas a recusa em aceitá-lo. As páginas não ensinam nenhum feitiço novo — ensinam, com paciência quase irritante, a parar de lutar contra a própria natureza dividida.",
+    "image": "assets/images/equipments/equipment_livro-da-reconciliacao.jpg"
   }
 ]
