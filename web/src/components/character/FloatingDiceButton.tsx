@@ -6,11 +6,13 @@ import { useDiceLog } from '@/lib/diceLog'
 
 interface FloatingDiceButtonProps {
   accentColor: string
+  isMenuOpen?: boolean
+  bottom?: number
 }
 
 const MAX_TOTAL = 20
 
-export function FloatingDiceButton({ accentColor }: FloatingDiceButtonProps) {
+export function FloatingDiceButton({ accentColor, isMenuOpen = true, bottom = 220 }: FloatingDiceButtonProps) {
   const { addEntry, setLogOpen } = useDiceLog()
 
   const [expanded,    setExpanded]    = useState(false)
@@ -24,6 +26,13 @@ export function FloatingDiceButton({ accentColor }: FloatingDiceButtonProps) {
   const selectionsSnap = useRef<Record<DieType, number>>(selections)
 
   const totalSelected = ALL_DIE_TYPES.reduce((s, t) => s + selections[t], 0)
+
+  useEffect(() => {
+    if (!isMenuOpen) {
+      setExpanded(false)
+      setOverlayOpen(false)
+    }
+  }, [isMenuOpen])
 
   // ESC closes the panel
   useEffect(() => {
@@ -79,7 +88,7 @@ export function FloatingDiceButton({ accentColor }: FloatingDiceButtonProps) {
             transition={{ type: 'spring', stiffness: 340, damping: 28 }}
             style={{
               position: 'fixed',
-              bottom: 216,
+              bottom: bottom + 60,
               right: 28,
               zIndex: 79,
               background: 'var(--color-deep)',
@@ -230,12 +239,17 @@ export function FloatingDiceButton({ accentColor }: FloatingDiceButtonProps) {
       </AnimatePresence>
 
       {/* Floating dice button */}
-      <button
-        onClick={() => setExpanded(e => !e)}
-        title="Rolar dados"
-        style={{
+      <AnimatePresence>
+        {isMenuOpen && <motion.button
+          initial={{ opacity: 0, y: 12, scale: 0.7 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 12, scale: 0.7 }}
+          transition={{ type: 'spring', stiffness: 360, damping: 24 }}
+          onClick={() => setExpanded(e => !e)}
+          title="Rolar dados"
+          style={{
           position: 'fixed',
-          bottom: 156,
+          bottom,
           right: 28,
           zIndex: 80,
           width: 52,
@@ -255,19 +269,20 @@ export function FloatingDiceButton({ accentColor }: FloatingDiceButtonProps) {
           fontSize: '1.4rem',
           transition: 'transform 0.15s, box-shadow 0.15s, background 0.15s, border-color 0.15s',
         }}
-        onMouseEnter={(e) => {
+          onMouseEnter={(e) => {
           e.currentTarget.style.transform = 'scale(1.1)'
           e.currentTarget.style.boxShadow = `0 6px 32px rgba(0,0,0,0.6), 0 0 28px ${accentColor}66`
         }}
-        onMouseLeave={(e) => {
+          onMouseLeave={(e) => {
           e.currentTarget.style.transform = 'scale(1)'
           e.currentTarget.style.boxShadow = expanded
             ? `0 4px 24px rgba(0,0,0,0.5), 0 0 20px ${accentColor}55`
             : `0 4px 24px rgba(0,0,0,0.5), 0 0 16px ${accentColor}33`
-        }}
-      >
-        🎲
-      </button>
+          }}
+        >
+          🎲
+        </motion.button>}
+      </AnimatePresence>
 
       {/* Dice overlay */}
       <AnimatePresence>

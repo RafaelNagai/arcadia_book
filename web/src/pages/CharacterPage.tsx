@@ -45,6 +45,7 @@ import { ArcanoSection } from "@/components/character/ArcanoSection";
 import { Tag, SectionLabel } from "@/components/character/CharacterUI";
 import { FloatingDiceButton } from "@/components/character/FloatingDiceButton";
 import { FloatingDiaryButton } from "@/components/character/FloatingDiaryButton";
+import { FloatingMechanicsButton } from "@/components/character/FloatingMechanicsButton";
 import { DiaryPanel } from "@/components/character/DiaryPanel";
 import { SkillTestOverlay } from "@/components/character/SkillTestOverlay";
 import type { SkillTestData } from "@/components/character/SkillTestOverlay";
@@ -54,6 +55,7 @@ import type { DiceLogEntry } from "@/lib/diceLog";
 import { DiceLogSidebar } from "@/components/character/DiceLogSidebar";
 import { useCharacterRealtime } from "@/hooks/useCharacterRealtime";
 import { useCampaignDiceChannel } from "@/hooks/useCampaignDiceChannel";
+import { Menu, X } from "lucide-react";
 
 const PRESET_CHARACTERS = (charactersData as Character[]).map(normalizeCharacter);
 const EMPTY_PE = {
@@ -211,6 +213,7 @@ export function CharacterPage() {
   }, [initialDiceLog]);
 
   const [inventoryOpen, setInventoryOpen] = useState(false);
+  const [floatingMenuOpen, setFloatingMenuOpen] = useState(false);
 
   const [isGmOfCampaign, setIsGmOfCampaign] = useState(false);
   const canEdit = owned || isGmOfCampaign;
@@ -1470,48 +1473,91 @@ export function CharacterPage() {
           </div>
         </div>
 
-        {/* ── Floating backpack button ──────────────────────── */}
-        <button
-          onClick={() => setInventoryOpen(true)}
-          title="Abrir inventário"
+        {/* ── Floating utility menu ────────────────────────── */}
+        <AnimatePresence>
+          {floatingMenuOpen && (
+            <motion.button
+              initial={{ opacity: 0, y: 12, scale: 0.7 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 12, scale: 0.7 }}
+              transition={{ type: "spring", stiffness: 360, damping: 24 }}
+              onClick={() => setInventoryOpen(true)}
+              title="Abrir inventário"
+              aria-label="Abrir inventário"
+              style={{
+                position: "fixed",
+                bottom: 92,
+                right: 28,
+                zIndex: 80,
+                width: 52,
+                height: 52,
+                borderRadius: "50%",
+                background: `linear-gradient(135deg, ${accent.bg}, rgba(4,10,20,0.95))`,
+                border: `1px solid ${accent.text}55`,
+                boxShadow: `0 4px 24px rgba(0,0,0,0.5), 0 0 16px ${accent.glow}`,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.4rem",
+                transition: "transform 0.15s, box-shadow 0.15s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.1)";
+                e.currentTarget.style.boxShadow = `0 6px 32px rgba(0,0,0,0.6), 0 0 24px ${accent.glow}`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = `0 4px 24px rgba(0,0,0,0.5), 0 0 16px ${accent.glow}`;
+              }}
+            >
+              🎒
+            </motion.button>
+          )}
+        </AnimatePresence>
+
+        <motion.button
+          onClick={() => setFloatingMenuOpen((open) => !open)}
+          title={floatingMenuOpen ? "Recolher menus" : "Abrir menus"}
+          aria-label={floatingMenuOpen ? "Recolher menus" : "Abrir menus"}
+          animate={{ rotate: floatingMenuOpen ? 90 : 0 }}
+          transition={{ duration: 0.18 }}
           style={{
             position: "fixed",
             bottom: 28,
             right: 28,
-            zIndex: 80,
+            zIndex: 81,
             width: 52,
             height: 52,
             borderRadius: "50%",
-            background: `linear-gradient(135deg, ${accent.bg}, rgba(4,10,20,0.95))`,
-            border: `1px solid ${accent.text}55`,
-            boxShadow: `0 4px 24px rgba(0,0,0,0.5), 0 0 16px ${accent.glow}`,
+            background: floatingMenuOpen
+              ? `linear-gradient(135deg, ${accent.text}33, rgba(4,10,20,0.95))`
+              : `linear-gradient(135deg, ${accent.bg}, rgba(4,10,20,0.95))`,
+            border: `1px solid ${accent.text}77`,
+            boxShadow: `0 4px 24px rgba(0,0,0,0.5), 0 0 18px ${accent.glow}`,
+            color: accent.text,
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: "1.4rem",
-            transition: "transform 0.15s, box-shadow 0.15s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "scale(1.1)";
-            e.currentTarget.style.boxShadow = `0 6px 32px rgba(0,0,0,0.6), 0 0 24px ${accent.glow}`;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "scale(1)";
-            e.currentTarget.style.boxShadow = `0 4px 24px rgba(0,0,0,0.5), 0 0 16px ${accent.glow}`;
           }}
         >
-          🎒
-        </button>
+          {floatingMenuOpen ? <X size={23} /> : <Menu size={23} />}
+        </motion.button>
 
         {/* ── Floating diary button ────────────────────────── */}
         <FloatingDiaryButton
           accentColor={accent.text}
           onClick={() => setDiaryOpen((d) => !d)}
+          isMenuOpen={floatingMenuOpen}
+          bottom={156}
         />
 
+        {/* ── Floating mechanics button ───────────────────── */}
+        <FloatingMechanicsButton accentColor={accent.text} isMenuOpen={floatingMenuOpen} bottom={220} />
+
         {/* ── Floating dice button ─────────────────────────── */}
-        <FloatingDiceButton accentColor={accent.text} />
+        <FloatingDiceButton accentColor={accent.text} isMenuOpen={floatingMenuOpen} bottom={284} />
 
         {/* ── Skill test overlay ───────────────────────────── */}
         {skillTest && (
