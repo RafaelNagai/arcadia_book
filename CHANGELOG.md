@@ -3,6 +3,13 @@
 > Registro de atualizações em linguagem simples, para quem acompanha o livro — não é um log técnico de commits.
 > Cada task concluída via `/task` adiciona um item aqui, sob a data do dia. Este arquivo alimenta o aviso automático no Discord.
 
+## 2026-09-13
+
+- Chegou a regra de Ofício, com refino de materiais, escolhas de risco e exemplos para diferentes tipos de criação.
+- Ofício agora também permite refinar itens existentes e combinar efeitos, usando o próprio item como ingrediente.
+- A antiga regra separada de forja foi substituída pelo Ofício: qualquer criação ou melhoria de item agora segue o mesmo processo.
+- O capítulo de Ofício foi reorganizado para apresentar primeiro a criação básica e depois o refinamento de itens e efeitos.
+
 ## 2026-09-10
 
 - O mestre agora pode remover um jogador da chamada de voz/vídeo direto pelo menu de clique direito na câmera dele; a pessoa removida pode tentar entrar de novo na chamada quando quiser, sem afetar os outros participantes.

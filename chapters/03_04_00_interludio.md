@@ -82,69 +82,13 @@ Role **2D12 + Precisão**:
 
 ---
 
-### 3. Forjar / Refinar
+### 3. Ofício
 
-**Tempo:** 4–24h (dependendo da complexidade do item).
+A fabricação, o refinamento e a combinação de itens seguem a mecânica de [Ofício](oficio).
 
-**Recursos necessários:**
-- materiais adequados, ferramentas ou oficina, e possivelmente arcano para itens mágicos. **(Reduz 4 a 12 de PM) **
+Durante um Intervalo, o personagem pode usar o tempo, os materiais, as ferramentas e o PM necessários para iniciar um Ofício. Essa regra serve para criar ou modificar qualquer item: armas, armaduras, escudos, poções, ferramentas, joias, objetos arcanos e outros projetos coerentes com os ingredientes disponíveis.
 
-Este é um minigame em três fases. O artesão avança sequencialmente — uma falha crítica na Fase A ou qualquer falha na Fase C interrompem o processo com consequências.
-
-#### Fase A — Preparação
-
-Role **2D12 + Conhecimento + Físico ou Intelecto** (conforme o tipo de trabalho: arma = Físico; item arcano = Intelecto).
-
-| Complexidade | DT |
-|---|---|
-| Item comum | 10 |
-| Item bom | 15 |
-| Item raro | 20 |
-
-- **Sucesso:** avance para a Fase B.
-- **Falha Crítica:** perde metade dos materiais. A forja não pode continuar.
-
-#### Fase B — Execução
-
-A cada **2 horas de trabalho**, role **2D12 + Precisão + Atletismo**.
-
-Cada resultado **≥ 20** conta como **1 ponto de progresso**.
-
-O total de pontos de progresso acumulados determina o **Tier** do item. A tabela abaixo é uma referência de capacidade — ela indica ao artesão e ao Mestre o nível de qualidade e poder que aquele item pode alcançar conforme o esforço investido:
-
-| Pontos de Progresso | Tier | Referência de Capacidade |
-|---|---|---|
-| 1 | E | Item rudimentar — funciona, mas com limitações |
-| 2 | D | Item comum — padrão de mercado |
-| 5 | C | Item bom — acima da média, nota-se a qualidade |
-| 7 | B | Item superior — artesanato de guildas reconhecidas |
-| 10 | A | Item excepcional — raro em circulação |
-| 15 | S | Item magistral — obra de mestres |
-| 20 | SS | Item lendário — artefato de geração única |
-
-O artesão pode parar quando quiser e registrar o Tier alcançado.
-
-> O Tier define os valores de dano, DA e Durabilidade do item forjado. Consulte as tabelas de Tiers no capítulo de Equipamentos.
-
-#### Fase C — Finalização e Qualidade (opcional)
-
-Após completar a Fase B, o artesão pode tentar enriquecer o item com efeitos especiais.
-
-Role **2D12 + Conhecimento** quantas vezes quiser. Cada resultado **≥ 20** permite adicionar **um efeito** da lista abaixo ao item forjado.
-
-O artesão pode **parar voluntariamente a qualquer momento** após um sucesso — o item fica com os efeitos acumulados até então, sem risco de perda.
-
-**Ao primeiro fracasso**, o processo encerra: o item **quebra** e todos os recursos são perdidos. Não é possível tentar novamente para esta forja.
-
-| Efeito |
-|---|
-| +1 de Bônus no teste de uma Perícia escolhida |
-| +1 dado de dano nos dados de dano |
-| Causa 1 condição negativa escolhida ao acertar |
-| Reduz o limiar de crítico em 1 — o portador agora critica com **11 ou 12** naturais em vez de apenas 12 |
-| Remove 1 condição negativa de quem usa |
-| +1 de DA |
-| +2 de Durabilidade |
+O capítulo de Ofício define como o item é construído, como ingredientes e efeitos especiais entram no projeto e como o personagem pode parar ou arriscar mais uma rodada de refino.
 
 ---
 

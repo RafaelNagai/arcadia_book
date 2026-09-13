@@ -1,6 +1,6 @@
 # Criando um Equipamento
 
-> **Atenção:** Esta seção é um guia para o Mestre criar e distribuir itens. Personagens que desejam **forjar** um item devem fazê-lo durante um **Interlúdio** — ver capítulo correspondente.
+> **Atenção:** Esta seção é um guia para o Mestre criar e distribuir itens. Personagens que desejam **criar, refinar ou combinar** um item devem fazê-lo durante um **Interlúdio**, usando a mecânica de [Ofício](oficio).
 
 Para criar um item, siga estas etapas:
 

@@ -15,5 +15,6 @@ As perícias, atributos, ferramentas e condições da cena podem conceder inform
 ## Capítulos
 
 - [Destrancar](destrancar) — abrir fechaduras, trancas e baús por meio de dedução e tentativas controladas.
+- [Ofício](oficio) — criar itens por meio de refino, gerenciamento de recursos e decisões de risco.
 
-Novos capítulos de Pilotagem, Domesticação, Ofício e outras situações especiais serão adicionados a esta parte conforme suas mecânicas forem definidas.
+Novos capítulos de Pilotagem, Domesticação e outras situações especiais serão adicionados a esta parte conforme suas mecânicas forem definidas.

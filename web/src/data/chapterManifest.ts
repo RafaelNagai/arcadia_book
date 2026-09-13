@@ -58,6 +58,7 @@ export const CHAPTERS: ChapterMeta[] = [
   { id: '03_04_00_interludio',              slug: 'interludio',              title: 'Intervalo de Capítulo',    part: 'O Navio e a Tripulação', order: 120, subtitle: 'O tempo entre as tempestades' },
   { id: '04_01_00_mecanicas',               slug: 'mecanicas',               title: 'Mecânicas',                part: 'Mecânicas',               order: 121, subtitle: 'Desafios especiais para a mesa' },
   { id: '04_01_01_destrancar',              slug: 'destrancar',              title: 'Destrancar',               part: 'Mecânicas',               order: 122, subtitle: 'Dedução, risco e ferramentas' },
+  { id: '04_01_02_oficio',                  slug: 'oficio',                  title: 'Ofício',                   part: 'Mecânicas',               order: 123, subtitle: 'Criar, refinar e arriscar' },
   { id: '05_01_00_origem',                  slug: 'origem',                  title: 'Origem do Universo',       part: 'O Mundo',                order: 130, subtitle: 'Conceito, Essências e os Planos da existência' },
   { id: '00_timeline',                      slug: 'timeline',                title: 'Timeline',                 part: 'O Mundo',                order: 131, subtitle: 'As cinco eras de Fragnéia' },
   { id: '05_02_00_racas',                   slug: 'racas',                   title: 'Raças',                    part: 'O Mundo',                order: 140, subtitle: 'Povos do Mar de Nuvens' },
