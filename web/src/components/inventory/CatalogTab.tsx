@@ -1,7 +1,9 @@
 import { useState, useMemo } from "react"
-import { WEIGHT_LABELS, WEIGHT_VALUES } from "@/data/characterTypes"
-import { CATALOG, TIER_COLOR, inputStyle, resolveCatalogImage } from "./types"
+import { CATALOG, TIER_COLOR, inputStyle, labelStyle } from "./types"
 import type { CatalogEntry } from "./types"
+import { CatalogItemCard } from "./CatalogItemCard"
+
+const ALL = "all"
 
 export function CatalogTab({
   onSelectCatalog,
@@ -11,18 +13,36 @@ export function CatalogTab({
   accentColor: string
 }) {
   const [search, setSearch] = useState("")
+  const [category, setCategory] = useState<string>(ALL)
+  const [tier, setTier] = useState<string>(ALL)
+
+  const categories = useMemo(
+    () =>
+      Array.from(new Set(CATALOG.map((e) => e.category))).sort((a, b) =>
+        a.localeCompare(b, "pt-BR"),
+      ),
+    [],
+  )
+
+  const tiers = useMemo(
+    () => Object.keys(TIER_COLOR).filter((t) => CATALOG.some((e) => e.tier === t)),
+    [],
+  )
 
   const filteredCatalog = useMemo(() => {
     const q = search.trim().toLowerCase()
-    if (!q) return CATALOG
-    return CATALOG.filter(
-      (e) =>
+    return CATALOG.filter((e) => {
+      if (category !== ALL && e.category !== category) return false
+      if (tier !== ALL && e.tier !== tier) return false
+      if (!q) return true
+      return (
         e.name.toLowerCase().includes(q) ||
         e.category.toLowerCase().includes(q) ||
         e.subcategory.toLowerCase().includes(q) ||
-        e.tier.toLowerCase() === q,
-    )
-  }, [search])
+        e.tier.toLowerCase() === q
+      )
+    })
+  }, [search, category, tier])
 
   return (
     <div>
@@ -31,13 +51,59 @@ export function CatalogTab({
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Buscar por nome, categoria ou tier (ex: A, espada...)"
-        style={{ ...inputStyle, marginBottom: "0.75rem" }}
+        style={{ ...inputStyle, marginBottom: "0.6rem" }}
         autoFocus
       />
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+
+      <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", marginBottom: "0.75rem" }}>
+        <div style={{ flex: "1 1 140px" }}>
+          <label style={labelStyle}>Categoria</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            style={{ ...inputStyle, cursor: "pointer" }}
+          >
+            <option value={ALL} style={{ background: "#0A0F1E" }}>
+              Todas
+            </option>
+            {categories.map((c) => (
+              <option key={c} value={c} style={{ background: "#0A0F1E" }}>
+                {c}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div style={{ flex: "1 1 140px" }}>
+          <label style={labelStyle}>Tier</label>
+          <select
+            value={tier}
+            onChange={(e) => setTier(e.target.value)}
+            style={{ ...inputStyle, cursor: "pointer" }}
+          >
+            <option value={ALL} style={{ background: "#0A0F1E" }}>
+              Todos
+            </option>
+            {tiers.map((t) => (
+              <option key={t} value={t} style={{ background: "#0A0F1E" }}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(min(260px, 100%), 1fr))",
+          gap: "0.5rem",
+        }}
+      >
         {filteredCatalog.length === 0 && (
           <p
             style={{
+              gridColumn: "1 / -1",
               fontFamily: "var(--font-ui)",
               fontSize: "0.75rem",
               color: "rgba(255,255,255,0.3)",
@@ -48,137 +114,14 @@ export function CatalogTab({
             Nenhum item encontrado
           </p>
         )}
-        {filteredCatalog.map((entry) => {
-          const tierColor = TIER_COLOR[entry.tier] ?? "#A09880"
-          return (
-            <button
-              key={entry.id}
-              onClick={() => onSelectCatalog?.(entry)}
-              style={{
-                background: "rgba(255,255,255,0.025)",
-                border: "1px solid rgba(255,255,255,0.07)",
-                borderRadius: 5,
-                padding: "0.6rem 0.75rem",
-                cursor: "pointer",
-                textAlign: "left",
-                transition: "background 0.12s, border-color 0.12s",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.6rem",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = `${accentColor}12`
-                e.currentTarget.style.borderColor = `${accentColor}44`
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(255,255,255,0.025)"
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"
-              }}
-            >
-              {/* Thumbnail */}
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 4,
-                  overflow: "hidden",
-                  background: "rgba(0,0,0,0.3)",
-                  flexShrink: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {resolveCatalogImage(entry.image) ? (
-                  <img
-                    src={resolveCatalogImage(entry.image)!}
-                    alt={entry.name}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      objectPosition: "center",
-                    }}
-                  />
-                ) : (
-                  <span
-                    style={{
-                      fontSize: "1.1rem",
-                      lineHeight: 1,
-                      opacity: 0.25,
-                      userSelect: "none",
-                    }}
-                  >
-                    ?
-                  </span>
-                )}
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.4rem",
-                    marginBottom: 2,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "0.82rem",
-                      fontWeight: 700,
-                      color: "#EEF4FC",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {entry.name}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-ui)",
-                      fontSize: "0.55rem",
-                      fontWeight: 700,
-                      letterSpacing: "0.1em",
-                      color: tierColor,
-                      background: `${tierColor}18`,
-                      border: `1px solid ${tierColor}44`,
-                      borderRadius: 3,
-                      padding: "1px 4px",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {entry.tier}
-                  </span>
-                </div>
-                <p
-                  style={{
-                    fontFamily: "var(--font-ui)",
-                    fontSize: "0.6rem",
-                    color: "rgba(255,255,255,0.3)",
-                    letterSpacing: "0.05em",
-                  }}
-                >
-                  {entry.subcategory} · {WEIGHT_LABELS[entry.weight]} (
-                  {WEIGHT_VALUES[entry.weight]})
-                  {entry.isEquipment && entry.maxDurability != null
-                    ? ` · Dur. ${entry.maxDurability}`
-                    : ""}
-                </p>
-              </div>
-              <span
-                style={{
-                  fontSize: "0.65rem",
-                  color: `${accentColor}88`,
-                  flexShrink: 0,
-                }}
-              >
-                →
-              </span>
-            </button>
-          )
-        })}
+        {filteredCatalog.map((entry) => (
+          <CatalogItemCard
+            key={entry.id}
+            entry={entry}
+            accentColor={accentColor}
+            onSelect={onSelectCatalog}
+          />
+        ))}
       </div>
     </div>
   )

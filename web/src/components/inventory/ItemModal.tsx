@@ -81,7 +81,7 @@ export function ItemModal({
           background: "#0A0F1E",
           border: "1px solid rgba(42,58,96,0.9)",
           borderRadius: 8,
-          width: 420,
+          width: 760,
           maxWidth: "calc(100vw - 2rem)",
           maxHeight: "85vh",
           display: "flex",

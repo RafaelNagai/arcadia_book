@@ -3,6 +3,10 @@
 > Registro de atualizações em linguagem simples, para quem acompanha o livro — não é um log técnico de commits.
 > Cada task concluída via `/task` adiciona um item aqui, sob a data do dia. Este arquivo alimenta o aviso automático no Discord.
 
+## 2026-09-14
+
+- A janela de "Adicionar ao Inventário" ficou maior e mais fácil de usar: os itens do catálogo agora aparecem em cartões lado a lado, mostrando de forma resumida o dano, a defesa e os efeitos de cada item, sem precisar abrir nada. Também é possível filtrar os itens por categoria e por tier (raridade), além da busca por nome que já existia — os filtros podem ser usados juntos.
+
 ## 2026-09-13
 
 - Chegou a regra de Ofício, com refino de materiais, escolhas de risco e exemplos para diferentes tipos de criação.
