@@ -18,10 +18,12 @@ const TOOL_DICE: { value: ToolDie; label: string }[] = [
   { value: 10, label: 'Profissional' },
 ]
 
+const REFINEMENT_RESERVE = 999
+
 export function CraftMechanicOverlay({ accentColor, onClose }: CraftMechanicOverlayProps) {
   const { addEntry } = useDiceLog()
   const [toolDie, setToolDie] = useState<ToolDie>(6)
-  const [pm, setPm] = useState(5)
+  const [pm, setPm] = useState(REFINEMENT_RESERVE)
   const [rerolls, setRerolls] = useState(0)
   const [adjustments, setAdjustments] = useState(0)
   const [effectiveness, setEffectiveness] = useState(0)
@@ -30,6 +32,8 @@ export function CraftMechanicOverlay({ accentColor, onClose }: CraftMechanicOver
   const [lastOutcome, setLastOutcome] = useState<RoundOutcome | null>(null)
   const [message, setMessage] = useState('')
   const [activeRoll, setActiveRoll] = useState<{ kind: 'craft' | 'reroll'; index?: number } | null>(null)
+  const [isFinished, setIsFinished] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   const diceCount = 3 + effectiveness
 
@@ -40,6 +44,14 @@ export function CraftMechanicOverlay({ accentColor, onClose }: CraftMechanicOver
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [onClose])
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 680px)')
+    const updateViewport = () => setIsMobile(mediaQuery.matches)
+    updateViewport()
+    mediaQuery.addEventListener('change', updateViewport)
+    return () => mediaQuery.removeEventListener('change', updateViewport)
+  }, [])
 
   function rollCraft() {
     if (pm < 1 || roundDice.length > 0 || lastOutcome === 'break') return
@@ -105,10 +117,11 @@ export function CraftMechanicOverlay({ accentColor, onClose }: CraftMechanicOver
   function finish() {
     setMessage(`Refino encerrado com ${effectiveness} Efetividade.`)
     setLastOutcome('success')
+    setIsFinished(true)
   }
 
   function reset() {
-    setPm(5)
+    setPm(REFINEMENT_RESERVE)
     setRerolls(0)
     setAdjustments(0)
     setEffectiveness(0)
@@ -116,6 +129,7 @@ export function CraftMechanicOverlay({ accentColor, onClose }: CraftMechanicOver
     setRoundNumber(0)
     setLastOutcome(null)
     setMessage('')
+    setIsFinished(false)
   }
 
   const rollRequests: DiceRollRequest[] = [{ dieType: toolDie, count: diceCount }]
@@ -125,7 +139,7 @@ export function CraftMechanicOverlay({ accentColor, onClose }: CraftMechanicOver
       <div style={bandStyle}>
         <button onClick={onClose} aria-label="Fechar Ofício" title="Fechar" style={closeButtonStyle}><X size={20} /></button>
 
-        <div style={topBarStyle}>
+        <div style={topBarStyle(isMobile)}>
           <div style={toolBlockStyle}>
             <span style={eyebrowStyle}>Ferramenta</span>
             <select value={toolDie} onChange={event => setToolDie(Number(event.target.value) as ToolDie)} style={selectStyle(accentColor)}>
@@ -133,15 +147,24 @@ export function CraftMechanicOverlay({ accentColor, onClose }: CraftMechanicOver
             </select>
           </div>
 
-          <div style={titleBlockStyle}><span style={eyebrowStyle}>Ofício</span><strong>Refino</strong></div>
+          <div style={titleBlockStyle}><strong>Ofício</strong></div>
 
-          <div style={resourceBlockStyle}>
+          <div style={resourceBlockStyle(isMobile)}>
             <Counter label="Rerolar" value={rerolls} onChange={setRerolls} />
             <Counter label="Ajuste" value={adjustments} onChange={setAdjustments} />
           </div>
         </div>
 
         <div style={stageStyle}>
+          {isFinished ? (
+            <div style={finishedStyle}>
+              <span style={eyebrowStyle}>Ofício concluído</span>
+              <strong style={finishedValueStyle}>{effectiveness}</strong>
+              <span style={messageStyle}>Efetividade realizada</span>
+              <button onClick={reset} style={rollButtonStyle(accentColor)}>Novo Ofício</button>
+            </div>
+          ) : (
+          <>
           {roundDice.length === 0 ? (
             <div style={emptyStageStyle}>
               <Sparkles size={25} color={accentColor} />
@@ -149,17 +172,19 @@ export function CraftMechanicOverlay({ accentColor, onClose }: CraftMechanicOver
               {lastOutcome && lastOutcome !== 'break' && (
                 <div style={decisionStyle}>
                   <button onClick={rollCraft} disabled={pm < 1} style={rollButtonStyle(accentColor)}>Continuar Rodada</button>
-                  <button onClick={finish} disabled={effectiveness < 1} style={finishButtonStyle}>Parar e Concluir</button>
+                  <button onClick={finish} style={finishButtonStyle}>Parar e Concluir</button>
                 </div>
               )}
             </div>
           ) : (
-            <div style={diceStageStyle}>
+            <div style={diceStageStyle(isMobile)}>
               {roundDice.map((value, index) => <div key={`${roundNumber}-${index}`} style={{ ...dieStyle, borderColor: value >= 6 ? '#8fd4a2' : value <= 3 ? '#ef7777' : 'rgba(255,255,255,0.28)' }}><button onClick={() => adjust(index)} disabled={adjustments < 1} title="Adicionar +1 neste dado" style={{ ...adjustButtonStyle, opacity: adjustments > 0 ? 1 : 0.32, cursor: adjustments > 0 ? 'pointer' : 'not-allowed' }}>+</button><strong style={dieValueStyle}>{value}</strong><button onClick={() => reroll(index)} disabled={rerolls < 1} title="Rerrolar este dado" style={{ ...rerollButtonStyle, opacity: rerolls > 0 ? 1 : 0.32, cursor: rerolls > 0 ? 'pointer' : 'not-allowed' }}><RotateCcw size={14} /></button></div>)}
               <button onClick={confirmRound} style={confirmButtonStyle(accentColor)}>Confirmar rodada</button>
             </div>
           )}
           {message && roundDice.length > 0 && <p style={messageStyle}>{message}</p>}
+          </>
+          )}
         </div>
 
         <div style={bottomBarStyle}>
@@ -187,22 +212,24 @@ function Counter({ label, value, onChange }: { label: string; value: number; onC
 
 const overlayStyle = { position: 'fixed' as const, inset: 0, zIndex: 119, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.76)' }
 const bandStyle = { position: 'relative' as const, width: '100%', maxHeight: '100dvh', overflowY: 'auto' as const, padding: '22px clamp(16px, 5vw, 72px) 20px', background: 'linear-gradient(180deg, #080b10 0%, #030405 58%, #080b10 100%)', borderTop: '1px solid rgba(255,255,255,0.18)', borderBottom: '1px solid rgba(255,255,255,0.18)', boxShadow: '0 18px 80px rgba(0,0,0,0.8)' }
-const topBarStyle = { display: 'grid', gridTemplateColumns: 'minmax(150px, 1fr) minmax(140px, 1fr) minmax(220px, 1fr)', gap: 24, alignItems: 'start', paddingBottom: 16, borderBottom: '1px solid rgba(255,255,255,0.1)' }
+const topBarStyle = (isMobile: boolean) => ({ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'minmax(150px, 1fr) minmax(140px, 1fr) minmax(220px, 1fr)', gap: isMobile ? 14 : 24, alignItems: isMobile ? 'center' as const : 'start' as const, paddingBottom: 16, borderBottom: '1px solid rgba(255,255,255,0.1)' })
 const toolBlockStyle = { display: 'flex', flexDirection: 'column' as const, gap: 7, alignItems: 'flex-start' as const, padding: '4px 0' }
 const titleBlockStyle = { display: 'flex', flexDirection: 'column' as const, gap: 4, alignItems: 'center' as const, color: '#f5f7fa', fontFamily: 'var(--font-display)', fontSize: 18, letterSpacing: '0.04em' }
-const resourceBlockStyle = { display: 'flex', justifyContent: 'flex-end', gap: 10 }
+const resourceBlockStyle = (isMobile: boolean) => ({ display: 'flex', justifyContent: isMobile ? 'center' : 'flex-end', gap: 10, width: '100%' })
 const counterStyle = { display: 'flex', flexDirection: 'column' as const, gap: 6, alignItems: 'center', padding: '7px 8px 8px', background: 'rgba(255,255,255,0.035)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6 }
 const counterInputStyle = { boxSizing: 'border-box' as const, width: 64, height: 30, padding: '3px 5px', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 3, background: '#11151b', color: '#f5f7fa', fontFamily: 'var(--font-display)', fontSize: 16, textAlign: 'center' as const, outline: 'none' }
 const stageStyle = { minHeight: 250, display: 'flex', flexDirection: 'column' as const, justifyContent: 'center', alignItems: 'center', gap: 17, padding: '22px 0' }
 const emptyStageStyle = { display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 13, color: 'rgba(220,230,240,0.68)', fontFamily: 'var(--font-ui)', fontSize: 12, textAlign: 'center' as const }
 const breakStyle = { display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 14, padding: '12px 24px', border: '1px solid rgba(239,119,119,0.28)', borderRadius: 8, background: 'rgba(239,119,119,0.06)' }
-const diceStageStyle = { display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' as const, gap: 12, maxWidth: 960 }
+const diceStageStyle = (isMobile: boolean) => ({ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' as const, gap: isMobile ? 7 : 12, maxWidth: 960, width: '100%' })
 const dieStyle = { width: 70, minHeight: 132, boxSizing: 'border-box' as const, padding: '9px 8px', display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'space-between', gap: 8, border: '1px solid', borderRadius: 8, background: 'linear-gradient(160deg, rgba(26,38,58,0.9), rgba(9,14,24,0.96))', color: '#f5f7fa', boxShadow: '0 8px 20px rgba(0,0,0,0.22)' }
 const dieValueStyle = { fontFamily: 'var(--font-display)', fontSize: 34, fontWeight: 800, lineHeight: 1, color: '#f7fbff', textShadow: '0 2px 12px rgba(0,0,0,0.35)' }
 const adjustButtonStyle = { width: 42, height: 25, display: 'grid', placeItems: 'center', padding: 0, border: '1px solid rgba(230,184,106,0.62)', borderRadius: 4, background: 'rgba(230,184,106,0.13)', color: '#f0c579', fontSize: 19, lineHeight: 1, fontWeight: 700, cursor: 'pointer' }
 const rerollButtonStyle = { width: 42, height: 28, display: 'grid', placeItems: 'center', padding: 0, border: '1px solid rgba(190,210,232,0.34)', borderRadius: 4, background: 'rgba(190,210,232,0.1)', color: '#dce9f6', cursor: 'pointer' }
 const bottomBarStyle = { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 18, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.1)' }
 const effectivenessStyle = { display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 4, margin: '0 auto', textAlign: 'center' as const }
+const finishedStyle = { display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', gap: 12, minHeight: 250, textAlign: 'center' as const }
+const finishedValueStyle = { color: '#f5f7fa', fontFamily: 'var(--font-display)', fontSize: 68, lineHeight: 0.95, textShadow: '0 0 28px rgba(255,255,255,0.14)' }
 const decisionStyle = { display: 'flex', flexWrap: 'wrap' as const, justifyContent: 'center', gap: 9 }
 const eyebrowStyle = { margin: 0, color: 'rgba(220,230,240,0.52)', fontFamily: 'var(--font-ui)', fontSize: 9, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' as const }
 const messageStyle = { margin: 0, color: 'rgba(220,230,240,0.7)', fontFamily: 'var(--font-ui)', fontSize: 11, textAlign: 'center' as const, letterSpacing: '0.02em' }
