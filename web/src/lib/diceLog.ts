@@ -6,7 +6,7 @@ import { createElement } from 'react'
    Entry types
    ──────────────────────────────────────────────────────────────── */
 
-export type DiceLogType = 'skill' | 'arcano' | 'damage' | 'free'
+export type DiceLogType = 'skill' | 'arcano' | 'damage' | 'free' | 'craft'
 export type SpecialState = 'milagre' | 'critico' | 'desastre' | 'falha_critica' | null
 
 interface BaseEntry {
@@ -67,7 +67,19 @@ export interface FreeLogEntry extends BaseEntry {
   total: number
 }
 
-export type DiceLogEntry = SkillLogEntry | ArcanoLogEntry | DamageLogEntry | FreeLogEntry
+export interface CraftLogEntry extends BaseEntry {
+  type: 'craft'
+  projectName: string
+  ingredientName: string
+  toolDie: number
+  round: number
+  results: number[]
+  outcome: 'success' | 'break' | 'inconclusive'
+  effectiveness: number
+  pmRemaining: number
+}
+
+export type DiceLogEntry = SkillLogEntry | ArcanoLogEntry | DamageLogEntry | FreeLogEntry | CraftLogEntry
 
 // Distributive Omit — applies Omit to each member of the union separately
 type DistributiveOmit<T, K extends keyof T> = T extends unknown ? Omit<T, K> : never

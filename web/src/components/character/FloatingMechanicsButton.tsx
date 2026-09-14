@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { ChevronDown, ChevronUp, Gamepad2, LockKeyhole, Settings2, X } from 'lucide-react'
+import { Anvil, ChevronDown, ChevronUp, Gamepad2, LockKeyhole, Settings2, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { CraftMechanicOverlay } from './CraftMechanicOverlay'
 
 interface FloatingMechanicsButtonProps {
   accentColor: string
@@ -21,6 +22,7 @@ function clampValue(value: number, die: LockDie) {
 export function FloatingMechanicsButton({ accentColor, isMenuOpen, bottom }: FloatingMechanicsButtonProps) {
   const [pickerOpen, setPickerOpen] = useState(false)
   const [lockOpen, setLockOpen] = useState(false)
+  const [craftOpen, setCraftOpen] = useState(false)
   const [die, setDie] = useState<LockDie>(6)
   const [pinValues, setPinValues] = useState<number[]>(() => Array(MIN_PINS).fill(1))
   const [isMobile, setIsMobile] = useState(false)
@@ -34,11 +36,12 @@ export function FloatingMechanicsButton({ accentColor, isMenuOpen, bottom }: Flo
   }, [])
 
   useEffect(() => {
-    if (!pickerOpen && !lockOpen) return
+    if (!pickerOpen && !lockOpen && !craftOpen) return
     const handler = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setPickerOpen(false)
         setLockOpen(false)
+        setCraftOpen(false)
       }
     }
     window.addEventListener('keydown', handler)
@@ -48,6 +51,11 @@ export function FloatingMechanicsButton({ accentColor, isMenuOpen, bottom }: Flo
   function openLockpick() {
     setPickerOpen(false)
     setLockOpen(true)
+  }
+
+  function openCraft() {
+    setPickerOpen(false)
+    setCraftOpen(true)
   }
 
   function changeDie(nextDie: LockDie) {
@@ -98,10 +106,11 @@ export function FloatingMechanicsButton({ accentColor, isMenuOpen, bottom }: Flo
             <div
               style={{
                 width: 'min(360px, 100%)',
-                padding: 24,
-                border: '1px solid rgba(255,255,255,0.16)',
-                background: 'linear-gradient(145deg, #10151d, #05070b)',
-                boxShadow: '0 22px 80px rgba(0,0,0,0.65)',
+                padding: 22,
+                border: `1px solid ${accentColor}45`,
+                borderRadius: 10,
+                background: 'linear-gradient(145deg, #111923, #05070b)',
+                boxShadow: `0 22px 80px rgba(0,0,0,0.65), 0 0 36px ${accentColor}12`,
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
@@ -121,9 +130,23 @@ export function FloatingMechanicsButton({ accentColor, isMenuOpen, bottom }: Flo
                   <small style={{ color: 'rgba(220,230,240,0.56)', fontFamily: 'var(--font-ui)', fontSize: 11 }}>Abrir uma tranca por dedução</small>
                 </span>
               </button>
+              <button
+                onClick={openCraft}
+                style={{ ...choiceButtonStyle(accentColor), marginTop: 8 }}
+              >
+                <Anvil size={20} color={accentColor} />
+                <span>
+                  <strong style={{ display: 'block', color: '#f2f5f8', fontFamily: 'var(--font-ui)', fontSize: 13 }}>Ofício</strong>
+                  <small style={{ color: 'rgba(220,230,240,0.56)', fontFamily: 'var(--font-ui)', fontSize: 11 }}>Criar, refinar e arriscar</small>
+                </span>
+              </button>
             </div>
           </motion.div>
         )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {craftOpen && <CraftMechanicOverlay accentColor={accentColor} onClose={() => setCraftOpen(false)} />}
       </AnimatePresence>
 
       <AnimatePresence>
@@ -134,8 +157,6 @@ export function FloatingMechanicsButton({ accentColor, isMenuOpen, bottom }: Flo
             exit={{ opacity: 0 }}
             transition={{ duration: 0.18 }}
             role="dialog"
-            aria-modal="true"
-            aria-label="Mecânica de destrancar"
             style={{
               position: 'fixed',
               inset: 0,
@@ -151,13 +172,14 @@ export function FloatingMechanicsButton({ accentColor, isMenuOpen, bottom }: Flo
               style={{
                 position: 'relative',
                 width: '100%',
-                maxWidth: 1180,
+                maxWidth: 1160,
                 minHeight: isMobile ? 0 : 260,
                 maxHeight: 'calc(100dvh - 32px)',
-                padding: isMobile ? '48px 14px 24px' : '48px 68px 38px',
-                background: '#050505',
-                border: '1px solid rgba(255,255,255,0.18)',
-                boxShadow: '0 24px 100px rgba(0,0,0,0.8)',
+                padding: isMobile ? '42px 14px 24px' : '42px clamp(24px, 5vw, 68px) 34px',
+                background: 'linear-gradient(180deg, #080c12, #030405)',
+                border: `1px solid ${accentColor}38`,
+                borderRadius: 10,
+                boxShadow: `0 24px 100px rgba(0,0,0,0.8), 0 0 60px ${accentColor}0d`,
                 overflowY: 'auto',
               }}
             >
@@ -188,7 +210,7 @@ export function FloatingMechanicsButton({ accentColor, isMenuOpen, bottom }: Flo
                 </div>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'center', alignItems: 'stretch', gap: 10, overflowY: isMobile ? 'auto' : undefined, padding: '4px 0 12px' }}>
+              <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'center', alignItems: 'stretch', gap: 12, overflowY: isMobile ? 'auto' : undefined, padding: '8px 0 16px' }}>
                 {pinValues.map((value, index) => (
                   <div key={index} style={pinStyle(accentColor, isMobile)}>
                     <span style={pinLabelStyle}>Pino {index + 1}</span>
@@ -213,7 +235,7 @@ export function FloatingMechanicsButton({ accentColor, isMenuOpen, bottom }: Flo
                 ))}
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: 16, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                 <span style={labelStyle}>Pinos</span>
                 <button onClick={() => changePinCount(-1)} disabled={pinValues.length <= MIN_PINS} style={countButtonStyle(pinValues.length > MIN_PINS, accentColor)} aria-label="Remover pino">−</button>
                 <span style={{ color: '#f5f7fa', fontFamily: 'var(--font-display)', fontSize: 18, minWidth: 24, textAlign: 'center' }}>{pinValues.length}</span>
@@ -318,45 +340,50 @@ const selectStyle = (accentColor: string) => ({
 const pinStyle = (accentColor: string, isMobile: boolean) => ({
   minWidth: isMobile ? 0 : 92,
   width: isMobile ? '100%' : undefined,
-  minHeight: isMobile ? 72 : undefined,
-  padding: '12px 10px',
+  minHeight: isMobile ? 72 : 166,
+  padding: '14px 11px',
   display: 'flex',
   flexDirection: isMobile ? 'row' as const : 'column' as const,
   alignItems: 'center',
-  justifyContent: isMobile ? 'space-between' : 'space-between',
-  gap: 7,
-  border: `1px solid ${accentColor}45`,
-  background: 'linear-gradient(180deg, #151515, #090909)',
+  justifyContent: 'space-between',
+  gap: 9,
+  border: `1px solid ${accentColor}55`,
+  borderRadius: 8,
+  background: 'linear-gradient(180deg, #17202c, #080b10)',
+  boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
 })
 
 const pinLabelStyle = {
   color: 'rgba(220,230,240,0.48)',
   fontFamily: 'var(--font-ui)',
-  fontSize: 10,
+  fontSize: 9,
+  fontWeight: 700,
   letterSpacing: '0.1em',
   textTransform: 'uppercase' as const,
 }
 
 const arrowButtonStyle = {
-  width: 42,
-  height: 30,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: '1px solid rgba(255,255,255,0.16)',
-  background: 'rgba(255,255,255,0.04)',
-  color: '#dce6f0',
+  width: 48,
+  height: 28,
+  display: 'grid',
+  placeItems: 'center',
+  border: '1px solid rgba(190,210,232,0.22)',
+  borderRadius: 4,
+  background: 'rgba(190,210,232,0.07)',
+  color: '#dce9f6',
   cursor: 'pointer',
 }
 
 const countButtonStyle = (enabled: boolean, accentColor: string) => ({
-  width: 30,
-  height: 30,
+  width: 32,
+  height: 32,
+  borderRadius: 4,
   border: `1px solid ${enabled ? accentColor + '77' : 'rgba(255,255,255,0.1)'}`,
   background: enabled ? `${accentColor}18` : 'transparent',
   color: enabled ? accentColor : 'rgba(255,255,255,0.25)',
   cursor: enabled ? 'pointer' : 'not-allowed',
-  fontSize: 20,
+  fontSize: 19,
+  fontWeight: 700,
   lineHeight: 1,
 })
 

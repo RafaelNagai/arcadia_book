@@ -1,4 +1,4 @@
-import type { DiceLogEntry, SkillLogEntry, ArcanoLogEntry, DamageLogEntry, FreeLogEntry } from '@/lib/diceLog'
+import type { DiceLogEntry, SkillLogEntry, ArcanoLogEntry, DamageLogEntry, FreeLogEntry, CraftLogEntry } from '@/lib/diceLog'
 import { getAccent } from './types'
 import { STATE_META } from './ArcaneStates'
 
@@ -18,6 +18,7 @@ export const TYPE_BADGE: Record<string, { label: string; color: string; bg: stri
   arcano: { label: 'ARCANO',  color: '#C090F0', bg: 'rgba(140,80,200,0.15)' },
   damage: { label: 'DANO',    color: '#F08080', bg: 'rgba(200,80,80,0.15)'  },
   free:   { label: 'LIVRE',   color: '#A0C890', bg: 'rgba(100,180,100,0.15)'},
+  craft:  { label: 'OFÍCIO',  color: '#E6B86A', bg: 'rgba(210,150,60,0.15)' },
 }
 
 export const MOD_LABEL: Record<string, string> = {
@@ -376,6 +377,28 @@ function FreeEntry({ e }: { e: FreeLogEntry }) {
   )
 }
 
+function CraftEntry({ e }: { e: CraftLogEntry }) {
+  const badge = TYPE_BADGE.craft
+  const outcomeLabel = e.outcome === 'break' ? 'QUEBRA' : e.outcome === 'success' ? 'SUCESSO' : 'INCONCLUSIVA'
+  const outcomeColor = e.outcome === 'break' ? '#ef7777' : e.outcome === 'success' ? '#8fd4a2' : '#e6b86a'
+  return (
+    <EntryShell badge={badge} title={e.projectName} titleColor={outcomeColor} timestamp={e.timestamp}>
+      <p style={{ fontFamily: 'var(--font-ui)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: '0.04em' }}>
+        {e.ingredientName} · D{e.toolDie} · Rodada {e.round}
+      </p>
+      {e.results.length > 0 && (
+        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+          {e.results.map((value, index) => <FreeChip key={index} value={value} />)}
+        </div>
+      )}
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8 }}>
+        <strong style={{ color: outcomeColor, fontFamily: 'var(--font-display)', fontSize: 17 }}>{e.effectiveness} Efetividade</strong>
+        <span style={{ color: outcomeColor, fontFamily: 'var(--font-ui)', fontSize: 9, letterSpacing: '0.1em' }}>{outcomeLabel}</span>
+      </div>
+    </EntryShell>
+  )
+}
+
 /* ────────────────────────────────────────────────────────────────
    Entry dispatcher
    ──────────────────────────────────────────────────────────────── */
@@ -386,5 +409,6 @@ export function LogEntry({ entry }: { entry: DiceLogEntry }) {
     case 'arcano': return <ArcanoEntry e={entry} />
     case 'damage': return <DamageEntry e={entry} />
     case 'free':   return <FreeEntry   e={entry} />
+    case 'craft':  return <CraftEntry  e={entry} />
   }
 }

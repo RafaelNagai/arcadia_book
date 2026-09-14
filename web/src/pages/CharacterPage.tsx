@@ -57,7 +57,9 @@ import { useCharacterRealtime } from "@/hooks/useCharacterRealtime";
 import { useCampaignDiceChannel } from "@/hooks/useCampaignDiceChannel";
 import { Menu, X } from "lucide-react";
 
-const PRESET_CHARACTERS = (charactersData as Character[]).map(normalizeCharacter);
+const PRESET_CHARACTERS = (charactersData as Character[]).map(
+  normalizeCharacter,
+);
 const EMPTY_PE = {
   fisico: Array(5).fill(false) as boolean[],
   destreza: Array(5).fill(false) as boolean[],
@@ -109,7 +111,10 @@ export function CharacterPage() {
   const [dpBonus, setDpBonus] = useState(0);
   const [conditions, setConditions] = useState<Condition[]>([]);
   const [exaustao, setExaustao] = useState<number>(0);
-  const [diaryData, setDiaryData] = useState<DiaryData>({ blocks: [], categories: [] });
+  const [diaryData, setDiaryData] = useState<DiaryData>({
+    blocks: [],
+    categories: [],
+  });
   const [diaryOpen, setDiaryOpen] = useState(false);
 
   const isApiChar = id ? isApiCharacterId(id) : false;
@@ -174,7 +179,9 @@ export function CharacterPage() {
         .catch(() => {
           /* character not found or forbidden — leave undefined */
         })
-        .finally(() => { if (!cancelled) setCharLoaded(true); });
+        .finally(() => {
+          if (!cancelled) setCharLoaded(true);
+        });
     } else {
       const char =
         PRESET_CHARACTERS.find((c) => c.id === id) ?? getCustomCharacter(id);
@@ -202,7 +209,9 @@ export function CharacterPage() {
       }
       setCharLoaded(true);
     }
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, user?.id]);
 
@@ -344,12 +353,9 @@ export function CharacterPage() {
 
   // Use campaignId from URL/state immediately (available on mount),
   // fall back to membership.campaignId when loaded via API.
-  const campaignIdForDice = fromCampaignId ?? (membership?.campaignId ?? null)
+  const campaignIdForDice = fromCampaignId ?? membership?.campaignId ?? null;
 
-  const broadcastDiceRoll = useCampaignDiceChannel(
-    campaignIdForDice,
-    () => {},
-  )
+  const broadcastDiceRoll = useCampaignDiceChannel(campaignIdForDice, () => {});
 
   const { scrollY } = useScroll();
   const backOpacity = useTransform(scrollY, [0, 150], [1, 0.35]);
@@ -534,13 +540,16 @@ export function CharacterPage() {
 
   /* ── Diary ───────────────────────────────────────────────────── */
 
-  const handleDiaryChange = useCallback((data: DiaryData) => {
-    setDiaryData(data);
-    if (id) {
-      if (isApiChar) void api.characters.updateDiary(id, data);
-      else saveDiary(id, data);
-    }
-  }, [id, isApiChar]);
+  const handleDiaryChange = useCallback(
+    (data: DiaryData) => {
+      setDiaryData(data);
+      if (id) {
+        if (isApiChar) void api.characters.updateDiary(id, data);
+        else saveDiary(id, data);
+      }
+    },
+    [id, isApiChar],
+  );
 
   /* ── Entropia ────────────────────────────────────────────────── */
 
@@ -746,26 +755,110 @@ export function CharacterPage() {
 
   if (!charLoaded) {
     return (
-      <div className="min-h-screen" style={{ background: "var(--color-abyss)" }}>
+      <div
+        className="min-h-screen"
+        style={{ background: "var(--color-abyss)" }}
+      >
         <style>{`@keyframes pulse{0%,100%{opacity:0.75}50%{opacity:0.25}}`}</style>
         {/* Hero skeleton */}
-        <div style={{ height: '55vh', minHeight: 380, background: 'rgba(200,146,42,0.12)', animation: 'pulse 1.8s ease-in-out infinite', position: 'relative' }}>
-          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%', background: 'linear-gradient(to top, var(--color-abyss) 0%, transparent 100%)' }} />
+        <div
+          style={{
+            height: "55vh",
+            minHeight: 380,
+            background: "rgba(200,146,42,0.12)",
+            animation: "pulse 1.8s ease-in-out infinite",
+            position: "relative",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: "60%",
+              background:
+                "linear-gradient(to top, var(--color-abyss) 0%, transparent 100%)",
+            }}
+          />
         </div>
         {/* Content skeleton */}
-        <div style={{ maxWidth: 860, margin: '0 auto', padding: '2rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div
+          style={{
+            maxWidth: 860,
+            margin: "0 auto",
+            padding: "2rem 1.5rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1.5rem",
+          }}
+        >
           <div>
-            <div style={{ height: 12, width: 80, borderRadius: 4, background: 'rgba(200,146,42,0.2)', marginBottom: '0.75rem', animation: 'pulse 1.8s ease-in-out infinite' }} />
-            <div style={{ height: 36, width: 260, borderRadius: 4, background: 'rgba(200,146,42,0.28)', marginBottom: '0.5rem', animation: 'pulse 1.8s ease-in-out infinite' }} />
-            <div style={{ height: 14, width: 180, borderRadius: 4, background: 'rgba(200,146,42,0.18)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+            <div
+              style={{
+                height: 12,
+                width: 80,
+                borderRadius: 4,
+                background: "rgba(200,146,42,0.2)",
+                marginBottom: "0.75rem",
+                animation: "pulse 1.8s ease-in-out infinite",
+              }}
+            />
+            <div
+              style={{
+                height: 36,
+                width: 260,
+                borderRadius: 4,
+                background: "rgba(200,146,42,0.28)",
+                marginBottom: "0.5rem",
+                animation: "pulse 1.8s ease-in-out infinite",
+              }}
+            />
+            <div
+              style={{
+                height: 14,
+                width: 180,
+                borderRadius: 4,
+                background: "rgba(200,146,42,0.18)",
+                animation: "pulse 1.8s ease-in-out infinite",
+              }}
+            />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
-            {[1, 2].map(i => (
-              <div key={i} style={{ height: 120, borderRadius: 6, background: 'rgba(200,146,42,0.12)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: "1rem",
+            }}
+          >
+            {[1, 2].map((i) => (
+              <div
+                key={i}
+                style={{
+                  height: 120,
+                  borderRadius: 6,
+                  background: "rgba(200,146,42,0.12)",
+                  animation: "pulse 1.8s ease-in-out infinite",
+                }}
+              />
             ))}
           </div>
-          <div style={{ height: 200, borderRadius: 6, background: 'rgba(200,146,42,0.1)', animation: 'pulse 1.8s ease-in-out infinite' }} />
-          <div style={{ height: 140, borderRadius: 6, background: 'rgba(200,146,42,0.1)', animation: 'pulse 1.8s ease-in-out infinite' }} />
+          <div
+            style={{
+              height: 200,
+              borderRadius: 6,
+              background: "rgba(200,146,42,0.1)",
+              animation: "pulse 1.8s ease-in-out infinite",
+            }}
+          />
+          <div
+            style={{
+              height: 140,
+              borderRadius: 6,
+              background: "rgba(200,146,42,0.1)",
+              animation: "pulse 1.8s ease-in-out infinite",
+            }}
+          />
         </div>
       </div>
     );
@@ -830,9 +923,9 @@ export function CharacterPage() {
         campaignIdForDice && id && user
           ? (entry) =>
               broadcastDiceRoll({
-                type: 'DICE_ROLL',
+                type: "DICE_ROLL",
                 characterId: id,
-                characterName: character?.name ?? 'Personagem',
+                characterName: character?.name ?? "Personagem",
                 senderId: user.id,
                 entry,
               })
@@ -1403,9 +1496,7 @@ export function CharacterPage() {
                         textTransform: "uppercase",
                         outline: "none",
                       }}
-                      onKeyDown={(e) =>
-                        e.key === "Enter" && handleJoinShip()
-                      }
+                      onKeyDown={(e) => e.key === "Enter" && handleJoinShip()}
                     />
                     <button
                       onClick={handleJoinShip}
@@ -1554,10 +1645,18 @@ export function CharacterPage() {
         />
 
         {/* ── Floating mechanics button ───────────────────── */}
-        <FloatingMechanicsButton accentColor={accent.text} isMenuOpen={floatingMenuOpen} bottom={220} />
+        <FloatingMechanicsButton
+          accentColor={accent.text}
+          isMenuOpen={floatingMenuOpen}
+          bottom={220}
+        />
 
         {/* ── Floating dice button ─────────────────────────── */}
-        <FloatingDiceButton accentColor={accent.text} isMenuOpen={floatingMenuOpen} bottom={284} />
+        <FloatingDiceButton
+          accentColor={accent.text}
+          isMenuOpen={floatingMenuOpen}
+          bottom={284}
+        />
 
         {/* ── Skill test overlay ───────────────────────────── */}
         {skillTest && (
