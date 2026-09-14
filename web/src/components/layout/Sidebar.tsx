@@ -1,6 +1,11 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { PARTS, getChaptersByPart } from "@/data/chapterManifest";
+import { useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  PARTS,
+  getChaptersByPart,
+  getChapterBySlug,
+} from "@/data/chapterManifest";
 import type { Part, ChapterMeta } from "@/data/chapterManifest";
 import versionData from "@version";
 
@@ -12,6 +17,25 @@ const PART_NUMBERS: Record<Part, string> = {
   "O Mundo": "V",
   "One-Shots": "VI",
 };
+
+const SIDEBAR_OPEN_GROUPS_KEY = "arcadia_sidebar_open_groups";
+
+function loadOpenGroups(): Record<string, boolean> {
+  try {
+    const raw = localStorage.getItem(SIDEBAR_OPEN_GROUPS_KEY);
+    return raw ? (JSON.parse(raw) as Record<string, boolean>) : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveOpenGroups(groups: Record<string, boolean>) {
+  try {
+    localStorage.setItem(SIDEBAR_OPEN_GROUPS_KEY, JSON.stringify(groups));
+  } catch {
+    // localStorage indisponível (modo privado, quota etc.) — falha silenciosa
+  }
+}
 
 function SearchIcon() {
   return (
@@ -32,27 +56,55 @@ function SearchIcon() {
   );
 }
 
+function ChevronIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{
+        flexShrink: 0,
+        transform: open ? "rotate(90deg)" : "none",
+        transition: "transform 0.2s ease",
+      }}
+    >
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
+  );
+}
+
 interface SidebarProps {
   onClose?: () => void;
   onSearchOpen: () => void;
 }
 
-function ChapterLink({
+function ChapterRow({
   chapter,
   onClose,
+  hasChildren,
+  isOpen,
+  onToggle,
 }: {
   chapter: ChapterMeta;
   onClose?: () => void;
+  hasChildren?: boolean;
+  isOpen?: boolean;
+  onToggle?: () => void;
 }) {
   const isChild = !!chapter.parentSlug;
   return (
-    <li key={chapter.id}>
+    <div className="flex items-stretch gap-0.5">
       <NavLink
         to={`/capitulo/${chapter.slug}`}
         onClick={onClose}
         className={({ isActive }) =>
           [
-            "flex items-center gap-3 py-2 rounded-md text-sm transition-all duration-150",
+            "flex flex-1 min-w-0 items-center gap-3 py-2 rounded-md text-sm transition-all duration-150",
             isChild ? "px-2" : "px-3",
             isActive
               ? "border-l-2 bg-opacity-20 font-medium"
@@ -86,15 +138,64 @@ function ChapterLink({
             {String(chapter.order).padStart(2, "0")}
           </span>
         )}
-        <span style={{ fontSize: isChild ? "0.8rem" : undefined }}>
+        <span
+          className="truncate"
+          style={{ fontSize: isChild ? "0.8rem" : undefined }}
+        >
           {chapter.title}
         </span>
       </NavLink>
-    </li>
+      {hasChildren && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onToggle?.();
+          }}
+          aria-label={isOpen ? `Recolher ${chapter.title}` : `Expandir ${chapter.title}`}
+          aria-expanded={isOpen}
+          className="flex items-center justify-center rounded-md shrink-0 transition-colors duration-150 hover:bg-opacity-10"
+          style={{
+            width: 28,
+            color: "var(--color-text-muted)",
+          }}
+        >
+          <ChevronIcon open={!!isOpen} />
+        </button>
+      )}
+    </div>
   );
 }
 
 export function Sidebar({ onClose, onSearchOpen }: SidebarProps) {
+  const location = useLocation();
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(
+    loadOpenGroups,
+  );
+
+  const activeSlug = location.pathname.startsWith("/capitulo/")
+    ? location.pathname.slice("/capitulo/".length)
+    : null;
+  const activeChapter = activeSlug ? getChapterBySlug(activeSlug) : undefined;
+  const activeGroupSlug = activeChapter
+    ? (activeChapter.parentSlug ?? activeChapter.slug)
+    : null;
+  const activePart = activeChapter ? activeChapter.part : null;
+
+  function isDefaultOpen(key: string) {
+    return key === activeGroupSlug || key === activePart;
+  }
+
+  function toggleGroup(key: string) {
+    setOpenGroups((prev) => {
+      const current = prev[key] ?? isDefaultOpen(key);
+      const next = { ...prev, [key]: !current };
+      saveOpenGroups(next);
+      return next;
+    });
+  }
+
   return (
     <nav className="flex flex-col h-full overflow-y-auto py-6 px-4">
       {/* Logo */}
@@ -158,31 +259,81 @@ export function Sidebar({ onClose, onSearchOpen }: SidebarProps) {
           return acc;
         }, {});
 
+        const isPartOpen = openGroups[part] ?? isDefaultOpen(part);
+        const partLabel = `Parte ${PART_NUMBERS[part]} — ${part}`;
+
         return (
           <div key={part} className="mb-6">
-            <p
-              className="text-xs font-semibold uppercase tracking-widest mb-3 px-2"
-              style={{
-                color: "var(--color-text-muted)",
-                fontFamily: "var(--font-ui)",
-              }}
+            <button
+              type="button"
+              onClick={() => toggleGroup(part)}
+              aria-expanded={isPartOpen}
+              aria-label={isPartOpen ? `Recolher ${partLabel}` : `Expandir ${partLabel}`}
+              className="w-full flex items-center gap-1.5 mb-3 px-2 rounded-md transition-colors duration-150 hover:bg-opacity-10"
             >
-              Parte {PART_NUMBERS[part]} — {part}
-            </p>
-            <ul className="space-y-0.5">
-              {parents.map((chapter) => (
-                <React.Fragment key={chapter.id}>
-                  <ChapterLink chapter={chapter} onClose={onClose} />
-                  {(childrenByParent[chapter.slug] ?? []).map((child) => (
-                    <ChapterLink
-                      key={child.id}
-                      chapter={child}
-                      onClose={onClose}
-                    />
-                  ))}
-                </React.Fragment>
-              ))}
-            </ul>
+              <ChevronIcon open={isPartOpen} />
+              <span
+                className="text-xs font-semibold uppercase tracking-widest text-left"
+                style={{
+                  color: "var(--color-text-muted)",
+                  fontFamily: "var(--font-ui)",
+                }}
+              >
+                {partLabel}
+              </span>
+            </button>
+            <AnimatePresence initial={false}>
+              {isPartOpen && (
+                <motion.ul
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                  style={{ overflow: "hidden" }}
+                  className="space-y-0.5"
+                >
+                  {parents.map((chapter) => {
+                    const children = childrenByParent[chapter.slug] ?? [];
+                    const hasChildren = children.length > 0;
+                    const isOpen =
+                      hasChildren &&
+                      (openGroups[chapter.slug] ?? isDefaultOpen(chapter.slug));
+
+                    return (
+                      <li key={chapter.id}>
+                        <ChapterRow
+                          chapter={chapter}
+                          onClose={onClose}
+                          hasChildren={hasChildren}
+                          isOpen={isOpen}
+                          onToggle={() => toggleGroup(chapter.slug)}
+                        />
+                        {hasChildren && (
+                          <AnimatePresence initial={false}>
+                            {isOpen && (
+                              <motion.ul
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.2, ease: "easeInOut" }}
+                                style={{ overflow: "hidden" }}
+                                className="space-y-0.5 mt-0.5"
+                              >
+                                {children.map((child) => (
+                                  <li key={child.id}>
+                                    <ChapterRow chapter={child} onClose={onClose} />
+                                  </li>
+                                ))}
+                              </motion.ul>
+                            )}
+                          </AnimatePresence>
+                        )}
+                      </li>
+                    );
+                  })}
+                </motion.ul>
+              )}
+            </AnimatePresence>
           </div>
         );
       })}

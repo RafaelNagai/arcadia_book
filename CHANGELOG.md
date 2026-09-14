@@ -9,6 +9,8 @@
 - Ofício agora também permite refinar itens existentes e combinar efeitos, usando o próprio item como ingrediente.
 - A antiga regra separada de forja foi substituída pelo Ofício: qualquer criação ou melhoria de item agora segue o mesmo processo.
 - O capítulo de Ofício foi reorganizado para apresentar primeiro a criação básica e depois o refinamento de itens e efeitos.
+- O menu lateral do site ficou mais organizado: capítulos que têm subcapítulos agora vêm fechados por padrão, escondendo a lista comprida. Clique na setinha ao lado do capítulo para abrir ou fechar seus subcapítulos — sua escolha fica salva para a próxima visita. Ao abrir um subcapítulo direto pela busca ou por um link, o capítulo pai já aparece aberto automaticamente, com o subcapítulo em destaque.
+- Agora as próprias seções do menu lateral ("Parte I — Fundamentos", "Parte II — O Arcano" etc.) também podem ser abertas e fechadas clicando no título, do mesmo jeito que já funcionava para os capítulos com subcapítulos. Ao acessar qualquer capítulo, a Parte correspondente já aparece aberta automaticamente.
 
 ## 2026-09-10
 
