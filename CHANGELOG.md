@@ -5,6 +5,8 @@
 
 ## 2026-09-15
 
+- A Defesa Ativa e a Defesa Passiva da ficha agora são calculadas automaticamente a partir da armadura e dos equipamentos que o personagem está usando, em vez de precisar digitar o valor manualmente. Basta equipar ou trocar de equipamento que os números já se ajustam sozinhos.
+- Deixamos a ficha de personagem mais rápida ao mexer no inventário — trocar um item de bolso, guardar algo na mochila ou gastar durabilidade não trava mais a tela como acontecia logo depois da mudança acima.
 - Ajustamos a escala usada para medir o tamanho dos efeitos de magia (a "Tabela de Grandeza") de 0-100 para 0-50, deixando mais simples calibrar feitiços e invocações — os exemplos do livro foram atualizados para bater com a nova escala. O bônus de quem conjura com um elemento que não combina com ele (−10) ou tem uma conexão rara com o mesmo elemento nos dois lados (+10) continua exatamente o mesmo de antes — essa rescala não muda esse bônus. A dificuldade geral dos testes comuns (escalar, persuadir, etc.) também não muda em nada — continua na escala de 0 a 100 de sempre.
 - A Tabela de Grandeza (a régua que mede o tamanho dos efeitos de magia) ganhou um novo nível intermediário chamado "Sutil", entre "Menor" e "Moderado", e o nível mais alto ("Absoluto") foi removido — as faixas ficaram mais equilibradas e cobrindo o mesmo intervalo de antes. Os exemplos do livro que citavam essa tabela foram atualizados para continuar batendo com os novos níveis.
 - Corrigimos uma informação errada que tínhamos colocado aqui mais cedo hoje: o bônus de quem conjura com um elemento que não combina com ele, e o de quem tem uma conexão rara com o mesmo elemento nos dois lados, nunca mudou de valor — continua igual a antes.

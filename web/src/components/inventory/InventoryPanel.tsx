@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   DndContext,
@@ -11,7 +11,7 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import { WEIGHT_VALUES } from "@/data/characterTypes";
+import { WEIGHT_VALUES, calcDaBaseFromItems } from "@/data/characterTypes";
 import type { InventoryBag, InventoryItem } from "@/data/characterTypes";
 import {
   loadInventory,
@@ -67,6 +67,7 @@ export function InventoryPanel({
   onRollDamage,
   canEdit,
   inventorySnapshot,
+  onEquippedDaBaseChange,
 }: {
   characterId: string;
   fisico: number;
@@ -76,6 +77,7 @@ export function InventoryPanel({
   onRollDamage?: (damageStr: string, equipmentName: string) => void;
   canEdit?: boolean;
   inventorySnapshot?: { bags: InventoryBag[]; items: InventoryItem[] } | null;
+  onEquippedDaBaseChange?: (daBase: number) => void;
 }) {
   const totalSlots = 4;
   const maxWeight = 20 + fisico * 5;
@@ -122,6 +124,13 @@ export function InventoryPanel({
     setItems(inventorySnapshot.items);
     setBags(inventorySnapshot.bags);
   }, [inventorySnapshot]);
+
+  // Only the 4 active slots count toward DA — recomputed locally so unrelated
+  // inventory edits (reorder, rename, bag contents...) don't re-render the parent page.
+  const equippedDaBase = useMemo(() => calcDaBaseFromItems(items), [items]);
+  useEffect(() => {
+    onEquippedDaBaseChange?.(equippedDaBase);
+  }, [equippedDaBase, onEquippedDaBaseChange]);
 
   const allItems = [...items, ...bags.flatMap((b) => b.items)];
   const currentWeight = allItems.reduce(

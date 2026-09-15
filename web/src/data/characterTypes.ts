@@ -99,6 +99,24 @@ export interface InventoryItem {
   effects?: string[]
 }
 
+export function calcDaBaseFromItems(items: InventoryItem[]): number {
+  let maxFixedDa = 0
+  let bonusDa = 0
+  for (const item of items) {
+    if (!item.isEquipment || !item.da) continue
+    if (item.currentDurability === 0) continue
+    const value = item.da.trim()
+    if (value.startsWith('+')) {
+      const bonus = Number(value.slice(1))
+      if (Number.isFinite(bonus)) bonusDa += bonus
+    } else {
+      const fixed = Number(value)
+      if (Number.isFinite(fixed)) maxFixedDa = Math.max(maxFixedDa, fixed)
+    }
+  }
+  return Math.max(1, maxFixedDa) + bonusDa
+}
+
 export interface CharacterSkills {
   // Físico
   fortitude: number

@@ -165,7 +165,6 @@ export function CharacterPage() {
               daBonus?: number;
               dpBonus?: number;
             }) ?? {};
-          setDaBase(dm.daBase ?? 1);
           setDaBonus(dm.daBonus ?? 0);
           setDpBonus(dm.dpBonus ?? 0);
           setInitialDiceLog((s.diceLog as DiceLogEntry[]) ?? []);
@@ -200,7 +199,6 @@ export function CharacterPage() {
         });
         setSkillModifiers(loadSkillModifiers(id));
         const dm = loadDefenseModifiers(id);
-        setDaBase(dm.daBase);
         setDaBonus(dm.daBonus);
         setDpBonus(dm.dpBonus);
         setConditions(loadConditions(id));
@@ -294,7 +292,6 @@ export function CharacterPage() {
       if (data.skill_modifiers && stateGracePassed)
         setSkillModifiers(data.skill_modifiers);
       if (data.defense_modifiers && stateGracePassed) {
-        setDaBase(data.defense_modifiers.daBase);
         setDaBonus(data.defense_modifiers.daBonus);
         setDpBonus(data.defense_modifiers.dpBonus);
       }
@@ -396,23 +393,6 @@ export function CharacterPage() {
   }
 
   /* ── Defense modifiers ───────────────────────────────────────── */
-
-  function handleDaBaseChange(delta: number) {
-    lastLocalStateTime.current = Date.now();
-    setDaBase((prev) => {
-      const next = Math.max(0, prev + delta);
-      if (id) {
-        if (isApiChar)
-          void api.state.updateDefenseModifiers(id, {
-            daBase: next,
-            daBonus,
-            dpBonus,
-          });
-        else saveDefenseModifiers(id, { daBase: next, daBonus, dpBonus });
-      }
-      return next;
-    });
-  }
 
   function handleDaChange(delta: number) {
     lastLocalStateTime.current = Date.now();
@@ -987,7 +967,6 @@ export function CharacterPage() {
             daBase={daBase}
             daBonus={daBonus}
             dpBonus={dpBonus}
-            onDaBaseChange={canEdit ? handleDaBaseChange : undefined}
             onDaChange={canEdit ? handleDaChange : undefined}
             onDaReset={canEdit ? handleDaReset : undefined}
             onDpChange={canEdit ? handleDpChange : undefined}
@@ -1685,6 +1664,7 @@ export function CharacterPage() {
             }
             canEdit={canEdit}
             inventorySnapshot={builtInventorySnapshot}
+            onEquippedDaBaseChange={setDaBase}
           />
         )}
 

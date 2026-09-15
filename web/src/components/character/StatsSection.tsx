@@ -17,7 +17,6 @@ export function StatsSection({
   daBase,
   daBonus,
   dpBonus,
-  onDaBaseChange,
   onDaChange,
   onDaReset,
   onDpChange,
@@ -40,7 +39,6 @@ export function StatsSection({
   daBase: number;
   daBonus: number;
   dpBonus: number;
-  onDaBaseChange?: (delta: number) => void;
   onDaChange?: (delta: number) => void;
   onDaReset?: () => void;
   onDpChange?: (delta: number) => void;
@@ -94,7 +92,6 @@ export function StatsSection({
           daBonus={daBonus}
           dpBonus={dpBonus}
           conditionEffectMap={conditionEffectMap}
-          onDaBaseChange={owned ? onDaBaseChange : undefined}
           onDaChange={owned ? onDaChange : undefined}
           onDaReset={owned ? onDaReset : undefined}
           onDpChange={owned ? onDpChange : undefined}

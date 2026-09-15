@@ -11,27 +11,6 @@ export function calcDpTotal(da: number, dpBonus: number): number {
   return Math.max(0, Math.floor(da / 2) + dpBonus)
 }
 
-const actionBtn = (
-  color: string,
-  disabled: boolean,
-): React.CSSProperties => ({
-  width: 28,
-  height: 28,
-  borderRadius: 4,
-  background: disabled ? "rgba(255,255,255,0.03)" : `${color}18`,
-  border: `1px solid ${disabled ? "rgba(255,255,255,0.08)" : color + "55"}`,
-  color: disabled ? "rgba(255,255,255,0.18)" : color,
-  fontFamily: "var(--font-ui)",
-  fontSize: "1rem",
-  lineHeight: 1,
-  cursor: disabled ? "not-allowed" : "pointer",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  transition: "all 0.15s",
-  flexShrink: 0,
-})
-
 const smallBtn: React.CSSProperties = {
   width: 20,
   height: 20,
@@ -65,7 +44,6 @@ export function DefenseStats({
   daBonus,
   dpBonus,
   conditionEffectMap,
-  onDaBaseChange,
   onDaChange,
   onDaReset,
   onDpChange,
@@ -75,7 +53,6 @@ export function DefenseStats({
   daBonus: number
   dpBonus: number
   conditionEffectMap?: Record<string, number>
-  onDaBaseChange?: (delta: number) => void
   onDaChange?: (delta: number) => void
   onDaReset?: () => void
   onDpChange?: (delta: number) => void
@@ -96,7 +73,7 @@ export function DefenseStats({
 
   return (
     <div>
-      {/* ── Label + stepper para DA base ── */}
+      {/* ── Label ── */}
       <div className="flex items-center gap-2 mb-2">
         <p
           className="text-xs font-semibold uppercase tracking-[0.2em]"
@@ -104,23 +81,6 @@ export function DefenseStats({
         >
           Defesa
         </p>
-        {onDaBaseChange && (
-          <>
-            <button
-              disabled={daBase === 0}
-              onClick={() => daBase > 0 && onDaBaseChange(-1)}
-              style={actionBtn(DA_COLOR, daBase === 0)}
-            >
-              −
-            </button>
-            <button
-              onClick={() => onDaBaseChange(+1)}
-              style={actionBtn(DA_COLOR, false)}
-            >
-              +
-            </button>
-          </>
-        )}
       </div>
 
       {/* ── DA + DP ── */}
