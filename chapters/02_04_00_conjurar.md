@@ -22,7 +22,7 @@ A magia é executada como uma **ação rápida**, mas o conjurador entra em esta
 A magia é tecida na própria realidade — permanente até ser removida.
 
 - **Duração:** Permanente até ritual de dissipação ou cancelamento voluntário
-- **Exigência:** Os resultados de **Controle** e **Complexidade** devem atingir **uma a duas categorias acima** do que a magia exigiria normalmente na Tabela de Grandeza. Exemplo: uma magia de nível Considerável (31–40), tecida como Maldição, requer resultados na faixa Grande (41–50) ou Severo (51–60).
+- **Exigência:** Os resultados de **Controle** e **Complexidade** devem atingir **uma a duas categorias acima** do que a magia exigiria normalmente na Tabela de Grandeza. Exemplo: uma magia de nível Considerável (21–25), tecida como Maldição, requer resultados na faixa Grande (26–30) ou Severo (31–35).
 - **Uso típico:** Invocações permanentes, amaldiçoar alvos, alterar permanentemente um ambiente
 
 ---
@@ -128,18 +128,18 @@ Não é uma DT — é uma referência para o Mestre narrar **como** cada dimens�
 
 | Resultado | Nível | Âncora de escala |
 |---|---|---|
-| 0 – 10 | **Ínfimo** | Ponto único — uma moeda, uma vela, um toque |
-| 11 – 20 | **Menor** | Objeto pequeno — livro, pedra, animal de pequeno porte |
-| 21 – 30 | **Moderado** | Objeto médio — barril, mesa, criança |
-| 31 – 40 | **Considerável** | Humano adulto |
-| 41 – 50 | **Grande** | Criatura grande — urso, boi, porta de fortaleza |
-| 51 – 60 | **Severo** | Cavalo ou carroça carregada |
-| 61 – 70 | **Extremo** | Elefante ou canhão de navio |
-| 71 – 80 | **Colossal** | Aldeia ou navio pequeno |
-| 81 – 90 | **Catastrófico** | Cidade ou navio de guerra |
-| 91 – 100 | **Absoluto** | País ou ilha inteira |
+| 0 – 5 | **Ínfimo** | Ponto único — uma moeda, uma vela, um toque |
+| 6 – 10 | **Menor** | Objeto pequeno — livro, pedra, animal de pequeno porte |
+| 11 – 15 | **Sutil** | Objeto pequeno-médio — cadeira, cão, malote |
+| 16 – 20 | **Moderado** | Objeto médio — barril, mesa, criança |
+| 21 – 25 | **Considerável** | Humano adulto |
+| 26 – 30 | **Grande** | Criatura grande — urso, boi, porta de fortaleza |
+| 31 – 35 | **Severo** | Cavalo ou carroça carregada |
+| 36 – 40 | **Extremo** | Elefante ou canhão de navio |
+| 41 – 45 | **Colossal** | Aldeia ou navio pequeno |
+| 46 – 50 | **Catastrófico** | Cidade ou navio de guerra |
 
-**Exemplo:** Bola de fogo exige Potência + Forma. Potência = 35 (Considerável) e Forma = 10 (Ínfimo) — força para afetar um alvo do tamanho de um humano, mas sem forma definida: as chamas explodiram em todas as direções sem controle.
+**Exemplo:** Bola de fogo exige Potência + Forma. Potência = 23 (Considerável) e Forma = 5 (Ínfimo) — força para afetar um alvo do tamanho de um humano, mas sem forma definida: as chamas explodiram em todas as direções sem controle.
 
 Saiba mais sobre as [DTs](dificuldade-testes).
 

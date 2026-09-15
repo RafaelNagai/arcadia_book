@@ -36,24 +36,24 @@ Esta lista é uma referencia de como poderia ser conforme o teste do conjurador.
 | Resultado | Tier da entidade | Dado Base |
 |---|---|---|
 | 0 – 20 | Menor — animal de pequeno porte, construto frágil | D6
-| 21 – 40 | Padrão — criatura do tamanho de um humano adulto | D8
-| 41 – 60 | Elite — criatura grande, urso, elemental robusto | D12
-| 61+ | Chefe — entidade colossal, ancião de plano, construto monumental | D20
+| 21 – 30 | Padrão — criatura do tamanho de um humano adulto | D8
+| 31 – 40 | Elite — criatura grande, urso, elemental robusto | D12
+| 41+ | Chefe — entidade colossal, ancião de plano, construto monumental | D20
 
 **Complexidade** — Determina a sofisticação da invocação.
 
 | Resultado | Sofisticação | Quantidade de Dados
 |---|---|---|
 | 0 – 20 | Bruta — sem habilidades especiais | 2 |
-| 21 – 40 | Capaz — possui 1 habilidade especial | 3 |
-| 41+ | Refinada — possui 2 habilidades especiais | 4 |
+| 21 – 30 | Capaz — possui 1 habilidade especial | 3 |
+| 31+ | Refinada — possui 2 habilidades especiais | 4 |
 
 **Controle** — Determina se o conjurador consegue ou não comandar a invocação criada.
 | Resultado | Comandos | Exemplos
 |---|---|---|
 | 0 – 20 | Comandos basicos | atacar, defender, esquivar, etc. |
-| 21 – 40 | Comandos avançados | Explicar algo complexo para fazer, como proteger um aliado, pedir para pegar um item, etc. |
-| 41+ | Inteligente | Não precisa mandar um comando, a invocação pode fazer ações sem instruções pré-determinadas pelo invocador. |
+| 21 – 30 | Comandos avançados | Explicar algo complexo para fazer, como proteger um aliado, pedir para pegar um item, etc. |
+| 31+ | Inteligente | Não precisa mandar um comando, a invocação pode fazer ações sem instruções pré-determinadas pelo invocador. |
 
 ### Como calcular
 

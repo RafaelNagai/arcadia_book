@@ -11,6 +11,7 @@
 
 ### Em andamento
 
+---
 
 ### Call: Limitar Qualidade de Vídeo — Validação Manual Pendente (Subtask 3)
 **Origem:** /task Limitar qualidade de vídeo da call (CallTab.tsx) para reduzir consumo de banda no Cloudflare Realtime: constranger `getUserMedia` (resolução/frameRate) e capar o bitrate do encoder via `sendEncodings` no `addTransceiver` de vídeo. Sem toggle de "economizar dados" — valor fixo, mantendo usabilidade razoável para uma chamada de RPG (personagens visíveis, sem travar/pixelizar a ponto de atrapalhar).
@@ -71,6 +72,17 @@
 
 ## Backlog
 
+### Follow-up: Sincronizar equipment.json e Widgets Arcanos com a Nova Escala de DT de Conjuração
+**Origem:** Consequência direta da task "Rescala da DT de Conjuração — 0-100 para 0-50" (ver `## Concluídos` — aprovada em 2026-09-15) — sinalizado pelo Planner, não pedido ainda pelo usuário.
+**Adicionada:** 2026-09-15
+
+- [ ] Auditar `equipment.json` por bônus arcanos calibrados na escala antiga (tetos de +20, faixas de Grandeza) e re-calibrar proporcionalmente após a rescala do livro ser aprovada — o bônus ±10 de Antítese/Dupla Conexão não muda com a rescala (permanece ±10, ver fix "Reverter Bônus de Antítese/Dupla Conexão para ±10" em Sprint Ativa) e não precisa de recalibração
+  - **Arquivos:** `equipment.json`
+- [ ] Auditar `ArcaneConfigPanel.tsx`, `ArcaneTestOverlay.tsx`, `AfinidadeWidget.tsx` (e qualquer outro widget que exiba faixas de Grandeza) contra o livro atualizado — o bônus ±10 de Antítese/Dupla Conexão exibido nesses widgets já está correto e não precisa mudar
+  - **Arquivos:** `web/src/components/**/ArcaneConfigPanel.tsx`, `ArcaneTestOverlay.tsx`, `AfinidadeWidget.tsx`
+
+---
+
 ### TURN para Chamada de Vídeo em Redes Móveis (CGNAT) + Validação em Dispositivo Real
 **Origem:** Subtasks 2 e 4 de "Bug: Entrar na Call Não Funciona no Celular" (ver Concluídos, 2026-09-09) — a investigação confirmou que a configuração de ICE hoje usa só STUN (`stun.cloudflare.com`, `web/src/components/call/CallTab.tsx`), sem nenhum servidor TURN, o que pode ser a causa raiz da falha em redes de operadora/CGNAT — ainda não confirmado por teste real em dispositivo móvel.
 
@@ -114,6 +126,121 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 ---
 
 ## Concluídos
+
+### Reorganizar Tabela de Grandeza em `chapters/02_04_00_conjurar.md` — Inserir Nível "Sutil" e Remover "Absoluto"
+**Origem:** /task Ajustar a Tabela de Grandeza em `chapters/02_04_00_conjurar.md`: remover o nível "Absoluto" (46–50, País ou ilha inteira) do final da tabela, e inserir um novo nível "Sutil" (11–15, âncora "Objeto pequeno-médio — cadeira, cão, malote") entre "Menor" e "Moderado", deslocando os níveis seguintes uma posição — pedido direto do usuário (dono do produto); nome do nível e âncora já decididos com ele, não é para reabrir essa escolha.
+**Adicionada:** 2026-09-15 · **Validator:** APROVADO no ciclo 1 · **Concluída:** 2026-09-15
+
+**Contexto:** continuação pontual da task "Rescala da DT de Conjuração — 0-100 para 0-50" (ver entrada abaixo em `## Concluídos`) — a escala 0-50 da Tabela de Grandeza permanece fixa; esta task só reorganiza nomes/faixas dentro dela.
+
+**Verificação de duplicidade (Sprint.md):** busquei por "Sutil", "Absoluto" e "Grandeza" em Sprint Ativa/Backlog/Concluídos — nenhuma task pendente ou duplicada sobre reorganizar a Tabela de Grandeza. A única entrada relacionada é a já concluída "Rescala da DT de Conjuração — 0-100 para 0-50" e o item de Backlog "Follow-up: Sincronizar equipment.json e Widgets Arcanos com a Nova Escala de DT de Conjuração" — este último audita bônus numéricos de `equipment.json`/widgets calibrados na escala antiga (0-100→0-50), não nomes/faixas da tabela; sem sobreposição. Task nova.
+
+**Levantamento de referências externas (varredura em `chapters/` por "Absoluto", "Considerável (16", "Moderado (11", "Sutil" e pelos 9 nomes de nível):**
+- `01_03_00_evolucao_e_testes.md:39-48` e `01_04_02_dificuldade_testes.md` (várias linhas) usam os mesmos nomes de nível (Ínfimo...Absoluto), mas são a **DT geral de testes, escala 0-100** — tabela e propósito totalmente diferentes da Tabela de Grandeza da conjuração. Explicitamente fora de escopo ("Não mexer na DT geral de testes"). **Não tocar.**
+- `02_02_04_cognitivo.md:57` tem uma habilidade chamada "Foco Absoluto" — nome de habilidade sem nenhuma relação com a Tabela de Grandeza. **Não tocar.**
+- `02_01_01_invocacao.md` (tabelas de Forma/Complexidade/Controle, linhas 36-56) usa "Menor" como rótulo de tier, mas com faixas numéricas próprias e independentes (0-20/21-30/31-40/41+). Explicitamente fora de escopo per instrução do usuário. **Não tocar.**
+- `02_05_00_entropia.md` e os capítulos de elementos (`02_02_0X_*.md`): nenhuma menção a nomes/faixas da Tabela de Grandeza.
+- `equipment.json` e `web/src/`: grep não encontrou nenhuma ocorrência de "Grandeza" nem dos nomes de nível — nenhum widget ou item referencia a tabela por nome, então esta reorganização não tem efeito colateral fora de `chapters/`.
+- **Conclusão: a única ocorrência real da Tabela de Grandeza (nomes e faixas) em todo o livro está em `chapters/02_04_00_conjurar.md`, linhas 25 (exemplo de Maldição), 129-140 (tabela) e 142 (exemplo da bola de fogo).** Nenhum outro arquivo precisa de ajuste.
+
+- [x] Subtask 1 — Reescrever a tabela da seção "Tabela de Grandeza" (`chapters/02_04_00_conjurar.md`, linhas ~129-140).
+  - **Critério de aceite:** tabela final com 10 linhas, cobrindo 0-50 sem sobreposição nem buraco; "Absoluto" não aparece mais neste arquivo; "Sutil" aparece exatamente uma vez com a âncora dada.
+  - **Arquivos:** `chapters/02_04_00_conjurar.md`
+  - **Validação:** confirmado por leitura integral do arquivo (linhas 129-140) — tabela final: Ínfimo(0-5), Menor(6-10), Sutil(11-15), Moderado(16-20), Considerável(21-25), Grande(26-30), Severo(31-35), Extremo(36-40), Colossal(41-45), Catastrófico(46-50); 10 linhas, 0-50 sem sobreposição/buraco; âncoras originais preservadas nos níveis deslocados; "Sutil" único, com a âncora "Objeto pequeno-médio — cadeira, cão, malote" (linha 133).
+
+- [x] Subtask 2 — Atualizar os dois exemplos do capítulo para baterem com a tabela nova.
+  - **Critério de aceite:** exemplos de Maldição e bola de fogo consistentes com a tabela nova, mesma leitura narrativa do original.
+  - **Arquivos:** `chapters/02_04_00_conjurar.md`
+  - **Validação:** linha 25 (Maldição) lê "Considerável (21–25)... Grande (26–30) ou Severo (31–35)" — correto. Linha 142 (bola de fogo) lê "Potência = 23 (Considerável) e Forma = 5 (Ínfimo)" — 23 cai em Considerável (21-25) e 5 cai em Ínfimo (0-5); leitura narrativa ("força de humano adulto, mas sem forma definida") preservada.
+
+- [x] Subtask 3 — Varredura final, CHANGELOG e fechamento.
+  - **Critério de aceite:** grep final confirma 0 resquícios; `CHANGELOG.md` tem entrada nova sob a data atual sem jargão técnico; Sprint.md atualizado e entrada movida para Concluídos.
+  - **Arquivos:** `chapters/` (verificação), `CHANGELOG.md`, `Sprint.md`
+  - **Validação:** grep próprio do Validator em `chapters/` por "Absoluto" — só aparece em `01_03_00_evolucao_e_testes.md:48`, `01_04_02_dificuldade_testes.md:35,169,193` (DT geral de testes, 0-100, fora de escopo) e `02_02_04_cognitivo.md:57` ("Foco Absoluto", nome de habilidade sem relação) — nenhum resquício em `02_04_00_conjurar.md`. Grep por faixas antigas ("Considerável (1x", "Moderado (11" etc.) sem nenhum resultado. `CHANGELOG.md` (`## 2026-09-15`) tem a entrada "A Tabela de Grandeza... ganhou um novo nível intermediário chamado 'Sutil'... e o nível mais alto ('Absoluto') foi removido..." em linguagem simples, sem jargão. Entrada movida para `## Concluídos` pelo Validator.
+
+**Confirmação do Validator:** objetivo explícito do usuário confirmado — a faixa 16-20 da Tabela de Grandeza está rotulada "Moderado" (`chapters/02_04_00_conjurar.md:134`). Nenhuma alteração fora do escopo das 3 subtasks; `chapters/` tratado como fonte da verdade.
+
+---
+
+### Fix: Reverter Bônus de Antítese/Dupla Conexão para ±10 (erro na Rescala da DT de Conjuração)
+**Origem:** Correção direta do usuário (dono do produto) sobre a Subtask 3 da task "Rescala da DT de Conjuração — 0-100 para 0-50" (ver entrada abaixo, aprovada em 2026-09-15) — **a task concluída não foi reaberta**; este foi um fix novo em cima dela. O usuário esclareceu que o bônus fixo de ±10 de Antítese/Dupla Conexão (Afinidades) é uma constante independente da escala de Grandeza da conjuração e **não deveria ter sido reduzido para ±5** — julgamento equivocado do Planner anterior, que presumiu (incorretamente) que ±10 era proporcional à escala 0-100 e precisava virar ±5 na escala 0-50. Só a Tabela de Grandeza (DT/resultado de conjuração) muda de escala; o bônus de Afinidade/Antítese permanece ±10, sem alteração.
+**Adicionada:** 2026-09-15 · **Validator:** APROVADO no ciclo 1 · **Concluída:** 2026-09-15
+
+**Verificação de duplicidade:** não havia outra entrada tratando desta reversão — fix novo e pontual sobre uma subtask de uma task já concluída, não uma reabertura.
+
+- [x] Subtask 1 — Reverter as 3 ocorrências de ±5 (linhas 77 e 81) em `chapters/02_01_00_arcanismo.md` de volta para ±10.
+  - **Critério de aceite:** linha 77 lê "−10 no resultado de cada modificador testado"; linha 81 lê "a penalidade de −10 é substituída por +10"; nenhuma ocorrência residual de "−5"/"+5" ligada a Antítese/Dupla Conexão no arquivo; resto do arquivo permanece intocado.
+  - **Arquivos:** `chapters/02_01_00_arcanismo.md`
+  - **Validação:** confirmado por leitura integral do arquivo e grep próprio (`−5`/`+5` sem hits ligados a Antítese; `−10`/`+10` presentes nas linhas 77 e 81); `git diff` contra HEAD vazio — arquivo idêntico ao estado anterior à rescala.
+
+- [x] Subtask 2 — Reverter as 7 ocorrências de ±5 (linhas 20, 21, 23, 25, 48, 59) em `chapters/02_03_00_afinidades.md` de volta para ±10.
+  - **Critério de aceite:** tabela de bônus mecânicos (linhas 20-21) lê Antítese `−10` / Afinidade e Antítese `+10`; texto da linha 23 consistente; os 2 exemplos numéricos (Vael, linha 25; exemplo de criação, linha 59) leem "sofre −10"; regra de Dados Iguais (linha 48) lê "bônus de +10"; nenhuma ocorrência residual de "−5"/"+5".
+  - **Arquivos:** `chapters/02_03_00_afinidades.md`
+  - **Validação:** confirmado por leitura integral do arquivo e grep próprio — todas as 7 ocorrências em ±10, nenhum "−5"/"+5" residual; `git diff` contra HEAD vazio.
+
+- [x] Subtask 3 — Corrigir `CHANGELOG.md` (entrada de 2026-09-15) removendo a menção incorreta à redução de ±10 para ±5, mantendo a parte válida sobre a rescala 0-100→0-50 da Tabela de Grandeza; ajustar a frase da entrada de Backlog "Follow-up: Sincronizar equipment.json..." para não implicar mais que o ±10 de Antítese precisa de recalibração.
+  - **Critério de aceite:** bullet de `CHANGELOG.md` não menciona mais nenhuma mudança no bônus de Antítese/Dupla Conexão; frases sobre a Tabela de Grandeza e a DT geral de testes permanecem; linguagem simples, sem jargão; ajuste no Backlog é só textual, itens de ação (`[ ]`) preservados.
+  - **Arquivos:** `CHANGELOG.md`, `Sprint.md` (Backlog)
+  - **Validação:** `CHANGELOG.md` (seção `## 2026-09-15`) confirmado — 1º bullet mantém só a rescala 0-100→0-50 e afirma que o bônus ±10 não mudou; 2º bullet novo corrige explicitamente a informação errada publicada mais cedo; nenhuma menção a ±5 remanescente. `Sprint.md` Backlog ("Follow-up: Sincronizar equipment.json...") ajustado para deixar claro que o ±10 não precisa de recalibração, mantendo os 2 itens `[ ]` de auditoria (Tabela de Grandeza) em aberto.
+
+**Confirmação adicional do Validator:** Tabela de Grandeza em `chapters/02_04_00_conjurar.md` e as faixas de Forma/Complexidade/Controle em `chapters/02_01_01_invocacao.md` seguem na escala 0-50 (não revertidas por engano). `equipment.json` não precisou de nenhuma mudança (linha ~3447 já referenciava −10). Nenhuma alteração fora do escopo das 3 subtasks.
+
+---
+
+### Rescala da DT de Conjuração — 0-100 para 0-50
+**Origem:** /task Ajustar a escala de DT (Dificuldade) das conjurações no livro de 0-100 para 0-50. Atualizar a tabela de referência de DT, revisar e corrigir todos os exemplos numéricos de conjuração no livro para baterem com a nova escala, e conferir o livro inteiro (chapters/) em busca de qualquer menção ou cálculo de DT de conjuração que ainda esteja na escala antiga (0-100).
+**Adicionada:** 2026-09-15 · **Validator:** APROVADO no ciclo 1 · **Concluída:** 2026-09-15
+
+**Verificação de duplicidade (Sprint.md):** busquei por "DT", "Dificuldade", "conjura", "Grandeza" e "escala" em Sprint Ativa/Backlog/Concluídos — nenhuma task existente toca a escala numérica da conjuração. Task nova.
+
+**Investigação do Planner (leitura completa de todos os capítulos que citam DT/Dificuldade/conjuração em `chapters/`) — achado crítico de escopo:** o livro tem **duas escalas de 0-100 completamente separadas**, e só uma delas é "das conjurações":
+
+1. **DT geral de testes** (`01_04_02_dificuldade_testes.md`, duplicada em `01_03_00_evolucao_e_testes.md`) — usada para **qualquer** teste de perícia (escalar um muro, subornar um comerciante, etc.), fórmula `2D12 + Atributo + Perícia`, com a tabela de 10 faixas Ínfimo(0-10)...Absoluto(91-100) e a frase-âncora "personagens comuns... até DT 50... DT 100 representa o limite do que é possível". **Isto está fora do escopo desta task** — a task pede a escala "das conjurações", não a de testes em geral, e mudar esta tabela quebraria todos os exemplos não-mágicos do livro (climbing DT 20/45, persuasão DT 22, testes navais DT 12-16 em `03_03_00_constelacao_e_navegacao.md`, condições em `01_06_00_condicoes.md`, etc.) — nenhum desses é conjuração.
+2. **Escala própria da conjuração** — a magia usa uma fórmula e uma tabela **diferentes** (`Resultado = Valor do Modificador + D12s alocados + Bônus de Entropia`, `02_04_00_conjurar.md` linha 61), lida na "Tabela de Grandeza" (linha 127: *"Não é uma DT — é uma referência... para narrar como cada dimensão da magia se manifestou"*), também em 10 faixas de 0-100. **Esta é a escala que a task pede para reduzir a 0-50** — é auto-contida ao sistema arcano e não afeta testes comuns.
+
+A Tabela de Grandeza tem duas dependentes diretas que precisam ser rescaladas junto, ou o livro fica inconsistente: as 3 tabelas de faixa de Forma/Complexidade/Controle de `02_01_01_invocacao.md` (que leem o mesmo tipo de resultado de modificador) e o bônus fixo ±10 de Antítese/Dupla Conexão (`02_01_00_arcanismo.md` e `02_03_00_afinidades.md`), calibrado como ~10% da escala de 100 — se a escala virar 0-50 e o ±10 não mudar, a penalidade salta de 10% para 20% do teto, uma mudança de balanceamento não pedida.
+
+**Resolução de ambiguidade do Planner (Executor deve implementar assim; Validator deve checar contra esta resolução, não relitigar):** rescala por **divisão por 2, mantendo o número de faixas e a granularidade "a cada 5 pontos"** (que cai naturalmente para faixas de 5 pontos em vez de 10, já que 50/10 faixas = 5) — é a transformação mais literal e menos invasiva. Efeito colateral aceito e intencional (não é bug): o teto de dano/cura/condição de `02_04_00_conjurar.md` cai de +20D12/+20 Vida/+20 stacks (Absoluto=100) para +10D12/+10 Vida/+10 stacks (Absoluto=50), e o teto de DA de invocação (`02_01_01_invocacao.md` linha 79) cai de +20 para +10 — consequência matemática direta de reduzir o teto da escala pela metade, não um erro a corrigir.
+
+1. [x] **Rescalar a Tabela de Grandeza e seus exemplos em `chapters/02_04_00_conjurar.md`.**
+   - **Descrição:** substituir a tabela da seção "Tabela de Grandeza" (linhas 125-140) pelas novas 10 faixas de 5 pontos em 0-50: `0–5 Ínfimo` / `6–10 Menor` / `11–15 Moderado` / `16–20 Considerável` / `21–25 Grande` / `26–30 Severo` / `31–35 Extremo` / `36–40 Colossal` / `41–45 Catastrófico` / `46–50 Absoluto` (mantendo as âncoras narrativas de cada faixa como estão, só a coluna "Resultado" muda). Atualizar o exemplo de Maldição (linha 25): "Considerável (31–40)... requer... Grande (41–50) ou Severo (51–60)" vira "Considerável (16–20)... requer... Grande (21–25) ou Severo (26–30)". Atualizar o exemplo da bola de fogo (linha 142): "Potência = 35 (Considerável)" e "Forma = 10 (Ínfimo)" viram valores dentro das novas faixas equivalentes (ex.: Potência = 18, Forma = 5) mantendo a mesma leitura narrativa do exemplo. Manter a tabela de "a cada 5 pontos" (Dano/Cura/Condição, linhas 109-115) com o texto igual — o teto cai para +10 naturalmente, não precisa reescrever a regra. Adicionar uma frase junto da linha 144 ("Saiba mais sobre as DTs") deixando explícito que a DT geral de testes (capítulo `dificuldade-testes`, 0-100) é uma escala diferente da Tabela de Grandeza da conjuração (0-50), para não confundir o leitor.
+   - **Critério de aceite:** todas as faixas numéricas da Tabela de Grandeza somam exatamente 0-50 sem sobreposição nem buraco; os dois exemplos (Maldição e bola de fogo) usam valores consistentes com as novas faixas e mesma leitura narrativa do original; nenhuma menção residual a faixas antigas (31–40, 41–50, 51–60, "0-100", etc.) relacionada à conjuração neste arquivo; frase de desambiguação com a DT geral presente.
+   - **Arquivos:** `chapters/02_04_00_conjurar.md`
+
+2. [x] **Rescalar as tabelas de Forma/Complexidade/Controle em `chapters/02_01_01_invocacao.md`.**
+   - **Descrição:** dividir por 2 as 3 tabelas de faixa (linhas 36-56): Forma `0–10 Menor(D6) / 11–20 Padrão(D8) / 21–30 Elite(D12) / 31+ Chefe(D20)`; Complexidade `0–10 Bruta(2) / 11–20 Capaz(3) / 21+ Refinada(4)`; Controle `0–10 Básicos / 11–20 Avançados / 21+ Inteligente`. Atualizar a linha 79 ("Para cada 5 pontos na rolagem de Complexidade aumenta a DA em 1") — texto permanece igual, só o teto de DA cai para +10 como consequência (não reescrever a regra).
+   - **Critério de aceite:** as 3 tabelas de faixa somam corretamente até o novo teto (~50) sem sobreposição; nenhuma faixa residual da escala antiga (0–20/21–40/41–60/61+); consistente com a nova Tabela de Grandeza da Subtask 1 (mesmos pontos de corte proporcionais).
+   - **Arquivos:** `chapters/02_01_01_invocacao.md`
+
+3. [x] **Rescalar o bônus fixo de Antítese/Dupla Conexão de ±10 para ±5 em `chapters/02_01_00_arcanismo.md` e `chapters/02_03_00_afinidades.md`.**
+   - **Descrição:** `02_01_00_arcanismo.md` linha 77 ("−10 no resultado de cada modificador testado") vira "−5"; linha 81 ("a penalidade de −10 é substituída por +10") vira "−5"/"+5". `02_03_00_afinidades.md`: tabela de bônus mecânicos (linhas 19-21, Antítese −10 / Afinidade+Antítese +10) vira −5/+5; texto da linha 23 (mesmos valores); exemplo do Vael (linha 25, "sofre −10") vira "sofre −5"; regra de Dados Iguais (linha 48, "bônus de +10") vira "+5"; segundo exemplo de criação (linha 59, "sofre −10") vira "sofre −5". Justificativa (não repetir no texto do livro, só para o Validator conferir): ±10 era ~10% da escala antiga de 100 pontos; ±5 preserva a mesma proporção de ~10% na nova escala de 50 pontos.
+   - **Critério de aceite:** nenhuma ocorrência residual de "−10" ou "+10" ligada a Antítese/Dupla Conexão nos dois arquivos; os dois exemplos numéricos (Vael) e a tabela de bônus mecânicos usam ±5 de forma consistente entre si e com a Subtask 1.
+   - **Arquivos:** `chapters/02_01_00_arcanismo.md`, `chapters/02_03_00_afinidades.md`
+
+4. [x] **Varrer `chapters/` inteiro para confirmar ausência de qualquer resquício da escala antiga (0-100) ligado a DT/grandeza de conjuração.**
+   - **Descrição:** repetir a varredura completa já feita pelo Planner (`grep` por "DT", "Dificuldade", "conjura", "Grandeza", "Ínfimo/Menor/Moderado/Considerável/Grande/Severo/Extremo/Colossal/Catastrófico/Absoluto" em todos os `.md` de `chapters/`) após aplicar as Subtasks 1-3, confirmando que: (a) as três tabelas rescaladas (Grandeza, Forma/Complexidade/Controle) e os bônus ±5 estão coerentes entre si; (b) a DT geral de testes (`01_04_02_dificuldade_testes.md`, `01_03_00_evolucao_e_testes.md`) permanece intocada em 0-100 (fora de escopo — não é "das conjurações"); (c) nenhuma outra menção numérica de conjuração ficou esquecida (arquivos de elementos `02_02_0X_*.md`, `02_05_00_entropia.md`, `01_06_00_condicoes.md` linha 151, `02_04_00_conjurar.md` linha 76 "atingir a DT do Mestre" — sem número fixo, não precisa mudar, mas confirmar que não contradiz a nova escala).
+   - **Critério de aceite:** relatório do Executor no Sprint.md listando os arquivos/linhas conferidos e confirmando 0 resquícios da escala antiga relacionados a conjuração; DT geral de testes confirmada como propositalmente fora de escopo e inalterada.
+   - **Arquivos:** nenhum (auditoria; toca apenas Sprint.md para registrar o resultado)
+   - **Relatório da varredura (Executor, pós Subtasks 1-3):**
+     - `grep -rniE` por faixas antigas (`31-40`,`41-50`,`51-60`,`61-70`,`71-80`,`81-90`,`91-100`,`0-20`,`21-40`,`41-60`,`61+`) em todo `chapters/`: único hit fora de escopo (`05_06_01_criando_criatura.md:25`, tabela de PV de criatura do Bestiário, não é escala de conjuração) — 0 resquícios ligados a conjuração.
+     - `grep -rniE` por `−10`/`+10`/`-10` em todo `chapters/`: hits restantes são `01_02_03_traumas.md:20` (penalidade de Trauma "Alergia", −3 a −10, não é Antítese/conjuração) e `03_02_00_navios.md:136,149,177,186` (bônus de módulos de navio, não é conjuração) — 0 resquícios de Antítese/Dupla Conexão.
+     - Confirmado coerentes entre si: Tabela de Grandeza (`02_04_00_conjurar.md` 0–50 em 10 faixas de 5), Forma/Complexidade/Controle (`02_01_01_invocacao.md`, mesmos pontos de corte proporcionais 0–10/11–20/21–30/31+ e 0–10/11–20/21+) e bônus ±5 (`02_01_00_arcanismo.md`, `02_03_00_afinidades.md`).
+     - `01_04_02_dificuldade_testes.md` e `01_03_00_evolucao_e_testes.md` conferidos e **intocados** — ambos mantêm a tabela de 10 faixas 0–100 (Ínfimo...Absoluto) e a frase "até DT 50... DT 100 representa o limite do que é possível", confirmando que a DT geral de testes está propositalmente fora de escopo.
+     - Elementos (`02_02_00_elementos.md`, `02_02_01_energia.md`, `02_02_02_anomalia.md`, `02_02_03_paradoxo.md`, `02_02_04_cognitivo.md`, `02_02_05_astral.md`) e `02_05_00_entropia.md`: nenhuma referência numérica de faixa de conjuração (Entropia usa tokens de valor = atributo Arcano, escala própria 0–5, não afetada).
+     - `01_06_00_condicoes.md:151` ("Cura mágica... portanto que passe na DT") e `02_04_00_conjurar.md:76` ("atingir a DT do Mestre"): confirmados sem número fixo, não contradizem a nova escala 0–50 — nenhuma mudança necessária.
+     - **Resultado: 0 resquícios da escala antiga ligados a DT/Grandeza de conjuração.**
+
+**Validação do Validator (2026-09-15, ciclo 1 — APROVADO):**
+- **Regras do livro:** os 4 arquivos modificados foram lidos na íntegra. Tabela de Grandeza confere matematicamente 0–50 sem sobreposição/buraco (0–5/6–10/11–15/16–20/21–25/26–30/31–35/36–40/41–45/46–50); exemplo de Maldição e exemplo da bola de fogo batem com as novas faixas e mantêm a mesma leitura narrativa do original (Potência 18 cai em Considerável 16–20; Forma 5 cai em Ínfimo 0–5, no limite, preservando a leitura "sem forma definida").
+- **Critérios de aceite:** as 4 subtasks conferidas individualmente contra o texto exigido pelo Planner — todas atendidas sem desvio (inclusive o texto literal sugerido para os exemplos de Maldição/bola de fogo, que foi reproduzido exatamente).
+- **Consistência cruzada:** confirmado que os cortes da Tabela de Grandeza (bandas de 5) e das tabelas Forma/Complexidade/Controle (bandas de 10) preservam a mesma proporção que tinham antes da rescala (bandas de Invocação sempre 2× as bandas de Grandeza, tanto na escala antiga quanto na nova) — nenhuma tabela ficou desalinhada em relação à outra.
+- **Varredura independente:** rodei grep próprio (não confiando só no relatório do Executor) por faixas antigas de 10 em 10 (`31–40`...`91–100`, com e sem espaço ao redor do traço) e por `0–20/21–40/41–60/61+` em todo `chapters/` — único hit é `05_06_01_criando_criatura.md:25` (PV de criatura, não relacionado). Grep por `−10`/`+10` (qualquer espaçamento) — hits restantes são `03_02_00_navios.md` (bônus de módulos navais) e `01_02_03_traumas.md:20` (penalidade de Trauma "Alergia") — nenhum ligado a Antítese/Dupla Conexão/conjuração. Confirmado por leitura direta que `01_04_02_dificuldade_testes.md` e `01_03_00_evolucao_e_testes.md` permanecem com a tabela de 10 faixas 0–100 intacta (Ínfimo 0–10 ... Absoluto 91–100, frase "até DT 50... DT 100").
+- **Padrões técnicos (SPEC.md):** task escopada corretamente a `chapters/`; nenhuma alteração indevida fora do livro.
+- **Consistência do projeto (CLAUDE.md):** `chapters/` tratado como fonte da verdade; nenhuma feature extra (equipment.json/widgets corretamente adiados para o Backlog); entrada de `CHANGELOG.md` já criada pelo Executor sob a data de hoje, em linguagem simples e sem jargão — conferida e mantida sem duplicação.
+
+**Fora de escopo, sinalizado para o dono do produto (não incluir nestas subtasks):** `equipment.json` tem vários itens com bônus arcanos calibrados na escala antiga (ex.: "+1 no modificador de Potência, até um máximo de +20" no núcleo visto em `## Concluídos` linha ~184) e o site tem widgets (`ArcaneConfigPanel.tsx`, `ArcaneTestOverlay.tsx`, `AfinidadeWidget.tsx`) que hoje refletem os valores ±10/faixas antigas — ambos vão ficar desalinhados com o livro assim que esta task for concluída. Task explicitamente escopada "no livro"/`chapters/`; ajuste de `equipment.json` e do site vira um item de Backlog separado (ver `## Backlog` — "Follow-up: Sincronizar equipment.json e Widgets Arcanos com a Nova Escala de DT de Conjuração") para não violar "sem features extras além do que foi pedido".
+
+---
 
 ### Resolver 7 Ambiguidades Mecânicas Pendentes no campo `effects` de equipment.json (Decisões do Usuário)
 **Origem:** /task Aplicar as decisões de design do usuário (dono do produto, atuando como game designer) para resolver as 7 ambiguidades mecânicas pendentes no campo `effects` de `equipment.json`, sinalizadas pelo Executor/Validator na task "Reescrita Estrutural do campo `effects` de equipment.json" (ver `## Concluídos` — Subtasks 2-5, notas de progresso, e avaliação final do Validator) e reportadas ao usuário fora do Sprint.md para decisão humana.
