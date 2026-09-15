@@ -6,6 +6,7 @@
 ## 2026-09-14
 
 - A janela de "Adicionar ao Inventário" ficou maior e mais fácil de usar: os itens do catálogo agora aparecem em cartões lado a lado, mostrando de forma resumida o dano, a defesa e os efeitos de cada item, sem precisar abrir nada. Também é possível filtrar os itens por categoria e por tier (raridade), além da busca por nome que já existia — os filtros podem ser usados juntos.
+- Chegaram mais 9 equipamentos ao catálogo, todos com tema de Rubra: balas baratas de escória, uma carabina a vapor, uma manopla a vapor, um cabo de aço usado como chicote, uma lança com ponta de broca, um anel de forjador, botas que resistem a lava por um tempo, um capacete lendário vindo de um poço sem fundo, e um escudo que empurra quem ataca usando pressão acumulada.
 
 ## 2026-09-13
 

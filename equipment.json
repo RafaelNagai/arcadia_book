@@ -3693,5 +3693,155 @@
     ],
     "description": "Toda criatura elemental de fogo jovem o suficiente pra ser caçada tem um núcleo pulsante no lugar de coração, líquido demais pra ter forma e quente demais pra ser guardado em qualquer recipiente comum. Extrair um sem que ele endureça ou exploda já matou mais caçadores de Rubra do que a própria criatura. Quem consegue engolir um inteiro — e sobreviver aos primeiros segundos — sente o próprio corpo discordar da decisão por dias depois. A maioria concorda que valeu a pena. A minoria não está mais em condições de opinar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1adfcb-6b75-6cb0-805c-144901d87afc/lucid-origin_highly_detailed_illustration_of_Liquid_Magma_Heart_a_super-lightweight_consumabl-0.jpg"
+  },
+  {
+    "id": "balas-de-escoria",
+    "name": "Balas de Escória",
+    "category": "Projétil",
+    "subcategory": "Munição",
+    "tier": "C",
+    "damage": "D6",
+    "weight": "super_leve",
+    "isEquipment": false,
+    "maxDurability": null,
+    "effects": [
+      "Ao causar dano, aplica 1 de Queimadura."
+    ],
+    "description": "Fundidas do resíduo que sobra no fundo das forjas de Rubra, essas balas nunca perdem completamente o calor do processo — a superfície irregular carrega fragmentos que ainda guardam um pouco do fogo do forno. Não são elegantes, não são precisas, mas queimam por dentro tanto quanto cortam por fora, e isso já é o suficiente pra maioria dos compradores.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0ab4-65c3-6420-a09d-5b14c345ccba/lucid-origin_highly_detailed_illustration_of_Slag_Bullets_a_super-lightweight_fantasy_ammunit-0.jpg"
+  },
+  {
+    "id": "carabina-a-vapor",
+    "name": "Carabina a Vapor",
+    "category": "Arma Longa-Distância",
+    "subcategory": "Rifle",
+    "tier": "B",
+    "damage": "3 dados",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Uma vez por combate, pode sobrecarregar a caldeira interna: o próximo disparo ignora 3 pontos de DA do alvo, mas a arma perde 1 de durabilidade."
+    ],
+    "description": "A caldeira em miniatura embutida na coronha aquece com cada disparo, e o segredo pra usar essa carabina direito é saber exatamente quando parar de deixar aquecer. Sobrecarregar o sistema dá ao próximo tiro força suficiente pra passar direto por qualquer blindagem comum — o problema é que a arma sente o esforço tanto quanto o alvo.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0aba-4ce5-6d80-8452-fbbb9fcfd710/lucid-origin_highly_detailed_illustration_of_Steam_Carbine_a_heavy-weight_fantasy_long-range_-0.jpg"
+  },
+  {
+    "id": "manopla-de-vapor",
+    "name": "Manopla de Vapor",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Manopla",
+    "tier": "C",
+    "damage": "2D8",
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Ao acertar um ataque corpo-a-corpo com esta arma, o alvo tem -4 no teste se esquivar. A fumaça atrapalha o alvo em enxergar o golpe chegando."
+    ],
+    "description": "A versão de treino de fábrica das Manoplas de Eco — mesma ideia, execução mais simples, sem a válvula de precisão que faz a diferença entre um lutador experiente e um novato entusiasmado. Ainda assim, um bom empurrão de vapor na hora certa já resolveu mais briga de taverna do que qualquer soco bem colocado.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0abd-31eb-6fe0-9218-d16aa3eb427f/lucid-origin_highly_detailed_illustration_of_Steam_Gauntlet_a_light-weight_fantasy_melee_weap-0.jpg"
+  },
+  {
+    "id": "cabo-de-tracao",
+    "name": "Cabo de Tração",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Chicote",
+    "tier": "C",
+    "damage": "1D8",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Possui alcance de 4m.",
+      "Se atacar no maximo da distancia, aumenta o modificador de critico em 1."
+    ],
+    "description": "Antes de virar arma, puxava vagonetes cheios de minério pelos trilhos das minas de Rubra — cabo de aço trançado, grosso demais pra chicotear com elegância, mas forte demais pra alguém segurar do outro lado e não vir junto. Alguns mineiros nunca devolveram o cabo depois do turno. Os capatazes aprenderam a não perguntar por quê.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0acd-f4f3-6690-84a4-e9e74fca852f/lucid-origin_highly_detailed_illustration_of_Traction_Cable_a_heavy-weight_fantasy_melee_whip-0.jpg"
+  },
+  {
+    "id": "lanca-broca",
+    "name": "Lança-Broca",
+    "category": "Arma Corpo-a-Corpo",
+    "subcategory": "Lança",
+    "tier": "B",
+    "damage": "2D10",
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 3,
+    "effects": [
+      "Uma vez por ato, permite aumentar a exaustão em 1 para que a proxima ataque aumenta para 3D10+(4) — a ponta giratória perfura o que encontra pela frente."
+    ],
+    "description": "Adaptada de uma broca de prospecção usada pra testar a dureza da rocha antes de abrir um poço novo. Alguém em Rubra percebeu que a mesma pergunta — 'isso resiste ou não?' — vale tanto pra pedra quanto pra armadura, e a resposta costuma ser a mesma nos dois casos.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0ae0-eec6-6ed0-8480-c3bf3fcae156/lucid-origin_highly_detailed_illustration_of_Drill_Lance_a_heavy-weight_fantasy_melee_polearm-0.jpg"
+  },
+  {
+    "id": "anel-do-forjador",
+    "name": "Anel do Forjador",
+    "category": "Acessório",
+    "subcategory": "Anel",
+    "tier": "B",
+    "damage": null,
+    "weight": "super_leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "Testes de Oficio relacionados a forjar, refino ou reparar equipamentos ganham +5."
+    ],
+    "description": "Todo aprendiz de forja em Rubra ganha um assim que termina o primeiro ano sem perder um dedo. Não é encantado — é só um anel comum, marcado com o símbolo da oficina que o formou, que serve mais como lembrete de postura do que como ferramenta. Ainda assim, os mestres juram que quem usa o anel trabalha com mais cuidado. Ninguém testou se é verdade ou só orgulho.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0ae3-3809-6960-8b66-ad12ce22270a/lucid-origin_highly_detailed_illustration_of_Smith_s_Ring_a_super-lightweight_fantasy_ring_di-0.jpg"
+  },
+  {
+    "id": "botas-de-sola-de-magma",
+    "name": "Botas de Sola de Magma",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Botas",
+    "tier": "A",
+    "damage": null,
+    "weight": "leve",
+    "isEquipment": true,
+    "maxDurability": 2,
+    "effects": [
+      "O portador não sofre dano ao pisar em lava, brasas ou superfícies extremamente quentes por até 3 atos consecutivos.",
+      "Se o portador estiver sobre lava, brasas ou superficies extremamente quentes seus ataques tem +(2) nos dados de ataque."
+    ],
+    "description": "A sola não é feita de couro nem de metal comum — é uma liga que os ferreiros de Rubra se recusam a explicar em detalhe, testada literalmente andando sobre rios de lava até alguém sobreviver o suficiente pra anotar o resultado. Funciona exatamente como prometido, pelo tempo que promete. O problema de quem usa nunca foi confiar na bota. Foi confiar demais no relógio.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0af3-aec8-6320-aebe-fe77d5fabb8d/lucid-origin_highly_detailed_illustration_of_Magma_Sole_Boots_a_pair_of_light-weight_fantasy_-0.jpg"
+  },
+  {
+    "id": "capacete-do-poco-sem-fundo",
+    "name": "Capacete do Poço Sem Fundo",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Capacete",
+    "tier": "S",
+    "damage": null,
+    "da": 4,
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 6,
+    "effects": [
+      "+2 de DP contra dano de fogo ou calor.",
+      "O portador enxerga perfeitamente no escuro, inclusive escuridão mágica, até 20m.",
+      "Uma vez por sessão, permite ouvir um eco do que aconteceu em um local nas últimas 24 horas através das vibrações na rocha ao redor — a critério do Mestre."
+    ],
+    "description": "Existe um poço em Rubra que nenhum mapa oficial marca com profundidade, porque ninguém que desceu registrou onde o fundo estava. Uma expedição inteira desapareceu tentando descobrir, e só este capacete voltou — encontrado sozinho, intacto, várias semanas depois, num poço completamente diferente do que tinha sido usado pra descida. Ninguém sabe explicar como. O capacete, aparentemente, sabe.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0afc-9482-6570-a7d8-7af876347d82/lucid-origin_highly_detailed_illustration_of_Bottomless_Pit_Helmet_a_light-weight_fantasy_def-0.jpg"
+  },
+  {
+    "id": "escudo-de-pressao",
+    "name": "Escudo de Pressão",
+    "category": "Equipamento Defensivo",
+    "subcategory": "Escudo",
+    "tier": "C",
+    "damage": null,
+    "da": 3,
+    "weight": "pesado",
+    "isEquipment": true,
+    "maxDurability": 6,
+    "effects": [
+      "Uma vez por combate, ao defender com sucesso um ataque corpo a corpo, pode liberar a pressão acumulada para empurrar o atacante 3m."
+    ],
+    "description": "Desenvolvido pela segurança das minas de Rubra pra conter motins de trabalhadores exaustos sem precisar machucar ninguém demais — um objetivo nobre que raramente sobrevive ao primeiro uso real. A câmara de pressão na parte de trás converte o impacto absorvido em um empurrão controlado, distância suficiente pra criar espaço sem precisar de violência adicional. Funciona em motim. Funciona melhor ainda em combate de verdade.",
+    "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0b03-b81e-6fe0-b3cc-016945ae2f2d/lucid-origin_highly_detailed_illustration_of_Pressure_Shield_a_heavy-weight_fantasy_defensive-0.jpg"
   }
 ]
