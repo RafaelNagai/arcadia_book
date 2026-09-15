@@ -10,7 +10,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao tirar Crítico num ataque, cause +1 ponto de dano adicional."
+      "Ao tirar um Crítico, causa +1 ponto de dano adicional."
     ],
     "description": "Sem ornamentos, sem nome famoso. Só gume e a distância percorrida.",
     "image": "assets/images/equipments/equipment_lamina-do-viajante.jpg"
@@ -58,8 +58,8 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Se o portador estiver com a vida cheia, os ataques da espada branca sempre causarão no mínimo 2 de dano.",
-      "Se o portador estiver com a sanidade cheia, o portador ganha +3 em testes de Combate."
+      "Se o portador estiver com a Vida cheia, os ataques da Espada Branca sempre causam no mínimo 2 de dano.",
+      "Se o portador estiver com a Sanidade cheia, ganha +3 em testes de Combate."
     ],
     "description": "A espada da lei de Camelot — uniforme por fora, leal por dentro.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/12d0d10c-f86b-41e8-b70d-724a62634958/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_divinelooking_3.jpg"
@@ -75,9 +75,8 @@
     "isEquipment": true,
     "maxDurability": 4,
     "effects": [
-      "Todo ataque feito com sucesso dobra o multiplicador de Queimadura.",
-      "Além disso, todo ataque feito com sucesso causa x1 de Queimadura.",
-      "Consome todos os stacks de QUEIMADO em um raio de 20, causando um único golpe com o valor total dessas stacks. O portador também recebe esse dano."
+      "Ao acertar um ataque, primeiro dobra o valor atual de stacks de Queimadura no alvo e, em seguida, adiciona +1 de Queimadura.",
+      "Consome todos os stacks de Queimadura em um raio de 20, causando um único golpe com o valor total desses stacks — o portador também recebe esse dano."
     ],
     "description": "Forjada por avaros anciões na ilha que recebeu o próprio nome da espada, ilha de Glória.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/161e4fba-7e96-4876-b47e-329845c902e0/segments/4:4:1/Lucid_Origin_A_detailed_illustration_of_a_vibrant_ornate_katan_3.jpg"
@@ -93,9 +92,9 @@
     "isEquipment": true,
     "maxDurability": 4,
     "effects": [
-      "Permite sacrificar 1D12 de sanidade, para cada ponto de sanidade sacrificado ganha +1 dado de dano. Permite acumular até 30 dados.",
-      "Após 10 acúmulos na espada, o portador perde 5 de vida por turno.",
-      "Após 20 acúmulos na espada, o portador perde 10 de vida por turno."
+      "O portador pode sacrificar 1D12 de Sanidade; para cada ponto sacrificado, ganha +1 dado de dano, acumulável até 30 dados.",
+      "Ao acumular 10 dados, o portador perde 5 de Vida por ato.",
+      "Ao acumular 20 dados, o portador perde 10 de Vida por ato."
     ],
     "description": "Isto não é uma arma, mas uma sepultura da tortura e lamentos do portador. Ao ser sacada, o inferno é invocado.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/e279ecb4-fe17-4e30-a0a1-7b1918f4736f/segments/2:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_cursed_katana_1.jpg"
@@ -111,7 +110,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Ataques de arremesso com a Lança do Transpasse permitem acertar múltiplos alvos em uma linha reta."
+      "Ataques de arremesso acertam múltiplos alvos em uma linha reta."
     ],
     "description": "No espaço entre Camelot e Galahad, um grupo de andarilhos que já foram pacíficos, tiveram que utilizar esta arma para sobreviver em meio a guerra. Em seu cabo contém uma escrita de runas antigas, que acreditam que significa 'O vento sussura o nosso passado. Dizem boatos, que esta lança serviu para matar um Nauak.'",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/763ab2f6-f9c7-4853-bc93-5a218b8689e3/segments/4:4:1/Lucid_Origin_A_detailed_illustration_of_a_stylish_ornate_spear_3.jpg"
@@ -127,10 +126,11 @@
     "isEquipment": true,
     "maxDurability": 20,
     "effects": [
-      "Durante o período da noite, a Lança Divisora de Dimensões ignora a DA e DP do alvo.",
-      "Uma vez por sessão, permite transformar o dia em noite.",
-      "Se a lança divisora de dimensões for quebrada, ela cria um buraco negro ao redor de 30m causando 30D12 de dano.",
-      "Se o portador tiver afinidade com Paradoxo, o portador deve rolar um teste de Vontade, dif. 15 se não tiver afinidade a dif. é 20. Se falhar, fica pausado 1D4 de turnos."
+      "Durante a noite, ignora a DA e DP do alvo.",
+      "Uma vez por sessão, o portador pode transformar o dia em noite.",
+      "Se a lança for quebrada, cria um buraco negro em um raio de 30m, causando 30D12 de dano.",
+      "Se o portador tiver afinidade com Paradoxo, deve fazer um teste de Vontade, dif. 15 — sem afinidade, a dificuldade é 20.",
+      "Se falhar nesse teste, fica pausado por 1D4 turnos."
     ],
     "description": "Isto não é uma lança, ela é a materialização de uma ruptura dentre as dimensões. O seu portador está carregando uma rachadura que está cortando duas dimensões.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f374-082e-6f70-9422-4b2cdd3e3798/lucid-origin_A_detailed_illustration_of_a_divine_starry-void_fantasy_spear_displayed_diagonal-0.jpg"
@@ -146,7 +146,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Permite surfar entre as nuvens dos mares, permitindo voar no oceano."
+      "Permite surfar entre as nuvens dos mares e voar sobre o oceano."
     ],
     "description": "Pouco se sabe sobre esse tridente, mas sua magia única de voar sobre os mares faz dele uma ferramenta para pescadores e um item para o esporte.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1e74daa3-009e-4986-a6f0-faa8e1e58a40/segments/1:1:1/Lucid_Origin_A_detailed_illustration_of_a_mystical_trident_dis_0.jpg"
@@ -162,7 +162,8 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Pode ser arremessada com alcance médio. Ao arremessar, cause +1 ponto de dano adicional."
+      "Pode ser arremessada com alcance médio(10m - 20m).",
+      "Ao ser arremessada, causa +1 ponto de dano adicional ao total de dano."
     ],
     "description": "Barata, simples, eficaz. O suficiente para quem sabe onde colocar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/7b51a492-b61d-4def-816f-867e3534bb65/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_dagger_displa_3.jpg"
@@ -178,7 +179,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao atacar um inimigo que não percebeu o portador (saindo de Furtividade ativa), ganha +4 de dano."
+      "Ao atacar com esta arma, se o inimigo que não percebeu a presença do portador, o ataque ganha +4 de dano."
     ],
     "description": "Não há guarda de Union que a tenha visto chegar. O último certamente não.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/2345b8b4-9ff2-44f2-8d93-1775d8bda78b/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_an_assassins_da_3.jpg"
@@ -194,7 +195,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Testes relacionados a cozinha ganham +10."
+      "O portador ganha +10 em testes relacionados a cozinha."
     ],
     "description": "Uma lendária faca, forjada por um guerreiro que vencia suas batalhas com a barriga.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/795ffcad-44b8-4b23-84c2-fead287f45a9/segments/2:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_butch_1.jpg"
@@ -211,7 +212,7 @@
     "maxDurability": 2,
     "effects": [
       "O dano desta adaga ignora 2 pontos de DA do alvo.",
-      "Uma vez por combate, pode ser arremessada e retorna automaticamente à mão do portador após o ataque."
+      "Uma vez por ato, pode ser arremessada e retorna automaticamente à mão do portador após o ataque."
     ],
     "description": "Gravada com runas de retorno. Ela sempre volta — como as dívidas.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/8aaea3af-2565-4b31-8354-c8d580fe9cfd/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_silve_3.jpg"
@@ -243,7 +244,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Sempre dano crítico ataques contra construtos e tecnologias."
+      "Ataques contra construtos e tecnologias são sempre críticos."
     ],
     "description": "Uma adaga esculpida em torno de uma pedra de eltys instável.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/8aaea3af-2565-4b31-8354-c8d580fe9cfd/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_silve_2.jpg"
@@ -259,7 +260,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Se o alvo defender, garante no mínimo 1 de dano no alvo."
+      "Se o alvo defender, garante no mínimo 1 de dano ao alvo."
     ],
     "description": "Mafiosos usam este martelo para torturar suas vítimas, com um peso colossal este martelo permite esmagar qualquer coisa.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/9c8086d2-782b-4309-a0e1-62e0d90a9e7e/segments/1:1:1/Lucid_Origin_A_highly_detailed_illustration_of_a_compact_oneha_0.jpg"
@@ -275,7 +276,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao realizar um teste crítico com o Machado de Mineração, ele explode causando dano de 5D20 ao redor de 10m. Arma é destruída no processo."
+      "Ao tirar um Crítico, o machado explode, causando 5D20 de dano em um raio de 10m — a arma é destruída no processo."
     ],
     "description": "Feito para minerar pedras e árvores sólidas. Funciona bem em outras coisas também.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/07791d7a-f382-4184-9bf5-0aae14091647/segments/1:1:1/Lucid_Origin_A_highly_detailed_digital_illustration_of_a_bruta_0.jpg"
@@ -291,7 +292,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Se o personagem tiver duas Lâminas do Norte no inventário, permite causar 4D10 de dano, em vez de 2D10."
+      "Se o portador tiver duas Lâminas do Norte no inventário, a arma causa 4D10 de dano, em vez de 2D10."
     ],
     "description": "Os elfos noturnos não escolhem armas delicadas. Esta cheirava a neve e sangue quando chegou ao sul.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/c7a2d3d8-15dc-40ca-8aa4-4c6a3311b1a7/segments/1:1:1/Lucid_Origin_A_detailed_illustration_of_a_massive_brutal_execu_0.jpg"
@@ -307,8 +308,8 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Se o portador tiver com a sanidade cheia, o Machado Branco causa 3D12 de dano.",
-      "Se o portador tiver com a vida cheia, o Machado Branco causa sangramento."
+      "Se o portador estiver com a Sanidade cheia, o Machado Branco causa 3D12 de dano.",
+      "Se o portador estiver com a Vida cheia, o Machado Branco causa Sangramento."
     ],
     "description": "Os religiosos de Camelot, expurgaram todo o mal das terras de Camelot com o Machado Branco.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/6dcbf395-e894-45e9-a511-a6b2305aaf47/segments/1:1:1/Lucid_Origin_A_detailed_illustration_of_a_majestic_ornate_batt_0.jpg"
@@ -324,7 +325,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Se dois ou mais dados causarem dano no mesmo ataque, a DA do alvo é reduzida em 1 até o fim do turno. Aplicável apenas uma vez por turno.",
+      "Se dois ou mais dados causarem dano no mesmo ataque, a DA do alvo é reduzida em 1 até o fim do turno — aplicável apenas uma vez por turno.",
       "Uma vez por turno, ao acertar um inimigo com dificuldade de locomoção, o Oásis Metálico ganha +2 de ataque."
     ],
     "description": "Os artesãos de Rubra projetaram esta arma, para proteger e minerar em seu vasto deserto.",
@@ -342,7 +343,7 @@
     "maxDurability": 3,
     "effects": [
       "Para cada valor repetido nos dados de ataque, causa 1 de dano ao alvo.",
-      "Se o portador estiver com a vida abaixo da metade, ganha +3 de Combate com esta arma."
+      "Se o portador estiver com a Vida abaixo da metade, ganha +3 em testes de Combate com esta arma."
     ],
     "description": "Os artesãos de Rubra projetaram esta arma, para proteger e minerar em seu vasto deserto.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/a790ecfd-eba6-4360-ae4d-0b7ee02518ee/segments/2:4:1/Lucid_Origin_A_highly_detailed_fullview_illustration_of_a_medi_1.jpg"
@@ -386,7 +387,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "+2 em testes de Precisão ao atacar alvos a mais de 20 metros de distância."
+      "O portador ganha +2 em testes de Precisão ao atacar alvos a mais de 20 metros de distância."
     ],
     "description": "Os arqueiros de Galahad não miram na cabeça — miram no olho esquerdo. Sabem a diferença.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/3385dfe5-d220-4b21-ad05-adb1597256a2/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_large_ornate__3.jpg"
@@ -402,7 +403,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao receber dano, ganha +5 no próximo teste de PRECISÃO.",
+      "Ao receber dano, o portador ganha +5 no próximo teste de Precisão.",
       "Projéteis especiais disparados por este arco nunca são destruídos após o uso."
     ],
     "description": "Tecido com nervuras de árvores ancestrais de Galahad. Respira com o arqueiro. Mira antes dele.",
@@ -433,7 +434,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Uma vez por combate, dispare dois tiros consecutivos na mesma Ação com Desvantagem em ambos os ataques."
+      "Uma vez por combate, o portador pode disparar dois tiros consecutivos na mesma Ação, com Desvantagem em ambos os ataques."
     ],
     "description": "Os engenheiros de Rubra não precisam de magia para matar — mas ela ajuda a matar duas vezes mais rápido.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/68fcaae1-6f9c-4b78-9b16-f68084e4d3c6/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_doublebarrel__0.jpg"
@@ -449,8 +450,8 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Se o portador tiver com a vida cheia, o Revólver Branco joga 4 dados.",
-      "Se o portador tiver com a sanidade cheia, o portador ganha +3 em testes de Precisão."
+      "Se o portador estiver com a Vida cheia, o Revólver Branco joga 4 dados.",
+      "Se o portador estiver com a Sanidade cheia, ganha +3 em testes de Precisão."
     ],
     "description": "Uma arma cerimonial, usada apenas em eventos ocultistas buscando a iluminação da deusa Alfa.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/58c7011f-8960-4cf5-bfd2-f91a8d0e632a/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_white_magical_2.jpg"
@@ -466,7 +467,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Se o portador não se moveu no ato passado, ganha +3 em testes de Precisão e o valor para obter um crítico é reduzido em 1."
+      "Se o portador não se moveu no Ato anterior, ganha +3 em testes de Precisão e o valor necessário para tirar um Crítico é reduzido em 1."
     ],
     "description": "Construído nas oficinas subterrâneas de Britannia com paciência de anão. Para quem tem tempo de mirar direito.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/3bd15d9c-1e73-4b5b-a3b9-541675ef8ed8/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_rifle_3.jpg"
@@ -482,7 +483,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Se o portador não se moveu no ato passado, o valor para obter um crítico é reduzido em 1."
+      "Se o portador não se moveu no Ato anterior, o valor necessário para tirar um Crítico é reduzido em 1."
     ],
     "description": "Normalmente usados por capivaqueiros, nunca por violência mas para ameaçar as capivacas.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/41e764c6-7f6e-4d69-b221-bb729d253a8c/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_an_antique_rifl_2.jpg"
@@ -498,8 +499,8 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "O valor para obter um crítico é reduzido em 1.",
-      "Se o portador não se moveu no ato passado, o multiplicador de crítico é aumentado em 1."
+      "O valor necessário para tirar um Crítico é reduzido em 1.",
+      "Se o portador não se moveu no Ato anterior, o multiplicador de Crítico é aumentado em 1."
     ],
     "description": "Inicialmente usado para admirar as estrelas, antes da guerra. Porém, após a invasão de Camelot sobre Rubra, suas invenções foram usadas para destruição e morte.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/f2dab63a-f77c-4cde-89eb-f548b67af5ae/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_rifle_3.jpg"
@@ -545,8 +546,8 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao causar dano, reduz a DA do alvo em 1 até o fim do round. Não pode ser acumulativo.",
-      "Ao ser consumida, explode em fragmentos — criaturas adjacentes ao alvo fazem Reflexo (dif. 24) ou recebem 3 dano."
+      "Ao causar dano, reduz a DA do alvo em 1 até o fim do turno — não acumulativo.",
+      "Ao ser consumida, explode em fragmentos — criaturas adjacentes ao alvo fazem Reflexo (dif. 24) ou recebem 3 de dano."
     ],
     "description": "Cultivadas em Britannia. Fragmentam no impacto, soltando energia arcana acumulada durante anos.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f3cd-34b2-6160-9a88-7a5b127d9894/lucid-origin_A_highly_detailed_illustration_of_a_single_fantasy_arrow_displayed_diagonally_fr-1.jpg"
@@ -576,7 +577,7 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao causar dano, reduz a DA do alvo em 1 para o próximo ataque que ele receber neste combate. Não acumulativo."
+      "Ao causar dano, reduz a DA do alvo em 1 para o próximo ataque que ele receber neste combate — não acumulativo."
     ],
     "description": "Fabricadas em Rubra para penetrar armadura. Testadas em tudo que se move e não deveria.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/bd93ad5a-2f82-40bc-8062-634ed8fa47c1/segments/2:4:1/Lucid_Origin_A_highly_detailed_fullview_illustration_of_a_larg_1.jpg"
@@ -592,7 +593,7 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao causar dano, ganha +3 em todos os dados de ataque, por nível de entropia do alvo",
+      "Ao causar dano, ganha +3 em todos os dados de ataque, por nível de Entropia do alvo.",
       "Ao ser consumida, todos os alvos em 10m são aleatoriamente trocados de lugar."
     ],
     "description": "Cada bala carrega uma runa de implosão em miniatura. Ativada gentilmente pelo impacto.",
@@ -609,7 +610,7 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao causar dano, o alvo deve realizar um teste de Atletismo ou Fortitude dif. 15, se falhar o alvo fica Paralisado."
+      "Ao causar dano, o alvo deve realizar um teste de Atletismo ou Fortitude, dif. 15; se falhar, fica Paralisado."
     ],
     "description": "Cada bala carrega um inverno gélido de Norte de Galahad, são cápsulas de puro gelo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/3bfdbe27-00fc-4d22-b251-d8a8bf86169b/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_an_iceformed_ma_0.jpg"
@@ -625,7 +626,7 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao causar dano, para cada dado de dano causado aplica x1 queimadura ao alvo."
+      "Ao causar dano, para cada dado de dano causado, aplica x1 de Queimadura ao alvo."
     ],
     "description": "Cada bala carrega o calor de rubra, são cápsulas de pura lava.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1ab6c413-ec6c-4b07-9403-1cef8f296e0b/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_runic_magic_b_2.jpg"
@@ -641,7 +642,7 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Uma vez por ato, permite adivinhar quanto vai dar de dano no alvo, se acertar causa mais 5 de dano ao alvo."
+      "Uma vez por Ato, o portador pode tentar adivinhar quanto de dano o ataque causará; se acertar, causa mais 5 de dano ao alvo."
     ],
     "description": "Cada bala imersa de poder arcano, forjada do erro, mas projetada para o acerto.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/20c9a8c9-a075-44f3-a241-1fc237bbb587/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_runic_magic_b_2.jpg"
@@ -658,7 +659,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Capivacas não atacam o portador, se o portador não tiver atacado."
+      "Se o portador não tiver atacado, capivacas não o atacam."
     ],
     "description": "Vestes tradicionais de capivaqueiros.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f329-e71d-6150-a55a-42ed1542d587/lucid-origin_A_highly_detailed_illustration_of_a_unique_rugged_fantasy_poncho_outfit_displaye-1.jpg"
@@ -705,7 +706,7 @@
     "isEquipment": true,
     "maxDurability": 8,
     "effects": [
-      "Se for usada por um Alfaísta, a DA aumenta para 4."
+      "Se usada por um Alfaísta, a DA aumenta para 4."
     ],
     "description": "Os Imperiais de Camelot usam para chamar a atenção da Alfa. A cruz vermelha em seu peito é para refletir a sua devoção a ela.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/71e8078d-6ae4-4b55-a8ce-a4b9f2363e1c/segments/1:1:1/Lucid_Origin_A_highly_detailed_fullview_illustration_of_a_medi_0.jpg"
@@ -722,8 +723,8 @@
     "isEquipment": true,
     "maxDurability": 10,
     "effects": [
-      "Ao vestir, escolha 1 elemento para reduzir em 2 o dano recebido desse elemento.",
-      "Uma vez por combate, ativa um campo de força que anula todo tipo de dano projétil ou arcano, por 1 turno."
+      "Ao vestir, o portador escolhe 1 elemento e reduz em 2 o dano recebido desse elemento.",
+      "Uma vez por combate, o portador pode ativar um campo de força que anula todo dano projétil ou arcano por 1 turno."
     ],
     "description": "Uma armadura projetada para receber o eltys, forjada com um metal maleável permitindo fluir o fluxo de arcano ao seu arredor.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/56d0fed5-496a-41a8-89cd-b617fc18d3ae/segments/1:1:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_chest_0.jpg"
@@ -740,7 +741,7 @@
     "isEquipment": true,
     "maxDurability": 6,
     "effects": [
-      "Ao defender, a cada 2 de dano tomado, retorna 1 de dano ao atacante."
+      "Para cada 2 de dano tomado ao defender, o portador retorna 1 de dano ao atacante."
     ],
     "description": "Armadura forjada com um metal negro e cintilante, com presas e espinhos, comumente usada por caçadores de union.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f0a5a29-ce9f-6a30-aee5-25aebc0ac04e/gemini-2.5-flash-image-preview_inverta_o_lado_dessa_armadura_que_a_imagem_seja_da_direita_pra_esquerda-0.jpg"
@@ -774,9 +775,9 @@
     "isEquipment": true,
     "maxDurability": 7,
     "effects": [
-      "Ao defender golpes Corpo-a-Corpo, se mitigar pelo menos 1 de dano, o alvo recebe 1 de QUEIMADURA. Se mitigar 3 ou mais, ao invés de 1 aplica 4 de QUEIMADURA.",
-      "Atacantes com queimadura têm -1 em todos os dados de dano ao realizar um ataque corpo-a-corpo contra Armadura Glória.",
-      "Permite destruir este equipamento para evitar a morte, recuperando todo o HP e Sanidade."
+      "Ao defender golpes Corpo-a-Corpo, se mitigar pelo menos 1 de dano, o alvo recebe 1 de Queimadura — se mitigar 3 ou mais, recebe 4 em vez de 1.",
+      "Atacantes com Queimadura têm -1 em todos os dados de dano ao realizar um ataque Corpo-a-Corpo contra a Armadura da Glória.",
+      "Permite destruir este equipamento para evitar a morte, recuperando toda a Vida e Sanidade."
     ],
     "description": "A alta elite dos elfos, utilizam esta armadura para demonstrar poder e soberania.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/2b926caf-2239-40fd-a075-b383e027d0b5/segments/1:1:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_red_c_0.jpg"
@@ -840,8 +841,8 @@
     "isEquipment": true,
     "maxDurability": 8,
     "effects": [
-      "Se o portador tiver com a vida cheia, o escudo branco diminui o teste do atacante em -5.",
-      "Se o portador tiver com a sanidade cheia, o escudo branco ganha +1 em DA contra projéteis a longa-distância."
+      "Se o portador estiver com a Vida cheia, o Escudo Branco diminui o teste do atacante em -5.",
+      "Se o portador estiver com a Sanidade cheia, o Escudo Branco ganha +1 na DA contra projéteis a longa distância."
     ],
     "description": "Os líderes dos pilotões do Império de Camelot, usam esse escudo para refletir a luz. Acreditam que isso vá chamar a atenção da deusa Alfa.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/acdf4d79-f098-4efb-8c8f-1013c7ed784d/segments/1:4:1/Lucid_Origin_A_detailed_illustration_of_a_white_and_gold_ornat_0.jpg"
@@ -858,8 +859,8 @@
     "isEquipment": true,
     "maxDurability": 6,
     "effects": [
-      "Para cada nível de entropia, o escudo ganha +1 de DA. Acumulando até no máximo 5.",
-      "Caso defenda todos os dados de ataque recebidos no turno, o portador pode conjurar imediatamente usando apenas 1D12 na pool de dados (em vez de 2D12), sem gastar Ação. Pode ser usado 1 vez por turno."
+      "Para cada nível de Entropia, o escudo ganha +1 de DA, acumulável até no máximo 5.",
+      "Uma vez por turno, se defender todos os dados de ataque recebidos, o portador pode conjurar imediatamente usando apenas 1D12 na pool de dados (em vez de 2D12), sem gastar Ação."
     ],
     "description": "Não é feito de cristal, mas de pura energia arcana. O nome vem do brilho azul que emite ao aparar um golpe forte demais.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/6dc075f2-fcb8-4049-9483-82c2ff8b5a9c/segments/2:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_intan_1.jpg"
@@ -876,7 +877,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Ganha +2 em qualquer teste relacionado a montaria (guiar, controlar ou acalmar uma montaria)."
+      "O portador ganha +2 em qualquer teste relacionado a montaria (guiar, controlar ou acalmar uma montaria)."
     ],
     "description": "Chapéu tradicional dos capivaqueiros.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f3a4-ac7f-6ef0-b744-437c73b0c2f6/lucid-origin_A_highly_detailed_illustration_of_a_unique_fantasy_hat_blending_the_iconic_struc-0.jpg"
@@ -925,7 +926,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "+1 DP contra arcano.",
+      "Concede +1 de DP contra dano arcano.",
       "Imunidade a conjurações do elemento Cognitivo com efeito de manipulação mental."
     ],
     "description": "Gravado com runas de bloqueio mental — uma escolha sábia num mundo onde arcanistas miram na cabeça.",
@@ -943,7 +944,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao conjurar com todos os modificadores exigidos tendo score ≤ 10, adicione 1D12 extra à sua pool de dados para esta conjuração."
+      "Ao conjurar com todos os modificadores exigidos com score ≤ 10, o portador adiciona 1D12 extra à pool de dados dessa conjuração."
     ],
     "description": "Todo arcanista começa com um. Poucos guardam o primeiro.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/ef53a010-8a10-41b2-a2b9-09ac267ea255/segments/1:1:1/Lucid_Origin_A_detailed_illustration_of_a_magical_staff_displa_0.jpg"
@@ -960,7 +961,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Uma vez por sessão, ao aumentar a Entropia voluntariamente, ignore a rolagem de Marca — nenhuma Modificação é recebida naquele aumento."
+      "Uma vez por sessão, ao aumentar a Entropia voluntariamente, o portador ignora a rolagem de Marca — nenhuma Modificação é recebida nesse aumento."
     ],
     "description": "Magos que temem o desconhecido, temem perder a sanidade ao obter poder do conhecimento arcano, este cajado os guiava.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/ffb10008-622e-4580-b303-7d793f9785df/segments/3:4:1/Lucid_Origin_A_detailed_illustration_of_a_magical_staff_displa_2.jpg"
@@ -977,8 +978,8 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Para cada ponto de Entropia, ganha +2 no resultado de todos os modificadores nesta conjuração.",
-      "Para cada D12 alocado no modificador de Potência, ganha +1 em todos os dados de dano arcano."
+      "Para cada ponto de Entropia, o portador ganha +2 no resultado de todos os modificadores dessa conjuração.",
+      "Para cada D12 alocado no modificador de Potência, o portador ganha +1 em todos os dados de dano arcano."
     ],
     "description": "Talhado de um fragmento dimensional. Parte de sua madeira não pertence ao Plano Infinito.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/a0f4248d-b1cb-4a0c-a27b-4e2e7fd8149d/segments/4:4:1/Lucid_Origin_A_detailed_illustration_of_a_curved_magical_staff_3.jpg"
@@ -996,7 +997,7 @@
     "maxDurability": 2,
     "effects": [
       "Enquanto possuir este cajado, intenções de teleporte e deslocamento arcano não exigem o modificador Forma — o Mestre trata esse aspecto como automaticamente atendido.",
-      "Uma vez por combate, ao defender usando Cajado Dimensional, permite redirecionar o dano para outro alvo em combate. O alvo é randômico, definido entre quem tirar o menor valor em 1D6."
+      "Uma vez por combate, ao defender usando este cajado, o portador pode redirecionar o dano para outro alvo em combate — o alvo é randômico, definido por quem tirar o menor valor em 1D6."
     ],
     "description": "Este cajado não veio do plano infinito, pouco se sabe, mas a joia na ponta do cajado é uma mini-dimensão.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/a0f4248d-b1cb-4a0c-a27b-4e2e7fd8149d/segments/3:4:1/Lucid_Origin_A_detailed_illustration_of_a_curved_magical_staff_2.jpg"
@@ -1030,9 +1031,9 @@
     "isEquipment": true,
     "maxDurability": 30,
     "effects": [
-      "Ao conjurar com intenção de frio, gelo ou congelamento, ganha +10 no resultado de todos os modificadores.",
+      "Ao conjurar com intenção de frio, gelo ou congelamento, o portador ganha +10 no resultado de todos os modificadores.",
       "Uma vez por turno, o portador pode realizar uma conjuração de intenção glacial sem gastar Ação.",
-      "Toda conjuração realizada enquanto usa a Soberania Gélida custa 1 adicional de Sanidade (além do custo normal de 1). Em falha crítica, perde 12 de Sanidade. Em Desastre, o personagem ganha um Trauma relacionado ao frio."
+      "Toda conjuração realizada enquanto usa a Soberania Gélida custa 1 ponto adicional de Sanidade (além do custo normal de 1). Em Falha Crítica, o portador perde 12 de Sanidade. Em Desastre, ganha um Trauma relacionado ao frio."
     ],
     "description": "Um artefato de ouro antigo, encrustado com rubys extraído de North Galahad, que pulsa magia glacial. Rumores dizem que este item foi forjado por Sugovat.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/c36eb43f-2e7d-49d6-82af-b81017592fa0/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_crown_2.jpg"
@@ -1048,9 +1049,9 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Portadores da manopla do gigante ganham mais 20 cm de altura.",
-      "Também ganham +3 de combate.",
-      "Além disso, ganham +5 em testes de agarrar e 1D12 de dano em alvos agarrados."
+      "O portador da Manopla do Gigante ganha mais 20 cm de altura.",
+      "Também ganha +3 em testes de Combate.",
+      "Além disso, ganha +5 em testes de agarrar e 1D12 de dano em alvos agarrados."
     ],
     "description": "Uma manopla forjada em alta temperatura, com propriedades arcanas próprias. Esta manopla tem o slogan do vilarejo de Pés Altos, e tem o tamanho maior do que deveria. Tem uma letra cravada dentro da manopla: 'Cy.'.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f42b-051f-6a70-bf32-206e1ed4954e/lucid-origin_A_highly_detailed_illustration_of_a_single_mechanical_fantasy_gauntlet_displayed-0.jpg"
@@ -1066,7 +1067,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao atacar em Furtividade, causa 1 de dano garantido além do dano da arma."
+      "Ao atacar em Furtividade, causa +1 ponto de dano adicional ao total de dano."
     ],
     "description": "Fina como um sussurro. Precisa de apenas um lugar certo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/d0b04b81-7b17-4262-8c4d-e7f09417eac5/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_Northernstyle_3.jpg"
@@ -1082,7 +1083,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao atacar criaturas animais ou bestas, ganha +2 no teste de perícia contra a criatura."
+      "Ao atacar criaturas, animais ou bestas, ganha +2 no teste de perícia contra a criatura."
     ],
     "description": "Afiada por necessidade, não por arte. As marcas no cabo contam quantas caças.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/d0b04b81-7b17-4262-8c4d-e7f09417eac5/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_Northernstyle_0.jpg"
@@ -1114,7 +1115,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Se o portador for de Union, testes relacionados a intimidar alguém ganham +3 com esta faca à vista."
+      "Se o portador for de Union, ganha +3 em testes relacionados a intimidar alguém, com esta faca à vista."
     ],
     "description": "Esculpida do osso de uma criatura que nunca deveria ter sido caçada.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed07-ddb7-6960-bcab-2c8d47430793/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_bone_dagger_displayed_diagonally_fro-0.jpg"
@@ -1130,7 +1131,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao causar dano, aplica Envenenamento. Aplica até no máximo 3 stacks."
+      "Ao causar dano, aplica Envenenamento, até no máximo 3 stacks."
     ],
     "description": "Fabricado nas vielas de Union por farmacêuticos que não escolhem quem serve.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed0f-bd36-6620-b807-3d240642b99f/lucid-origin_A_highly_detailed_illustration_of_a_poison-infused_fantasy_dagger_displayed_diag-0.jpg"
@@ -1147,8 +1148,8 @@
     "maxDurability": 3,
     "effects": [
       "Ao causar dano, aplica 1 de Queimadura.",
-      "Ao realizar um crítico, causa a quantidade de stack de queimadura em forma de dano.",
-      "Ao realizar uma falha crítica, sofre a quantidade de stack de queimadura em forma de dano."
+      "Ao tirar um Crítico ou Milagre, causa dano igual à quantidade de stacks de Queimadura acumulados.",
+      "Ao tirar uma Falha Crítica ou Desastre, o portador sofre dano igual à quantidade de acumulos de Queimadura no alvo."
     ],
     "description": "Não é uma metáfora. É literalmente um dente extraído de um dragão vermelho das montanhas de Rubra.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed1d-4dce-6c20-bba7-55bcf7663e52/lucid-origin_A_highly_detailed_illustration_of_a_fire-infused_fantasy_dagger_displayed_diagon-0.jpg"
@@ -1181,8 +1182,9 @@
     "isEquipment": true,
     "maxDurability": 4,
     "effects": [
-      "Pode realizar ataques extras infinitamente com a mesma ação, porém para cada ataque extra tem 1 de Desvantagem a mais.",
-      "Ao falhar em qualquer ataque extra, é considerado uma falha crítica."
+      "O portador pode realizar um ataque extra na mesma Ação Complexa.",
+      "Se atacar com esta arma e não causar dano, o portador perde 2 de sanidade.",
+      "Permite sacrificar 10 de sanidade para zerar a exaustão do portador."
     ],
     "description": "Os duelos que ela encerrou foram tão rápidos que as testemunhas juraram que o adversário caiu sozinho.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/9c4c37f7-0989-4846-a606-4ece94bbe95a/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_divinelooking_0.jpg"
@@ -1198,8 +1200,8 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Para cada ponto de Entropia do portador, ganha +1 de dano.",
-      "Ao quebrar (durabilidade 0), libera uma explosão arcana de 5m causando 4D8 de dano."
+      "Para cada ponto de Entropia do portador, ganha +1 de dano ao dano total.",
+      "Ao quebrar (durabilidade 0), libera uma explosão arcana de 5m, causando 4D12 de dano."
     ],
     "description": "Cristalizado em eltys puro de Britannia. Instável. Poderoso. Ninguém pergunta onde está o ferreiro que a criou.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/eae11720-896e-4200-ac68-64f9f01918ad/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_dagge_0.jpg"
@@ -1215,8 +1217,8 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao acertar um crítico, o alvo não consegue gritar por 4 turno.",
-      "Se o portador tiver Furtividade como talento, ganha +2 em todos os ataques."
+      "Ao tirar um Crítico, o alvo não consegue gritar ou se comunicar por 4 turnos.",
+      "Se o portador tiver Furtividade como Talento, ganha +2 em todos os ataques."
     ],
     "description": "Os Velados de Union nunca aparecem duas vezes na mesma forma. Mas o punhal, sempre reconhecido.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/06569540-7a32-4bdf-834c-c35de87712b5/segments/1:1:1/Lucid_Origin_A_highly_detailed_illustration_of_an_assassins_da_0.jpg"
@@ -1232,7 +1234,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Não pode matar criaturas que já estão com 1 de vida restante."
+      "Não pode matar criaturas que já estão com 1 de Vida restante."
     ],
     "description": "Embotada por design. Ainda dói.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed20-7dc5-67a0-847f-6db03a0dd4b7/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_training_sword_displayed_diagonally_-0.jpg"
@@ -1248,7 +1250,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao atacar um alvo em superfície instável (navio, plataforma flutuante), ganha +3 de Combate."
+      "Se o alvo estiver sobre uma superfície instável (navio, plataforma flutuante), o portador ganha +3 em testes de Combate ao atacá-lo."
     ],
     "description": "Saiu de muitos portos, afundou em nenhum. Cheira a sal e má decisão.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed24-e5cb-6e40-91c3-61f172be2982/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_pirate_cutlass_displayed_diagonally_-1.jpg"
@@ -1281,7 +1283,8 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Requer duas mãos. Ao acertar um ataque, pode empurrar o alvo 5m em qualquer direção."
+      "Requer duas mãos.",
+      "Ao acertar um ataque, o portador pode empurrar o alvo 5m em qualquer direção."
     ],
     "description": "Forjada nos picos congelados de North Galahad. Pesada o suficiente para encerrar argumentos.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/f259f94b-d37b-4443-b66d-bae2b1f5c79c/segments/1:1:1/Lucid_Origin_A_highly_detailed_illustration_of_a_massive_twoha_0.jpg"
@@ -1331,7 +1334,7 @@
     "maxDurability": 4,
     "effects": [
       "Ataques podem ser realizados à distância de até 5m, lançando um corte de vento.",
-      "Uma vez por turno, esquivar-se de um ataque também empurra o atacante 3m."
+      "Uma vez por turno, ao esquivar de um ataque, o portador empurra o atacante 3m."
     ],
     "description": "Criada pelos anciões de Galahad, canalizando as correntes que movem as ilhas. O fio corta o vento antes mesmo de partir.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed2d-a2d6-6ff0-bcf1-9d339590b5d1/lucid-origin_A_highly_detailed_illustration_of_a_legendary_fantasy_sword_the_Espada_dos_Vento-0.jpg"
@@ -1364,8 +1367,8 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Ao conjurar com intenção aquática ou de água, ganha +5 no resultado de todos os modificadores.",
-      "Uma vez por combate, cria uma onda que empurra todos os inimigos em 10m, 4m para trás (Atletismo dif. 18 para resistir)."
+      "Ao conjurar com intenção aquática ou de água, o portador ganha +5 no resultado de todos os modificadores.",
+      "Uma vez por combate, cria uma onda que empurra 4m para trás todos os inimigos em um raio de 10m (Atletismo dif. 18 para resistir)."
     ],
     "description": "Recolhida do fundo de um naufrágio em frente a Union. A ilha afundou; a espada não.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed33-4dda-6f50-9aaf-cdbecda9ab23/lucid-origin_A_highly_detailed_illustration_of_a_tide-infused_fantasy_sword_displayed_diagona-0.jpg"
@@ -1381,8 +1384,8 @@
     "isEquipment": true,
     "maxDurability": 10,
     "effects": [
-      "Ao ser destruida, ela volta ao normal após 2 turnos.",
-      "Todo ataque com crítico causa dano permanente ao alvo, que não pode ser curado por magia."
+      "Ao ser destruída, ela volta ao normal após 2 turnos.",
+      "Ao tirar um Crítico, o ataque causa dano permanente ao alvo, que não pode ser curado por magia."
     ],
     "description": "Forjada antes de Camelot, antes de Union, antes de tudo que se lembra. Ninguém sabe quem a fez. Ninguém quer saber.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed38-60dd-6580-a9d2-df314e3433b0/lucid-origin_A_detailed_illustration_of_an_ominous_masterfully_crafted_eternal_sword_displaye-0.jpg"
@@ -1431,8 +1434,8 @@
     "isEquipment": true,
     "maxDurability": 6,
     "effects": [
-      "Ao receber dano superior a 5 em um único golpe, o portador ganha +3 em todos os dados de dano, até o final do combate.",
-      "Portadores ganham +2 em testes de Atletismo e Fortitude."
+      "Ao receber dano superior a 5 em um único golpe, o portador ganha +3 em todos os dados de dano até o final do combate.",
+      "O portador ganha +2 em testes de Atletismo e Fortitude."
     ],
     "description": "Ossos, couro, ferro. Os bárbaros de Union não usam armadura para parecer invencíveis — usam para aguentar mais.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed3e-c2eb-6370-8bc2-a580aabe1833/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_barbarian_heavy_chestpiece_armor_dis-0.jpg"
@@ -1449,8 +1452,8 @@
     "isEquipment": true,
     "maxDurability": 7,
     "effects": [
-      "Em ambientes de pouca luz ou escuridão, ganha +2 de DP adicional.",
-      "Portadores ganham +3 em testes de Furtividade."
+      "Em ambientes de pouca luz ou escuridão, o portador ganha +2 de DP adicional.",
+      "O portador ganha +3 em testes de Furtividade."
     ],
     "description": "Tecida com fios de sombra extraídos do Plano Sombrio. Não reflete luz. Não reflete nada.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed44-22a1-6d50-bfcc-28a77c8affc8/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_shadow_armor_chestpiece_displayed_is-0.jpg"
@@ -1468,8 +1471,8 @@
     "maxDurability": 15,
     "effects": [
       "O portador não pode ser empurrado, derrubado ou movido sem consentimento.",
-      "Testes de Furtividade têm Desvantagem automática.",
-      "O portador desta armadura não pode receber dano adicional proveniente do dano crítico."
+      "O portador tem Desvantagem automática em testes de Furtividade.",
+      "O portador não pode receber dano adicional de ataques críticos."
     ],
     "description": "Feita com os ossos de um antigo esqueleto de uma criatura titânica em Rubra. Seus ossos eram facilmente confundidos com uma montanha.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/25532c58-b4e1-4bba-9107-147b81b6a5e0/segments/3:4:1/Lucid_Origin_A_detailed_illustration_of_a_fantasy_fullbody_arm_2.jpg"
@@ -1486,8 +1489,8 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Portadores ganham +2 em qualquer teste relacionado à sobrevivência selvagem (rastrear água, encontrar abrigo, resistir aos elementos), e em testes de Percepção.",
-      "Uma vez por sessão, permite rerolar um teste de intuição."
+      "O portador ganha +2 em qualquer teste relacionado à sobrevivência selvagem (rastrear água, encontrar abrigo, resistir aos elementos) e em testes de Percepção.",
+      "Uma vez por sessão, o portador pode rerolar um teste de Intuição."
     ],
     "description": "Desgastado por mil estradas. Cada mancha é uma história que o dono prefere não contar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15eeb2-6cc8-6860-a4c3-c0fa0cae4615/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_C_Manto_do_-1.jpg"
@@ -1505,7 +1508,7 @@
     "maxDurability": 10,
     "effects": [
       "Uma vez por cena, ao conjurar, a armadura absorve o custo de Sanidade — o portador não perde a Sanidade desta conjuração.",
-      "Ganha +2 de DP contra magias arcanas."
+      "O portador ganha +2 de DP contra magias arcanas."
     ],
     "description": "Cada runa gravada por um Mestre de Britannia. Leva anos para ser concluída. Protege em dois planos ao mesmo tempo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed4a-cd3d-6ec0-8e86-51514ee047f1/lucid-origin_A_detailed_illustration_of_an_ominous_masterfully_constructed_runic_heavy_armor_-0.jpg"
@@ -1522,11 +1525,11 @@
     "isEquipment": true,
     "maxDurability": 6,
     "effects": [
-      "Uma vez por combate, esta armadura permite consumir um pedra de Eltys, e dura até o final do combate, permite escolher entre essas opções temporariamente:",
-      "- +3 DA contra um elemento arcano escolhido.",
-      "- Recupera 2D12 de VIDA.",
-      "- Teleporta para uma distância de até 20m.",
-      "- Recupera D12+1 de SANIDADE.",
+      "Uma vez por combate, o portador pode consumir uma pedra de Eltys para escolher um dos efeitos abaixo, que dura até o final do combate:",
+      "- +3 de DA contra um elemento arcano escolhido.",
+      "- Recupera 2D12 de Vida.",
+      "- Teleporta o portador para uma distância de até 20m.",
+      "- Recupera D12+1 de Sanidade.",
       "- Permite escolher uma perícia e ganhar +5 de bônus."
     ],
     "description": "Transparente como vidro, resistente como aço temperado. O arcano dentro dela pulsa como um coração.",
@@ -1545,7 +1548,7 @@
     "maxDurability": 8,
     "effects": [
       "O portador pode respirar debaixo d'água.",
-      "Permite o portador entrar no sonho de alguém dormindo ou inconciente."
+      "O portador pode entrar no sonho de alguém que esteja dormindo ou inconsciente."
     ],
     "description": "Forjada por mergulhadores de Union que desceram longe demais e encontraram algo que os mudou. A armadura veio junto.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed51-469d-6080-a225-38fd06ea1cbd/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_abyssal_heavy_chestpiece_armor_displ-0.jpg"
@@ -1562,8 +1565,8 @@
     "isEquipment": true,
     "maxDurability": 5,
     "effects": [
-      "Portadores ganham +2 em qualquer teste relacionado a rastrear criaturas, e em testes de Percepção contra criaturas.",
-      "Se o portador estiver com a faca do caçador ou pistola do caçador, permite descobrir as interações da criatura escolhida."
+      "O portador ganha +2 em qualquer teste relacionado a rastrear criaturas e em testes de Percepção contra criaturas.",
+      "Se o portador estiver equipado com a faca do caçador ou a pistola do caçador, pode descobrir as interações da criatura escolhida."
     ],
     "description": "Leve o suficiente para correr. Resistente o suficiente para errar. Os caçadores de Union não pedem mais do que isso.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed53-9e24-6090-bd75-c940544b3422/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_hunter_s_medium_chestpiece_armor_dis-0.jpg"
@@ -1579,7 +1582,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao falhar criticamente, a pistola explode causando 1D6 de dano ao portador."
+      "Ao tirar uma Falha Crítica, a pistola explode e causa 1D6 de dano ao portador."
     ],
     "description": "Funciona. Às vezes. A definição de 'funciona' é generosa.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed57-da55-6bf0-8716-354edeee99b7/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_makeshift_scrap_pistol_displayed_dia-0.jpg"
@@ -1595,7 +1598,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Se for o primeiro ataque do combate, role com Vantagem."
+      "Se for o primeiro ataque do combate, o portador rola com Vantagem."
     ],
     "description": "Ornamentada, equilibrada, construída para o momento que define reputações em Camelot.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/88c61932-b681-4c58-9b20-e661c1145bb3/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_hybrid_multib_2.jpg"
@@ -1611,7 +1614,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Uma vez por combate, pode gastar 1 Ação para realizar um segundo disparo com Desvantagem."
+      "Uma vez por combate, o portador pode gastar 1 Ação para realizar um segundo disparo com Desvantagem."
     ],
     "description": "Os engenheiros de Rubra queriam velocidade. Conseguiram. Também conseguiram problemas de supercarga.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/68fcaae1-6f9c-4b78-9b16-f68084e4d3c6/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_doublebarrel__3.jpg"
@@ -1627,7 +1630,8 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao disparar, cria um sinal luminoso visível a até 2km. Pode aplicar Cego por 1 turno em alvos adjacentes (Reflexo dif. 10 para evitar)."
+      "Ao disparar, cria um sinal luminoso visível a até 2km.",
+      "Também pode aplicar Cego por 1 turno em alvos adjacentes (Reflexo dif. 10 para evitar)."
     ],
     "description": "Projetada para pedir socorro. Ninguém diz que não pode ser usada pra outra coisa.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed5b-fc3e-6f10-a7d8-7470f595d0f5/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_industrial_flare_pistol_displayed_di-3.jpg"
@@ -1643,7 +1647,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Uma vez por combate, permite liberar vapor e criar uma nuvem de fumaça de 5m e automaticamente entrar em furtividade."
+      "Uma vez por combate, o portador pode liberar vapor, criar uma nuvem de fumaça de 5m e entrar em Furtividade automaticamente."
     ],
     "description": "Uma engenharia impecável, com toda a tecnologia de vapor e pressão que possibilitou o uso dessa ferramenta, como arma em Rubra.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed5f-8e35-68d0-aee5-081707333414/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_steampunk_steam-pistol_displayed_dia-2.jpg"
@@ -1659,7 +1663,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao atacar uma criatura que o portador rastreou naquele dia, ganha +3 no dano."
+      "Ao atacar uma criatura que o portador rastreou naquele dia, o portador ganha +3 no dano."
     ],
     "description": "Companheira de campo. Não precisa de precisão cirúrgica — precisa de conhecer o terreno melhor que o alvo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed63-3c6e-60c0-8f11-234a4649a037/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_hunter_s_flintlock_pistol_displayed_-1.jpg"
@@ -1676,7 +1680,7 @@
     "maxDurability": 3,
     "effects": [
       "Os disparos desta pistola não fazem som.",
-      "Ao atacar de Furtividade ativa, o alvo tem desvantagem na percepção."
+      "Ao atacar de Furtividade ativa, o alvo tem Desvantagem em testes de Percepção."
     ],
     "description": "Forjada nas oficinas clandestinas da Irmandade de Union. Sem barulho. Sem testemunhas. Sem rastro.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed65-debe-68f0-969c-2f648b10dbc6/lucid-origin_A_highly_detailed_illustration_of_an_ominous_fantasy_shadow_pistol_displayed_dia-0.jpg"
@@ -1692,7 +1696,8 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Ocupa os dois espaços de mão. Permite disparar em dois alvos diferentes na mesma Ação, com Desvantagem em ambos.",
+      "Ocupa os dois espaços de mão.",
+      "Permite disparar em dois alvos diferentes na mesma Ação, com Desvantagem em ambos.",
       "Ao acertar os dois alvos no mesmo turno, ambos ficam Paralisados."
     ],
     "description": "Dois canos. Um gatilho. A matemática da violência simplificada.",
@@ -1725,8 +1730,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Os projéteis desta pistola atravessam obstáculos físicos não-mágicos.",
-      "Permite acertar alvos intangíveis."
+      "Os projéteis desta pistola atravessam obstáculos físicos não mágicos e acertam alvos intangíveis."
     ],
     "description": "Ninguém sabe como funciona. O fabricante morreu antes de explicar. A pistola continua funcionando.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed71-bba9-6bb0-86ea-2ecd62877a16/lucid-origin_A_highly_detailed_illustration_of_an_eerie_ethereal_fantasy_pistol_displayed_dia-1.jpg"
@@ -1742,7 +1746,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao atacar criaturas animais ou bestas, o sucesso crítico é 10."
+      "Ao atacar criaturas animais ou bestas, o valor necessário para tirar um Crítico é 10."
     ],
     "description": "Padrão das expedições de caça de Union. Durável, preciso, discreto. Faz o que precisa.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed74-cc03-6300-b564-fdcd4046998d/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_hunter_s_heavy_rifle_displayed_diago-3.jpg"
@@ -1758,7 +1762,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Quanto maior a distância, aplica mais condição de fratura. A cada 10m causa 1 de fratura até no máximo 3."
+      "A cada 10m de distância entre atirador e alvo, este rifle aplica 1 de Fratura adicional, até o máximo de 3."
     ],
     "description": "Rubra construiu para guerra. Camelot encomendou mil. A guerra acabou; os rifles ficaram.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/3ff6bb23-523c-411f-9642-38c7b9628109/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_minig_3.jpg"
@@ -1774,8 +1778,8 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "+3 em testes de Precisão ao atacar alvos a mais de 30 metros.",
-      "Se você eliminar um alvo com este rifle, o cadáver será ocultado e exigirá um teste de percepção(dt. 18)."
+      "O portador ganha +3 em testes de Precisão ao atacar alvos a mais de 30 metros.",
+      "Se o portador eliminar um alvo com este rifle, o cadáver fica oculto e só é encontrado com um teste de Percepção (dif. 18)."
     ],
     "description": "Os elfos de Galahad não apreciam armas de fogo — mas quando as adotam, as refinam até a perfeição.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/6e1cd41c-66c2-4ca0-bd43-56e37c93829f/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_rifle_0.jpg"
@@ -1791,7 +1795,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao acertar um alvo, pode empurrá-lo 2m em qualquer direção."
+      "Ao acertar um alvo, o portador pode empurrá-lo 2m em qualquer direção."
     ],
     "description": "O impacto é brutal. Os caçadores de grandes criaturas de Union usam para derrubar alvos sem precisar de mira perfeita.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed77-064a-6660-9e78-bd13951b1731/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_heavy_pressure-powered_rifle_display-0.jpg"
@@ -1808,7 +1812,8 @@
     "maxDurability": 3,
     "effects": [
       "Ao causar dano, aplica 2 de Queimadura ao alvo.",
-      "Uma vez por combate, dispara um projétil explosivo que cria uma área de Queimadura de 10m por 5 turnos, alvos dentro dessa área recebem 1 de queimadura."
+      "Uma vez por combate, dispara um projétil explosivo que cria uma área de Queimadura de 10m por 5 turnos.",
+      "Alvos dentro dessa área recebem 1 de Queimadura."
     ],
     "description": "Os engenheiros de Rubra encheram balas com lava comprimida. Funcionou melhor do que esperavam. Muito melhor.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed79-cc63-6110-9c5a-e98b5447f063/lucid-origin_A_highly_detailed_illustration_of_a_legendary_fantasy_heavy_rifle_displayed_diag-0.jpg"
@@ -1824,7 +1829,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Em condições de pouca luz ou escuridão, ganha +4 em Precisão.",
+      "Em condições de pouca luz ou escuridão, o portador ganha +4 em testes de Precisão.",
       "Os disparos deste rifle não deixam rastros visíveis."
     ],
     "description": "Fabricado para operar onde a luz não chega. A Irmandade das Sombras de Union financia as pesquisas de Rubra por motivos que não divulga.",
@@ -1842,7 +1847,7 @@
     "maxDurability": 3,
     "effects": [
       "Causa dano dobrado contra alvos que tenham Entropia acima de 0.",
-      "Ao acertar um alvo, o alvo perde 1 ponto de Entropia."
+      "Ao acertar um alvo, ele perde 1 ponto de Entropia."
     ],
     "description": "Desenvolvido por Camelot durante a Purga dos Arcanistas. Cada bala carrega um campo supressor de eltys.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/f2dab63a-f77c-4cde-89eb-f548b67af5ae/segments/2:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_rifle_1.jpg"
@@ -1859,7 +1864,7 @@
     "maxDurability": 3,
     "effects": [
       "O portador não tem penalidade ao atirar em ambientes como névoa, fumaça e neblina.",
-      "Uma vez por combate, ao acertar, aplica Cego no alvo por 2 turnos."
+      "Uma vez por combate, ao acertar, o portador aplica Cego no alvo por 2 turnos."
     ],
     "description": "Os exploradores de North Galahad precisavam de algo que funcionasse nas neblinas densas. Rubra entregou. Cobrou muito.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed80-d5a8-68e0-adec-3a0cf510d4e9/lucid-origin_A_highly_detailed_illustration_of_a_legendary_fantasy_rifle_displayed_diagonally-0.jpg"
@@ -1876,7 +1881,7 @@
     "maxDurability": 3,
     "effects": [
       "Ao causar dano, o alvo deve realizar Atletismo ou Fortitude dif. 18 ou fica Paralisado.",
-      "Em ambientes frios, ganha +2 em todos os dados de ataque."
+      "Em ambientes frios, o portador ganha +2 em todos os dados de ataque."
     ],
     "description": "Usa cristais de gelo de North Galahad como projéteis. Ao impactar, o cristal se expande. O resultado é espetacular e brutal.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed82-e272-6420-8ae6-319a4bf91192/lucid-origin_A_highly_detailed_illustration_of_a_legendary_fantasy_heavy_sniper_rifle_display-0.jpg"
@@ -1892,10 +1897,11 @@
     "isEquipment": true,
     "maxDurability": 5,
     "effects": [
-      "O valor para obter um crítico é reduzido em 2.",
-      "Se o portador não se moveu no ato passado, o multiplicador de crítico é aumentado em 1.",
-      "Uma vez por sessão, realiza um tiro perfeito: acerta automaticamente o alvo e causa dano máximo.",
-      "Ao empunhar essa arma, existem intenções de terror e arrependimento, faça um teste de Vontade (dif. 25) para realizar qualquer ato com essa arma, se falhar, o portador vai realizar qualquer ato que impeça de usá-la."
+      "O valor necessário para tirar um Crítico é reduzido em 2.",
+      "Se o portador não se moveu no Ato anterior, o multiplicador de Crítico é aumentado em 1.",
+      "Uma vez por sessão, o portador pode realizar um tiro perfeito: acerta automaticamente o alvo e causa dano máximo.",
+      "Ao empunhar esta arma, o portador sente intenções de terror e arrependimento vindas dela.",
+      "Para realizar qualquer ato com a arma, o portador deve ser bem-sucedido em um teste de Vontade (dif. 25); se falhar, acaba realizando algum ato que o impede de usá-la."
     ],
     "description": "Uma vez, um engenheiro decidiu usar seu conhecimento para criar uma arma em vez de uma ferramenta, após descobrir o potencial destrutivo, ele arrancou os próprios braços e saiu arrependido no deserto. Dizem relatos, que ele levou essa arma consigo para que nunca caia em mãos erradas. 'Corra Até Seu Temido e Ingênuo Grande Ato de Redenção.'",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/03ee9a2a-9b44-48fc-8c0e-3d750b35aba2/segments/2:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_rifle_1.jpg"
@@ -1925,7 +1931,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "+2 em testes de Precisão ao atacar alvos a mais de 15 metros."
+      "O portador ganha +2 em testes de Precisão ao atacar alvos a mais de 15 metros."
     ],
     "description": "O arco dos guardas de fronteira de Galahad. Longo o suficiente para atingir antes de ser visto.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed86-ae38-6ac0-b7fc-524c3429d0b6/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_heavy_military_longbow_displayed_ver-1.jpg"
@@ -1941,7 +1947,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "+2 em testes de Precisão, e +4 se for a 30m de distância."
+      "O portador ganha +2 em testes de Precisão, ou +4 se estiver a 30m de distância — os bônus não se acumulam."
     ],
     "description": "Engenharia élfica aplicada ao arco de madeira. O resultado é algo que nenhum dos dois concordaria em chamar de seu.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ed89-77d1-6560-8b6d-a120395b520b/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_mechanical_composite_bow_displayed_v-2.jpg"
@@ -1957,7 +1963,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Ao causar dano, permite evitar o consumo da munição.",
+      "Ao causar dano, o portador evita o consumo da munição.",
       "Se o portador tiver Talento em Precisão, ao realizar um ataque com sucesso, pode disparar uma segunda flecha com 2x Desvantagem."
     ],
     "description": "Curvado com resina de árvore-mãe e polido com paciência élfica. Cada arco leva uma geração para amadurecer.",
@@ -1992,7 +1998,7 @@
     "maxDurability": 3,
     "effects": [
       "Flechas disparadas em pouca luz ou escuridão tornam-se invisíveis em voo.",
-      "Ao atacar de Furtividade ativa, ganha +5 em Precisão."
+      "Ao atacar de Furtividade ativa, o portador ganha +5 em testes de Precisão."
     ],
     "description": "Tecido com trevas solidificadas pelos magos de Britannia. Carregá-lo à luz plena causa um desconforto inexplicável.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/4f2f8e36-10de-4466-b2ac-148eb53b74fd/segments/1:1:1/Lucid_Origin_A_highly_detailed_brutal_composite_war_bow_made_o_0.jpg"
@@ -2025,7 +2031,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Uma vez por combate, dispara uma flecha de relâmpago que salta para um segundo alvo adjacente, causando metade do dano."
+      "Uma vez por combate, o portador dispara uma flecha de relâmpago que salta para um segundo alvo adjacente, causando metade do dano."
     ],
     "description": "Captura a eletricidade das tempestades sobre os mares de Union. Cada flecha carrega o som do trovão antes de partir.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15eda5-2072-6f00-92ac-411a1e7b6b85/lucid-origin_A_highly_detailed_illustration_of_a_legendary_fantasy_heavy_thunderstorm_longbow-0.jpg"
@@ -2041,7 +2047,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Para cada ponto de Entropia, ganha +1 em todos os dados de ataque."
+      "Para cada ponto de Entropia que o portador tiver, ele ganha +1 em todos os dados de ataque."
     ],
     "description": "Esculpido em eltys cristalizado de Britannia. Cada flecha disparada amplifica o poder arcano do portador.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15edad-bb43-6d60-8cca-412964b3e3e7/lucid-origin_A_highly_detailed_illustration_of_a_fantasy_crystalline_longbow_displayed_vertic-1.jpg"
@@ -2057,9 +2063,11 @@
     "isEquipment": true,
     "maxDurability": 5,
     "effects": [
-      "Aumenta em 3 dado de dano para cada constelação que estiver presente em cena, role um teste de conhecimento, para cada 20 no teste é considerado 1 constelação. Se tiver antecedente em Astronomo, é reduzido em 10.",
-      "O valor para obter um crítico é reduzido em 1+X, sendo X a quantidade de Luas que estão presentes em cena.",
-      "Uma vez por sessão, ee o portador jogar uma flecha no sol, é feita um teste de Conhecimento (dif. 22), permite realizar um eclipse lunar por 10 turnos."
+      "Para cada constelação presente em cena, o arco aumenta o dano em 3 dados.",
+      "Para determinar quantas constelações estão presentes, o portador rola um teste de Conhecimento — a cada 20 no resultado, conta 1 constelação.",
+      "Se o portador tiver o antecedente Astrônomo, esse valor é reduzido em 10.",
+      "O valor necessário para tirar um Crítico é reduzido em 1+X, sendo X a quantidade de Luas presentes em cena.",
+      "Uma vez por sessão, se o portador atirar uma flecha no sol, faz um teste de Conhecimento (dif. 22) para provocar um eclipse lunar que dura 10 turnos."
     ],
     "description": "Este arco foi forjado nas montanhas de Norjivor, em homenagem a um dos 3 lendários reis que outrora salvou o mundo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15edb0-ed1b-6830-9d08-2f2b55450c76/lucid-origin_A_highly_detailed_illustration_of_an_ancient_god-tier_cosmic_longbow_displayed_v-2.jpg"
@@ -2089,7 +2097,7 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao impactar, explode em 5m de raio causando metade do dano a todos os alvos na área.",
+      "Ao impactar, explode em um raio de 5m, causando metade do dano a todos os alvos na área.",
       "Ao ser consumida, não pode ser recuperada."
     ],
     "description": "Rubra encontrou uma maneira de miniaturizar uma bomba. Os arqueiros de Galahad ficaram desconfortáveis. Até usarem.",
@@ -2123,7 +2131,7 @@
     "maxDurability": null,
     "effects": [
       "Ao causar dano, aplica 1 de Queimadura.",
-      "Incendeiam materiais inflamáveis ao impactar."
+      "Ao impactar, incendeiam materiais inflamáveis."
     ],
     "description": "A ponta envolve trapo embebido em óleo de Rubra. Simples, eficaz, e espetacular durante a noite.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee08-87a7-6cd0-abde-e6a3b4a9c456/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_B_Flecha_Fl-0.jpg"
@@ -2173,7 +2181,7 @@
     "maxDurability": null,
     "effects": [
       "Ao causar dano, reduz a visão do alvo para 5m por 2 turnos.",
-      "Não é destruídos se o Arco das Nervuras for usado."
+      "Não são destruídas se o Arco das Nervuras for usado."
     ],
     "description": "Forjadas com sombra solidificada. Ao impactar, a escuridão que carregam escoa para os olhos do alvo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee1d-6cfc-6830-97c2-7768f28cdc93/lucid-origin_A_detailed_fantasy_item_illustration_of_a_rare_tactical_shadow_projectile_arrow_-0.jpg"
@@ -2190,7 +2198,7 @@
     "maxDurability": null,
     "effects": [
       "Causa dano dobrado contra criaturas das trevas e mortos-vivos.",
-      "Ao acertar, cria um campo de luz de 5m ao redor do alvo por 2 turnos."
+      "Ao acertar um alvo, cria um campo de luz de 5m ao seu redor por 2 turnos."
     ],
     "description": "Consagradas no Templo de Alfa em Camelot. Cada caixa recebe uma bênção individual de um sacerdote. O processo é lento. O resultado, eficaz.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee22-e95b-68e0-a2fa-cefd47341af7/lucid-origin_A_detailed_fantasy_item_illustration_of_a_rare_tactical_consecrated_projectile_a-0.jpg"
@@ -2240,7 +2248,7 @@
     "maxDurability": null,
     "effects": [
       "Causa dano dobrado contra mortos-vivos, licantrópicos e criaturas malditas.",
-      "Criaturas atingidas por estas balas não podem regenerar vida naquele turno."
+      "Ao acertar um ataque, o alvo não pode regenerar Vida naquele turno."
     ],
     "description": "Fundidas com prata pura de Britannia. Caras. Eficazes. Os caçadores de monstros de Union pagam o preço sem reclamar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/e8f4d120-7c59-4db3-9d85-a15ac809a6b8/segments/4:4:1/Lucid_Origin_A_highly_detailed_closeup_illustration_of_a_large_3.jpg"
@@ -2256,8 +2264,8 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao impactar, explode em 4m de raio causando metade do dano a todos na área.",
-      "Ao ser usada, ela é consumida."
+      "Ao impactar, explode em um raio de 4m, causando metade do dano a todos na área.",
+      "É consumida após o uso."
     ],
     "description": "Rubra comprimiu explosivo em uma bala. O teste de campo foi 'acidentalmente' bem sucedido.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/fd2d7370-d8e1-4c6b-bc6e-a46a6815947e/segments/1:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_runic_magic_b_0.jpg"
@@ -2273,8 +2281,9 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao impactar, libera uma nuvem de gás em 4m de raio por 2 turnos. Criaturas na área fazem Fortitude dif. 15 por turno ou ficam Atordoadas.",
-      "Ao ser usada, ela é consumida."
+      "Ao impactar, libera uma nuvem de gás em um raio de 4m por 2 turnos.",
+      "Criaturas na área devem realizar Fortitude dif. 15 por turno, ou ficam Atordoadas.",
+      "É consumida após o uso."
     ],
     "description": "Cápsula de vidro reforçado preenchida com gás paralisante extraído das pântanas de Union.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee30-f89c-63f0-96df-530e372e0462/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_B_Bala_de_G-0.jpg"
@@ -2290,7 +2299,7 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao atingir um alvo, o portador pode rastreá-lo por até 24 horas, conhecendo sua direção geral."
+      "Ao acertar um ataque, o portador pode rastrear o alvo por até 24 horas, conhecendo sua direção geral."
     ],
     "description": "Os detetives de Union usam para não perder suspeitos. A bala é pequena. Quase imperceptível. Quase.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee33-fcef-6170-a3ff-eb5a1a02ff47/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_C_Bala_de_R-0.jpg"
@@ -2307,7 +2316,7 @@
     "maxDurability": null,
     "effects": [
       "Ao causar dano em um alvo que esteja mantendo uma conjuração Concentrada, o teste de Vontade para manter a concentração é feito com Desvantagem.",
-      "Ao impactar, emite uma onda sonora que revela todos em 10m que falhem em Percepção dif. 15."
+      "Ao impactar, emite uma onda sonora que revela a posição de todos em 10m que falhem em Percepção dif. 15."
     ],
     "description": "Contém uma runa de amplificação sônica. O som do impacto reverbera nos ossos do alvo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/629a7fd7-c6c6-471e-a935-94dcfe9a8e1f/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_an_iceformed_ma_3.jpg"
@@ -2324,7 +2333,7 @@
     "maxDurability": null,
     "effects": [
       "Causa dano dobrado contra mortos-vivos e criaturas das trevas.",
-      "Ao atingir um alvo, cria um campo de luz de 5m ao redor por 2 turnos."
+      "Ao acertar um ataque, cria um campo de luz em um raio de 5m por 2 turnos."
     ],
     "description": "Consagradas no Templo de Alfa. Os sacerdotes não aprovam que sejam usadas em revólveres. Mas não param de abençoá-las.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee36-4185-6760-8ce4-a839719e4695/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_A_Bala_Sagr-1.jpg"
@@ -2340,8 +2349,8 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao impactar, cria um vácuo local que puxa todos a até 5m em direção ao ponto de impacto (Atletismo dif. 17 para resistir).",
-      "Alvos puxados para juntos sofrem 1D6 de dano de colisão."
+      "Ao impactar, cria um vácuo que puxa tudo dentro de 5m em direção ao ponto de impacto, resistível com Atletismo dif. 17.",
+      "Se os alvos colidirem entre si por causa do puxão, sofrem 1D6 de dano de colisão."
     ],
     "description": "Britannia experimentou com física dimensional. O resultado foi uma bala que desafia a direção do espaço.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee3c-ba45-6e10-a35a-d138a1c0a621/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_A_Bala_de_V-1.jpg"
@@ -2357,7 +2366,7 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "o dano base da arma se torna D10, se o alvo tiver Afinidade a Astral.",
+      "Se o alvo tiver Afinidade a Astral, o dano base da arma se torna D10.",
       "Permite acertar alvos intangíveis."
     ],
     "description": "Forjadas com material espectral extraído de fantasmas de Britannia. O processo é eticamente questionável em múltiplos aspectos.",
@@ -2375,7 +2384,7 @@
     "maxDurability": null,
     "effects": [
       "Ao causar dano, o alvo deve realizar Fortitude dif. 20 ou fica Surdo por 5 turnos.",
-      "Ao impactar, emite um trovão que pode ser ouvido em 500m de raio."
+      "Ao impactar, emite um trovão que pode ser ouvido em um raio de 500m."
     ],
     "description": "Carregadas com energia de relâmpago comprimida. O disparo soa como um trovão. Os inimigos aprendem rápido o que isso significa.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee5b-c0f5-6840-a147-b5de3ff99d61/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_A_Bala_de_T-1.jpg"
@@ -2391,8 +2400,8 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Ao causar dano, aplica uma Maldição ao alvo: deixando-o com desvantagem no teste de perícia escolhida, pode aplicar este efeito até 2 vezes.",
-      "A Maldição só pode ser removida com Vontade dif. 22, pode realizar um teste de resistência 1 vez por turno.",
+      "Ao causar dano, aplica uma Maldição ao alvo, concedendo Desvantagem no teste de uma perícia escolhida — este efeito pode ser aplicado até 2 vezes.",
+      "A Maldição só pode ser removida com um teste de Vontade dif. 22, tentado no máximo 1 vez por turno.",
       "O portador perde 1 de Sanidade por tiro realizado."
     ],
     "description": "Ninguém sabe de onde vieram. Apareceram numa loja de Britannia embrulhadas em papel negro com um símbolo roxo estampado. O dono não sobreviveu para explicar.",
@@ -2410,7 +2419,8 @@
     "maxDurability": 3,
     "effects": [
       "Requer duas mãos. Possui alcance de 3m.",
-      "Ao atacar, pode atingir todos os inimigos em arco de 180° na frente do portador. Para cada inimigo adicional sofre Desvantagem no ataque realizado."
+      "Ao atacar, pode atingir todos os inimigos em um arco de 180° à frente do portador.",
+      "Para cada inimigo adicional atingido, o ataque sofre Desvantagem."
     ],
     "description": "As guardas da fronteira norte de Galahad carregam estas alabardas há gerações. O frio não dobra o cabo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f374-082e-6f70-9422-4b2cdd3e3798/lucid-origin_A_detailed_illustration_of_a_divine_starry-void_fantasy_spear_displayed_diagonal-1.jpg"
@@ -2427,8 +2437,8 @@
     "maxDurability": 3,
     "effects": [
       "Requer duas mãos. Possui alcance de 3m.",
-      "Ao matar um inimigo, o portador recupera 3 de vida.",
-      "Criaturas atingidas não podem se curar por magia naquele turno."
+      "Ao matar um inimigo, o portador recupera 3 de Vida.",
+      "Ao acertar um ataque, o alvo não pode se curar por magia naquele turno."
     ],
     "description": "A foice que os Ceifadores de Union usam. Dizem que colhe mais do que grãos. Os rumores são verdadeiros.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee61-01e8-6280-8509-8e0aaabfd062/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_A_Foice_das-0.jpg"
@@ -2444,7 +2454,8 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Requer duas mãos. Ao acertar um ataque, pode tentar derrubar o alvo (Atletismo do portador contra Atletismo do alvo)."
+      "Requer duas mãos.",
+      "Ao acertar um ataque, pode tentar derrubar o alvo, opondo Atletismo do portador ao Atletismo do alvo."
     ],
     "description": "Padrão dos soldados de infantaria de Camelot durante guerras de cerco. Funciona igualmente bem em muros e em pessoas.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee64-a7a6-63e0-b330-5595ddff4be3/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_C_Martelo_d-0.jpg"
@@ -2460,7 +2471,8 @@
     "isEquipment": true,
     "maxDurability": 4,
     "effects": [
-      "Requer duas mãos. Ao atacar, cause 1 dano adicional igual ao número de dados que saíram com valor máximo.",
+      "Requer duas mãos.",
+      "Ao atacar, para cada dado que resultar no valor máximo, causa 1 dano adicional.",
       "Se o portador tiver Talento em Combate, ganha Vantagem ao atacar com esta arma."
     ],
     "description": "Forjado pelos anões mais velhos de Britannia. Ninguém faz machados como eles fazem. Ninguém precisaria de algo tão grande — mas os anões discordam.",
@@ -2478,7 +2490,7 @@
     "maxDurability": 3,
     "effects": [
       "Ao causar dano, o alvo deve realizar Atletismo ou Fortitude dif. 17 ou fica Paralisado.",
-      "Por turno, permite remover 3 stacks de queimadura."
+      "A cada turno, o portador pode remover 3 stacks de Queimadura."
     ],
     "description": "Solidificada do gelo eterno de North Galahad. Nunca derrete. Exceto ao impactar algo vivo — então dissolve completamente.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee67-8d17-6d00-a0e9-e97189f2cd44/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_A_Lança_de-1.jpg"
@@ -2510,7 +2522,8 @@
     "isEquipment": true,
     "maxDurability": 4,
     "effects": [
-      "Requer duas mãos. Ao acertar, pode tentar derrubar ou empurrar o alvo 5m (Atletismo dif. 20).",
+      "Requer duas mãos.",
+      "Ao acertar um ataque, pode tentar derrubar ou empurrar o alvo em até 5m, com Atletismo dif. 20.",
       "Ao acertar um alvo derrubado, o ataque causa dano dobrado."
     ],
     "description": "Encontrada nas ruínas de uma fortaleza de gigantes destruída há séculos. Ninguém sabe como chegou a Union. Ninguém conseguia levantá-la antes.",
@@ -2529,7 +2542,7 @@
     "effects": [
       "Permite acertar alvos intangíveis.",
       "Pode ser arremessada e retorna automaticamente à mão do portador no próximo turno.",
-      "Sempre que causar no mínimo 2 de dano no ataque realizado, o alvo perde 1 de sanidade."
+      "Ao causar ao menos 2 de dano em um ataque, o alvo perde 1 de Sanidade."
     ],
     "description": "Não pertence completamente a este plano. A ponta atravessa o material como se fosse névoa — e o que ela toca, sente da mesma forma.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee6f-da9f-68e0-a5e8-d8971dc55ebd/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_A_Lança_Fa-0.jpg"
@@ -2545,9 +2558,10 @@
     "isEquipment": true,
     "maxDurability": 5,
     "effects": [
-      "Requer duas mãos. Ao acertar um ataque crítico, todos os inimigos em 5m fazem Atletismo dif. 20 ou ficam Atordoados por 1 turno.",
-      "Uma vez por combate, ao golpear o chão, cria uma onda de choque de 10m que derruba todos que falharem em Atletismo dif. 22.",
-      "Para cada 10 pontos do peso atual, causa 1 de dano ao realizar um ataque."
+      "Requer duas mãos.",
+      "Ao tirar um Crítico, todos os inimigos em um raio de 5m devem realizar Atletismo dif. 20 ou ficam Atordoados por 1 turno.",
+      "Uma vez por combate, ao golpear o chão, cria uma onda de choque em um raio de 10m que derruba todos que falharem em Atletismo dif. 22.",
+      "Para cada 10 pontos do peso atual do portador, o ataque causa 1 de dano adicional."
     ],
     "description": "O trovão do impacto pode ser ouvido de quilômetros. Foi assim que rastrearam o portador pelo inimigo — e assim que ele acabou com o exército que o cercou.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee72-691e-6d30-b909-2131dba56d01/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_S_Rompe_Mag-0.jpg"
@@ -2564,7 +2578,7 @@
     "maxDurability": 3,
     "effects": [
       "Requer duas mãos. Possui alcance de 4m.",
-      "Se for usada com a armadura imperial, esta lança permite atacar um segundo alvo com desvantagem."
+      "Se usada com a armadura imperial, permite atacar um segundo alvo com Desvantagem."
     ],
     "description": "A lança cerimonial dos Imperiais de Camelot se tornou funcional por necessidade. O cerimonial ficou no nome.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/575c7bf0-50c6-4624-b65d-4c5ccb38544b/segments/1:4:1/Lucid_Origin_A_detailed_illustration_of_a_stylish_ornate_spear_0.jpg"
@@ -2597,7 +2611,7 @@
     "maxDurability": 1,
     "effects": [
       "O portador ganha +3 em qualquer teste relacionado a movimentação (Atletismo ou Acrobacia para correr, saltar ou escalar).",
-      "Ganha +1 em testes de Esquiva."
+      "Ganha +1 em testes de esquiva."
     ],
     "description": "Encantado por arcanistas de Galahad. O fio do colar parece vibrar mesmo parado.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee79-6623-61b0-a181-8f3fbf386efa/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_B_Amuleto_d-0.jpg"
@@ -2613,8 +2627,8 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao início de cada turno, permite sacrificar 1 de sanidade por 1 de vida.",
-      "Permite destruir este item, para recuperar 10 de vida."
+      "Ao início de cada turno, o portador pode sacrificar 1 de Sanidade para recuperar 1 de Vida.",
+      "O portador pode destruir este item para recuperar 10 de Vida."
     ],
     "description": "Imbuído com energia vital extraída de árvores ancestrais de Galahad. Pulsa levemente quando perto de cura.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee7b-aaaf-6b60-b7b3-409def0e0729/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_B_Amuleto_d-0.jpg"
@@ -2664,7 +2678,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "O portador reduz 1 de queimadura por turno.",
+      "O portador reduz 1 de Queimadura por turno.",
       "Ataques de fogo recebem -2 de dano.",
       "Uma vez por combate, pode soprar uma chama de 5m que causa 3D6 de dano e aplica 3 de Queimadura."
     ],
@@ -2683,7 +2697,7 @@
     "maxDurability": 2,
     "effects": [
       "Ganha +2 em testes de Precisão.",
-      "O valor para obter um crítico em ataques à distância é reduzido em 1."
+      "O valor necessário para tirar um Crítico em ataques à distância é reduzido em 1."
     ],
     "description": "Dado pelo Grão-Arqueiro de Galahad aos seus alunos mais dedicados. Não é herança — é mérito.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee86-f7db-6910-966c-b88d0465a3ac/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_A_Amuleto_G-0.jpg"
@@ -2700,7 +2714,8 @@
     "maxDurability": 3,
     "effects": [
       "Para cada ponto de Entropia, ganha +1 em todos os dados de dano arcano.",
-      "Ao aumentar a Entropia para nível 1 ou 2, ignore a rolagem de Marca — nenhuma Modificação é recebida. Se o amuleto for removido com Entropia maior que 2, o portador perde 5D12 de Sanidade instantaneamente."
+      "Ao aumentar a Entropia para nível 1 ou 2, a rolagem de Marca é ignorada — nenhuma Modificação é recebida.",
+      "Se o amuleto for removido com Entropia maior que 2, o portador perde 5D12 de Sanidade instantaneamente."
     ],
     "description": "Um aventureiro criou este amuleto com materiais vindos de outra dimensão, ele não sabia as consequências de seus atos, mas ele criou um paradoxo vivo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee89-018e-6410-85d6-33444d0d4bd4/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_S_Amuleto_E-0.jpg"
@@ -2718,7 +2733,7 @@
     "effects": [
       "Durante a noite, todos os atributos do portador ganham +2.",
       "Durante o dia, todos os atributos do portador ganham -2.",
-      "Após obter este amuleto, para se livrar ou não usá-lo, o portador deve fazer um teste de Vontade (dif. 20), se falhar perde -5 de Sanidade."
+      "Após obter este amuleto, para se livrar dele ou deixar de usá-lo, o portador deve realizar um teste de Vontade dif. 20 — se falhar, perde -5 de Sanidade."
     ],
     "description": "Criado pelos monges lunares de Galahad que estudavam os ciclos celestes por gerações. O portador percebe o efeito antes de entender o porquê.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee8b-5c69-64f0-8d95-42f5e564a3c4/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_A_Amuleto_d-0.jpg"
@@ -2735,11 +2750,11 @@
     "maxDurability": 100,
     "effects": [
       "O portador não envelhece enquanto o usa.",
-      "Uma vez na sessão, permite sacrificar 30 de durabilidade para anular um teste realizado por qualquer pessoa.",
-      "Uma vez por cena, permite sacrificar 20 de durabilidade para dar vantagem ou desvantagem a um teste de qualquer pessoa.",
-      "Uma vez por combate, permite sacrificar 10 de durabilidade para anular um dano sofrido.",
-      "Uma vez por turno, permite sacrificar 5 de durabilidade para restaurar 5 de vida.",
-      "Este item não pode ser restaurado(recuperar durabilidade)."
+      "Uma vez por sessão, o portador pode sacrificar 30 de durabilidade para anular um teste de qualquer pessoa.",
+      "Uma vez por cena, o portador pode sacrificar 20 de durabilidade para conceder Vantagem ou Desvantagem a um teste de qualquer pessoa.",
+      "Uma vez por combate, o portador pode sacrificar 10 de durabilidade para anular um dano sofrido.",
+      "Uma vez por turno, o portador pode sacrificar 5 de durabilidade para restaurar 5 de Vida.",
+      "Este item não pode ter sua durabilidade restaurada."
     ],
     "description": "Um artefato tão antigo, datado antes da era da expansão, que acreditam que seja a origem da imortalidade dos Elfos. Mitos contam que deus entregou este item a aquele que fez ele chorar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee8e-11af-6560-abaf-505059b4229a/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_legendary_Tier_SS_Lágr-0.jpg"
@@ -2836,7 +2851,7 @@
     "maxDurability": 1,
     "effects": [
       "Ao conjurar com intenção de invisibilidade ou ocultamento, ganha +5 no resultado de todos os modificadores.",
-      "Conjurações com intenção de esconder ou ocultar ganham +2 adicional no resultado de todos os modificadores."
+      "Enquanto estiver sob um efeito de invisibilidade ou ocultamento conjurado com este livro, o portador ganha +3 em testes de Furtividade."
     ],
     "description": "Um louco dizia ter escrito um livro invisível, até que no dia da sua morte este livro apareceu em suas mãos.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee9b-c5fc-6560-a910-864072ffd82f/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_A_Livro_do_-1.jpg"
@@ -2872,8 +2887,8 @@
     "effects": [
       "Ao conjurar com intenção de movimento arcano ou flutuação, ganha +5 no resultado de todos os modificadores.",
       "Para cada livro que o portador tiver no inventário, ganha +3 no resultado de qualquer modificador arcano testado.",
-      "Não pode ser destruido por equipamentos materiais.",
-      "Se tentar ler esse livro, o personagem deve realizar um teste de Vontade (dif. 35), se não passar ganha um Trauma."
+      "Não pode ser destruído por equipamentos materiais.",
+      "Se um personagem tentar ler este livro, deve realizar um teste de Vontade dif. 35 — se falhar, ganha um Trauma."
     ],
     "description": "Um diário simples, parece ter sido feito a mão. Uma pena não para de escrever a história de Navah, enquanto ele estiver vivo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee9f-be8e-6090-88bc-24938a90349e/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_mythical_Tier_SS_Diári-0.jpg"
@@ -2889,11 +2904,12 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Esta arma é fundida e acoplada no braço, perdendo o braço no processo. É necessário ter um braço, pelo menos, para sacrificar e usar este equipamento. Este equipamento se torna parte do personagem. Não pode ser removido, portanto que remova o membro acoplado.",
-      "O portador deste equipamento, obtém 'Fobia de Honestidade', deve rolar um teste de Vontade(dif. 20), se não passar deve realizar alguma ação contra o ato de honestidade.",
+      "Esta arma é fundida e acoplada ao braço do portador, que sacrifica o braço no processo — é necessário ter ao menos um braço disponível para usar este equipamento.",
+      "Este equipamento se torna parte do personagem e não pode ser removido, exceto amputando o membro ao qual está acoplado.",
+      "O portador deste equipamento obtém 'Fobia de Honestidade': deve realizar um teste de Vontade dif. 20; se falhar, realiza alguma ação contrária a um ato de honestidade.",
       "Este equipamento dá dano Bruto e Cortante.",
-      "+1 de DP",
-      "Permite sacrificar outro membro do portador, até chegar no coração, para regenerar a durabilidade desse equipamento."
+      "+1 de DP.",
+      "O portador pode sacrificar outro membro, até chegar ao coração, para regenerar a durabilidade deste equipamento."
     ],
     "description": "Uma faca enferrujada, com um cabo talhado e um sensor para colocar a digital. Mercadores têm medo desse item, dizem que foi o demônio a quem criou, amaldiçoando quem o empunhar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/88171240-dbf0-4ce6-8097-fe7298afc7ee/segments/1:1:1/Lucid_Origin_A_detailed_illustration_of_a_mystical_dagger_disp_0.jpg"
@@ -2911,7 +2927,8 @@
       "Uso único. É consumido após ser usado.",
       "Aumenta em +5 o atributo FISICO.",
       "Aumenta em +5 todos os dados de dano.",
-      "Perde -5 em INTELECTO, se ficar com zero ou menos, o indivíduo se torna incontrolável atacando qualquer um perto, dura 10 turnos."
+      "Perde -5 em INTELECTO.",
+      "Se o INTELECTO ficar em zero ou menos, o portador se torna incontrolável, atacando qualquer um que esteja por perto, por 10 turnos."
     ],
     "description": "Uma pílula de cápsula, que serve como anabolizante para o indivíduo que o ingerir. Esta é uma fração da pílula que o grande Rei Thenomad usou em suas batalhas.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15eea2-c709-6550-8611-13c4f5f6124e/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_container_of_Tie-0.jpg"
@@ -2927,7 +2944,7 @@
     "isEquipment": false,
     "effects": [
       "+2 em testes de Percepção.",
-      "Uma vez por combate, permite fazer um teste de Percepção(dif. 25) para descobrir a vida atual do alvo."
+      "Uma vez por combate, permite realizar um teste de Percepção dif. 25 para descobrir a Vida atual do alvo."
     ],
     "description": "Ghanjhi foi um grande explorador, que acabou criando uma loja de óculos. Porém sua marca apenas ficou famosa após um dos grandes reis, Elih, usar um monóculo feito por ele.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15eea6-0dad-6b70-9730-d1419911fcec/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_B_Monóculo-0.jpg"
@@ -2943,18 +2960,18 @@
     "isEquipment": true,
     "maxDurability": "2",
     "effects": [
-      "Sempre que atacar com sucesso, role 1D10 para causar um efeito especial:",
+      "Ao acertar um ataque, o portador rola 1D10 para causar um efeito especial:",
       "1: Não faz nada.",
-      "2: Cura 2D6 de VIDA do alvo.",
+      "2: Cura 2D6 de Vida do alvo.",
       "3: Remove 1 condição negativa do alvo.",
-      "4: Cria uma cortina de fumaça de 10m",
+      "4: Cria uma cortina de fumaça de 10m.",
       "5: Empurra o alvo até 10m para qualquer direção.",
       "6: Aplica 3 de Sangramento.",
-      "7: Aplica 4 Queimadura.",
+      "7: Aplica 4 de Queimadura.",
       "8: Remove 1 de Entropia do alvo.",
       "9: Enraiza o alvo por 1 turno.",
       "10: Atordoa o alvo por 1 turno.",
-      "11: Causa 5 de dano, ignora a DA.",
+      "11: Causa 5 de dano, ignorando a DA.",
       "12: Causa 8D20 de dano."
     ],
     "description": "Um dos grandes reis, Dagdir, forjou este baralho para ajudar a escolher seu destino. Ele era uma pessoa com bastante azar, mas este baralho que lhe garantiu salvar a cidade de Herion.",
@@ -2986,7 +3003,7 @@
     "isEquipment": false,
     "effects": [
       "Uso único. É consumido após ser usado.",
-      "Recupera 1D6 de VIDA."
+      "Recupera 1D6 de Vida."
     ],
     "description": "Toda botica de Union tem uma prateleira inteira dedicada a isso — frascos idênticos, rolha de cortiça, líquido de um vermelho que não existe em nenhuma fruta conhecida. A receita não é segredo: raiz de Union fervida com um pingo de sangue de capivaca e reza suficiente pra dar liga. Não fecha um corte fundo nem cura o que está quebrado por dentro, mas empurra o corpo pra frente por mais um instante — e para quem vive à base de decisões ruins e prazos apertados, isso já é o bastante.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace19-0495-64a0-bb53-be75604127a1/lucid-origin_A_highly_detailed_illustration_of_Minor_Health_Potion_a_small_fantasy_healing_po-0.jpg"
@@ -3019,7 +3036,7 @@
     "maxDurability": 2,
     "effects": [
       "Requer duas mãos. Possui alcance de 3m.",
-      "Ao matar um alvo de tamanho médio/grande com esta foice, o portador recupera 1 de vida."
+      "Ao matar um alvo de tamanho médio/grande com esta foice, o portador recupera 1 de Vida."
     ],
     "description": "A Irmandade dos Ceifadores não recruta — espera. Observa quem trabalha a terra de Union por anos sem nunca afiar a lâmina além do necessário, e só depois oferece a segunda pergunta, a que não é sobre plantação. Esta foice é a primeira arma que um aspirante recebe: sem ornamento, sem bênção, só o peso familiar de uma ferramenta que já conhece a mão que a segura. O resto — o que ela aprende a colher além do trigo — vem depois.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace1e-a3de-6520-a3ff-bb27d9ca063e/lucid-origin_A_highly_detailed_illustration_of_Wind-Reaper_Scythe_a_large_two-handed_fantasy_-1.jpg"
@@ -3035,7 +3052,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Ao defender e remover 1 de durabilidade desse equipamento, o próximo ataque realizado com esta manopla neste turno ganha Vantagem."
+      "Ao defender, o portador pode remover 1 de durabilidade desta manopla para que o próximo ataque realizado com ela neste turno ganhe Vantagem."
     ],
     "description": "Nas arenas clandestinas de Rubra, os melhores lutadores não são os mais fortes — são os que sabem escutar. As Manoplas de Eco nasceram de um projeto que originalmente não tinha nada a ver com combate: válvulas de pressão pensadas para amortecer o impacto de maquinário pesado. Um lutador aposentado, cansado de perder pela velocidade dos outros, viu potencial onde os engenheiros só viam segurança industrial. A câmara libera vapor no instante exato do bloqueio — e transforma paciência em vantagem.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace23-5717-6390-bec2-47ccdd7a2ded/lucid-origin_A_highly_detailed_illustration_of_Echo_Gauntlet_a_lightweight_fantasy_steam-powe-0.jpg"
@@ -3068,7 +3085,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Após disparar, é necessário gastar uma Ação Complexa para recarregar antes do próximo disparo.",
+      "Após disparar, recarregar custa uma Ação Complexa.",
       "O dano desta arma ignora 2 pontos de DA do alvo."
     ],
     "description": "Os engenheiros anões de Britannia nunca se impressionaram com velocidade de disparo — impressionam-se com o que sobra do outro lado do alvo. Cada besta perfurante leva semanas para ser calibrada: a tensão do arco de aço, o ângulo da ponta, o peso exato do virote. O resultado é lento no gatilho e implacável no impacto. Nas minas onde criaturas de pedra e carapaça patrulham a escuridão, ninguém reclama do tempo de recarga — reclamam é de quem esquece de recarregar.",
@@ -3085,7 +3102,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ignora completamente dano de queda, se cair de pé.",
+      "Se o portador cair de pé, ignora completamente o dano de queda.",
       "Uma vez por cena, permite planar por até 10m horizontais antes de tocar o chão."
     ],
     "description": "Entre uma ilha flutuante e outra existe só o vazio — e os batedores de Galahad atravessam esse vazio como quem atravessa uma rua. As Botas do Vento são tecidas com fibra de penas de aves que nunca pousam, colhida nos penhascos mais altos onde nenhum humano sobe sem ajuda. A lenda entre os recrutas é que a primeira batedora a usá-las pulou de propósito, só para provar que valia a pena — e sobreviveu contando a história tantas vezes que ninguém mais lembra se era verdade.",
@@ -3102,8 +3119,8 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Se nenhum coadjuvante intervir ou impor, o valor para obter um crítico em ataques corpo-a-corpo é reduzido em 1.",
-      "Ao acertar um crítico corpo-a-corpo, o próximo ataque corpo-a-corpo realizado antes do fim do Ato ganha Vantagem."
+      "Se nenhum Coadjuvante Intervir ou Impor, o valor necessário para tirar um Crítico em ataques corpo-a-corpo é reduzido em 1.",
+      "Ao tirar um Crítico em um ataque corpo-a-corpo, o próximo ataque corpo-a-corpo realizado antes do fim do Ato ganha Vantagem."
     ],
     "description": "Em Camelot, um duelo de honra tem regras: um padrinho de cada lado, uma testemunha imparcial, e a promessa de que ninguém vai interferir. O Anel do Duelista respeita essa promessa ao pé da letra — só desperta seu poder quando o confronto é limpo, um contra um, sem ajuda de fora. Passa de mão em mão há gerações, sempre do vencedor pro próximo que provar merecer, e carrega gravado em letras miúdas os nomes de quem o usou. A lista nunca teve uma derrota anotada.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace3a-4017-6a70-a104-09a7a4a7033b/lucid-origin_A_highly_detailed_illustration_of_Duelist_s_Ring_an_elegant_fantasy_dueling_ring-0.jpg"
@@ -3121,7 +3138,8 @@
     "maxDurability": 7,
     "effects": [
       "Concede +1 de DA a todos os aliados em um raio de 3m do portador.",
-      "Uma vez por combate, pode ser erguido para formar uma barreira estacionária de 5m que bloqueia ataques à distância físicos por 2 turnos. Enquanto ergue a barreira, o portador não pode se mover nem atacar.",
+      "Uma vez por combate, o portador pode erguer o escudo para formar uma barreira estacionária de 5m que bloqueia ataques à distância físicos por 2 turnos.",
+      "Enquanto a barreira estiver erguida, o portador não pode se mover nem atacar.",
       "Se o portador tiver Talento em Fortitude, a durabilidade máxima deste escudo aumenta em 3."
     ],
     "description": "A Guilda da Última Muralha existe desde antes de Britannia ter esse nome, formada por escudeiros que juraram nunca recuar de uma posição enquanto houvesse gente atrás deles. Cada escudo forjado pela guilda recebe o nome de uma colônia mineira que sobreviveu a um cerco — não como homenagem vazia, mas como lembrete: este escudo já segurou uma linha antes, e vai segurar de novo. O metal é pesado o suficiente para cansar quem não treinou pra carregá-lo, e isso é proposital — a guilda não empresta a última muralha pra qualquer um.",
@@ -3171,7 +3189,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Não pode reduzir a vida de uma criatura abaixo de 1."
+      "Não pode reduzir a Vida de uma criatura abaixo de 1."
     ],
     "description": "Todo recruta da guarda imperial de Camelot passa pelos mesmos meses de treino de punho antes de tocar em aço de verdade — e todo instrutor sabe que o primeiro instinto de um recruta assustado é golpear com força demais. A Manopla de Treino existe pra ensinar controle antes de ensinar dano: o couro amortece, a madeira machuca sem quebrar, e o limite embutido garante que nenhum treino termine numa investigação. Os instrutores mais antigos ainda usam a deles fora de serviço — dizem que é mais confortável que as luvas de gala.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad396-10f9-6bb0-b3f9-c4140c50114f/lucid-origin_A_highly_detailed_illustration_of_Training_Gauntlet_a_lightweight_fantasy_practi-0.jpg"
@@ -3261,7 +3279,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Movimentar em terreno difícil é considerado uma ação simples.",
+      "Movimentar-se em terreno difícil é considerado uma Ação Simples.",
       "Uma vez por cena, permite realizar um Movimento sem que ele conte como Ação."
     ],
     "description": "As árvores-mãe de Galahad vivem séculos e só cedem fibra pra quem elas escolhem — não há colheita forçada, só oferta. Os tecelões que recebem esse material passam a vida aprendendo a trançá-lo sem quebrar a fibra, um ofício ensinado de mestre pra aprendiz ao longo de décadas. O resultado, quando calçado, parece se antecipar ao pensamento: raízes que pareciam armadilhas se tornam apoio, pedras soltas se tornam degrau. Os caminhantes de trilha dizem que não é a bota que aprende o caminho — é você que finalmente aprende a confiar nela.",
@@ -3279,7 +3297,7 @@
     "maxDurability": 3,
     "effects": [
       "Requer duas mãos. Possui alcance de 3m.",
-      "Sacrifique 10 pontos no PM, para recuperar 3 pontos de vida."
+      "O portador sacrifica 10 pontos do Pote de Moral (PM) para recuperar 3 pontos de Vida."
     ],
     "description": "Depois da foice de treino vem esta — a última etapa antes da consagração completa na Irmandade dos Ceifadores. Quem chega até aqui já provou que consegue trabalhar a terra sem hesitar e já colheu, pelo menos uma vez, algo que não crescia do solo. A lâmina é mais pesada, mais afiada, forjada pra durar o tempo que um ceifador de verdade precisa durar. Os irmãos mais velhos dizem que dá pra saber quem está pronto pra Foice das Sombras só de ver como alguém segura esta.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad6dd-5656-6ab0-ae4c-e7ed0df680d5/lucid-origin_A_highly_detailed_illustration_of_Harvest_Scythe_a_heavy_two-handed_fantasy_scyt-3.jpg"
@@ -3296,7 +3314,7 @@
     "maxDurability": 3,
     "effects": [
       "Requer duas mãos.",
-      "Testes para forjar ou reparar equipamentos usando este martelo ganham +5."
+      "Testes de Ofício para forjar ou reparar equipamentos usando este martelo ganham +5."
     ],
     "description": "Toda forja de Britannia tem um martelo assim pendurado perto da bigorna — ferramenta de trabalho, não arma, até o dia em que precisa ser as duas coisas. Os anões que passam a vida moldando metal desenvolvem um instinto de força e precisão que nenhum treino de combate reproduz exatamente igual, e quando a forja é atacada — o que acontece mais do que gostariam de admitir — é esse instinto que decide quem sai andando. Ainda cheira a fumaça de carvão mesmo depois de limpo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad6e7-4e97-6220-95d7-b6893c6cb103/lucid-origin_A_highly_detailed_illustration_of_Blacksmith_s_Hammer_a_massive_two-handed_fanta-2.jpg"
@@ -3410,7 +3428,7 @@
     "isEquipment": true,
     "maxDurability": 4,
     "effects": [
-      "Ataques recebidos vindos de Furtividade não recebem os bônus normais dessa condição contra o portador."
+      "Ataques vindos de oponentes em Furtividade não recebem os bônus normais dessa condição contra o portador."
     ],
     "description": "As torres de vigia nas fronteiras de Union e Galahad compartilham um problema antigo: quem ataca de surpresa quase sempre vence, não importa o treino de quem vigia. O Elmo do Vigia nasceu de gerações de ajustes — cada vigia que sobreviveu a uma emboscada contribuiu com uma modificação, até o design se estabilizar no formato atual. Não é confortável, não é bonito, mas os registros das torres que o adotaram têm uma coisa em comum: nenhum ataque surpresa registrado desde então.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad92a-4a31-6e20-a0a0-b25655e834b6/lucid-origin_highly_detailed_illustration_of_Watcher_s_Helm_a_lightweight_fantasy_defensive_h-0.jpg"
@@ -3443,7 +3461,7 @@
     "maxDurability": 3,
     "effects": [
       "Requer duas mãos. Possui alcance de 3m.",
-      "Ao acertar um crítico, o alvo fica Paralisado até o fim do próximo Ato dele (Atletismo dif. 20 para resistir)."
+      "Ao tirar um Crítico, o alvo fica Paralisado até o fim do próximo Ato dele (Atletismo dif. 20 para resistir)."
     ],
     "description": "A Guarda Real de Camelot não escolhe quem carrega esta alabarda — a arma escolhe, num sentido bem literal: cada peça é forjada sob medida para um único guardião, com o peso e o balanço calibrados ao corpo de quem vai empunhá-la pelo resto da carreira. Ornamentada o suficiente para desfiles, afiada o suficiente para o que acontece quando os desfiles terminam mal. Dizem que nenhum atentado contra o trono chegou perto do Imperador enquanto um portador desta alabarda ainda estava de pé.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad9fb-7a00-6940-9c3f-bece3e3a255f/lucid-origin_highly_detailed_illustration_of_Royal_Guard_Halberd_a_heavy_fantasy_polearm_disp-0.jpg"
@@ -3494,7 +3512,7 @@
     "maxDurability": 4,
     "effects": [
       "Requer duas mãos.",
-      "Ao acertar um ataque crítico, todos os inimigos em 3m fazem Atletismo dif. 14 ou ficam Atordoados por 1 turno."
+      "Ao tirar um Crítico, todos os inimigos em 3m fazem Atletismo dif. 14 ou ficam Atordoados por 1 turno."
     ],
     "description": "Depois do Martelo de Ferreiro vem este — feito não para forjar, mas para desmoronar. Os anões que o constroem dizem que todo material tem um ponto de colapso, uma frequência exata de impacto que faz até a pedra ceder de uma vez. O Martelo do Colapso é ajustado para encontrar esse ponto em qualquer coisa que golpeie, incluindo o que está por perto quando o golpe finalmente acontece. Nenhum forjador orgulhoso admite ter feito um só para quebrar coisas — mas todos sabem qual martelo pegar quando é isso que precisa acontecer.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada10-172d-69c0-b265-c44014b93007/lucid-origin_highly_detailed_illustration_of_Collapse_Hammer_a_super-heavy_fantasy_warhammer_-0.jpg"
@@ -3577,7 +3595,7 @@
     "isEquipment": true,
     "maxDurability": 7,
     "effects": [
-      "O portador é reduz 2 da condição Queimadura por turno.",
+      "Reduz em 2 o dano recebido de Queimadura por turno.",
       "Uma vez por combate, ao receber dano corpo a corpo, pode devolver 1D4 de Queimadura ao atacante."
     ],
     "description": "Só existe um Alto-Forno em Rubra grande o bastante pra têmperar uma couraça inteira de uma só vez, e a fila de encomendas leva anos. O metal passa por tantos ciclos de aquecimento e resfriamento que deixa de reagir ao fogo como qualquer metal deveria — não aquece, não amolece, não queima quem o veste. Os mestres-forjadores dizem que a couraça não resiste ao fogo. Ela simplesmente decidiu que fogo é problema de outra pessoa.",
@@ -3647,7 +3665,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Antes de rolar uma conjuração, o portador pode girar a engrenagem do cajado: o resultado de um modificador escolhido é travado em 15 (independente de bônus e entropia), sem precisar rolar dados para ele."
+      "Antes de rolar uma conjuração, o portador pode girar a engrenagem do cajado: o resultado de um modificador escolhido é travado em 15 (independente de bônus e Entropia), sem precisar rolar dados para ele."
     ],
     "description": "A maioria dos arcanistas de Rubra olha pra cajados de madeira e vê tradição. Um relojoeiro aposentado olhou e viu um problema de engenharia mal resolvido: por que confiar no acaso quando um mecanismo bem calibrado entrega o mesmo resultado toda vez? O Cajado de Engrenagens não promete grandeza — promete consistência, o tipo de virtude que nenhum mago de verdade valoriza até precisar dela.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada45-e77b-6020-a68a-5a796a04b524/lucid-origin_highly_detailed_illustration_of_Gearshaft_Staff_a_medium-weight_fantasy_arcane_s-1.jpg"
@@ -3681,8 +3699,9 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "O núcleo nunca esfria: para cada ponto de Entropia do portador, libera 1 de Queimadura em todos os adjacentes ao portador no início de cada Ato dele(3m), isso inclui o próprio portador. Se tiver 0 de entropia, ele não queima porém mantém-se quente.",
-      "Toda vez que o portador conjurar uma magia, permite absorver a queimadura de todos a 3m, cada stack adiciona +1 no modificador de Potência."
+      "O núcleo nunca esfria: para cada ponto no atributo Arcano do portador, libera 1 de Queimadura em todos os adjacentes a 3m do portador no início de cada Ato dele, incluindo o próprio portador.",
+      "Se o portador tiver 0 no atributo Arcano, o núcleo não queima, mas mantém-se quente.",
+      "Sempre que o portador conjurar uma magia, pode absorver a Queimadura de todos a 3m — cada stack absorvido adiciona +1 no modificador de Potência, até um máximo de +20."
     ],
     "description": "No centro exato de Rubra existe uma câmara que nenhum mapa oficial marca, onde um punhado de arcanistas obcecados passou uma geração tentando engarrafar magma vivo dentro de um cajado. A maioria morreu tentando. Os poucos cajados que sobreviveram ao processo carregam um núcleo que nunca esfria de verdade — ele só espera. Quem o empunha aprende rápido que pedir mais poder ao cajado é sempre possível. O problema nunca foi conseguir. Foi pagar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada50-c665-6c40-a99f-1b01ca5f4efe/lucid-origin_highly_detailed_illustration_of_Magma_Core_Staff_a_medium-weight_fantasy_arcane_-3.jpg"
@@ -3747,8 +3766,8 @@
     "isEquipment": false,
     "effects": [
       "Uso único. É consumido após ser usado.",
-      "Após ser ingerido, o alvo deve fazer um teste de Fortitude(dt. 24), caso falhe: causa 7D10 de dano e não pode ser defendido.",
-      "Se conseguir passar no teste de fortitude, o alvo ganha +15 de todos os modificadores de magia."
+      "Após ser ingerida, o alvo deve fazer um teste de Fortitude (dif. 24). Se falhar, sofre 7D10 de dano, que não pode ser defendido.",
+      "Se passar no teste de Fortitude, o alvo ganha +15 em todos os modificadores de magia."
     ],
     "description": "O mercado negro de Rubra vende isso com o mesmo tom de quem vende fruta — 'fresquinha, feita hoje, funciona garantido' — sem mencionar que o comprador é, tecnicamente, o próprio explosivo a partir do momento em que engole. A cápsula se aloja no corpo e espera um comando mental específico pra detonar, ou dez turnos de paciência pra ser digerida sem drama. Ninguém que vende sabe explicar por que engolir é mais confiável que carregar na mão. Todo mundo que compra prefere não perguntar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1adfbb-344c-60a0-b985-e9c63f992b5a/lucid-origin_highly_detailed_illustration_of_Controlled_Detonation_Capsule_a_super-lightweigh-0.jpg"
@@ -3814,7 +3833,8 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Ao acertar um ataque corpo-a-corpo com esta arma, o alvo tem -4 no teste se esquivar. A fumaça atrapalha o alvo em enxergar o golpe chegando."
+      "Ao acertar um ataque corpo-a-corpo, o alvo tem -4 no teste de esquiva.",
+      "A fumaça atrapalha o alvo a enxergar o golpe chegando."
     ],
     "description": "A versão de treino de fábrica das Manoplas de Eco — mesma ideia, execução mais simples, sem a válvula de precisão que faz a diferença entre um lutador experiente e um novato entusiasmado. Ainda assim, um bom empurrão de vapor na hora certa já resolveu mais briga de taverna do que qualquer soco bem colocado.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0abd-31eb-6fe0-9218-d16aa3eb427f/lucid-origin_highly_detailed_illustration_of_Steam_Gauntlet_a_light-weight_fantasy_melee_weap-0.jpg"
@@ -3847,7 +3867,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Uma vez por ato, permite aumentar a exaustão em 1 para que o próximo ataque aumente para 3D10+(4) — a ponta giratória perfura o que encontra pela frente."
+      "Uma vez por ato, permite aumentar a Exaustão em 1 para que o próximo ataque aumente para 3D10+(4) — a ponta giratória perfura o que encontra pela frente."
     ],
     "description": "Adaptada de uma broca de prospecção usada pra testar a dureza da rocha antes de abrir um poço novo. Alguém em Rubra percebeu que a mesma pergunta — 'isso resiste ou não?' — vale tanto pra pedra quanto pra armadura, e a resposta costuma ser a mesma nos dois casos.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0ae0-eec6-6ed0-8480-c3bf3fcae156/lucid-origin_highly_detailed_illustration_of_Drill_Lance_a_heavy-weight_fantasy_melee_polearm-0.jpg"
@@ -3863,7 +3883,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Testes de Oficio relacionados a forjar, refino ou reparar equipamentos ganham +5."
+      "Testes de Ofício relacionados a forjar, refinar ou reparar equipamentos ganham +5."
     ],
     "description": "Todo aprendiz de forja em Rubra ganha um assim que termina o primeiro ano sem perder um dedo. Não é encantado — é só um anel comum, marcado com o símbolo da oficina que o formou, que serve mais como lembrete de postura do que como ferramenta. Ainda assim, os mestres juram que quem usa o anel trabalha com mais cuidado. Ninguém testou se é verdade ou só orgulho.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0ae3-3809-6960-8b66-ad12ce22270a/lucid-origin_highly_detailed_illustration_of_Smith_s_Ring_a_super-lightweight_fantasy_ring_di-0.jpg"
@@ -3879,8 +3899,8 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "O portador não sofre dano ao pisar em lava, brasas ou superfícies extremamente quentes por até 3 atos consecutivos.",
-      "Se o portador estiver sobre lava, brasas ou superficies extremamente quentes seus ataques têm +(2) nos dados de ataque."
+      "O portador não sofre dano ao pisar em lava, brasas ou superfícies extremamente quentes por até 3 Atos consecutivos.",
+      "Se o portador estiver sobre lava, brasas ou superfícies extremamente quentes, seus ataques têm +2 nos dados de ataque."
     ],
     "description": "A sola não é feita de couro nem de metal comum — é uma liga que os ferreiros de Rubra se recusam a explicar em detalhe, testada literalmente andando sobre rios de lava até alguém sobreviver o suficiente pra anotar o resultado. Funciona exatamente como prometido, pelo tempo que promete. O problema de quem usa nunca foi confiar na bota. Foi confiar demais no relógio.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1b0af3-aec8-6320-aebe-fe77d5fabb8d/lucid-origin_highly_detailed_illustration_of_Magma_Sole_Boots_a_pair_of_light-weight_fantasy_-0.jpg"

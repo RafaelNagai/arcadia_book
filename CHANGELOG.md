@@ -3,6 +3,11 @@
 > Registro de atualizações em linguagem simples, para quem acompanha o livro — não é um log técnico de commits.
 > Cada task concluída via `/task` adiciona um item aqui, sob a data do dia. Este arquivo alimenta o aviso automático no Discord.
 
+## 2026-09-15
+
+- Reescrevemos a forma como os efeitos especiais dos equipamentos são explicados no catálogo: mesma redação para gatilhos parecidos (como "ao tirar um crítico"), sempre na mesma pessoa ("o portador"), e nomes de atributos, perícias e condições escritos de forma consistente em todo o livro. Nenhum bônus, dano ou número de nenhum item mudou — só ficou mais fácil de entender o que cada equipamento faz.
+- Resolvemos algumas dúvidas que ainda restavam sobre certos itens do catálogo: a Espada da Glória agora deixa bem claro que primeiro dobra a Queimadura acumulada no alvo e só depois soma mais 1; o Livro do Sumiço trocou um efeito repetido por um poder novo, dando +3 em testes de Furtividade enquanto o portador estiver invisível ou oculto por causa do próprio livro; e o Cajado do Núcleo Magmático teve sua escala corrigida para usar o atributo Arcano (em vez de Entropia) e ganhou um teto de segurança para não gerar combinações fora de controle. Outros itens, como a Foice de Colheita e o Arco Composto, só tiveram a redação melhorada para não deixar dúvida sobre como funcionam — os valores de todos eles continuam os mesmos de antes.
+
 ## 2026-09-14
 
 - A janela de "Adicionar ao Inventário" ficou maior e mais fácil de usar: os itens do catálogo agora aparecem em cartões lado a lado, mostrando de forma resumida o dano, a defesa e os efeitos de cada item, sem precisar abrir nada. Também é possível filtrar os itens por categoria e por tier (raridade), além da busca por nome que já existia — os filtros podem ser usados juntos.
