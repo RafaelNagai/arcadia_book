@@ -126,13 +126,12 @@
     "isEquipment": true,
     "maxDurability": 20,
     "effects": [
-      "Durante a noite, ignora a DA e DP do alvo.",
-      "Uma vez por sessão, o portador pode transformar o dia em noite.",
-      "Se a lança for quebrada, cria um buraco negro em um raio de 30m, causando 30D12 de dano.",
-      "Se o portador tiver afinidade com Paradoxo, deve fazer um teste de Vontade, dif. 15 — sem afinidade, a dificuldade é 20.",
-      "Se falhar nesse teste, fica pausado por 1D4 turnos."
+      "A lança divisora de dimensões tem a capacidade de ignorar a DA e a DP do alvo durante a noite.",
+      "Esta lança permite uma vez por sessão cortar o céu, transformando o dia em noite.",
+      "Se a lança divisora de dimensões for quebrada, ela cria um buraco negro em um raio de 30m causando 30D12 de dano.",
+      "Ao tentar utilizar esta lança na rodada, o portador deve realizar um teste de vontade de dif. 15 se possuir afinidade com paradoxo, ou dif. 20 se não possuir tal afinidade. Em caso de falha, sofre paralisação total por 1d4 rodadas."
     ],
-    "description": "Isto não é uma lança, ela é a materialização de uma ruptura dentre as dimensões. O seu portador está carregando uma rachadura que está cortando duas dimensões.",
+    "description": "Isto não é uma lança, ela é a materialização de uma ruptura entre as dimensões, como se o portador estivesse carregando uma rachadura capaz de cortar duas dimensões.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f13f374-082e-6f70-9422-4b2cdd3e3798/lucid-origin_A_detailed_illustration_of_a_divine_starry-void_fantasy_spear_displayed_diagonal-0.jpg"
   },
   {
