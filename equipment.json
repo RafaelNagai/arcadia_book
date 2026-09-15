@@ -450,8 +450,8 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Se o portador não se mover neste turno, ganha +3 em testes de Precisão.",
-      "Se o portador não se mover neste turno, o valor para obter um critico é reduzido em 1."
+      "Se o portador não se moveu no ato passado, ganha +3 em testes de Precisão.",
+      "Se o portador não se moveu no ato passado, o valor para obter um critico é reduzido em 1."
     ],
     "description": "Construído nas oficinas subterrâneas de Britannia com paciência de anão. Para quem tem tempo de mirar direito.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/3bd15d9c-1e73-4b5b-a3b9-541675ef8ed8/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_rifle_3.jpg"
@@ -467,7 +467,7 @@
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Se o portador não se mover neste turno, o valor para obter um critico é reduzido em 1."
+      "Se o portador não se moveu no ato passado, o valor para obter um critico é reduzido em 1."
     ],
     "description": "Normalmente usados por capivaqueiros, nunca por violencia mas para ameaçar as capivacas.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/41e764c6-7f6e-4d69-b221-bb729d253a8c/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_an_antique_rifl_2.jpg"
@@ -484,7 +484,7 @@
     "maxDurability": 3,
     "effects": [
       "O valor para obter um critico é reduzido em 1.",
-      "Se o portador não se mover neste turno, o multiplicador de critico é aumentado em 1."
+      "Se o portador não se moveu no ato passado, o multiplicador de crítico é aumentado em 1."
     ],
     "description": "Inicialmente usado para admirar as estrelas, antes da guerra. Porem, após a invasão de Camelot sobre Rubra, suas invenções foram usadas para destruição e morte.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/f2dab63a-f77c-4cde-89eb-f548b67af5ae/segments/4:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_rifle_3.jpg"
@@ -622,7 +622,7 @@
     "isEquipment": false,
     "maxDurability": null,
     "effects": [
-      "Uma vez por combate, permite adivinhar quanto vai dar de dano no alvo, se acertar causa mais 5 de dano ao alvo."
+      "Uma vez por ato, permite adivinhar quanto vai dar de dano no alvo, se acertar causa mais 5 de dano ao alvo."
     ],
     "description": "Cada bala imersa de poder arcano, forjada do erro, mas projetada para o acerto.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/20c9a8c9-a075-44f3-a241-1fc237bbb587/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_runic_magic_b_2.jpg"
@@ -1384,7 +1384,7 @@
     "isEquipment": true,
     "maxDurability": 6,
     "effects": [
-      "Ao receber dano superior a 5 em um único golpe, o portador ganha +3 em todos os dados de dano.",
+      "Ao receber dano superior a 5 em um único golpe, o portador ganha +3 em todos os dados de dano, até o final do combate.",
       "Portadores ganham +2 em testes de Atletismo e Fortitude."
     ],
     "description": "Ossos, couro, ferro. Os bárbaros de Union não usam armadura para parecer invencíveis — usam para aguentar mais.",
@@ -1832,7 +1832,7 @@
     "maxDurability": 5,
     "effects": [
       "O valor para obter um crítico é reduzido em 2.",
-      "Se o portador não se mover neste turno, o multiplicador de crítico é aumentado em 1.",
+      "Se o portador não se moveu no ato passado, o multiplicador de crítico é aumentado em 1.",
       "Uma vez por sessão, realiza um tiro perfeito: acerta automaticamente o alvo e causa dano máximo.",
       "Ao empunhar essa arma, existem intenções de terror e arrependimento, faça um teste de Vontade (dif. 25) para realizar qualquer ato com essa arma, se falhar, o portador vai realizar qualquer ato que impeça de usa-la."
     ],
