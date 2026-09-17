@@ -57,12 +57,14 @@ interface ConditionFormState {
   effects: EffectRow[]
 }
 
-const DEFAULT_FORM: ConditionFormState = {
-  name: "",
-  icon: "🔥",
-  description: "",
-  advanced: false,
-  effects: [{ field: "fortitude", value: "0" }],
+function makeDefaultForm(fields: (ConditionEffectField | 'dano')[]): ConditionFormState {
+  return {
+    name: "",
+    icon: "🔥",
+    description: "",
+    advanced: false,
+    effects: [{ field: fields[0], value: "0" }],
+  }
 }
 
 function TooltipPortal({ children, anchor }: { children: React.ReactNode; anchor: HTMLElement | null }) {
@@ -219,11 +221,13 @@ function ConditionChip({
 function AddConditionModal({
   onAdd,
   onClose,
+  availableFields,
 }: {
   onAdd: (c: Condition) => void
   onClose: () => void
+  availableFields: (ConditionEffectField | 'dano')[]
 }) {
-  const [form, setForm] = useState<ConditionFormState>({ ...DEFAULT_FORM })
+  const [form, setForm] = useState<ConditionFormState>(() => makeDefaultForm(availableFields))
 
   function updateEffect(idx: number, patch: Partial<EffectRow>) {
     setForm((prev) => {
@@ -236,7 +240,7 @@ function AddConditionModal({
   function addEffect() {
     setForm((prev) => ({
       ...prev,
-      effects: [...prev.effects, { field: "fortitude", value: "0" }],
+      effects: [...prev.effects, { field: availableFields[0], value: "0" }],
     }))
   }
 
@@ -383,7 +387,7 @@ function AddConditionModal({
                   onChange={(e) => updateEffect(idx, { field: e.target.value as ConditionEffectField | 'dano' })}
                   style={{ ...inputStyle, flex: 2, padding: "0.35rem 0.5rem" }}
                 >
-                  {ALL_FIELDS.map((f) => (
+                  {availableFields.map((f) => (
                     <option key={f} value={f}>
                       {EFFECT_FIELD_LABELS[f]}
                     </option>
@@ -498,11 +502,13 @@ export function ConditionsSection({
   isGm,
   onAddCondition,
   onRemoveCondition,
+  availableFields,
 }: {
   conditions: Condition[]
   isGm: boolean
   onAddCondition?: (c: Condition) => void
   onRemoveCondition?: (id: string) => void
+  availableFields?: (ConditionEffectField | 'dano')[]
 }) {
   const [modalOpen, setModalOpen] = useState(false)
 
@@ -569,6 +575,7 @@ export function ConditionsSection({
         <AddConditionModal
           onAdd={onAddCondition}
           onClose={() => setModalOpen(false)}
+          availableFields={availableFields ?? ALL_FIELDS}
         />
       )}
     </>

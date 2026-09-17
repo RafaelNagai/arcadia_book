@@ -30,11 +30,15 @@ interface Props {
   diceCount: number;
   dieType: DieType;
   exhaustionPenalty?: number;
+  conditionPositive?: number;
+  conditionNegative?: number;
   onClose: () => void;
 }
 
 const ACCENT = CREATURE_ACCENT_GLOW;
 const EXAUSTAO_COLOR = "#D04040";
+const CONDITION_POS_COLOR = "#6EC840";
+const CONDITION_NEG_COLOR = "#E07070";
 const SMALL_DICE: DieType[] = [4, 6, 8, 10];
 
 /**
@@ -80,6 +84,8 @@ export function CreatureRollOverlay({
   diceCount: initialDiceCount,
   dieType,
   exhaustionPenalty = 0,
+  conditionPositive = 0,
+  conditionNegative = 0,
   onClose,
 }: Props) {
   const [phase, setPhase] = useState<"config" | "rolling" | "settled">("config");
@@ -97,10 +103,10 @@ export function CreatureRollOverlay({
   const isNegativeSpecial =
     specialState === "falha_critica" || specialState === "desastre";
   const finalResult = isPositiveSpecial
-    ? diceSum + posPart(attrValue) + posPart(exhaustionPenalty)
+    ? diceSum + posPart(attrValue) + posPart(exhaustionPenalty) + conditionPositive
     : isNegativeSpecial
-      ? diceSum + negPart(attrValue) + negPart(exhaustionPenalty)
-      : diceSum + attrValue + exhaustionPenalty;
+      ? diceSum + negPart(attrValue) + negPart(exhaustionPenalty) + conditionNegative
+      : diceSum + attrValue + exhaustionPenalty + conditionPositive + conditionNegative;
 
   // Componentes efetivamente aplicados/ignorados no resultado, para a UI refletir a regra
   const attrApplied = isPositiveSpecial
@@ -122,6 +128,16 @@ export function CreatureRollOverlay({
     ? negPart(exhaustionPenalty)
     : isNegativeSpecial
       ? posPart(exhaustionPenalty)
+      : 0;
+  const conditionApplied = isPositiveSpecial
+    ? conditionPositive
+    : isNegativeSpecial
+      ? conditionNegative
+      : conditionPositive + conditionNegative;
+  const conditionIgnored = isPositiveSpecial
+    ? conditionNegative
+    : isNegativeSpecial
+      ? conditionPositive
       : 0;
 
   const diceRequest = useMemo<DiceRollRequest[]>(
@@ -275,6 +291,32 @@ export function CreatureRollOverlay({
                         Exaustão {exhaustionPenalty}
                       </div>
                     )}
+                    {conditionPositive !== 0 && (
+                      <div
+                        style={{
+                          fontFamily: "var(--font-ui)",
+                          fontSize: 10,
+                          fontWeight: 700,
+                          color: CONDITION_POS_COLOR,
+                          letterSpacing: "0.08em",
+                        }}
+                      >
+                        Condição +{conditionPositive}
+                      </div>
+                    )}
+                    {conditionNegative !== 0 && (
+                      <div
+                        style={{
+                          fontFamily: "var(--font-ui)",
+                          fontSize: 10,
+                          fontWeight: 700,
+                          color: CONDITION_NEG_COLOR,
+                          letterSpacing: "0.08em",
+                        }}
+                      >
+                        Condição {conditionNegative}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -373,6 +415,7 @@ export function CreatureRollOverlay({
                   fontSize: 11,
                   color: "var(--color-text-muted)",
                   display: "flex",
+                  flexWrap: "wrap",
                   alignItems: "center",
                   justifyContent: "center",
                   gap: 6,
@@ -391,9 +434,25 @@ export function CreatureRollOverlay({
                     </span>
                   </>
                 )}
+                {conditionPositive !== 0 && (
+                  <>
+                    <span>+</span>
+                    <span style={{ color: CONDITION_POS_COLOR, fontWeight: 700 }}>
+                      Condição +{conditionPositive}
+                    </span>
+                  </>
+                )}
+                {conditionNegative !== 0 && (
+                  <>
+                    <span>+</span>
+                    <span style={{ color: CONDITION_NEG_COLOR, fontWeight: 700 }}>
+                      Condição {conditionNegative}
+                    </span>
+                  </>
+                )}
               </div>
 
-              {exhaustionPenalty !== 0 && (
+              {(exhaustionPenalty !== 0 || conditionPositive !== 0 || conditionNegative !== 0) && (
                 <p
                   style={{
                     marginTop: -12,
@@ -405,8 +464,9 @@ export function CreatureRollOverlay({
                     lineHeight: 1.5,
                   }}
                 >
-                  Crítico/Milagre ignora a Exaustão · Falha Crítica/Desastre
-                  ignora o atributo
+                  Crítico/Milagre ignora a Exaustão e a parte negativa das
+                  Condições · Falha Crítica/Desastre ignora o atributo e a
+                  parte positiva das Condições
                 </p>
               )}
 
@@ -644,6 +704,32 @@ export function CreatureRollOverlay({
                           <span style={{ color: EXAUSTAO_COLOR }}>Exaustão</span>
                         </>
                       )}
+                      {conditionApplied !== 0 && (
+                        <>
+                          <span
+                            style={{
+                              color:
+                                conditionApplied > 0
+                                  ? CONDITION_POS_COLOR
+                                  : CONDITION_NEG_COLOR,
+                            }}
+                          >
+                            {conditionApplied >= 0
+                              ? `+${conditionApplied}`
+                              : conditionApplied}
+                          </span>
+                          <span
+                            style={{
+                              color:
+                                conditionApplied > 0
+                                  ? CONDITION_POS_COLOR
+                                  : CONDITION_NEG_COLOR,
+                            }}
+                          >
+                            Condição
+                          </span>
+                        </>
+                      )}
                       {attrIgnored !== 0 && (
                         <span
                           style={{
@@ -665,6 +751,20 @@ export function CreatureRollOverlay({
                           }}
                         >
                           Exaustão {exhaustionIgnored}
+                        </span>
+                      )}
+                      {conditionIgnored !== 0 && (
+                        <span
+                          style={{
+                            color: "var(--color-text-muted)",
+                            textDecoration: "line-through",
+                            opacity: 0.6,
+                          }}
+                        >
+                          Condição{" "}
+                          {conditionIgnored >= 0
+                            ? `+${conditionIgnored}`
+                            : conditionIgnored}
                         </span>
                       )}
                     </div>

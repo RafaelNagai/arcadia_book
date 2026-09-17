@@ -1,8 +1,10 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import type { Creature, CreatureAttributes } from "@/data/creatureTypes";
 import type { DieType } from "@/components/widgets/DiceRollerWidget";
 import { CreatureRollOverlay } from "./CreatureRollOverlay";
 import { ExaustaoSection } from "@/components/character/ExaustaoSection";
+import { ConditionsSection } from "@/components/character/ConditionsSection";
+import type { Condition, ConditionEffectField } from "@/data/characterTypes";
 
 interface Props {
   creature: Creature;
@@ -14,7 +16,20 @@ interface RollTarget {
   diceCount: number;
   dieType: DieType;
   exhaustionPenalty: number;
+  conditionPositive: number;
+  conditionNegative: number;
 }
+
+const CREATURE_CONDITION_FIELDS: ConditionEffectField[] = [
+  "hpMax",
+  "daBase",
+  "daBonus",
+  "dpBonus",
+  "fisico",
+  "destreza",
+  "intelecto",
+  "influencia",
+];
 
 const ATTR_LABELS: Record<string, string> = {
   fisico: "Físico",
@@ -165,11 +180,17 @@ function AdjustableStatCell({
   value,
   onAdjust,
   right = false,
+  displayValue,
+  displayColor,
+  maxValue,
 }: {
   label: string;
   value: number;
   onAdjust: (delta: number) => void;
   right?: boolean;
+  displayValue?: number;
+  displayColor?: string;
+  maxValue?: number | string;
 }) {
   const btnStyle: React.CSSProperties = {
     width: 20,
@@ -211,13 +232,25 @@ function AdjustableStatCell({
             fontFamily: "Cinzel, serif",
             fontWeight: 700,
             fontSize: 17,
-            color: "var(--color-text-primary)",
+            color: displayColor ?? "var(--color-text-primary)",
             lineHeight: 1,
             minWidth: 24,
             textAlign: "center",
           }}
         >
-          {value}
+          {displayValue ?? value}
+          {maxValue !== undefined && (
+            <span
+              style={{
+                color: "var(--color-text-muted)",
+                fontFamily: "var(--font-ui)",
+                fontSize: "0.8rem",
+                fontWeight: 400,
+              }}
+            >
+              {" "}/ {maxValue}
+            </span>
+          )}
         </span>
         <button style={btnStyle} onClick={() => onAdjust(+1)}>+</button>
       </div>
@@ -312,8 +345,53 @@ export function CreatureDetails({ creature }: Props) {
   const [currentDp, setCurrentDp] = useState<number>(creature.dp);
   const [currentAttrs, setCurrentAttrs] = useState<CreatureAttributes>({ ...creature.attributes });
   const [exaustao, setExaustao] = useState<number>(0);
+  const [conditions, setConditions] = useState<Condition[]>([]);
 
   const { count: parsedCount, dieType: parsedDieType } = parseDiceBase(creature.diceBase);
+
+  const handleAddCondition = useCallback((c: Condition) => {
+    setConditions((prev) => [...prev, c]);
+  }, []);
+
+  const handleRemoveCondition = useCallback((id: string) => {
+    setConditions((prev) => prev.filter((c) => c.id !== id));
+  }, []);
+
+  const conditionEffectMap = useMemo<Record<string, number>>(() => {
+    const map: Record<string, number> = {};
+    for (const cond of conditions) {
+      for (const eff of cond.effects ?? []) {
+        if (eff.field !== "dano" && typeof eff.value === "number") {
+          map[eff.field] = (map[eff.field] ?? 0) + eff.value;
+        }
+      }
+    }
+    return map;
+  }, [conditions]);
+
+  const conditionEffectMapPositive = useMemo<Record<string, number>>(() => {
+    const map: Record<string, number> = {};
+    for (const cond of conditions) {
+      for (const eff of cond.effects ?? []) {
+        if (eff.field !== "dano" && typeof eff.value === "number" && eff.value > 0) {
+          map[eff.field] = (map[eff.field] ?? 0) + eff.value;
+        }
+      }
+    }
+    return map;
+  }, [conditions]);
+
+  const conditionEffectMapNegative = useMemo<Record<string, number>>(() => {
+    const map: Record<string, number> = {};
+    for (const cond of conditions) {
+      for (const eff of cond.effects ?? []) {
+        if (eff.field !== "dano" && typeof eff.value === "number" && eff.value < 0) {
+          map[eff.field] = (map[eff.field] ?? 0) + eff.value;
+        }
+      }
+    }
+    return map;
+  }, [conditions]);
 
   const adjustAttr = useCallback(
     (key: keyof CreatureAttributes, delta: number) => {
@@ -338,10 +416,23 @@ export function CreatureDetails({ creature }: Props) {
         diceCount: parsedCount,
         dieType: parsedDieType,
         exhaustionPenalty: exaustao > 0 ? -10 * exaustao : 0,
+        conditionPositive: conditionEffectMapPositive[key] ?? 0,
+        conditionNegative: conditionEffectMapNegative[key] ?? 0,
       });
     },
-    [parsedCount, parsedDieType, exaustao],
+    [parsedCount, parsedDieType, exaustao, conditionEffectMapPositive, conditionEffectMapNegative],
   );
+
+  const condColor = (effect: number) =>
+    effect > 0 ? "#6EC840" : effect < 0 ? "#E07070" : undefined;
+
+  const hpCondEffect = conditionEffectMap.hpMax ?? 0;
+  const daCondEffect = (conditionEffectMap.daBase ?? 0) + (conditionEffectMap.daBonus ?? 0);
+  const dpCondEffect = conditionEffectMap.dpBonus ?? 0;
+
+  const displayHp = currentHp + hpCondEffect;
+  const displayDa = currentDa + daCondEffect;
+  const displayDp = currentDp + dpCondEffect;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -352,6 +443,8 @@ export function CreatureDetails({ creature }: Props) {
           diceCount={rollTarget.diceCount}
           dieType={rollTarget.dieType}
           exhaustionPenalty={rollTarget.exhaustionPenalty}
+          conditionPositive={rollTarget.conditionPositive}
+          conditionNegative={rollTarget.conditionNegative}
           onClose={() => setRollTarget(null)}
         />
       )}
@@ -384,17 +477,50 @@ export function CreatureDetails({ creature }: Props) {
         }}
       >
         <StatCell label="Dados Base" value={creature.diceBase} right />
-        <AdjustableStatCell label="HP" value={currentHp} onAdjust={(d) => setCurrentHp((v) => v + d)} right />
-        <AdjustableStatCell label="DA" value={currentDa} onAdjust={(d) => setCurrentDa((v) => v + d)} right />
-        <AdjustableStatCell label="DP" value={currentDp} onAdjust={(d) => setCurrentDp((v) => v + d)} />
+        <AdjustableStatCell
+          label="HP"
+          value={currentHp}
+          displayValue={displayHp}
+          displayColor={condColor(hpCondEffect)}
+          maxValue={creature.hp}
+          onAdjust={(d) => setCurrentHp((v) => v + d)}
+          right
+        />
+        <AdjustableStatCell
+          label="DA"
+          value={currentDa}
+          displayValue={displayDa}
+          displayColor={condColor(daCondEffect)}
+          onAdjust={(d) => setCurrentDa((v) => v + d)}
+          right
+        />
+        <AdjustableStatCell
+          label="DP"
+          value={currentDp}
+          displayValue={displayDp}
+          displayColor={condColor(dpCondEffect)}
+          onAdjust={(d) => setCurrentDp((v) => v + d)}
+        />
       </div>
 
-      {/* Exaustão — efêmero, não persiste */}
-      <ExaustaoSection
-        exaustao={exaustao}
-        onExaustaoChange={handleExaustaoChange}
-        onExaustaoReset={handleExaustaoReset}
-      />
+      {/* Exaustão + Condições — 2 colunas no desktop, 1 no mobile */}
+      <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: 16, alignItems: "start" }}>
+        {/* Exaustão — efêmero, não persiste */}
+        <ExaustaoSection
+          exaustao={exaustao}
+          onExaustaoChange={handleExaustaoChange}
+          onExaustaoReset={handleExaustaoReset}
+        />
+
+        {/* Condições — efêmero, não persiste */}
+        <ConditionsSection
+          conditions={conditions}
+          isGm={true}
+          onAddCondition={handleAddCondition}
+          onRemoveCondition={handleRemoveCondition}
+          availableFields={CREATURE_CONDITION_FIELDS}
+        />
+      </div>
 
       {/* Attributes — clickable */}
       <div>
@@ -411,9 +537,12 @@ export function CreatureDetails({ creature }: Props) {
           {(["fisico", "destreza", "intelecto", "influencia"] as const).map(
             (key, i) => {
               const val = currentAttrs[key];
-              const sign = val >= 0 ? `+${val}` : String(val);
+              const attrCondEffect = conditionEffectMap[key] ?? 0;
+              const displayVal = val + attrCondEffect;
+              const sign = displayVal >= 0 ? `+${displayVal}` : String(displayVal);
               const valColor =
-                val > 0 ? C.attrPos : val < 0 ? C.attrNeg : C.attrZero;
+                condColor(attrCondEffect) ??
+                (val > 0 ? C.attrPos : val < 0 ? C.attrNeg : C.attrZero);
               const adjBtnStyle: React.CSSProperties = {
                 background: "transparent",
                 border: `1px solid ${C.border}`,
