@@ -18,7 +18,6 @@ import {
 import type { DiceRollRequest, DieType } from "@/components/widgets/DiceRollerWidget";
 import {
   type SpecialState,
-  detectSpecialState,
   ParticleLayer,
   STATE_META,
   SpecialBanner,
@@ -30,16 +29,57 @@ interface Props {
   attrValue: number;
   diceCount: number;
   dieType: DieType;
+  exhaustionPenalty?: number;
   onClose: () => void;
 }
 
 const ACCENT = CREATURE_ACCENT_GLOW;
+const EXAUSTAO_COLOR = "#D04040";
+const SMALL_DICE: DieType[] = [4, 6, 8, 10];
+
+/**
+ * Detecção de estado especial exclusiva da ficha de Criatura — sensível a `dieType`.
+ * `detectSpecialState` (ArcaneStates.tsx) é hardcoded para D12 e compartilhada com
+ * Personagem/Arcano; criaturas usam D4-D20 e não descartam dados (usam todos os
+ * rolados), então precisam da própria regra. D12/D20: 1 dado no extremo = Crítico/
+ * Falha Crítica, 2 = Milagre/Desastre (igual à regra de Perícia). D4/D6/D8/D10
+ * (dados menores): limiares dobrados — 2 no extremo = Crítico/Falha Crítica, 3 =
+ * Milagre/Desastre (extrapolação do Planner sobre o pedido do usuário, confirmada).
+ */
+function detectCreatureSpecialState(
+  results: number[],
+  dieType: DieType,
+): SpecialState {
+  if (results.length < 1) return null;
+  const anyMax = results.some((v) => v === dieType);
+  const anyMin = results.some((v) => v === 1);
+  // Extremo máximo e mínimo presentes ao mesmo tempo se anulam — igual a detectSpecialState
+  if (anyMax && anyMin) return null;
+
+  const countMax = results.filter((v) => v === dieType).length;
+  const countMin = results.filter((v) => v === 1).length;
+  const isSmallDie = SMALL_DICE.includes(dieType);
+  const criticoThreshold = isSmallDie ? 2 : 1;
+  const milagreThreshold = isSmallDie ? 3 : 2;
+  const falhaThreshold = isSmallDie ? 2 : 1;
+  const desastreThreshold = isSmallDie ? 3 : 2;
+
+  if (countMax >= milagreThreshold) return "milagre";
+  if (countMin >= desastreThreshold) return "desastre";
+  if (countMax >= criticoThreshold) return "critico";
+  if (countMin >= falhaThreshold) return "falha_critica";
+  return null;
+}
+
+const posPart = (n: number) => Math.max(n, 0);
+const negPart = (n: number) => Math.min(n, 0);
 
 export function CreatureRollOverlay({
   attrLabel,
   attrValue,
   diceCount: initialDiceCount,
   dieType,
+  exhaustionPenalty = 0,
   onClose,
 }: Props) {
   const [phase, setPhase] = useState<"config" | "rolling" | "settled">("config");
@@ -49,12 +89,40 @@ export function CreatureRollOverlay({
   const shakeControls = useAnimation();
 
   const specialState = useMemo<SpecialState>(
-    () => detectSpecialState(results),
-    [results],
+    () => detectCreatureSpecialState(results, dieType),
+    [results, dieType],
   );
   const diceSum = results.reduce((a, b) => a + b, 0);
-  const noBonus = specialState === "falha_critica" || specialState === "desastre";
-  const finalResult = noBonus ? diceSum : diceSum + attrValue;
+  const isPositiveSpecial = specialState === "critico" || specialState === "milagre";
+  const isNegativeSpecial =
+    specialState === "falha_critica" || specialState === "desastre";
+  const finalResult = isPositiveSpecial
+    ? diceSum + posPart(attrValue) + posPart(exhaustionPenalty)
+    : isNegativeSpecial
+      ? diceSum + negPart(attrValue) + negPart(exhaustionPenalty)
+      : diceSum + attrValue + exhaustionPenalty;
+
+  // Componentes efetivamente aplicados/ignorados no resultado, para a UI refletir a regra
+  const attrApplied = isPositiveSpecial
+    ? posPart(attrValue)
+    : isNegativeSpecial
+      ? negPart(attrValue)
+      : attrValue;
+  const attrIgnored = isPositiveSpecial
+    ? negPart(attrValue)
+    : isNegativeSpecial
+      ? posPart(attrValue)
+      : 0;
+  const exhaustionApplied = isPositiveSpecial
+    ? posPart(exhaustionPenalty)
+    : isNegativeSpecial
+      ? negPart(exhaustionPenalty)
+      : exhaustionPenalty;
+  const exhaustionIgnored = isPositiveSpecial
+    ? negPart(exhaustionPenalty)
+    : isNegativeSpecial
+      ? posPart(exhaustionPenalty)
+      : 0;
 
   const diceRequest = useMemo<DiceRollRequest[]>(
     () => (diceCount > 0 ? [{ dieType, count: diceCount }] : []),
@@ -183,16 +251,31 @@ export function CreatureRollOverlay({
                   >
                     {attrLabel}
                   </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontWeight: 800,
-                      fontSize: 28,
-                      color: ACCENT,
-                    }}
-                  >
-                    {attrSign}
-                  </span>
+                  <div style={{ textAlign: "right" }}>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontWeight: 800,
+                        fontSize: 28,
+                        color: ACCENT,
+                      }}
+                    >
+                      {attrSign}
+                    </span>
+                    {exhaustionPenalty !== 0 && (
+                      <div
+                        style={{
+                          fontFamily: "var(--font-ui)",
+                          fontSize: 10,
+                          fontWeight: 700,
+                          color: EXAUSTAO_COLOR,
+                          letterSpacing: "0.08em",
+                        }}
+                      >
+                        Exaustão {exhaustionPenalty}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -300,7 +383,32 @@ export function CreatureRollOverlay({
                 <span style={{ color: ACCENT }}>
                   {attrLabel} ({attrSign})
                 </span>
+                {exhaustionPenalty !== 0 && (
+                  <>
+                    <span>+</span>
+                    <span style={{ color: EXAUSTAO_COLOR, fontWeight: 700 }}>
+                      Exaustão {exhaustionPenalty}
+                    </span>
+                  </>
+                )}
               </div>
+
+              {exhaustionPenalty !== 0 && (
+                <p
+                  style={{
+                    marginTop: -12,
+                    marginBottom: 20,
+                    fontFamily: "var(--font-ui)",
+                    fontSize: 10,
+                    color: "var(--color-text-muted)",
+                    textAlign: "center",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Crítico/Milagre ignora a Exaustão · Falha Crítica/Desastre
+                  ignora o atributo
+                </p>
+              )}
 
               {/* Roll button */}
               <button
@@ -519,13 +627,45 @@ export function CreatureRollOverlay({
                       <span style={{ color: "#a0c8f8" }}>
                         {results.join(" + ")}
                       </span>
-                      {!noBonus && (
+                      {attrApplied !== 0 && (
                         <>
                           <span>+</span>
                           <span style={{ color: ACCENT }}>
-                            {attrLabel} {attrSign}
+                            {attrLabel}{" "}
+                            {attrApplied >= 0 ? `+${attrApplied}` : attrApplied}
                           </span>
                         </>
+                      )}
+                      {exhaustionApplied !== 0 && (
+                        <>
+                          <span style={{ color: EXAUSTAO_COLOR }}>
+                            {exhaustionApplied}
+                          </span>
+                          <span style={{ color: EXAUSTAO_COLOR }}>Exaustão</span>
+                        </>
+                      )}
+                      {attrIgnored !== 0 && (
+                        <span
+                          style={{
+                            color: "var(--color-text-muted)",
+                            textDecoration: "line-through",
+                            opacity: 0.6,
+                          }}
+                        >
+                          {attrLabel}{" "}
+                          {attrIgnored >= 0 ? `+${attrIgnored}` : attrIgnored}
+                        </span>
+                      )}
+                      {exhaustionIgnored !== 0 && (
+                        <span
+                          style={{
+                            color: "var(--color-text-muted)",
+                            textDecoration: "line-through",
+                            opacity: 0.6,
+                          }}
+                        >
+                          Exaustão {exhaustionIgnored}
+                        </span>
                       )}
                     </div>
 

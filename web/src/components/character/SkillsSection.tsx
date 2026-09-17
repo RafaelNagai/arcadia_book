@@ -9,6 +9,8 @@ export function SkillsSection({
   peChecks,
   skillModifiers,
   conditionEffectMap,
+  conditionEffectMapPositive,
+  conditionEffectMapNegative,
   onPeToggle,
   onModifierChange,
   onModifierReset,
@@ -22,6 +24,8 @@ export function SkillsSection({
   peChecks: Record<string, boolean[]>;
   skillModifiers: Record<string, number>;
   conditionEffectMap?: Record<string, number>;
+  conditionEffectMapPositive?: Record<string, number>;
+  conditionEffectMapNegative?: Record<string, number>;
   onPeToggle?: (attr: string, idx: number) => void;
   onModifierChange?: (skillKey: string, delta: number) => void;
   onModifierReset?: (skillKey: string) => void;
@@ -55,6 +59,8 @@ export function SkillsSection({
             }
             skillModifiers={skillModifiers}
             conditionEffectMap={conditionEffectMap}
+            conditionEffectMapPositive={conditionEffectMapPositive}
+            conditionEffectMapNegative={conditionEffectMapNegative}
             onModifierChange={onModifierChange}
             onModifierReset={onModifierReset}
             onSkillTest={onSkillTest}

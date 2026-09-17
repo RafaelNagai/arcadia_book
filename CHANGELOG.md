@@ -3,6 +3,11 @@
 > Registro de atualizações em linguagem simples, para quem acompanha o livro — não é um log técnico de commits.
 > Cada task concluída via `/task` adiciona um item aqui, sob a data do dia. Este arquivo alimenta o aviso automático no Discord.
 
+## 2026-09-17
+
+- Agora dá para marcar o cansaço (Exaustão) de uma criatura ou NPC direto na ficha do Bestiário, com um botão de +1/-1 e outro para zerar. Cada ponto de cansaço marcado reduz os testes de Físico, Destreza, Intelecto e Influência dela. Essa marcação é só para a sessão de jogo aberta naquele momento — ela não fica salva, então toda vez que a ficha for reaberta o cansaço volta a zero.
+- Corrigimos como bônus e penalidades (como Exaustão ou Condições) contam quando sai um resultado excepcional num teste. Num resultado muito bom (Crítico ou Milagre), as penalidades deixam de atrapalhar, mas os bônus continuam ajudando normalmente. Num resultado muito ruim (Falha Crítica ou Desastre), é o contrário: as penalidades continuam valendo, mas os bônus somem. Isso vale tanto para a ficha de Personagem quanto para a ficha de Criatura/NPC. Também corrigimos, na ficha de criaturas, a detecção de resultado especial para dados menores (D4, D6, D8, D10): antes, uma criatura que rolasse vários desses dados (como 2D6 ou 3D8) quase nunca conseguia tirar um Crítico de verdade; agora tirar o valor mais alto em dois ou mais desses dados conta como Crítico (três ou mais conta como Milagre), da mesma forma que já acontecia com os dados maiores (D12/D20).
+
 ## 2026-09-15
 
 - A Defesa Ativa e a Defesa Passiva da ficha agora são calculadas automaticamente a partir da armadura e dos equipamentos que o personagem está usando, em vez de precisar digitar o valor manualmente. Basta equipar ou trocar de equipamento que os números já se ajustam sozinhos.

@@ -33,7 +33,8 @@ import { useDiceLog } from "@/lib/diceLog";
 export interface SkillTestData {
   skillLabel: string;
   skillValue: number; // base value from character.skills[key]
-  modifier: number; // from skillModifiers[key] ?? 0
+  positiveModifier: number; // sum of all positive-signed sources (manual mod + condition effects), always >= 0
+  negativeModifier: number; // sum of all negative-signed sources (manual mod + condition effects), always <= 0
   hasTalent: boolean;
   defaultAttr: "fisico" | "destreza" | "intelecto" | "influencia";
   attrColor: string;
@@ -57,6 +58,9 @@ const ATTR_META = [
   { key: "influencia" as const, label: "Influência", color: "#A060C0" },
 ];
 
+const posPart = (n: number) => Math.max(n, 0);
+const negPart = (n: number) => Math.min(n, 0);
+
 /* ────────────────────────────────────────────────────────────────
    Main component
    ──────────────────────────────────────────────────────────────── */
@@ -64,7 +68,8 @@ const ATTR_META = [
 export function SkillTestOverlay({
   skillLabel,
   skillValue,
-  modifier,
+  positiveModifier,
+  negativeModifier,
   hasTalent,
   defaultAttr,
   attrColor,
@@ -83,6 +88,7 @@ export function SkillTestOverlay({
   const [sceneKey, setSceneKey] = useState(0);
   const shakeControls = useAnimation();
 
+  const modifier = positiveModifier + negativeModifier;
   const skillTotal = skillValue + modifier;
   const attrValue = attributes[selectedAttr];
   const attrMeta = ATTR_META.find((a) => a.key === selectedAttr)!;
@@ -102,11 +108,55 @@ export function SkillTestOverlay({
     [chosenValues],
   );
   const diceSum = chosenValues.reduce((a, b) => a + b, 0);
-  const noBonus =
+  const isPositiveSpecial =
+    specialState === "critico" || specialState === "milagre";
+  const isNegativeSpecial =
     specialState === "falha_critica" || specialState === "desastre";
-  const finalResult = noBonus
-    ? diceSum
-    : diceSum + attrValue + skillTotal + exhaustionPenalty;
+  const finalResult = isPositiveSpecial
+    ? diceSum +
+      posPart(attrValue) +
+      posPart(skillValue) +
+      positiveModifier +
+      posPart(exhaustionPenalty)
+    : isNegativeSpecial
+      ? diceSum +
+        negPart(attrValue) +
+        negPart(skillValue) +
+        negativeModifier +
+        negPart(exhaustionPenalty)
+      : diceSum + attrValue + skillTotal + exhaustionPenalty;
+
+  // Componentes efetivamente aplicados/ignorados no resultado, para a UI refletir a regra
+  const attrApplied = isPositiveSpecial
+    ? posPart(attrValue)
+    : isNegativeSpecial
+      ? negPart(attrValue)
+      : attrValue;
+  const attrIgnored = isPositiveSpecial
+    ? negPart(attrValue)
+    : isNegativeSpecial
+      ? posPart(attrValue)
+      : 0;
+  const skillApplied = isPositiveSpecial
+    ? posPart(skillValue) + positiveModifier
+    : isNegativeSpecial
+      ? negPart(skillValue) + negativeModifier
+      : skillTotal;
+  const skillIgnored = isPositiveSpecial
+    ? negPart(skillValue) + negativeModifier
+    : isNegativeSpecial
+      ? posPart(skillValue) + positiveModifier
+      : 0;
+  const exhaustionApplied = isPositiveSpecial
+    ? posPart(exhaustionPenalty)
+    : isNegativeSpecial
+      ? negPart(exhaustionPenalty)
+      : exhaustionPenalty;
+  const exhaustionIgnored = isPositiveSpecial
+    ? negPart(exhaustionPenalty)
+    : isNegativeSpecial
+      ? posPart(exhaustionPenalty)
+      : 0;
 
   const diceRequest = useMemo<DiceRollRequest[]>(
     () => (diceCount > 0 ? [{ dieType: 12, count: diceCount }] : []),
@@ -155,10 +205,21 @@ export function SkillTestOverlay({
       const chosenVals = vals.filter((_, i) => chosenIdx.has(i));
       const ss = detectSpecialState(chosenVals);
       const dSum = chosenVals.reduce((a, b) => a + b, 0);
-      const noBonus = ss === "falha_critica" || ss === "desastre";
-      const finalRes = noBonus
-        ? dSum
-        : dSum + attrValue + skillTotal + exhaustionPenalty;
+      const ssPositive = ss === "critico" || ss === "milagre";
+      const ssNegative = ss === "falha_critica" || ss === "desastre";
+      const finalRes = ssPositive
+        ? dSum +
+          posPart(attrValue) +
+          posPart(skillValue) +
+          positiveModifier +
+          posPart(exhaustionPenalty)
+        : ssNegative
+          ? dSum +
+            negPart(attrValue) +
+            negPart(skillValue) +
+            negativeModifier +
+            negPart(exhaustionPenalty)
+          : dSum + attrValue + skillTotal + exhaustionPenalty;
       addEntry({
         type: "skill",
         skillLabel,
@@ -181,6 +242,8 @@ export function SkillTestOverlay({
       skillLabel,
       skillValue,
       modifier,
+      positiveModifier,
+      negativeModifier,
       selectedAttr,
       exhaustionPenalty,
     ],
@@ -524,6 +587,23 @@ export function SkillTestOverlay({
                 </span>
               </div>
 
+              {(negativeModifier !== 0 || exhaustionPenalty !== 0) && (
+                <p
+                  style={{
+                    marginTop: -12,
+                    marginBottom: 20,
+                    fontFamily: "var(--font-ui)",
+                    fontSize: 10,
+                    color: "var(--color-text-muted)",
+                    textAlign: "center",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Crítico/Milagre ignora penalidades · Falha Crítica/Desastre
+                  ignora bônus
+                </p>
+              )}
+
               {/* Roll button */}
               <button
                 onClick={handleRoll}
@@ -761,25 +841,62 @@ export function SkillTestOverlay({
                       <span style={{ color: "#a0c8f8" }}>
                         {chosenValues.join(" + ")}
                       </span>
-                      {!noBonus && (
+                      {attrApplied !== 0 && (
                         <>
                           <span>+</span>
                           <span style={{ color: attrMeta.color }}>
-                            {attrMeta.label} {attrValue}
+                            {attrMeta.label} {attrApplied}
                           </span>
+                        </>
+                      )}
+                      {skillApplied !== 0 && (
+                        <>
                           <span>+</span>
                           <span style={{ color: attrColor }}>
-                            {skillLabel} {skillTotal}
+                            {skillLabel} {skillApplied}
                           </span>
-                          {exhaustionPenalty !== 0 && (
-                            <>
-                              <span style={{ color: "#D04040" }}>
-                                {exhaustionPenalty}
-                              </span>
-                              <span style={{ color: "#D04040" }}>Exaustão</span>
-                            </>
-                          )}
                         </>
+                      )}
+                      {exhaustionApplied !== 0 && (
+                        <>
+                          <span style={{ color: "#D04040" }}>
+                            {exhaustionApplied}
+                          </span>
+                          <span style={{ color: "#D04040" }}>Exaustão</span>
+                        </>
+                      )}
+                      {attrIgnored !== 0 && (
+                        <span
+                          style={{
+                            color: "var(--color-text-muted)",
+                            textDecoration: "line-through",
+                            opacity: 0.6,
+                          }}
+                        >
+                          {attrMeta.label} {attrIgnored}
+                        </span>
+                      )}
+                      {skillIgnored !== 0 && (
+                        <span
+                          style={{
+                            color: "var(--color-text-muted)",
+                            textDecoration: "line-through",
+                            opacity: 0.6,
+                          }}
+                        >
+                          {skillLabel} {skillIgnored}
+                        </span>
+                      )}
+                      {exhaustionIgnored !== 0 && (
+                        <span
+                          style={{
+                            color: "var(--color-text-muted)",
+                            textDecoration: "line-through",
+                            opacity: 0.6,
+                          }}
+                        >
+                          Exaustão {exhaustionIgnored}
+                        </span>
                       )}
                     </div>
 

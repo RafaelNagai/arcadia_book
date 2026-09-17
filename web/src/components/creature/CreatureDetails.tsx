@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import type { Creature, CreatureAttributes } from "@/data/creatureTypes";
 import type { DieType } from "@/components/widgets/DiceRollerWidget";
 import { CreatureRollOverlay } from "./CreatureRollOverlay";
+import { ExaustaoSection } from "@/components/character/ExaustaoSection";
 
 interface Props {
   creature: Creature;
@@ -12,6 +13,7 @@ interface RollTarget {
   attrValue: number;
   diceCount: number;
   dieType: DieType;
+  exhaustionPenalty: number;
 }
 
 const ATTR_LABELS: Record<string, string> = {
@@ -309,6 +311,7 @@ export function CreatureDetails({ creature }: Props) {
   const [currentDa, setCurrentDa] = useState<number>(creature.da);
   const [currentDp, setCurrentDp] = useState<number>(creature.dp);
   const [currentAttrs, setCurrentAttrs] = useState<CreatureAttributes>({ ...creature.attributes });
+  const [exaustao, setExaustao] = useState<number>(0);
 
   const { count: parsedCount, dieType: parsedDieType } = parseDiceBase(creature.diceBase);
 
@@ -319,6 +322,14 @@ export function CreatureDetails({ creature }: Props) {
     [],
   );
 
+  const handleExaustaoChange = useCallback((delta: number) => {
+    setExaustao((prev) => Math.max(0, prev + delta));
+  }, []);
+
+  const handleExaustaoReset = useCallback(() => {
+    setExaustao(0);
+  }, []);
+
   const handleAttrClick = useCallback(
     (key: string, value: number) => {
       setRollTarget({
@@ -326,9 +337,10 @@ export function CreatureDetails({ creature }: Props) {
         attrValue: value,
         diceCount: parsedCount,
         dieType: parsedDieType,
+        exhaustionPenalty: exaustao > 0 ? -10 * exaustao : 0,
       });
     },
-    [parsedCount, parsedDieType],
+    [parsedCount, parsedDieType, exaustao],
   );
 
   return (
@@ -339,6 +351,7 @@ export function CreatureDetails({ creature }: Props) {
           attrValue={rollTarget.attrValue}
           diceCount={rollTarget.diceCount}
           dieType={rollTarget.dieType}
+          exhaustionPenalty={rollTarget.exhaustionPenalty}
           onClose={() => setRollTarget(null)}
         />
       )}
@@ -375,6 +388,13 @@ export function CreatureDetails({ creature }: Props) {
         <AdjustableStatCell label="DA" value={currentDa} onAdjust={(d) => setCurrentDa((v) => v + d)} right />
         <AdjustableStatCell label="DP" value={currentDp} onAdjust={(d) => setCurrentDp((v) => v + d)} />
       </div>
+
+      {/* Exaustão — efêmero, não persiste */}
+      <ExaustaoSection
+        exaustao={exaustao}
+        onExaustaoChange={handleExaustaoChange}
+        onExaustaoReset={handleExaustaoReset}
+      />
 
       {/* Attributes — clickable */}
       <div>

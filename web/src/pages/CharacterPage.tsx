@@ -731,6 +731,33 @@ export function CharacterPage() {
     return map;
   }, [conditions]);
 
+  // Mesmas fontes de conditionEffectMap, mas separadas por sinal — usadas nos testes
+  // de Perícia para que Crítico/Milagre possam ignorar só a parte negativa e
+  // Falha Crítica/Desastre só a parte positiva, em vez de um total já somado.
+  const conditionEffectMapPositive = useMemo<Record<string, number>>(() => {
+    const map: Record<string, number> = {};
+    for (const cond of conditions) {
+      for (const eff of cond.effects ?? []) {
+        if (eff.field !== "dano" && typeof eff.value === "number" && eff.value > 0) {
+          map[eff.field] = (map[eff.field] ?? 0) + eff.value;
+        }
+      }
+    }
+    return map;
+  }, [conditions]);
+
+  const conditionEffectMapNegative = useMemo<Record<string, number>>(() => {
+    const map: Record<string, number> = {};
+    for (const cond of conditions) {
+      for (const eff of cond.effects ?? []) {
+        if (eff.field !== "dano" && typeof eff.value === "number" && eff.value < 0) {
+          map[eff.field] = (map[eff.field] ?? 0) + eff.value;
+        }
+      }
+    }
+    return map;
+  }, [conditions]);
+
   /* ── Loading / Not found ─────────────────────────────────────── */
 
   if (!charLoaded) {
@@ -989,6 +1016,8 @@ export function CharacterPage() {
             peChecks={peChecks}
             skillModifiers={skillModifiers}
             conditionEffectMap={conditionEffectMap}
+            conditionEffectMapPositive={conditionEffectMapPositive}
+            conditionEffectMapNegative={conditionEffectMapNegative}
             onPeToggle={canEdit ? handlePeToggle : undefined}
             onModifierChange={canEdit ? handleModifierChange : undefined}
             onModifierReset={canEdit ? handleModifierReset : undefined}

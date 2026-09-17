@@ -56,6 +56,8 @@ export function AttributeBlock({
   onPeToggle,
   skillModifiers,
   conditionEffectMap,
+  conditionEffectMapPositive,
+  conditionEffectMapNegative,
   onModifierChange,
   onModifierReset,
   onSkillTest,
@@ -67,6 +69,8 @@ export function AttributeBlock({
   onPeToggle?: (idx: number) => void;
   skillModifiers: Record<string, number>;
   conditionEffectMap?: Record<string, number>;
+  conditionEffectMapPositive?: Record<string, number>;
+  conditionEffectMapNegative?: Record<string, number>;
   onModifierChange?: (key: string, delta: number) => void;
   onModifierReset?: (key: string) => void;
   onSkillTest?: (data: SkillTestData) => void;
@@ -160,6 +164,8 @@ export function AttributeBlock({
           const hasTalent = character.talents.includes(skill.key);
           const mod = skillModifiers[skill.key] ?? 0;
           const condEffect = conditionEffectMap?.[skill.key] ?? 0;
+          const condEffectPositive = conditionEffectMapPositive?.[skill.key] ?? 0;
+          const condEffectNegative = conditionEffectMapNegative?.[skill.key] ?? 0;
           const total = val + mod + condEffect;
           const isEditing = editingSkill === skill.key;
           const modColor = mod > 0 ? "#6EC840" : "#D04040";
@@ -207,7 +213,10 @@ export function AttributeBlock({
                             onSkillTest({
                               skillLabel: skill.label,
                               skillValue: val,
-                              modifier: mod + condEffect,
+                              positiveModifier:
+                                (mod > 0 ? mod : 0) + condEffectPositive,
+                              negativeModifier:
+                                (mod < 0 ? mod : 0) + condEffectNegative,
                               hasTalent,
                               defaultAttr: group.attr,
                               attrColor: group.color,
