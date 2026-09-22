@@ -3,6 +3,11 @@
 > Registro de atualizações em linguagem simples, para quem acompanha o livro — não é um log técnico de commits.
 > Cada task concluída via `/task` adiciona um item aqui, sob a data do dia. Este arquivo alimenta o aviso automático no Discord.
 
+## 2026-09-22
+
+- A ficha de personagem agora mostra moedas verdes e vermelhas ao lado do número de Exaustão, para acompanhar visualmente o cansaço do jeito que o livro descreve: cada vez que você registra uma Ação Simples aparece uma moeda verde: a segunda Ação Simples transforma essa moeda em vermelha e soma 1 ponto de Exaustão. O número continua no mesmo lugar de sempre, agora só com essa pista visual extra ao lado.
+- Ajustamos essas moedas de Exaustão: agora elas ficam numa linha própria, embaixo dos botões, em vez de empurrá-los para o lado conforme o cansaço aumenta. Quando há muitas moedas, elas quebram em mais de uma linha em vez de estourar o layout da ficha. E, ao confirmar a segunda Ação Simples, a moeda verde pendente "vira" fisicamente, como uma moeda girando no ar, até assentar do lado vermelho.
+
 ## 2026-09-21
 
 - Reescrevemos a introdução ao Arcano e o capítulo de Conjuração para ensinar a magia do zero, começando pelo básico: você diz o que quer, o Mestre define a dificuldade e você rola 2D12 somando o seu Arcano e uma perícia arcana. Cada magia agora usa uma única perícia (Potência para ferir, Complexidade para curar ou provocar condições, Controle para criar e moldar o mundo), o tamanho do efeito é o resultado dividido por 5 e nunca passa do dobro da dificuldade da magia, e cada conjuração custa Sanidade conforme o nível de Entropia. As regras de Entropia, de Afinidade e Antítese e de Exaustão citadas nesses capítulos ainda serão atualizadas nos capítulos próprios, nas próximas etapas.
