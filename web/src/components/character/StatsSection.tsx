@@ -25,9 +25,10 @@ export function StatsSection({
   onExaustaoChange,
   onExaustaoReset,
   conditions,
-  isGm,
+  canEdit,
   onAddCondition,
   onRemoveCondition,
+  onEditCondition,
 }: {
   character: Character;
   accentText: string;
@@ -48,9 +49,10 @@ export function StatsSection({
   onExaustaoChange?: (delta: number) => void;
   onExaustaoReset?: () => void;
   conditions: Condition[];
-  isGm: boolean;
+  canEdit: boolean;
   onAddCondition?: (c: Condition) => void;
   onRemoveCondition?: (id: string) => void;
+  onEditCondition?: (c: Condition) => void;
 }) {
   const conditionEffectMap = useMemo<Record<string, number>>(() => {
     const map: Record<string, number> = {}
@@ -105,9 +107,10 @@ export function StatsSection({
           />
           <ConditionsSection
             conditions={conditions}
-            isGm={isGm}
-            onAddCondition={isGm ? onAddCondition : undefined}
-            onRemoveCondition={isGm ? onRemoveCondition : undefined}
+            canEdit={canEdit}
+            onAddCondition={canEdit ? onAddCondition : undefined}
+            onRemoveCondition={canEdit ? onRemoveCondition : undefined}
+            onEditCondition={canEdit ? onEditCondition : undefined}
           />
         </div>
       </div>

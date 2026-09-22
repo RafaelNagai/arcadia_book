@@ -495,6 +495,17 @@ export function CharacterPage() {
     });
   }
 
+  function handleEditCondition(updated: Condition) {
+    setConditions((prev) => {
+      const next = prev.map((c) => (c.id === updated.id ? updated : c));
+      if (id) {
+        if (isApiChar) void api.state.updateConditions(id, next);
+        else saveConditions(id, next);
+      }
+      return next;
+    });
+  }
+
   /* ── Exaustão ────────────────────────────────────────────────── */
 
   function handleExaustaoChange(delta: number) {
@@ -985,11 +996,10 @@ export function CharacterPage() {
             onExaustaoChange={canEdit ? handleExaustaoChange : undefined}
             onExaustaoReset={canEdit ? handleExaustaoReset : undefined}
             conditions={conditions}
-            isGm={isGmOfCampaign}
-            onAddCondition={isGmOfCampaign ? handleAddCondition : undefined}
-            onRemoveCondition={
-              isGmOfCampaign ? handleRemoveCondition : undefined
-            }
+            canEdit={canEdit}
+            onAddCondition={canEdit ? handleAddCondition : undefined}
+            onRemoveCondition={canEdit ? handleRemoveCondition : undefined}
+            onEditCondition={canEdit ? handleEditCondition : undefined}
           />
 
           <SkillsSection

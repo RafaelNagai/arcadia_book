@@ -5,6 +5,9 @@
 
 ## 2026-09-22
 
+- Os ícones e botões de Condição na ficha de personagem (o círculo da condição, os botões de editar e remover, e o botão de adicionar) ficaram um pouco maiores, facilitando o toque no celular.
+- Agora dá para editar uma Condição que já está na ficha (nome, ícone, descrição e efeitos), em vez de precisar apagar e criar de novo. Vale tanto para o dono da ficha quanto para o mestre da campanha, e para qualquer condição — não precisa ter sido quem a criou.
+- Agora o dono da ficha também pode adicionar e remover as próprias Condições (como Congelado, Fratura etc.) direto na ficha de personagem — antes só o mestre da campanha conseguia fazer isso.
 - A ficha de personagem agora mostra moedas verdes e vermelhas ao lado do número de Exaustão, do jeito que o livro descreve: a cada Ação Simples aparece uma moeda verde, e a segunda vira vermelha (com uma animação de moeda girando) somando 1 ponto de Exaustão. As moedas ficam numa linha própria embaixo dos botões e quebram em mais linhas quando há muitas, sem embolar o layout da ficha.
 - O botão de "+1 Exaustão" virou dois botões separados: um para Ação Simples e outro para Ação Complexa. Antes dava pra confundir os dois; agora Ação Complexa soma a Exaustão de uma vez, sem precisar clicar duas vezes.
 

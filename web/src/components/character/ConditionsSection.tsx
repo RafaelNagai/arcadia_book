@@ -67,6 +67,19 @@ function makeDefaultForm(fields: (ConditionEffectField | 'dano')[]): ConditionFo
   }
 }
 
+function makeFormFromCondition(condition: Condition, fields: (ConditionEffectField | 'dano')[]): ConditionFormState {
+  const hasEffects = (condition.effects?.length ?? 0) > 0
+  return {
+    name: condition.name,
+    icon: condition.icon,
+    description: condition.description,
+    advanced: hasEffects,
+    effects: hasEffects
+      ? condition.effects.map((e) => ({ field: e.field, value: String(e.value) }))
+      : [{ field: fields[0], value: "0" }],
+  }
+}
+
 function TooltipPortal({ children, anchor }: { children: React.ReactNode; anchor: HTMLElement | null }) {
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null)
 
@@ -159,11 +172,13 @@ function ConditionTooltip({ condition }: { condition: Condition }) {
 function ConditionChip({
   condition,
   onRemove,
-  isGm,
+  onEdit,
+  canEdit,
 }: {
   condition: Condition
   onRemove?: () => void
-  isGm: boolean
+  onEdit?: () => void
+  canEdit: boolean
 }) {
   const [hovered, setHovered] = useState(false)
   const ref = useRef<HTMLButtonElement>(null)
@@ -179,27 +194,45 @@ function ConditionChip({
           background: "var(--color-surface)",
           border: "1px solid var(--color-border)",
           borderRadius: 6,
-          padding: isGm ? "0.3rem 0.3rem 0.3rem 0.5rem" : "0.3rem 0.5rem",
+          padding: canEdit ? "0.4rem 0.4rem 0.4rem 0.6rem" : "0.4rem 0.6rem",
           display: "flex",
           alignItems: "center",
-          gap: "0.3rem",
+          gap: "0.35rem",
           cursor: "default",
           transition: "border-color 0.15s",
           ...(hovered ? { borderColor: "var(--color-arcano)" } : {}),
         }}
         title={condition.name}
       >
-        <span style={{ fontSize: "1.1rem", lineHeight: 1 }}>{condition.icon}</span>
-        {isGm && onRemove && (
+        <span style={{ fontSize: "1.25rem", lineHeight: 1 }}>{condition.icon}</span>
+        {canEdit && onEdit && (
+          <span
+            role="button"
+            onClick={(e) => { e.stopPropagation(); onEdit() }}
+            style={{
+              fontSize: "0.8rem",
+              lineHeight: 1,
+              color: "rgba(255,255,255,0.35)",
+              cursor: "pointer",
+              padding: "2px 5px",
+              transition: "color 0.12s",
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--color-arcano)" }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.35)" }}
+          >
+            ✎
+          </span>
+        )}
+        {canEdit && onRemove && (
           <span
             role="button"
             onClick={(e) => { e.stopPropagation(); onRemove() }}
             style={{
-              fontSize: "0.65rem",
+              fontSize: "0.8rem",
               lineHeight: 1,
               color: "rgba(255,255,255,0.35)",
               cursor: "pointer",
-              padding: "0 2px",
+              padding: "2px 5px",
               transition: "color 0.12s",
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#E07070" }}
@@ -219,15 +252,19 @@ function ConditionChip({
 }
 
 function AddConditionModal({
-  onAdd,
+  onSave,
   onClose,
   availableFields,
+  editing,
 }: {
-  onAdd: (c: Condition) => void
+  onSave: (c: Condition) => void
   onClose: () => void
   availableFields: (ConditionEffectField | 'dano')[]
+  editing?: Condition
 }) {
-  const [form, setForm] = useState<ConditionFormState>(() => makeDefaultForm(availableFields))
+  const [form, setForm] = useState<ConditionFormState>(() =>
+    editing ? makeFormFromCondition(editing, availableFields) : makeDefaultForm(availableFields)
+  )
 
   function updateEffect(idx: number, patch: Partial<EffectRow>) {
     setForm((prev) => {
@@ -261,7 +298,7 @@ function AddConditionModal({
             return { field: e.field as Exclude<ConditionEffectField, 'dano'>, value: Number(e.value) }
           })
       : []
-    onAdd({ id: generateId(), name: form.name.trim(), icon: form.icon, description: form.description.trim(), effects })
+    onSave({ id: editing?.id ?? generateId(), name: form.name.trim(), icon: form.icon, description: form.description.trim(), effects })
     onClose()
   }
 
@@ -303,7 +340,7 @@ function AddConditionModal({
             color: "var(--color-arcano)",
           }}
         >
-          Nova Condição
+          {editing ? "Editar Condição" : "Nova Condição"}
         </p>
 
         {/* Nome */}
@@ -446,7 +483,7 @@ function AddConditionModal({
               cursor: form.name.trim() ? "pointer" : "not-allowed",
             }}
           >
-            Adicionar
+            {editing ? "Salvar" : "Adicionar"}
           </button>
         </div>
       </div>
@@ -499,18 +536,26 @@ const confirmBtnStyle: React.CSSProperties = {
 
 export function ConditionsSection({
   conditions,
-  isGm,
+  canEdit,
   onAddCondition,
   onRemoveCondition,
+  onEditCondition,
   availableFields,
 }: {
   conditions: Condition[]
-  isGm: boolean
+  canEdit: boolean
   onAddCondition?: (c: Condition) => void
   onRemoveCondition?: (id: string) => void
+  onEditCondition?: (c: Condition) => void
   availableFields?: (ConditionEffectField | 'dano')[]
 }) {
   const [modalOpen, setModalOpen] = useState(false)
+  const [editingCondition, setEditingCondition] = useState<Condition | null>(null)
+
+  function closeModal() {
+    setModalOpen(false)
+    setEditingCondition(null)
+  }
 
   return (
     <>
@@ -528,7 +573,7 @@ export function ConditionsSection({
           Condições
         </p>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", alignItems: "center" }}>
-          {conditions.length === 0 && !isGm && (
+          {conditions.length === 0 && !canEdit && (
             <span
               style={{
                 fontFamily: "var(--font-ui)",
@@ -544,11 +589,12 @@ export function ConditionsSection({
             <ConditionChip
               key={c.id}
               condition={c}
-              isGm={isGm}
+              canEdit={canEdit}
               onRemove={onRemoveCondition ? () => onRemoveCondition(c.id) : undefined}
+              onEdit={onEditCondition ? () => setEditingCondition(c) : undefined}
             />
           ))}
-          {isGm && onAddCondition && (
+          {canEdit && onAddCondition && (
             <button
               onClick={() => setModalOpen(true)}
               style={{
@@ -557,10 +603,10 @@ export function ConditionsSection({
                 borderRadius: 6,
                 color: "var(--color-arcano)",
                 fontFamily: "var(--font-ui)",
-                fontSize: "0.8rem",
+                fontSize: "0.95rem",
                 lineHeight: 1,
                 cursor: "pointer",
-                padding: "0.3rem 0.5rem",
+                padding: "0.4rem 0.65rem",
                 transition: "background 0.15s",
               }}
               title="Adicionar condição"
@@ -573,8 +619,17 @@ export function ConditionsSection({
 
       {modalOpen && onAddCondition && (
         <AddConditionModal
-          onAdd={onAddCondition}
-          onClose={() => setModalOpen(false)}
+          onSave={onAddCondition}
+          onClose={closeModal}
+          availableFields={availableFields ?? ALL_FIELDS}
+        />
+      )}
+
+      {editingCondition && onEditCondition && (
+        <AddConditionModal
+          editing={editingCondition}
+          onSave={onEditCondition}
+          onClose={closeModal}
           availableFields={availableFields ?? ALL_FIELDS}
         />
       )}

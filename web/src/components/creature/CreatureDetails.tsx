@@ -357,6 +357,10 @@ export function CreatureDetails({ creature }: Props) {
     setConditions((prev) => prev.filter((c) => c.id !== id));
   }, []);
 
+  const handleEditCondition = useCallback((updated: Condition) => {
+    setConditions((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
+  }, []);
+
   const conditionEffectMap = useMemo<Record<string, number>>(() => {
     const map: Record<string, number> = {};
     for (const cond of conditions) {
@@ -515,9 +519,10 @@ export function CreatureDetails({ creature }: Props) {
         {/* Condições — efêmero, não persiste */}
         <ConditionsSection
           conditions={conditions}
-          isGm={true}
+          canEdit={true}
           onAddCondition={handleAddCondition}
           onRemoveCondition={handleRemoveCondition}
+          onEditCondition={handleEditCondition}
           availableFields={CREATURE_CONDITION_FIELDS}
         />
       </div>
