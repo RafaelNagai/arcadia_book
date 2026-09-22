@@ -145,6 +145,40 @@ Capítulos atualmente sem widget registrado em `chapterWidgets.tsx`:
 
 ## Concluídos
 
+### Dois Botões de Exaustão: Separar Ação Simples e Ação Complexa (`ExaustaoSection.tsx`)
+**Origem:** /task substituir o botão único "+" de exaustão em `ExaustaoSection.tsx` por dois botões separados — "Ação Simples" e "Ação Complexa" — para eliminar a ambiguidade de um clique único poder registrar apenas 1 Ação Simples pendente quando o usuário na verdade realizou uma Ação Complexa (que deveria gerar 1 Exaustão direta, 1:1, sem pendência).
+**Adicionada:** 2026-09-22 · **Validator:** APROVADO no ciclo 1 · **Concluída:** 2026-09-22
+
+- [x] Subtask 1 — Substituir o botão único "+" por dois botões ("S"/Ação Simples e "C"/Ação Complexa), Ação Simples reaproveitando `handleAdd` sem alteração de comportamento — **Validado**
+- [x] Subtask 2 — Handler `handleComplex` chamando `onExaustaoChange?.(+1)` diretamente, 1:1, sem envolver `pendingSimple`/`isFlipping` — **Validado**
+- [x] Subtask 3 — Animação de "pop" (scale 0→1, Framer Motion, ~0.2s) só na moeda criada por Ação Complexa, sem alterar a animação de virada da Ação Simples — **Validado**
+- [x] Subtask 4 — `disabled={isFlipping}` no botão "C" para evitar corrida com a virada pendente; assinatura pública inalterada — **Validado**
+- [x] Subtask 5 — Build/typecheck limpos — **Validado**
+
+**Validação do Validator (leitura direta do código em `web/src/components/character/ExaustaoSection.tsx`, independente do relato do Executor, mais verificação visual real):**
+
+- **Subtask 1:** confirmado via `git diff`/`git log -p` — o botão "S" (`actionBtn(false, ACAO_SIMPLES_COLOR)`, `onClick={handleAdd}`) chama exatamente o `handleAdd` já existente, sem nenhuma linha alterada dentro da função; `actionBtn` ganhou um 2º parâmetro `color` com default `EXAUSTAO_COLOR`, preservando o botão "−" (que só passa 1 argumento). Os dois botões (28×28px) e o botão "C" aparecem no lugar do antigo "+" único.
+- **Subtask 2:** `handleComplex` (linhas 111-115) faz `if (isFlipping) return; setComplexPopIndex(exaustao); onExaustaoChange?.(+1)` — incremento 1:1 direto, sem tocar `pendingSimple`. Confere com a regra do livro em `chapters/01_04_00_combate.md` (linhas 82, 114-115, 128): Ação Complexa soma 1 Exaustão direto ("token escuro diretamente"), diferente do 2:1 da Ação Simples.
+- **Subtask 3 (índice da moeda, off-by-one):** `complexPopIndex` é setado para o valor de `exaustao` **antes** do incremento — se `exaustao` era N no momento do clique, `complexPopIndex = N`. Depois do incremento, `exaustao` passa a N+1, o array `Array.from({length: exaustao})` tem índices `0..N`, e a moeda nova (a última) ocupa exatamente o índice N — bate com `complexPopIndex`, sem off-by-one. Confirmado também ao vivo no navegador (ver abaixo): a única moeda que "pop"-a é sempre a mais recente.
+- **Subtask 4:** `disabled={isFlipping}` presente no botão "C" (linha 169) e guarda redundante em `handleComplex`. `git diff --stat` confirma que só `ExaustaoSection.tsx` e `Sprint.md` foram alterados — `StatsSection.tsx` e `CreatureDetails.tsx` não foram tocados e continuam passando as mesmas props (`exaustao`, `onExaustaoChange?`, `onExaustaoReset?`).
+- **Sem regressão na animação de virada da Ação Simples:** `flipCoinWrapper`/`flipCoinInner`/`flipFace` (rotateY, backfaceVisibility, perspective) idênticos à versão aprovada na task anterior — `git diff` mostra zero mudanças nesse trecho, só a adição do branch condicional `complexPopIndex` no map das moedas vermelhas.
+
+**Verificação visual real (dev server + Playwright, já que este ambiente não tinha `chromium-cli`; script descartável em `/tmp`, servidor parado ao final):**
+
+- Testado nas duas superfícies reais: capítulo do Bestiário (`CreatureDetails.tsx`, sem precisar de login) e a ficha de personagem (`StatsSection.tsx`, via um personagem `owned:true` injetado no `localStorage` só para o teste, removido depois). Em ambas, os 4 controles (`−`, "S", "C", "×") aparecem lado a lado sem sobreposição nem quebra de layout, com e sem o botão "×" (que só aparece quando há Exaustão/pendência).
+- Clicar em "C" 3× seguidas somou +1 cada vez, imediatamente (contador foi a 3, sem etapa intermediária), com o "pop" de escala visível só na moeda mais nova a cada clique.
+- Clicar em "S" 2× reproduziu o fluxo já aprovado: 1º clique cria a moeda verde pendente, 2º clique inicia a virada 3D (rotateY) e só ao final (`onAnimationComplete`) confirma a Exaustão (+1 ao contador). Durante a virada, o botão "C" ficou visivelmente desabilitado (opacidade reduzida) e um clique nele nesse intervalo não teve efeito.
+- Incrementando bastante via "C" (19 moedas no total), a fileira quebrou corretamente em múltiplas linhas sem distorcer os botões.
+- Nenhum erro de console relacionado a este componente (o único warning de console observado, "Received NaN for the `%s` attribute", veio de um personagem de teste incompleto criado só para o teste — não existe em `ExaustaoSection.tsx` nenhum cálculo que produza `NaN`, e não é um caminho de código tocado por este diff).
+
+- **CLAUDE.md/SPEC.md:** sem comentários novos no código, sem features extras (nenhum ícone, nenhuma persistência nova), sem mocks de banco. `chapters/01_04_00_combate.md` intocado (`git diff` vazio) — mudança é só de UI, a mecânica já existia no livro. Framer Motion 12 já era dependência existente, nenhuma lib nova.
+- `npx tsc -b` e `npm run build` executados de forma independente pelo Validator em `web/` — ambos limpos, sem erros novos (aviso de chunk >500kB é pré-existente).
+- `CHANGELOG.md` atualizado sob `## 2026-09-22` com um novo bullet em linguagem simples.
+
+✅ Validado — aprovado sem ressalvas.
+
+---
+
 ### Ajustar UI das Moedas de Exaustão na Ficha de Personagem (Layout, Wrap e Animação de Virada)
 **Origem:** /task ajustar UI das moedas de exaustão criadas na task anterior (`ExaustaoSection.tsx`): (1) mover a fileira de moedas para abaixo da linha de botões/número, pois hoje ela empurra os botões para o lado; (2) permitir que a fileira quebre em múltiplas linhas quando houver muitas moedas, sem quebrar o layout do componente nem deslocar a seção de Exaustão para outro lugar da ficha; (3) adicionar animação de "virada" (moeda física girando, lado verde → lado vermelho) na transição de verde (Ação Simples pendente) para vermelha (Exaustão confirmada).
 **Adicionada:** 2026-09-22 · **Validator:** APROVADO no ciclo 1 · **Concluída:** 2026-09-22 · Refinamento visual/UI de acompanhamento da task "Corrigir Tracker de Exaustão na Ficha de Personagem — Moedas Verde/Vermelha" (ver abaixo, já validada) — não altera a mecânica já aprovada, só a apresentação.

@@ -5,13 +5,13 @@ import { BatteryWarning } from "lucide-react"
 const EXAUSTAO_COLOR = "#D04040"
 const ACAO_SIMPLES_COLOR = "#4CAF6D"
 
-const actionBtn = (disabled: boolean): React.CSSProperties => ({
+const actionBtn = (disabled: boolean, color: string = EXAUSTAO_COLOR): React.CSSProperties => ({
   width: 28,
   height: 28,
   borderRadius: 4,
-  background: disabled ? "rgba(255,255,255,0.03)" : `${EXAUSTAO_COLOR}18`,
-  border: `1px solid ${disabled ? "rgba(255,255,255,0.08)" : EXAUSTAO_COLOR + "55"}`,
-  color: disabled ? "rgba(255,255,255,0.18)" : EXAUSTAO_COLOR,
+  background: disabled ? "rgba(255,255,255,0.03)" : `${color}18`,
+  border: `1px solid ${disabled ? "rgba(255,255,255,0.08)" : color + "55"}`,
+  color: disabled ? "rgba(255,255,255,0.18)" : color,
   fontFamily: "var(--font-ui)",
   fontSize: "1rem",
   lineHeight: 1,
@@ -91,6 +91,7 @@ export function ExaustaoSection({
 }) {
   const [pendingSimple, setPendingSimple] = useState(false)
   const [isFlipping, setIsFlipping] = useState(false)
+  const [complexPopIndex, setComplexPopIndex] = useState<number | null>(null)
 
   const handleAdd = () => {
     if (pendingSimple) {
@@ -104,6 +105,12 @@ export function ExaustaoSection({
   const handleFlipComplete = () => {
     setIsFlipping(false)
     setPendingSimple(false)
+    onExaustaoChange?.(+1)
+  }
+
+  const handleComplex = () => {
+    if (isFlipping) return
+    setComplexPopIndex(exaustao)
     onExaustaoChange?.(+1)
   }
 
@@ -151,8 +158,20 @@ export function ExaustaoSection({
             >
               −
             </button>
-            <button onClick={handleAdd} style={actionBtn(false)} title="Registrar 1 Ação Simples">
-              +
+            <button
+              onClick={handleAdd}
+              style={actionBtn(false, ACAO_SIMPLES_COLOR)}
+              title="Registrar 1 Ação Simples (2 = 1 Exaustão)"
+            >
+              S
+            </button>
+            <button
+              disabled={isFlipping}
+              onClick={handleComplex}
+              style={actionBtn(isFlipping, EXAUSTAO_COLOR)}
+              title="Registrar 1 Ação Complexa (+1 Exaustão)"
+            >
+              C
             </button>
           </>
         )}
@@ -171,13 +190,25 @@ export function ExaustaoSection({
 
       {(exaustao > 0 || pendingSimple) && (
         <div style={coinRowStyle}>
-          {Array.from({ length: exaustao }).map((_, i) => (
-            <span
-              key={`exaustao-${i}`}
-              style={coin(EXAUSTAO_COLOR)}
-              title="1 ponto de Exaustão"
-            />
-          ))}
+          {Array.from({ length: exaustao }).map((_, i) =>
+            i === complexPopIndex ? (
+              <motion.span
+                key={`exaustao-${i}`}
+                style={coin(EXAUSTAO_COLOR)}
+                title="1 ponto de Exaustão"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.2 }}
+                onAnimationComplete={() => setComplexPopIndex(null)}
+              />
+            ) : (
+              <span
+                key={`exaustao-${i}`}
+                style={coin(EXAUSTAO_COLOR)}
+                title="1 ponto de Exaustão"
+              />
+            )
+          )}
           {pendingSimple && (
             isFlipping ? (
               <span style={flipCoinWrapper}>

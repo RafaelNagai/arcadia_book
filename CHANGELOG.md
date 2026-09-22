@@ -6,6 +6,7 @@
 ## 2026-09-22
 
 - A ficha de personagem agora mostra moedas verdes e vermelhas ao lado do número de Exaustão, do jeito que o livro descreve: a cada Ação Simples aparece uma moeda verde, e a segunda vira vermelha (com uma animação de moeda girando) somando 1 ponto de Exaustão. As moedas ficam numa linha própria embaixo dos botões e quebram em mais linhas quando há muitas, sem embolar o layout da ficha.
+- O botão de "+1 Exaustão" virou dois botões separados: um para Ação Simples e outro para Ação Complexa. Antes dava pra confundir os dois; agora Ação Complexa soma a Exaustão de uma vez, sem precisar clicar duas vezes.
 
 ## 2026-09-21
 
