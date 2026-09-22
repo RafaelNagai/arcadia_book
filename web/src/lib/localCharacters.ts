@@ -243,6 +243,27 @@ export function saveExaustao(characterId: string, value: number): void {
   } catch {}
 }
 
+const EXAUSTAO_PENDING_SIMPLE_KEY = 'arcadia_exaustao_pending_simple'
+
+export function loadExaustaoPendingSimple(characterId: string): boolean {
+  try {
+    const raw = localStorage.getItem(EXAUSTAO_PENDING_SIMPLE_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, boolean>) : {}
+    return all[characterId] ?? false
+  } catch {
+    return false
+  }
+}
+
+export function saveExaustaoPendingSimple(characterId: string, value: boolean): void {
+  try {
+    const raw = localStorage.getItem(EXAUSTAO_PENDING_SIMPLE_KEY)
+    const all = raw ? (JSON.parse(raw) as Record<string, boolean>) : {}
+    all[characterId] = value
+    localStorage.setItem(EXAUSTAO_PENDING_SIMPLE_KEY, JSON.stringify(all))
+  } catch {}
+}
+
 /* ─── Diary ─────────────────────────────────────────────────────── */
 
 const DIARY_KEY = 'arcadia_diary'

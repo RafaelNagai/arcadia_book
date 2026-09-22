@@ -25,6 +25,8 @@ import {
   saveConditions,
   loadExaustao,
   saveExaustao,
+  loadExaustaoPendingSimple,
+  saveExaustaoPendingSimple,
   loadDiary,
   saveDiary,
 } from "@/lib/localCharacters";
@@ -111,6 +113,7 @@ export function CharacterPage() {
   const [dpBonus, setDpBonus] = useState(0);
   const [conditions, setConditions] = useState<Condition[]>([]);
   const [exaustao, setExaustao] = useState<number>(0);
+  const [pendingSimple, setPendingSimple] = useState<boolean>(false);
   const [diaryData, setDiaryData] = useState<DiaryData>({
     blocks: [],
     categories: [],
@@ -170,6 +173,7 @@ export function CharacterPage() {
           setInitialDiceLog((s.diceLog as DiceLogEntry[]) ?? []);
           setConditions((s.conditions as Condition[]) ?? []);
           setExaustao((s.exhaustion as number) ?? 0);
+          setPendingSimple((s.exhaustionPendingSimple as boolean) ?? false);
           if (raw.diary) setDiaryData(raw.diary as DiaryData);
           const pub = (raw.isPublic as boolean) ?? false;
           setIsPublic(pub);
@@ -203,6 +207,7 @@ export function CharacterPage() {
         setDpBonus(dm.dpBonus);
         setConditions(loadConditions(id));
         setExaustao(loadExaustao(id));
+        setPendingSimple(loadExaustaoPendingSimple(id));
         setDiaryData(loadDiary(id));
       }
       setCharLoaded(true);
@@ -300,6 +305,8 @@ export function CharacterPage() {
         setConditions(data.conditions as Condition[]);
       if (data.exhaustion !== undefined && stateGracePassed)
         setExaustao(data.exhaustion);
+      if (data.exhaustion_pending_simple !== undefined && stateGracePassed)
+        setPendingSimple(data.exhaustion_pending_simple);
     },
     onInventoryChange: async () => {
       if (!id) return;
@@ -526,6 +533,15 @@ export function CharacterPage() {
     if (id) {
       if (isApiChar) void api.state.updateExhaustion(id, 0);
       else saveExaustao(id, 0);
+    }
+  }
+
+  function handlePendingSimpleChange(value: boolean) {
+    lastLocalStateTime.current = Date.now();
+    setPendingSimple(value);
+    if (id) {
+      if (isApiChar) void api.state.updateExhaustion(id, undefined, value);
+      else saveExaustaoPendingSimple(id, value);
     }
   }
 
@@ -995,6 +1011,8 @@ export function CharacterPage() {
             exaustao={exaustao}
             onExaustaoChange={canEdit ? handleExaustaoChange : undefined}
             onExaustaoReset={canEdit ? handleExaustaoReset : undefined}
+            pendingSimple={pendingSimple}
+            onPendingSimpleChange={canEdit ? handlePendingSimpleChange : undefined}
             conditions={conditions}
             canEdit={canEdit}
             onAddCondition={canEdit ? handleAddCondition : undefined}

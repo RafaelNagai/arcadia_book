@@ -55,8 +55,13 @@ export async function stateController(fastify: FastifyInstance) {
   fastify.patch('/exhaustion', async (req, reply) => {
     await fastify.authenticate(req)
     const { id } = UUIDParamSchema.parse(req.params)
-    const { exhaustion } = ExhaustionSchema.parse(req.body)
-    const state = await svc.updateExhaustion(id, req.user!.id, exhaustion)
+    const { exhaustion, exhaustion_pending_simple } = ExhaustionSchema.parse(req.body)
+    const state = await svc.updateExhaustion(
+      id,
+      req.user!.id,
+      exhaustion,
+      exhaustion_pending_simple,
+    )
     return reply.send({ state })
   })
 

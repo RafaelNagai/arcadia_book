@@ -192,10 +192,10 @@ export const api = {
         body: JSON.stringify({ conditions }),
       }),
 
-    updateExhaustion: (characterId: string, exhaustion: number) =>
+    updateExhaustion: (characterId: string, exhaustion?: number, pendingSimple?: boolean) =>
       apiFetch(`/characters/${characterId}/state/exhaustion`, {
         method: 'PATCH',
-        body: JSON.stringify({ exhaustion }),
+        body: JSON.stringify({ exhaustion, exhaustion_pending_simple: pendingSimple }),
       }),
 
     appendDiceLog: (characterId: string, entry: unknown) =>

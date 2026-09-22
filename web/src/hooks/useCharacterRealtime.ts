@@ -10,6 +10,7 @@ export interface CharacterStatePayload {
   dice_log?: DiceLogEntry[]
   conditions?: Condition[]
   exhaustion?: number
+  exhaustion_pending_simple?: boolean
 }
 
 interface RealtimeHandlers {

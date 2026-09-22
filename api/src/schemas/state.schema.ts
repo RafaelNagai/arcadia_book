@@ -32,6 +32,11 @@ export const ConditionsSchema = z.object({
   conditions: z.array(z.record(z.unknown())),
 })
 
-export const ExhaustionSchema = z.object({
-  exhaustion: z.number().int().min(0),
-})
+export const ExhaustionSchema = z
+  .object({
+    exhaustion: z.number().int().min(0).optional(),
+    exhaustion_pending_simple: z.boolean().optional(),
+  })
+  .refine((data) => data.exhaustion !== undefined || data.exhaustion_pending_simple !== undefined, {
+    message: 'Informe ao menos exhaustion ou exhaustion_pending_simple',
+  })

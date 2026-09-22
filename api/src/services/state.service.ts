@@ -64,11 +64,12 @@ export class StateService {
   async updateExhaustion(
     characterId: string,
     userId: string,
-    exhaustion: number,
+    exhaustion?: number,
+    pendingSimple?: boolean,
   ): Promise<CharacterState> {
     const stateUserId = await this.resolveStateUserId(characterId, userId)
     await this.repo.findOrCreate(characterId, stateUserId)
-    return this.repo.updateExhaustion(characterId, stateUserId, exhaustion)
+    return this.repo.updateExhaustion(characterId, stateUserId, exhaustion, pendingSimple)
   }
 
   async appendDiceLog(

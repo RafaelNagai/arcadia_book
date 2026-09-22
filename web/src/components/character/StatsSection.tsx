@@ -24,6 +24,8 @@ export function StatsSection({
   exaustao,
   onExaustaoChange,
   onExaustaoReset,
+  pendingSimple,
+  onPendingSimpleChange,
   conditions,
   canEdit,
   onAddCondition,
@@ -48,6 +50,8 @@ export function StatsSection({
   exaustao: number;
   onExaustaoChange?: (delta: number) => void;
   onExaustaoReset?: () => void;
+  pendingSimple: boolean;
+  onPendingSimpleChange?: (value: boolean) => void;
   conditions: Condition[];
   canEdit: boolean;
   onAddCondition?: (c: Condition) => void;
@@ -104,6 +108,8 @@ export function StatsSection({
             exaustao={exaustao}
             onExaustaoChange={owned ? onExaustaoChange : undefined}
             onExaustaoReset={owned ? onExaustaoReset : undefined}
+            pendingSimple={pendingSimple}
+            onPendingSimpleChange={owned ? onPendingSimpleChange : undefined}
           />
           <ConditionsSection
             conditions={conditions}

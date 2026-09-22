@@ -71,11 +71,15 @@ export class StateRepository {
   updateExhaustion(
     characterId: string,
     userId: string,
-    exhaustion: number,
+    exhaustion?: number,
+    pendingSimple?: boolean,
   ): Promise<CharacterState> {
     return this.db.characterState.update({
       where: { characterId_userId: { characterId, userId } },
-      data: { exhaustion },
+      data: {
+        ...(exhaustion !== undefined ? { exhaustion } : {}),
+        ...(pendingSimple !== undefined ? { exhaustionPendingSimple: pendingSimple } : {}),
+      },
     })
   }
 

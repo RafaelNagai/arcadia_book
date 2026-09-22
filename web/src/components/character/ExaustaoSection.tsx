@@ -84,14 +84,27 @@ export function ExaustaoSection({
   exaustao,
   onExaustaoChange,
   onExaustaoReset,
+  pendingSimple: pendingSimpleProp,
+  onPendingSimpleChange,
 }: {
   exaustao: number
   onExaustaoChange?: (delta: number) => void
   onExaustaoReset?: () => void
+  // Controlada (persistida) quando informada — ex.: ficha de personagem via CharacterPage.
+  // Quando omitida, cai para estado local não persistido — ex.: ficha de criatura (efêmera por design).
+  pendingSimple?: boolean
+  onPendingSimpleChange?: (value: boolean) => void
 }) {
-  const [pendingSimple, setPendingSimple] = useState(false)
+  const [localPendingSimple, setLocalPendingSimple] = useState(false)
   const [isFlipping, setIsFlipping] = useState(false)
   const [complexPopIndex, setComplexPopIndex] = useState<number | null>(null)
+
+  const isControlled = pendingSimpleProp !== undefined
+  const pendingSimple = isControlled ? pendingSimpleProp : localPendingSimple
+  const setPendingSimple = (value: boolean) => {
+    if (isControlled) onPendingSimpleChange?.(value)
+    else setLocalPendingSimple(value)
+  }
 
   const handleAdd = () => {
     if (pendingSimple) {
