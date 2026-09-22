@@ -5,8 +5,7 @@
 
 ## 2026-09-22
 
-- A ficha de personagem agora mostra moedas verdes e vermelhas ao lado do número de Exaustão, para acompanhar visualmente o cansaço do jeito que o livro descreve: cada vez que você registra uma Ação Simples aparece uma moeda verde: a segunda Ação Simples transforma essa moeda em vermelha e soma 1 ponto de Exaustão. O número continua no mesmo lugar de sempre, agora só com essa pista visual extra ao lado.
-- Ajustamos essas moedas de Exaustão: agora elas ficam numa linha própria, embaixo dos botões, em vez de empurrá-los para o lado conforme o cansaço aumenta. Quando há muitas moedas, elas quebram em mais de uma linha em vez de estourar o layout da ficha. E, ao confirmar a segunda Ação Simples, a moeda verde pendente "vira" fisicamente, como uma moeda girando no ar, até assentar do lado vermelho.
+- A ficha de personagem agora mostra moedas verdes e vermelhas ao lado do número de Exaustão, do jeito que o livro descreve: a cada Ação Simples aparece uma moeda verde, e a segunda vira vermelha (com uma animação de moeda girando) somando 1 ponto de Exaustão. As moedas ficam numa linha própria embaixo dos botões e quebram em mais linhas quando há muitas, sem embolar o layout da ficha.
 
 ## 2026-09-21
 
