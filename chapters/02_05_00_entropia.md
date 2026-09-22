@@ -2,88 +2,144 @@
 
 > *Expor-se ao caos em troca de poder.*
 
-A **Entropia** representa o quanto o personagem abriu os portões do arcano — o grau de exposição à essência do Caos. Escala de **0 a 5**.
+---
 
-## O Que a Entropia Faz
+A **Entropia** é o quanto você abriu o portão para o Caos. Quanto mais aberto, mais poder passa por você, e mais caro fica tudo que vem junto. Este capítulo mostra o que ela dá, o que ela cobra e como se controla.
 
-Cada ponto de Entropia concede um **token de bônus** no valor do atributo **Arcano** do personagem, que pode ser alocado em qualquer modificador. Os tokens não podem ser divididos — cada token é alocado inteiro a um único modificador.
+## A Entropia em Poucas Linhas
 
-> Exemplo:
-> Entropia 3 com Arcano 4: o personagem tem **3 tokens de +4** para distribuir entre os modificadores. Pode colocar os três no mesmo modificador (+12) ou dividi-los como quiser, sempre em blocos de 4.
+- **Vai de 0 a 4.** Você começa em 0 e sobe por escolha.
+- **Dá poder:** a partir do nível 1, você soma **um dado extra** ao resultado de toda magia. Quanto mais alto o nível, maior o dado.
+- **Custa Sanidade:** cada conjuração custa **1 + o nível** de Entropia em Sanidade.
+- **Cobra nas falhas:** uma Falha Crítica em nível alto traz consequências graves, até permanentes.
+- **Não desce por vontade:** só com descanso longo ou, com muita dificuldade, com horas de meditação.
 
-Quanto mais alto o nível de Entropia, mais poderosas as magias — e mais devastadoras as consequências ao falhar.
-
-## Como Aumentar a Entropia
-
-Para subir um nível de Entropia, o personagem se submete à essência do Caos. Ao aumentar, rola **1D20** na Tabela de Modificações e recebe uma **marca** correspondente.
-
-A **magnitude** de toda modificação é **X = nível de Entropia atual**.
-
-| D20 | Modificação | Tipo |
-|---|---|---|
-| 1 | **Drenagem Ampliada** — toda conjuração custa 1 de Sanidade extra. A mente do conjurador penetra mais profundamente na essencia primordial do arcano. | Negativo |
-| 2 | **Eco Arcano** — −X em furtividade ao conjurar (voz ecoa, luz vaza). O arcano flui através do corpo do conjurador, dificultando passar despercebido. | Negativo |
-| 3 | **Fragilidade Mental** — −X em Vontade. Acessar o arcano desgasta e confunde seus sentimentos. | Negativo |
-| 4 | **Desgaste Físico** — −X em Atletismo. Acessar o arcano reflete na sua força vital, drenando suas forças. | Negativo |
-| 5 | **Vulnerabilidade Elemental** — recebe X de dano extra do elemento de Antítese. A antítese é um elemento forçado no conjurador, em determinadas ocasiões ela pode lutar contra o próprio indivíduo. | Negativo |
-| 6 | **Fome Arcana** — Em vez de perde Sanidade para realizar uma magia, perde Vida. O desgaste fisico aparece sendo drenado da sua vitalidade quando tentar moldar o arcano. | Negativo |
-| 7 | **Atração Indesejada** — criaturas arcanas são atraídas, eles priorizam os ataques nesse alvo. Todos os seres são conectados ao arcano, e esta marca guia os sentimentos e a vontade para quem tem essa marca. | Negativo |
-| 8 | **Memória Fragmentada** — −X em Conhecimento; Cria lacunas aleatórias de memória, podendo perder parte da personalidade ou até esquecer de NPCs ou Jogadores. | Negativo |
-| 9 | **Instabilidade Passiva** — objetos leves se movem involuntariamente. Inconscientemente manipula o arcano para que mude conceitos de gravidade. | Narrativo |
-| 10 | **Marca Visível** — elemento de Afinidade manifesta-se na aparência (cicatriz, brilho, temperatura). Manifesta uma cicatriz, algo físico relacionado ao elemento no corpo do conjurador, para lembrar que o arcano não é controlado. | Narrativo |
-| 11 | **Sonhos do Arcano** — sonhos intensos com o elemento; Mestre pode dar pistas verdadeiras/falsas ou visões. | Narrativo |
-| 12 | **Voz do Elemento** — ouve o elemento sussurrar em momentos de silêncio; pista ou paranoia. | Narrativo |
-| 13 | **Presença Arcana** — +X em Persuasão; -X em Empatia. Uma aura arcana de presença esmagadora surge em volta do conjurador. | Misto |
-| 14 | **Consumo Acelerado** — conjurações custam 1 Sanidade extra, mas resultado do teste +X. O conjurador mergulha toda seu conhecimento sobre o arcano, sem se importar em afogar. Mas trazendo toda a pressão do poder arcano. | Misto |
-| 15 | **Loucura Arcana** — toque causa desconforto em criaturas sensíveis, o conjurador tem desvantagem em testes de Vontade; +X em Intimidação. A loucura pode ser ameaçador, principalmente vindo de um poder desconhecido. | Misto |
-| 16 | **Visão Dupla** — enxerga o plano arcano sobre o real; +X em Percepção arcana, −X em Percepção comum. Seus olhos enxergam através de multiplos planos acontecendo ao mesmo tempo, porém não permite focar em uma delas. | Misto |
-| 17 | **Afinidade Aguçada** — +X em testes com o elemento de Afinidade. O seu elemento de afinidade está sincronizado a suas vontades. | Positivo |
-| 18 | **Resistência Elemental** — reduz X de dano do elemento de Afinidade. O seu elemento de afinidade não deseja a sua morte, a vontade está alinhada em mantê-lo vivo. | Positivo |
-| 19 | **Clareza Arcana** — +X em um dos modificadores escolhido enquanto Sanidade > 50%. Sua mente permite moldar de forma mais concreta a sua vontade, enquanto a sua mente ainda continua resiliente. | Positivo |
-| 20 | **Dom Arcano** — A primeira magia realizada em cada cena/combate adiciona +X no teste da magia em todos os modificadores. O arcano flui naturalmente através do conjurador, pela primeira vez ele tem total compreensão de como manipular o arcano. | Positivo |
-
-## Marcas
-
-Cada modificação recebida é registrada como uma **Marca** na ficha — um registro permanente do quanto o Arcano já passou por aquele personagem.
-
-Ao rolar o **mesmo número pela terceiro vez**, a modificação torna-se **permanente**, com magnitude congelada no maior nível de Entropia em que aquele número apareceu.
-
-## Redução por Descanso
-
-Após descanso, a Entropia retorna a **0** e todas as Marcas não permanentes são removidas. Marcas permanentes persistem para sempre na ficha.
+Com pouca exposição, o Arcano passa por você como água de uma torneira: controlável, mas em pouca quantidade. Com muita, é uma represa aberta: o poder é imenso, e a contenção exige tudo que você tem.
 
 ---
 
-## Consequências da Entropia
+## Os Cinco Níveis
 
-A Entropia não é punição — é aposta. Cada nível a mais é uma promessa de poder em troca de instabilidade crescente.
+| Nível | Dado somado ao resultado | Sanidade por magia | Se falhar criticamente |
+|---|---|---|---|
+| **0** | nenhum | 1 | Consequência pequena |
+| **1** | D4 | 2 | Consequência pequena |
+| **2** | D8 | 3 | Consequência pequena |
+| **3** | D12 | 4 | Dano severo |
+| **4** | D20 | 5 | Dano permanente |
 
-As **Marcas** acumuladas são o reflexo vivo dessa instabilidade: algumas concedem bônus que tornam o conjurador mais poderoso, outras impõem penalidades que complicam cada cena. O conjunto delas define um mago imprevisível — tanto para os inimigos quanto para os aliados.
+### O dado da Entropia
 
-Quando uma magia falha em Entropia alta, a consequência é proporcional ao grau de exposição ao Caos assumido. A escala é direta: **quanto mais aberto estava o canal, mais devastador é o retorno.**
+Você soma **um único dado**, e o nível define **qual**. Os níveis não se acumulam: no nível 3 você soma um D12, e não um D4, um D8 e um D12.
 
-### Falha Crítica por Nível de Entropia
+> *Exemplo: Lira está no nível 2, então soma um D8 ao resultado de cada magia. Se subir ao nível 3, passa a somar um D12 no lugar do D8, e não os dois.*
 
-*Um dado natural 1 com bônus insuficiente para atingir a DT.*
+Algumas regras sobre esse dado:
 
-| Entropia | Exemplo de consequência |
+- Ele **só soma ao resultado**. Não conta para Crítico, Milagre nem Falha Crítica, que dependem só dos Dados Usados (os D12 da rolagem).
+- Um 1 natural nos Dados Usados faz o Arcano e a perícia deixarem de somar, mas o **dado da Entropia continua somando**.
+- O nível 0 não tem dado. É o mais barato, e a consequência de uma falha nele é a mais leve.
+
+---
+
+## Subir e Descer
+
+### Subir
+
+Subir um nível é uma **Ação Simples**, e cada Ação Simples sobe um nível. Fora de um Conflito, subir é só uma decisão: a comporta se abre no tempo de uma respiração.
+
+Dentro de um Conflito, lembre que duas Ações Simples geram 1 ponto de Exaustão, que tira 10 do resultado (veja [Conflito](conflito)).
+
+### Descer
+
+Descer **não é uma escolha**. Não basta querer: o Arcano já entrou, e sair leva tempo, calma e, muitas vezes, mais do que o personagem tem. A Entropia só desce **1 nível por vez**, de duas formas:
+
+- **Descanso longo:** é o caminho seguro. Cada descanso longo, como um Dormir Profundo em um [Intervalo de Capítulo](interludio), desce 1 nível, sem teste.
+- **Meditação:** é o caminho lento e difícil, explicado abaixo.
+
+#### Meditar é lento, raro e difícil
+
+Meditar para expulsar o Arcano **leva longas horas** de silêncio. Não cabe entre uma luta e outra e nunca acontece durante um Conflito. Também é **extremamente difícil**: a mente precisa aquietar tudo que o Caos agitou.
+
+Por isso, nem todo personagem consegue sequer tentar. O Mestre só concede o teste quando a **situação** e os **antecedentes** do personagem justificam:
+
+- **A situação:** um lugar calmo e seguro, sem perigo por perto, com horas de sobra e nada para interromper. Meditar no convés de um navio pirata, com a luta ainda quente, não vale.
+- **Os antecedentes:** um treino em meditação, uma tradição ou um mestre que o ensinou, uma vivência que o ajude a aquietar a mente, um lugar ligado ao seu elemento.
+
+Sem uma situação e antecedentes que apontem para isso, não há teste, e a única saída é o descanso longo. Com eles, o personagem faz um teste de **Vontade**, ou de outra perícia que o Mestre julgue adequada, contra a DT do nível atual:
+
+| Nível atual | DT da meditação |
 |---|---|
-| **1** | O efeito se dissipa antes de se completar. A magia simplesmente falha, sem dano colateral. |
-| **2** | O efeito se vira parcialmente contra o conjurador — um escudo que explode para dentro, uma cura que queima. |
-| **3** | Condição negativa imediata no conjurador (atordoado, cego por 1 turno, penalidade em Vontade). O Caos deixa uma marca. |
-| **4** | Evento narrativo de impacto: aliados afetados pelo efeito, ambiente alterado de forma indesejada, atenção indesejada atraída. |
-| **5** | Colapso parcial do canal arcano: o conjurador não consegue usar o Arcano até o final da cena, ou sofre uma Marca adicional não prevista. |
+| 1 | 20 |
+| 2 | 25 |
+| 3 | 30 |
+| 4 | 40 |
 
-### Desastre por Nível de Entropia
+Passou no teste, a Entropia desce 1 nível. Não passou, nada muda, e as horas foram gastas. Quanto mais alto o nível, mais difícil: no nível 4, quase ninguém consegue meditar até sair dele.
 
-*Dois dados naturais 1 — o Caos responde.*
+Até descer, cada magia custa o preço do nível em que você está, até um simples truque. Um mago que subiu ao nível 4 para uma luta paga 5 de Sanidade por qualquer magia que lançar depois, até meditar ou descansar.
 
-| Entropia | Exemplo de consequência |
+---
+
+## O Preço em Sanidade
+
+Toda conjuração custa **1 + o nível de Entropia** em Sanidade, mesmo quando a magia falha. Um mago no nível 0 faz truques o dia inteiro pagando 1 por vez. Um mago no nível 4 paga 5 por magia.
+
+Um combate com cinco magias custa, portanto, **5, 10, 15, 20 ou 25** de Sanidade, conforme o nível. Um personagem tem, em geral, entre 23 e 31 de Sanidade no começo da jornada. No nível 4, cinco magias esvaziam quase a barra inteira.
+
+Quando a Sanidade chega a 0, o personagem sofre um **Trauma** e a Sanidade volta ao total. A Entropia alta é, no fundo, uma troca de Sanidade por poder, e o preço final aparece como Traumas (veja [Vida e Sanidade](vida-e-sanidade) e [Traumas](traumas)).
+
+> Magos que operam em Entropia alta vivem em desgaste mental constante. Por isso o **Sincronômante**, especialista em saúde mental arcana, é um dos profissionais mais requisitados em grupos de exploração. Manter um mago funcional é tão importante quanto manter as armas afiadas.
+
+---
+
+## Quando o Caos Cobra
+
+A Entropia não é punição, é aposta. Cada nível a mais é uma promessa de poder em troca de um risco maior. E o risco aparece quando uma magia falha de forma crítica.
+
+### Falha Crítica
+
+Uma **Falha Crítica** acontece quando um dos Dados Usados mostra **1 natural** e a magia não alcança a DT (veja [Testes](testes)). O Arcano e a perícia deixam de somar, e a consequência é proporcional ao quanto você abriu o portão:
+
+| Entropia | Peso | Exemplos |
+|---|---|---|
+| **0 a 2** | **Pequeno**, mas com peso na cena | Uma cãibra nas mãos que impede o conjurador de fazer algo. Um clarão ou estrondo que chama a atenção de inimigos próximos. O Arcano oscila e deixa o conjurador zonzo, com Desvantagem no próximo teste. A magia acontece, mas no lugar errado |
+| **3** | **Severo** | Queimaduras profundas, ou uma condição pesada (Queimadura, Fratura, Atordoado) que dura até o próximo descanso. Uma mão ou um sentido inutilizado por um tempo. Um aliado atingido pela própria magia |
+| **4** | **Permanente** | Perder um braço ou a visão de um olho. Uma sequela que reduz uma perícia para sempre. Uma mudança no corpo que o Caos não devolve |
+
+Não é só Vida. O Mestre escolhe algo que realmente mude o personagem ou a cena, de preferência ecoando a magia que falhou: uma bola de fogo que falha queima quem a lançou, uma ilusão que falha mostra ao alvo a verdade e o faz desconfiar.
+
+### Desastre
+
+Um **Desastre** acontece quando os **dois** Dados Usados mostram 1, e vale qualquer que seja a DT, como em todo teste do livro. É o estrago da Falha Crítica **em dobro**: o Caos amplifica o que já teria dado errado. Ele atinge o conjurador e os aliados, ou atinge os aliados e beneficia os inimigos.
+
+> *Exemplo: Lira falha com uma bola de fogo no nível 3 e tira dois 1. O dano severo cai sobre ela e sobre Doran, e as chamas abrem caminho para os piratas.*
+
+> O Mestre deve usar essas tabelas como âncora de escala, não como roteiro fixo. O Caos é imprevisível: a consequência deve surpreender tanto o jogador quanto os outros ao redor da mesa.
+
+---
+
+## Quando Vale a Pena Abrir
+
+| Nível | Como pensar nele |
 |---|---|
-| **1** | O efeito se reverte completamente contra o conjurador — com força total. |
-| **2** | O efeito atinge indiscriminadamente aliados e inimigos na área. O conjurador perde o controle por um turno. |
-| **3** | Dano severo ao próprio conjurador e uma condição permanente até o próximo descanso. A cena é alterada de forma significativa. |
-| **4** | Uma Marca permanente é adicionada imediatamente à ficha (rola na tabela). O ambiente sofre uma consequência duradoura. |
-| **5** | Colapso arcano total: o conjurador cai inconsciente, o efeito explode em sua escala máxima sem controle algum. O Mestre define o que o Caos deixa para trás. |
+| **0** | Truques e magias simples. Barato e sem risco sério. |
+| **1 e 2** | Reforço confortável. Um dado pequeno ajuda a alcançar DTs médias, custa pouco, e o pior que pode acontecer é pequeno. |
+| **3** | Cartada. O dado é grande, cada magia custa 4 de Sanidade, e uma falha pode ferir de verdade. |
+| **4** | Última cartada. O dado mais forte do jogo, 5 de Sanidade por magia e o risco de perder algo para sempre. Use quando a alternativa é pior. |
 
-> O Mestre deve usar essas tabelas como âncora de escala, não como roteiro fixo. O Caos é imprevisível — a consequência deve surpreender tanto o jogador quanto os outros ao redor da mesa.
+---
+
+## Uma Noite de Entropia
+
+Acompanhe Lira, uma maga, numa noite de luta. No começo, ela tem **29 de Sanidade** e **Entropia 0**: o portão para o Caos está fechado.
+
+**1. Antes da luta, ela abre o portão.** Lira sabe que a luta será difícil e decide subir a Entropia até o **nível 3**. Subir um nível é uma ação simples, então ela gasta três ações, uma por nível. A partir de agora, toda magia dela soma **um D12** ao resultado, além do que ela já soma.
+
+**2. Durante a luta, cada magia custa mais.** No nível 3, cada magia custa **4 de Sanidade** (1 mais o nível). Lira lança três magias, e a Sanidade cai de 29 para 25, depois 21, depois 17. As duas primeiras funcionam.
+
+**3. A terceira falha.** Na terceira magia, um dos dados da rolagem mostra **1**. Quando isso acontece, o Arcano e a perícia dela deixam de somar, o resultado fica baixo demais e a magia falha de forma crítica: é uma **Falha Crítica**. Como Lira está no nível 3, o Mestre escolhe uma consequência **severa**: as chamas voltam contra ela e queimam sua mão com gravidade, que fica machucada até o próximo descanso. No nível 4, seria **permanente**: ela poderia perder a mão para sempre.
+
+**4. Depois da luta, o portão continua aberto.** A Entropia de Lira segue no nível 3, e até um truque simples lhe custaria 4 de Sanidade. Ela não pode simplesmente decidir fechar o portão. Meditar ali, no convés de um navio pirata com a luta ainda quente, também não vale: o Mestre não concede a tentativa.
+
+**5. Só o descanso longo desce a Entropia.** Ao fim do dia, Lira dorme. O descanso longo desce a Entropia em 1 nível, para o **nível 2**, e cada magia dela passa a custar 3. No dia seguinte, ela decide se vale abrir o portão de novo.

@@ -13,6 +13,24 @@
 
 ---
 
+### Refactor do Arcano (Ideia A): concluído
+**Origem:** conversa de design com o autor. O sistema arcano antigo foi reprovado no playtest (muitas etapas, magias difíceis de fazer, Mestre sobrecarregado). A especificação vive em `Arcanismo — Ideia A 2D12 simplificado.md` (raiz do projeto). Cada etapa é discutida antes de ser aplicada nos capítulos. Ficha do personagem e site ficam para depois do livro.
+**Adicionada:** 2026-09-21 · **Etapas 1 a 7:** concluídas, validadas por conferência de contas dos exemplos, links de capítulos e termos antigos (sem Validator automático).
+
+- [x] Etapa 1: Núcleo do teste. Reescrever Arcanismo e Conjuração (perícias arcanas, pergunta ordenada, fórmula, efeito ÷ 5 com teto 2×DT, Controle protetivo, execução, Sanidade 1 + nível)
+- [x] Etapa 2: Entropia. Dado extra por nível, custo de Sanidade por magia, meditação ou descanso longo para descer, catástrofes por nível, remover Marcas
+- [x] Etapa 3: Afinidade e Antítese. Vantagem e Desvantagem no lugar de ±10
+- [x] Etapa 4: Exaustão global (Conflito e Intervenção). −10 no resultado, vale fora do Ato, zera no início do Ato
+- [x] Etapa 5: Invocação
+- [x] Etapa 6: Itens arcanos. Cajado e livro, cura mágica em Condições, PE de Arcano (já genérico, sem mudança)
+- [x] Etapa 7: Varredura de Introdução, Perícias, Sanidade e Traumas, Intervalo de Capítulo, Bestiário, Navios e Origem — sem referências à mecânica antiga, nada a corrigir. Sincronização do site (React/TypeScript, sem passar por `/sync-mechanics` porque nenhum capítulo foi criado/removido, só editado): tipos (`characterTypes.ts`, schema Zod do backend), o teste arcano (`ArcaneConfigPanel`, `ArcaneTestOverlay`, `ArcanoSection`, `EntropiaDisplay`), o registro de rolagens (`diceLog.ts`, `DiceLogEntries.tsx`), o criador de personagem (`Step4Arcano.tsx`) e o widget do capítulo de Afinidades (`AfinidadeWidget.tsx`). Removido: distribuição de dados por drag-and-drop entre 4 modificadores, bônus fixo ±10, Marcas de Entropia. `npx tsc -b` e `npm run build` (web) e `npm run typecheck` (api) rodaram limpos, sem erros introduzidos.
+
+**Pendência separada, fora do escopo do refactor:** a coluna `marcas` continua existindo no banco (Postgres/Prisma), só não é mais lida nem escrita pela API — decidir depois se vale uma migration para removê-la de vez, dado que é uma alteração de schema, não uma simples edição de código.
+
+**Não testado visualmente:** este ambiente não tem navegador disponível, então a UI não foi conferida rodando de verdade — só typecheck e build. Vale abrir a ficha, o criador de personagem e o capítulo de Afinidades no navegador antes de considerar 100% pronto.
+
+---
+
 ### Call: Limitar Qualidade de Vídeo — Validação Manual Pendente (Subtask 3)
 **Origem:** /task Limitar qualidade de vídeo da call (CallTab.tsx) para reduzir consumo de banda no Cloudflare Realtime: constranger `getUserMedia` (resolução/frameRate) e capar o bitrate do encoder via `sendEncodings` no `addTransceiver` de vídeo. Sem toggle de "economizar dados" — valor fixo, mantendo usabilidade razoável para uma chamada de RPG (personagens visíveis, sem travar/pixelizar a ponto de atrapalhar).
 **Adicionada:** 2026-09-09 · **Validator:** APROVADO (subtasks 1 e 2 — trabalho de código; ver `## Concluídos`) · Subtask 3 abaixo permanece pendente nesta Sprint Ativa — depende de teste manual humano em call real, fora do alcance de um agente sem navegador.

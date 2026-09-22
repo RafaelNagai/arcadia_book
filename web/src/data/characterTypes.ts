@@ -151,14 +151,7 @@ export interface CharacterAttributes {
 export interface CharacterModificadores {
   potencia: number
   complexidade: number
-  forma: number
   controle: number
-}
-
-export interface EntropiaMarca {
-  d20Result: number
-  entropiaLevel: number
-  permanent: boolean
 }
 
 export interface Character {
@@ -186,7 +179,6 @@ export interface Character {
   antitese: string
   entropia: number
   modificadores: CharacterModificadores
-  marcas: EntropiaMarca[]
   traumas: string[]
   antecedentes: string[]
   historia?: string

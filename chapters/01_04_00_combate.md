@@ -57,7 +57,7 @@ Tudo que interaja com o protagonista e antagonista pode ser considerado um **coa
 
 ## Ações
 
-Uma **Ação** é qualquer atividade relevante que o Protagonista executa dentro do seu Ato. O Mestre decide o que conta como Ação: atividades que criam aberturas, alteram o estado da cena ou demandam esforço do personagem. Atividades triviais que o Mestre considere irrelevantes para a tensão do momento simplesmente acontecem, sem teste.
+Uma **Ação** é qualquer atividade relevante que um participante executa: dentro do seu Ato como Protagonista, ou fora dele, ao Intervir ou se Impor. O Mestre decide o que conta como Ação: atividades que criam aberturas, alteram o estado da cena ou demandam esforço do personagem. Atividades triviais que o Mestre considere irrelevantes para a tensão do momento simplesmente acontecem, sem teste.
 
 Toda Ação declarada pelo Mestre exige um teste de perícia — o contexto determina qual perícia e a dificuldade base.
 
@@ -107,13 +107,16 @@ Mover-se é sempre uma Ação — Simples ou Complexa dependendo do ambiente e d
 
 ## Exaustão
 
-A **Exaustão** representa o desgaste acumulado dentro de um Ato. O Protagonista pode realizar quantas Ações quiser — desde que continue passando nos testes. A Exaustão é o custo progressivo de fazer muito de uma vez.
+A **Exaustão** representa o desgaste de agir muito sem fôlego. O Protagonista pode realizar quantas Ações quiser em seu Ato, desde que continue passando nos testes. A Exaustão é o custo progressivo de fazer muito de uma vez, e vale para **todos**: personagens, criaturas e NPCs.
 
-- Cada ponto de Exaustão **aumenta a dificuldade dos testes em 10**.
+- Cada ponto de Exaustão **tira 10 do resultado** dos seus testes. A DT nunca muda.
 - A Exaustão acumula da seguinte forma:
   - A cada **2 Ações Simples**: +1 Exaustão
   - A cada **1 Ação Complexa**: +1 Exaustão
-- A Exaustão **reseta ao fim do Ato do personagem**.
+- Ela vale **dentro e fora do seu Ato**: toda Ação que você faz, seja no seu Ato ou não (como uma Intervenção), conta.
+- A Exaustão **zera quando o seu próximo Ato começa**.
+
+Num **Crítico** ou **Milagre**, a Exaustão não se aplica àquele teste. Numa **Falha Crítica** ou **Desastre**, ela continua valendo, e os bônus não somam (veja [Testes](testes)).
 
 ### Rastreamento na Mesa
 
@@ -122,13 +125,13 @@ Cada jogador mantém dois tipos de tokens à sua frente:
 - **Token claro** — 1 Ação Simples realizada.
 - **Token escuro** — 1 ponto de Exaustão.
 
-Ao acumular 2 tokens claros, troca-os por 1 escuro (+1 Exaustão). Cada Ação Complexa adiciona 1 escuro diretamente. O número de tokens escuros é a Exaustão atual — a dificuldade sobe 10 por token. Ao fim do Ato, todos os tokens são removidos.
+Ao acumular 2 tokens claros, troca-os por 1 escuro (+1 Exaustão). Cada Ação Complexa adiciona 1 escuro diretamente. O número de tokens escuros é a Exaustão atual — o resultado cai 10 por token. Quando o seu próximo Ato começa, todos os tokens são removidos.
 
 ### Ações que Ignoram Exaustão
 
 Alguns Talentos, magias ou equipamentos concedem uma Ação extra que **não gera Exaustão** — descrita no efeito como *"sem gerar Exaustão"* ou *"um ataque adicional que não conta para a Exaustão"*.
 
-Essa Ação continua existindo normalmente dentro do Ato (ainda é uma Ação Simples ou Complexa, ainda precisa de um teste quando aplicável) — a única exceção é que ela **não adiciona token escuro** ao contador. Como a Exaustão só existe durante o Ato do Protagonista, esse tipo de efeito só faz sentido enquanto o personagem está agindo como Protagonista.
+Essa Ação continua existindo normalmente (ainda é uma Ação Simples ou Complexa, ainda precisa de um teste quando aplicável) — a única exceção é que ela **não adiciona token escuro** ao contador. Isso vale tanto no seu Ato quanto fora dele.
 
 > *Exemplo: A Lâmina Rúnica permite, uma vez por cena, um ataque extra corpo a corpo sem gerar Exaustão. Kael já fez 1 Ação Complexa nesse Ato (1 Exaustão) e usa o efeito da lâmina para atacar de novo — a Exaustão continua em 1, não sobe para 2.*
 
@@ -149,6 +152,7 @@ Tirou 1 natural em um dado usado e falhou na DT.
 
 - O Ato encerra com uma complicação narrativa determinada pelo Mestre.
 - O Protagonista **perde o direito de Intervir** nos Atos seguintes até que chegue seu próximo Ato.
+- **Opcional:** o Mestre pode decidir que todo dano recebido pelo Protagonista é **dobrado** até o seu próximo Ato.
 
 ### Desastre
 
@@ -156,6 +160,9 @@ Tirou 1 natural nos dois dados usados.
 
 - O Ato encerra com uma catástrofe narrativa imediata.
 - O Protagonista **perde seu próximo Ato** e o direito de Intervir até que esse Ato perdido tivesse ocorrido.
+- **Opcional:** o Mestre pode decidir que todo dano recebido pelo Protagonista é **triplicado** até lá.
+
+Nos três casos, perder o direito de Intervir também tira a possibilidade de se defender: sem poder aparar ou esquivar, qualquer ataque recebido nesse intervalo é resolvido contra a **DP** (veja *Dano*, mais abaixo).
 
 ---
 
@@ -174,6 +181,14 @@ O participante declara sua intenção e faz um teste de perícia. O Mestre defin
 > Resultado 20 → interferência de 4 pontos
 
 O participante escolhe se o alvo da interferência é o **Protagonista** (ajudar ou atrapalhar quem age) ou o **Antagonista** (aumentar ou reduzir sua resistência).
+
+### Intervir Cansa
+
+Intervir é uma Ação, e conta para a Exaustão como qualquer outra — com uma exceção: **defender-se nunca gera Exaustão**. Aparar um golpe ou esquivar de um ataque, a reação básica de quem é atacado, é sempre de graça, rodada após rodada.
+
+As demais Intervenções seguem a tabela normal de Ações: esforço considerável (empurrar um aliado para fora da linha de fogo, lançar uma magia) é uma Ação **Complexa** e gera 1 ponto de Exaustão. Algo leve (gritar um aviso, apontar uma fraqueza) é **Simples**.
+
+Como a Exaustão só zera quando o seu Ato começa, tudo que você faz no seu Ato pesa nas suas reações até lá, e cada reação pesa na seguinte — exceto se defender, que continua sempre disponível.
 
 ### Falha na Intervenção
 
@@ -222,7 +237,7 @@ Quando uma Ação de ataque tem sucesso, o atacante rola os dados de dano. O ní
 - **Antagonista que interveio com sucesso** (aparou, esquivou): dano calculado contra a **DA**.
 - **Antagonista exposto** (não interveio, Intervenção falhou, ou sofreu Desastre): dano calculado contra a **DP**.
 
-As regras completas de DA, DP, Durabilidade e absorção de equipamento estão no capítulo de [Defesa](defesa).
+Defender-se dessa forma nunca gera Exaustão (veja *Intervir Cansa*, acima). As regras completas de DA, DP, Durabilidade e absorção de equipamento estão no capítulo de [Defesa](defesa).
 
 ### Multiplicador de Dano Crítico
 
@@ -237,14 +252,35 @@ O dano funciona por **sucessos individuais** (ver [Defesa](defesa)): cada dado d
 
 Alguns equipamentos ou efeitos especiais aumentam esse multiplicador (ex: *"o multiplicador de crítico é aumentado em 1"* transforma um Crítico normal de x2 em x3). Esses bônus são cumulativos entre itens diferentes, salvo indicação contrária.
 
+### A Defesa Também Pode Aumentar o Multiplicador
+
+O multiplicador não depende só do ataque. Se o alvo tenta se defender (aparar, esquivar) e a Intervenção falha de forma crítica, o Caos também pune quem devia ter escapado:
+
+| Resultado da defesa | Efeito no multiplicador do ataque |
+|---|---|
+| Falha Crítica na Intervenção de defesa | Sobe uma categoria (sem multiplicador vira x2, x2 vira x3) |
+| Desastre na Intervenção de defesa | Sobe duas categorias (sem multiplicador vira x3) |
+
+> *Exemplo: Aldric ataca o Capitão Garra com um resultado comum, sem Crítico. O Capitão tenta esquivar e tira Falha Crítica na Intervenção — o ataque de Aldric, que seria sem multiplicador, passa a x2.*
+
+> *Exemplo: Nara acerta um Milagre (x3) contra um inimigo que também tira Desastre tentando esquivar (+2 categorias). O multiplicador final é **x5**.*
+
+Os dois lados somam categorias livremente — não há teto. Um ataque já crítico contra uma defesa desastrosa pode multiplicar o dano muito além do normal, e é para isso mesmo: o Caos não tem limite educado.
+
 ---
 
 ## Lacaios
 
 Quando for necessário agilizar o Conflito, múltiplos Lacaios do mesmo tipo podem ser tratados como **uma única entidade**, executando um único Ato coletivo com a ficha de um único Lacaio como referência.
 
-Para representar a força do número, cada membro adicional além do primeiro concede **+1 nos testes** do grupo. Quanto mais Lacaios envolvidos, maior a chance de encadearem várias Ações concluídas — narrativamente, eles agem em conjunto ou executam um ataque combinado.
+Para representar a força do número, cada membro adicional além do primeiro concede um bônus nos testes do grupo. Para Lacaios comuns, cada membro extra concede **+1**. Quanto mais Lacaios envolvidos, maior a chance de encadearem várias Ações concluídas — narrativamente, eles agem em conjunto ou executam um ataque combinado.
 
 > *Exemplo:* 4 goblins agem juntos. O Mestre usa a ficha de um goblin com +3 nos testes (3 membros extras).
+
+### Lacaios Mais Fortes
+
+Para Lacaios mais poderosos, o bônus por membro extra pode ser maior que +1 — +2, +3 ou além, a critério do Mestre. Uma forma prática de calcular: some o **nível** de todos os Lacaios do grupo e divida por 10, arredondando.
+
+> *Exemplo:* 5 mercenários de nível 6 agem juntos. Soma dos níveis: 30. Dividido por 10: **+3** nos testes do grupo.
 
 O Mestre decide quando usar essa simplificação. Grupos heterogêneos ou com papéis distintos podem agir separadamente para maior variedade narrativa.

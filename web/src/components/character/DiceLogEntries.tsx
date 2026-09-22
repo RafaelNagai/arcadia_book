@@ -22,7 +22,11 @@ export const TYPE_BADGE: Record<string, { label: string; color: string; bg: stri
 }
 
 export const MOD_LABEL: Record<string, string> = {
-  potencia: 'Potência', complexidade: 'Complexidade', forma: 'Forma', controle: 'Controle',
+  potencia: 'Potência', complexidade: 'Complexidade', controle: 'Controle',
+}
+
+export const RELATION_LABEL: Record<string, string> = {
+  afinidade: 'Afinidade', antitese: 'Antítese (Desvantagem)', dupla: 'Dupla Conexão (Vantagem)',
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -293,43 +297,36 @@ function SkillEntry({ e }: { e: SkillLogEntry }) {
 function ArcanoEntry({ e }: { e: ArcanoLogEntry }) {
   const badge = TYPE_BADGE.arcano
   const elemColor = getAccent(e.selectedElement).text
-
-  const bonusParts: string[] = []
-  if (e.entropiaBonus > 0) bonusParts.push(`Entropia +${e.entropiaBonus}`)
-  if (e.elementBonus < 0) bonusParts.push(`Antítese −10`)
+  const chosenSet = new Set(e.chosenIndices)
+  const stateInfo = e.specialState ? STATE_META[e.specialState] : null
 
   return (
-    <EntryShell badge={badge} title={e.selectedElement} titleColor={elemColor} timestamp={e.timestamp}>
-      {bonusParts.length > 0 && (
-        <p style={{ fontFamily: 'var(--font-ui)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: '0.04em' }}>
-          {bonusParts.join(' • ')}
-        </p>
-      )}
+    <EntryShell badge={badge} title={`${e.selectedElement} · ${MOD_LABEL[e.pericia] ?? e.pericia}`} titleColor={elemColor} timestamp={e.timestamp}>
+      <p style={{ fontFamily: 'var(--font-ui)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: '0.04em' }}>
+        {RELATION_LABEL[e.elementRelation] ?? e.elementRelation}
+        {e.entropiaDie !== null && ` • Entropia ${e.entropiaLevel}`}
+      </p>
       {!!e.exhaustionPenalty && (
         <span style={{ fontFamily: 'var(--font-ui)', fontSize: 10, fontWeight: 700, color: '#D04040', letterSpacing: '0.04em' }}>
           Exaustão −{Math.abs(e.exhaustionPenalty)}
         </span>
       )}
-      {(e.allDiceResults ?? []).length > 0 && (
-        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', alignItems: 'center' }}>
-          {(e.allDiceResults ?? []).map((v, i) => (
-            <DiceChip key={i} value={v} chosen={true} />
-          ))}
-        </div>
-      )}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 2 }}>
-        {Object.entries(e.modifierResults ?? {}).map(([k, res]) => {
-          const stateInfo = res.specialState ? STATE_META[res.specialState] : null
-          return (
-            <div key={k} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 9, color: 'rgba(180,90,240,0.7)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                {MOD_LABEL[k] ?? k}
-              </span>
-              <ResultRow value={res.total} stateInfo={stateInfo} />
-            </div>
-          )
-        })}
+      <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', alignItems: 'center' }}>
+        {e.diceRolled.map((v, i) => (
+          <DiceChip key={i} value={v} chosen={chosenSet.has(i)} />
+        ))}
+        {e.entropiaDie !== null && (
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+            minWidth: 26, height: 26, borderRadius: 5, padding: '0 4px',
+            border: '1px solid rgba(200,146,42,0.5)', background: 'rgba(200,146,42,0.12)',
+            fontFamily: 'Cinzel, serif', fontSize: 12, fontWeight: 700, color: '#C8922A',
+          }}>
+            +{e.entropiaDie}
+          </span>
+        )}
       </div>
+      <ResultRow value={e.total} stateInfo={stateInfo} />
     </EntryShell>
   )
 }

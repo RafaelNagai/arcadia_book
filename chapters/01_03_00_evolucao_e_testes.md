@@ -78,6 +78,8 @@ O resultado bruto dos dados — antes de somar qualquer bônus — pode gerar ef
 
 Um resultado amplificado. O sucesso vai além do esperado — o Mestre narra um efeito extraordinário além do simples êxito. Em um Conflito, o crítico ativa um multiplicador de dano (ver capítulo de [Conflito](conflito)).
 
+> Num Crítico ou Milagre, as **penalidades** (como a Exaustão) não se aplicam ao teste, e os bônus continuam somando.
+
 > **Exemplo — Combate:** Riven ataca com Dados Usados [12, 5]. O golpe não apenas acerta — ele encontra a fresta na armadura e causa dano máximo, com um efeito adicional narrado pelo Mestre.
 
 > **Exemplo — Furtividade:** Ash se move com Dados Usados [12, 8]. Em vez de simplesmente passar despercebida, ela se reposiciona com tanta precisão que também identifica onde está o próximo guarda.
@@ -98,7 +100,7 @@ Um feito lendário. O Mestre pode permitir que o personagem ignore quase qualque
 
 Algo dá errado além da simples falha. O Mestre introduz uma complicação inesperada — não apenas o personagem não conseguiu, mas a situação piorou.
 
-> Quando **1 natural** é obtido nos Dados Usados, os bônus não são somados para efetuar os cálculos.
+> Quando **1 natural** é obtido nos Dados Usados, os bônus não são somados para efetuar os cálculos. As **penalidades** (como a Exaustão) continuam valendo.
 
 > **Exemplo — Escalada:** Marcus rola [1, 8] tentando escalar um muro. Ele não apenas falha — uma pedra solta se desprende com barulho, alertando os guardas próximos.
 
@@ -147,7 +149,7 @@ Quando a Desvantagem reduz o pool a **zero dados**, o personagem não pode usar 
 
 **Exemplos de fontes de Desvantagem:**
 - Usar uma perícia física com um membro ferido ou imobilizado
-- Agir sob efeito de veneno, exaustão ou condição debilitante
+- Agir sob efeito de veneno ou de uma condição debilitante
 - Operar com equipamento inadequado para a situação
 - Executar uma tarefa complexa sob pressão extrema de tempo
 - Tentar uma perícia em ambiente completamente hostil a ela

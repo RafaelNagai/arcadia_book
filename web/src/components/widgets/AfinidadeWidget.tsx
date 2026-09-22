@@ -98,13 +98,13 @@ function D6Display({ value, delay }: { value: number; delay: number }) {
 function ElementCard({
   element,
   role,
-  bonus,
+  diceLabel,
   onClick,
   selectable,
 }: {
   element: ElementEntry
   role?: 'afinidade' | 'antitese'
-  bonus?: number
+  diceLabel?: string
   onClick?: () => void
   selectable?: boolean
 }) {
@@ -132,9 +132,9 @@ function ElementCard({
           >
             {roleLabel}
           </span>
-          {bonus !== undefined && (
-            <span className="text-lg font-display font-bold" style={{ color: roleColor }}>
-              {bonus >= 0 ? `+${bonus}` : `−${Math.abs(bonus)}`}
+          {diceLabel && (
+            <span className="text-sm font-display font-bold" style={{ color: roleColor }}>
+              {diceLabel}
             </span>
           )}
         </div>
@@ -238,7 +238,7 @@ export function AfinidadeWidget() {
             Gerador de Afinidade e Antítese
           </h3>
           <p className="text-xs mt-0.5 font-ui" style={{ color: 'var(--color-text-muted)' }}>
-            Rola 2D6 — o jogador escolhe qual dado é Afinidade e qual é Antítese (−10)
+            Rola 2D6 — o jogador escolhe qual dado é Afinidade (normal) e qual é Antítese (Desvantagem)
           </p>
         </div>
       </div>
@@ -298,7 +298,7 @@ export function AfinidadeWidget() {
                           Dupla Conexão — Afinidade e Antítese no mesmo elemento
                         </p>
                       </div>
-                      <ElementCard element={afinidadeEl!} role="afinidade" />
+                      <ElementCard element={afinidadeEl!} role="afinidade" diceLabel="3D12" />
                       <div
                         className="rounded border px-4 py-3 flex items-center justify-between"
                         style={{ background: 'rgba(107,63,160,0.12)', borderColor: 'rgba(107,63,160,0.4)' }}
@@ -306,16 +306,16 @@ export function AfinidadeWidget() {
                         <span className="text-sm font-ui" style={{ color: 'var(--color-text-secondary)' }}>
                           Antítese (mesmo elemento)
                         </span>
-                        <span className="font-display font-bold text-lg" style={{ color: '#9B6FD0' }}>−10 → +10</span>
+                        <span className="font-display font-bold text-lg" style={{ color: '#9B6FD0' }}>Desvantagem → Vantagem</span>
                       </div>
                       <div
                         className="rounded border px-4 py-3 flex items-center justify-between"
                         style={{ background: 'rgba(15,23,41,0.6)', borderColor: 'var(--color-border)' }}
                       >
                         <span className="text-sm font-ui" style={{ color: 'var(--color-text-secondary)' }}>
-                          Bônus total ao conjurar {afinidadeEl!.name}
+                          Ao conjurar {afinidadeEl!.name}
                         </span>
-                        <span className="font-display font-bold text-2xl" style={{ color: 'var(--color-arcano-glow)' }}>+10</span>
+                        <span className="font-display font-bold text-lg" style={{ color: 'var(--color-arcano-glow)' }}>Vantagem — 3D12</span>
                       </div>
                       <p className="text-xs text-center font-body italic" style={{ color: 'var(--color-text-muted)' }}>
                         Carregar o mesmo elemento como Afinidade e Antítese é como ter dois rios correndo em sentidos opostos dentro do mesmo canal.
@@ -332,12 +332,13 @@ export function AfinidadeWidget() {
                         <ElementCard
                           element={afinidadeEl!}
                           role="afinidade"
+                          diceLabel="2D12"
                           selectable={false}
                         />
                         <ElementCard
                           element={antiteseEl!}
                           role="antitese"
-                          bonus={-10}
+                          diceLabel="1D12"
                           selectable={false}
                         />
                       </div>
@@ -360,9 +361,8 @@ export function AfinidadeWidget() {
                         style={{ background: 'rgba(15,23,41,0.6)', borderColor: 'var(--color-border)' }}
                       >
                         <div className="text-sm font-ui" style={{ color: 'var(--color-text-secondary)' }}>
-                          <span style={{ color: '#E8B84B' }}>{afinidadeEl!.name}</span> sem mod &nbsp;·&nbsp;
-                          <span style={{ color: '#9B6FD0' }}>{antiteseEl!.name}</span> −10 &nbsp;·&nbsp;
-                          demais +0
+                          <span style={{ color: '#E8B84B' }}>{afinidadeEl!.name}</span> normal, 2D12 &nbsp;·&nbsp;
+                          <span style={{ color: '#9B6FD0' }}>{antiteseEl!.name}</span> Desvantagem, 1D12
                         </div>
                       </div>
                     </div>

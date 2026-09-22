@@ -30,24 +30,25 @@ export interface SkillLogEntry extends BaseEntry {
   exhaustionPenalty?: number
 }
 
-export interface ArcanoModResult {
-  score: number
-  dice: number[]
-  total: number
-  specialState: SpecialState
-}
+export type ArcanoPericia = 'potencia' | 'complexidade' | 'controle'
+export type ElementRelation = 'afinidade' | 'antitese' | 'dupla'
 
 export interface ArcanoLogEntry extends BaseEntry {
   type: 'arcano'
+  pericia: ArcanoPericia
+  periciaScore: number
+  arcano: number
   selectedElement: string
   afinidade: string
   antitese: string
-  entropiaBonus: number
-  elementBonus: number
-  allocation: Record<string, number>
-  modifierResults: Record<string, ArcanoModResult>
-  allDiceResults: number[]
-  exhaustionPenalty?: number
+  elementRelation: ElementRelation
+  diceRolled: number[]
+  chosenIndices: number[]
+  entropiaLevel: number
+  entropiaDie: number | null
+  exhaustionPenalty: number
+  total: number
+  specialState: SpecialState
 }
 
 export interface DamageLogEntry extends BaseEntry {

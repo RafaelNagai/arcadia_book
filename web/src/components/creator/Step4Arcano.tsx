@@ -290,12 +290,12 @@ export function Step4Arcano({
                       [
                         {
                           label: "Afinidade",
-                          hint: "sem penalidade",
+                          hint: "normal — 2D12",
                           el: resolvedEl0!,
                         },
                         {
                           label: "Antítese",
-                          hint: "−10 nos testes",
+                          hint: "Desvantagem — 1D12",
                           el: resolvedEl1!,
                         },
                       ] as { label: string; hint: string; el: ElementName }[]
@@ -376,7 +376,7 @@ export function Step4Arcano({
 
       <Field
         label="Afinidade"
-        hint="Elemento natural — sem penalidade nos testes"
+        hint="Elemento natural — conjura normalmente (2D12)"
       >
         <div className="flex flex-wrap gap-2">
           {ELEMENTS.map((el) => {
@@ -409,7 +409,7 @@ export function Step4Arcano({
         </div>
       </Field>
 
-      <Field label="Antítese" hint="Elemento parasita — −10 nos testes arcanos">
+      <Field label="Antítese" hint="Elemento parasita — Desvantagem ao conjurar (1D12)">
         <div className="flex flex-wrap gap-2">
           {ELEMENTS.map((el) => {
             const ac = ELEMENT_COLORS[el];
@@ -458,22 +458,17 @@ export function Step4Arcano({
             {
               key: "potencia",
               label: "Potência",
-              hint: "Força e grandeza da magia",
-            },
-            {
-              key: "forma",
-              label: "Forma",
-              hint: "Modelagem, direção e área da magia",
+              hint: "Tira Vida — dano físico ou material",
             },
             {
               key: "complexidade",
               label: "Complexidade",
-              hint: "Condições, gatilhos e efeitos",
+              hint: "Cura ou condições numa criatura",
             },
             {
               key: "controle",
               label: "Controle",
-              hint: "Precisão, estabilidade e duração",
+              hint: "Cria, molda ou move o mundo",
             },
           ] as {
             key: keyof CharacterModificadores;

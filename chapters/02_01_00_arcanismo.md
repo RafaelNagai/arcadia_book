@@ -4,90 +4,101 @@
 
 ---
 
-## A Natureza do Arcano
+## O Que É o Arcano
 
 ![](/assets/images/chapters/arcanism/image_01.jpg)
 
-O que antecede a vida é o conceito dela, o conceito em Arcadia é uma manifestação da natureza. Uma vontade implícita antes de tudo.
+Antes de existir qualquer coisa, existiu a ideia dela. Em Arcádia, essa ideia que vem antes de tudo é o **Arcano**: a energia que sobrou do ato de criação e que ainda pulsa em todas as coisas vivas. Ninguém a fabricou, ninguém a concedeu. Ela estava lá antes de existirem palavras para nomeá-la.
 
-No princípio, existiam duas essências primordiais, a **Inocência** e o **Caos**. A inocência é a contínua expansão do vazio, abrindo espaço para o impossível, é a representação de querer saber mais. O caos é manifestação em forma de algo para preencher aquele vazio criado pela inocência.
+No princípio, havia duas essências primordiais. A **Inocência** é o vazio que se expande, abrindo espaço para o impossível: é a vontade de saber mais. O **Caos** é o que vem preencher esse vazio, dando forma a alguma coisa. Tudo que existe é, em algum grau, uma resposta do Caos a um espaço que esperava ser nomeado.
 
-Tudo que existe é, em algum grau, uma expressão de um conceito: uma coisa criada para preencher um espaço que aguardava ser nomeado.
+Fazer magia é repetir esse gesto em pequeno. **Conjurar é preencher um vazio**: você diz ao universo *"aqui falta algo, e eu sei o que deve ocupar esse lugar"*, e o Arcano responde. A magia é a ferramenta. O Arcano é o combustível.
 
-O **Arcano** é a manifestação visível dessa essência no mundo — a energia residual do ato de criação que ainda pulsa em todas as coisas vivas. Não é uma força fabricada, nem um dom concedido. Está lá, anterior a qualquer palavra que lhe deram.
+---
 
-Magia, em Arcádia, é o ato de **preencher** o vazio. Moldar o Arcano é dizer ao universo: *aqui existe um vazio, e eu sei o que deve preenchê-lo.* A magia é a ferramenta — o arcano é o combustível.
+## Magia em Poucas Linhas
+
+Toda magia em Arcádia funciona do mesmo jeito, do truque mais simples ao feitiço que muda uma paisagem:
+
+1. **Você diz o que quer que aconteça.** Sem palavras mágicas nem fórmulas: uma intenção, descrita como você a imagina.
+2. **O Mestre mede quanto o mundo resiste.** Essa medida é a **DT**, a Dificuldade. Quanto mais complexa ou ambiciosa a magia, mais alta ela é.
+3. **Você faz um teste**, igual a qualquer outro do livro: rola **2D12** e soma o seu **Arcano** e a sua **perícia arcana**. Se o resultado alcança a DT, a magia acontece.
+4. **Quanto mais alto o resultado, maior o efeito.**
+
+Existe também o preço: cada conjuração custa um pouco de **Sanidade** e cansa o corpo. Mas é só isso. O resto deste capítulo e do próximo apenas dá detalhe a essas linhas.
+
+> *Exemplo: Lira quer acender a lareira apagada da taverna sem sair do banco. Fazer fogo onde já havia lenha é fácil, e o Mestre define uma DT baixa: 10. Ela rola 2D12, soma o que tem e passa com folga. A lareira acende. Se quisesse incendiar a taverna inteira, a DT seria bem mais alta.*
 
 ---
 
 ## Quem Pode Usar o Arcano
 
-Todo ser criado pelo Caos carrega uma fagulha de sua essência. Essa fagulha é, por natureza, a vontade de criar — de transformar o que não existe em algo que existe.
+Todo ser criado pelo Caos carrega uma fagulha dele, e essa fagulha é a vontade de criar. Por isso **qualquer personagem pode tentar conjurar**. Não existe barreira de nascimento, escola obrigatória ou ordem que conceda permissão.
 
-Qualquer personagem pode tentar tocar o Arcano. Não existe barreira inata — existe apenas a disposição de abrir os portões da criação e a capacidade de controlar o que passa por eles.
+O que separa um mago de quem apenas tentou é o quanto ele treinou, o quanto conhece o próprio vínculo com o Arcano e o quanto aceita se expor ao Caos. Cada uma dessas coisas tem um lugar na ficha.
 
-A diferença entre um mago e alguém que "apenas tentou" está na **Entropia**: o quanto o personagem está disposto a se expor à essência do Caos. Com baixa Entropia, é como abrir uma torneira — a água flui com controle, em quantidade gerenciável. Com Entropia alta, é como abrir uma represa — o poder é imenso, mas a contenção exige tudo que você tem.
-
-> Coisas inanimadas não possuem consciência para se conectar ao arcano. Mas se tivessem, o fariam.
+> Coisas inanimadas não possuem consciência para se conectar ao Arcano. Mas, se tivessem, o fariam.
 
 ---
 
-## Atributo: Arcano
+## O Atributo Arcano
 
-O **Arcano** é o quinto atributo do personagem — a medida de quão familiarizado ele está para moldar o arcano em sua vontade.
+O **Arcano** é o quinto atributo do personagem, ao lado de Físico, Destreza, Intelecto e Influência. Ele mede o quanto você é familiarizado com a essência que move a magia e **soma em toda conjuração**.
 
-Funciona igual aos outros atributos: cresce apenas através de **experiência narrativa**, não evolui com testes. Quanto maior o Arcano, maior o bônus que a Entropia concede ao conjurar.
+Como os outros atributos, ele não cresce com pontos distribuídos: cresce com a **experiência narrativa**, com os riscos que o personagem correu e com os preços que pagou.
 
-> O Arcano não é treinado — é conquistado. Ele cresce com as marcas que o personagem carrega, com os riscos que tomou e os preços que pagou.
+> O Arcano não é treinado. É conquistado.
 
 ---
 
-## Modificadores
+## As Três Perícias Arcanas
 
-A magia não é um ato único — é uma composição. Quando o personagem molda o Arcano, ele trabalha em **quatro dimensões simultâneas**, cada uma com sua própria caracteristica:
+Se o Arcano é o quanto você conhece a essência, as **perícias arcanas** são o quanto você sabe usá-la. São três, e cada uma corresponde a um tipo de coisa que a magia pode fazer:
 
-| Modificador | O que define |
+| Perícia | O que a magia faz | Exemplos |
+|---|---|---|
+| **Potência** | Fere: tira Vida | Bola de fogo, raio, lança de pedra |
+| **Complexidade** | Muda uma criatura: cura, condições, mente | Curar um corte, paralisar, fazer alguém acreditar numa ilusão |
+| **Controle** | Age sobre o mundo: cria, molda, move, ergue | Muralha, ponte de gelo, armadura de rochas |
+
+Cada magia usa **uma** perícia só, a que combina com o que ela faz. Um mago de Potência é especialista em impacto. Um de Complexidade domina o que a magia provoca no corpo e na mente dos outros. Um de Controle constrói e molda o ambiente.
+
+As três evoluem como qualquer perícia: um Milagre (dois 12 nos dados) concede +1 permanente na perícia que foi usada. O capítulo de [Conjuração](conjuracao) mostra como o Mestre escolhe a perícia quando a magia parece caber em mais de uma.
+
+---
+
+## O Que Muda a Rolagem
+
+A rolagem base é simples, mas três coisas podem alterá-la. Você não precisa dominar nenhuma para começar a conjurar: elas entram conforme o personagem se aprofunda no Arcano.
+
+### Elementos: Afinidade e Antítese
+
+Toda magia pertence a um de **cinco elementos**: Energia (criar), Anomalia (transformar), Paradoxo (distorcer conceitos), Cognitivo (mente e sentidos) e Astral (os outros planos). Um personagem só conjura com dois deles.
+
+- Sua **Afinidade** é o elemento com o qual o Arcano flui sem resistência. Você conjura normalmente, com 2D12.
+- Sua **Antítese** é um segundo vínculo, forçado e instável. Ao conjurar com ela você tem **Desvantagem**: um dado a menos, então rola apenas 1D12.
+- Se os dois forem o mesmo elemento, é uma **Dupla Conexão**, rara e intensa. Você tem **Vantagem**: um dado a mais, então rola 3D12.
+
+Vantagem e Desvantagem são as mesmas regras de qualquer teste do livro (veja [Testes](testes)), e contam sempre os dois maiores dados. Veja mais em [Elementos](elementos) e [Afinidade e Antítese](afinidades).
+
+### Entropia: abrir a comporta
+
+Com pouca exposição ao Caos, o Arcano passa por você como água de uma torneira: controlável, mas em pouca quantidade. Com muita, é uma represa aberta: o poder é imenso, e a contenção exige tudo que você tem.
+
+Essa exposição é a **Entropia**, e vai de 0 a 4. Acima do nível 0 você soma **um dado extra** ao resultado da magia, e o nível define qual: quanto mais alto, maior o dado (de um D4 no nível 1 a um D20 no nível 4). Em troca, cada conjuração custa mais Sanidade, e uma Falha Crítica em nível alto tem consequências que marcam o personagem para sempre. A Entropia sobe por escolha, mas não desce por vontade. O capítulo de [Entropia](entropia) explica tudo.
+
+### Exaustão: fazer muito de uma vez
+
+Conjurar cansa. Lançar uma magia é uma **Ação Complexa**, e cada Ação Complexa acumula **Exaustão**, que tira 10 do resultado dos testes seguintes por ponto. Quem conjura várias vezes seguidas paga com resultados cada vez piores. Veja o capítulo de [Conflito](conflito).
+
+---
+
+## Por Onde Continuar
+
+| Se você quer... | Leia |
 |---|---|
-| **Potência** | A força do efeito — intensidade do dano, da cura, do impacto |
-| **Forma** | Como a magia se manifesta no espaço — modelagem, direção, área |
-| **Complexidade** | A sofisticação do efeito — condições, gatilhos, múltiplos efeitos |
-| **Controle** | A contenção e gestão do efeito — precisão, estabilidade, duração |
-
-Um mago especializado em Potência cria efeitos devastadores mas pouco refinados. Um que domina Complexidade tece magias sofisticadas com múltiplas condições.
-
-### Evolução dos Modificadores
-
-Para avançar um modificador, o jogador precisa tirar **dois 12s nos 2D12s** durante um teste que inclua aquele modificador — igual ao sistema de evolução de perícias.
-
-O jogador pode gastar **PE** para aumentar o valor dos dados e alcançar os 12s necessários.
-
-> Para entender como PE funciona, consulte o capítulo de [PE](TODO).
-
-> Concentrar ambos os D12s em um único modificador é a única forma de ter chance de avançar aquele modificador. Isso cria a escolha central do mago: dividir os dados para equilibrar a magia, ou concentrá-los para crescer — mas com risco de Desastre.
-
-**O Mestre decide quais modificadores uma magia exige** com base na intenção descrita. Toda magia exige no mínimo 2 modificadores.
-
----
-
-## Elementos: Afinidade e Antítese
-
-Todo conjurador possui dois elementos: sua **Afinidade** e sua **Antítese**.
-
-- **Afinidade**: o elemento natural do personagem. Sem penalidade.
-- **Antítese**: o elemento parasita que habita o personagem. **−10 no resultado de cada modificador testado.**
-
-O personagem **só pode conjurar com esses dois elementos**. Não é uma questão de dificuldade — é de natureza.
-
-> **Caso especial — Dupla Conexão:** se Afinidade e Antítese são o mesmo elemento, a penalidade de −10 é substituída por **+10** ao conjurar magias daquele elemento. Para a mecânica completa, consulte o capítulo de Afinidade e Antítese.
-
-Entenda melhor como [Afinidade e Antitese](afinidades) funcionam.
-
-Para a descrição completa dos cinco elementos e suas naturezas, consulte este [capítulo](elementos).
-
-## Conjurar Magias
-
-Todo conjurador molda a sua vontade para materializar algo — isso chamamos de **magia**.
-
-Conjurar não é apenas liberar poder. É impor uma intenção sobre a vastidão do arcano e esperar que o Caos aceite. O custo dessa negociação é a sua própria **Sanidade** — o quanto o personagem está disposto a se abrir para a essência primordial que torna tudo possível. Quanto mais fundo esse vinculo, que chamamos de Entropia, maior o poder. Quanto maior o poder, mais devastador o preço de uma falha.
-
-Entenda melhor como [conjurar magias](conjuracao).
+| Aprender a conjurar passo a passo | [Conjuração](conjuracao) |
+| Conhecer os cinco elementos | [Elementos](elementos) |
+| Entender Afinidade e Antítese | [Afinidade e Antítese](afinidades) |
+| Saber o que a Entropia dá e cobra | [Entropia](entropia) |
+| Trazer criaturas ao Plano Material | [Invocação](invocacao) |

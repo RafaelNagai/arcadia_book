@@ -148,7 +148,7 @@ No **Interlúdio**, personagens podem dedicar ações para tratar condições at
 | **Cego** | — | — | Desaparece automaticamente ao fim da duração |
 | **Surdo** | — | — | Desaparece automaticamente ao fim da duração |
 
-> Cura mágica (conjuração Arcana com intenção de cura) pode remove/reduzir qualquer condição, portanto que passe na DT.
+> Cura mágica (uma magia de Complexidade com intenção de cura) pode remover ou reduzir qualquer condição, desde que passe na DT.
 
 ### Para o Mestre
 

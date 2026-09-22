@@ -3,15 +3,15 @@ import type { Character } from "@/data/characterTypes";
 import { ELEMENT_DATA } from "./types";
 import type { Accent } from "./types";
 import { SectionLabel } from "./CharacterUI";
-import { EntropiaDisplay } from "./EntropiaDisplay";
+import { EntropiaDiceRow } from "./EntropiaDisplay";
 import { ArcaneTestOverlay } from "./ArcaneTestOverlay";
+import type { ModKey } from "./ArcaneConfigPanel";
 
-const MODIFICADORES = [
-  { key: "potencia", label: "Potência", desc: "Dano · Cura" },
-  { key: "complexidade", label: "Complexidade", desc: "Stacks · Condições" },
-  { key: "forma", label: "Forma", desc: "Área · Direção" },
-  { key: "controle", label: "Controle", desc: "Precisão · Duração" },
-] as const;
+const MODIFICADORES: { key: ModKey; label: string; desc: string }[] = [
+  { key: "potencia", label: "Potência", desc: "Dano físico/material" },
+  { key: "complexidade", label: "Complexidade", desc: "Cura · Condições" },
+  { key: "controle", label: "Controle", desc: "Criar · Moldar · Proteger" },
+];
 
 export function ArcanoSection({
   character,
@@ -19,8 +19,9 @@ export function ArcanoSection({
   antAccent,
   onEdit,
   onEntropiaChange,
-  onModificadorChange,
-  arcanoModifierBonuses,
+  skillModifiers,
+  onModifierChange,
+  onModifierReset,
   arcanoPeChecks,
   onArcanoPeToggle,
   exaustao,
@@ -30,35 +31,36 @@ export function ArcanoSection({
   antAccent: Accent;
   onEdit?: () => void;
   onEntropiaChange?: (newValue: number) => void;
-  onModificadorChange?: (key: string, delta: number) => void;
-  arcanoModifierBonuses?: {
-    potencia: number;
-    complexidade: number;
-    forma: number;
-    controle: number;
-  };
+  skillModifiers?: Record<string, number>;
+  onModifierChange?: (key: string, delta: number) => void;
+  onModifierReset?: (key: string) => void;
   arcanoPeChecks?: boolean[];
   onArcanoPeToggle?: (idx: number) => void;
   exaustao: number;
 }) {
-  const [arcaneTest, setArcaneTest] = useState(false);
+  const [arcaneTest, setArcaneTest] = useState<ModKey | null>(null);
+  const [editingSkill, setEditingSkill] = useState<ModKey | null>(null);
 
   const arcano = character.attributes.arcano;
   const arcanoColor = "#70d9ff";
+  const dupla = character.afinidade === character.antitese;
 
-  const bonuses = arcanoModifierBonuses ?? {
-    potencia: 0,
-    complexidade: 0,
-    forma: 0,
-    controle: 0,
-  };
-
-  const modWithBonuses = {
-    potencia: (character.modificadores?.potencia ?? 0) + bonuses.potencia,
-    complexidade:
-      (character.modificadores?.complexidade ?? 0) + bonuses.complexidade,
-    forma: (character.modificadores?.forma ?? 0) + bonuses.forma,
-    controle: (character.modificadores?.controle ?? 0) + bonuses.controle,
+  const smallBtn: React.CSSProperties = {
+    width: 20,
+    height: 20,
+    borderRadius: 3,
+    background: "rgba(255,255,255,0.05)",
+    border: "1px solid rgba(255,255,255,0.15)",
+    color: "rgba(255,255,255,0.65)",
+    fontFamily: "var(--font-ui)",
+    fontSize: "0.8rem",
+    lineHeight: 1,
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 0,
+    flexShrink: 0,
   };
 
   return (
@@ -68,7 +70,7 @@ export function ArcanoSection({
       </SectionLabel>
       <div className="space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {/* Arcano attribute + Modificadores */}
+          {/* Arcano attribute + Perícias */}
           <div className="flex flex-col">
             <p
               style={{
@@ -80,65 +82,87 @@ export function ArcanoSection({
                 marginBottom: "8px",
               }}
             >
-              Modificadores Arcano
+              Perícias Arcanas
             </p>
-            {/* PE row — shared across all modifiers */}
+            {/* PE row — Arcano attribute's own PE pool — + Entropia on the right */}
             <div
-              className="flex items-center gap-1.5 px-1"
+              className="flex items-center justify-between gap-2 px-1"
               style={{
                 borderTop: "1px solid rgba(60,220,217,0.12)",
                 paddingTop: 12,
                 paddingBottom: 12,
               }}
             >
-              <span
-                style={{
-                  fontFamily: "var(--font-ui)",
-                  fontSize: "0.5rem",
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: "rgba(200,210,230,0.55)",
-                }}
-              >
-                PE
-              </span>
-              {(arcanoPeChecks ?? Array(5).fill(false)).map(
-                (checked: boolean, i: number) => (
-                  <button
-                    key={i}
-                    onClick={
-                      onArcanoPeToggle ? () => onArcanoPeToggle(i) : undefined
-                    }
-                    style={{
-                      width: 16,
-                      height: 16,
-                      borderRadius: 3,
-                      background: checked
-                        ? `${arcanoColor}33`
-                        : "rgba(255,255,255,0.06)",
-                      border: `1px solid ${checked ? arcanoColor + "CC" : "rgba(200,210,230,0.35)"}`,
-                      color: checked ? arcanoColor : "rgba(200,210,230,0.35)",
-                      fontSize: "0.55rem",
-                      lineHeight: 1,
-                      cursor: onArcanoPeToggle ? "pointer" : "default",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: 0,
-                      flexShrink: 0,
-                    }}
-                  >
-                    {checked ? "✦" : "✧"}
-                  </button>
-                ),
-              )}
+              <div className="flex items-center gap-1.5">
+                <span
+                  style={{
+                    fontFamily: "var(--font-ui)",
+                    fontSize: "0.5rem",
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: "rgba(200,210,230,0.55)",
+                  }}
+                >
+                  PE
+                </span>
+                {(arcanoPeChecks ?? Array(5).fill(false)).map(
+                  (checked: boolean, i: number) => (
+                    <button
+                      key={i}
+                      onClick={
+                        onArcanoPeToggle ? () => onArcanoPeToggle(i) : undefined
+                      }
+                      style={{
+                        width: 16,
+                        height: 16,
+                        borderRadius: 3,
+                        background: checked
+                          ? `${arcanoColor}33`
+                          : "rgba(255,255,255,0.06)",
+                        border: `1px solid ${checked ? arcanoColor + "CC" : "rgba(200,210,230,0.35)"}`,
+                        color: checked ? arcanoColor : "rgba(200,210,230,0.35)",
+                        fontSize: "0.55rem",
+                        lineHeight: 1,
+                        cursor: onArcanoPeToggle ? "pointer" : "default",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: 0,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {checked ? "✦" : "✧"}
+                    </button>
+                  ),
+                )}
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span
+                  style={{
+                    fontFamily: "var(--font-ui)",
+                    fontSize: "0.5rem",
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: "rgba(200,210,230,0.55)",
+                  }}
+                >
+                  Entropia
+                </span>
+                <EntropiaDiceRow
+                  value={character.entropia}
+                  onEntropiaChange={onEntropiaChange}
+                />
+              </div>
             </div>
-            {/* Modificadores grid */}
-            <div className="grid grid-cols-1 gap-2">
-              {MODIFICADORES.map(({ key, label }) => {
-                const base = character.modificadores?.[key] ?? 0;
-                const bonus = (bonuses as Record<string, number>)[key] ?? 0;
-                const total = base + bonus;
+            {/* Perícias */}
+            <div className="flex flex-col gap-2.5">
+              {MODIFICADORES.map(({ key, label, desc }) => {
+                const score = character.modificadores?.[key] ?? 0;
+                const mod = skillModifiers?.[key] ?? 0;
+                const total = score + mod;
+                const isEditing = editingSkill === key;
+                const modColor = mod > 0 ? "#6EC840" : "#D04040";
+
                 return (
                   <div
                     key={key}
@@ -148,150 +172,168 @@ export function ArcanoSection({
                       border: "1px solid rgba(60, 220, 217, 0.2)",
                     }}
                   >
-                    {/* Top row: name + value */}
                     <div
                       style={{
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
-                        marginBottom: onModificadorChange ? 4 : 0,
+                        gap: 8,
                       }}
                     >
-                      <p
-                        style={{
-                          fontFamily: "var(--font-ui)",
-                          fontWeight: 600,
-                          fontSize: "0.78rem",
-                          color: arcanoColor,
-                          lineHeight: 1.2,
-                        }}
+                      <div
+                        onClick={() => setArcaneTest(key)}
+                        title="Rolar teste arcano"
+                        style={{ cursor: "pointer", minWidth: 0 }}
                       >
-                        {label}
-                      </p>
-                      {/* bonus controls */}
-                      <div className="flex justify-between items-center gap-10">
-                        <div className="flex items-center justify-between">
-                          {onModificadorChange && (
-                            <div className="flex items-center gap-[3px]">
-                              <span
-                                style={{
-                                  fontFamily: "var(--font-ui)",
-                                  fontSize: "0.5rem",
-                                  color: "#C8922A",
-                                  letterSpacing: "0.08em",
-                                  textTransform: "uppercase",
-                                  opacity: 0.8,
-                                }}
-                              >
-                                bônus
-                              </span>
-                              <button
-                                onClick={() => onModificadorChange(key, -1)}
-                                style={{
-                                  width: 16,
-                                  height: 16,
-                                  borderRadius: 3,
-                                  border: "1px solid rgba(200,146,42,0.35)",
-                                  background: "transparent",
-                                  color: "#C8922A",
-                                  cursor: "pointer",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  fontSize: 13,
-                                  lineHeight: 1,
-                                  padding: 0,
-                                }}
-                              >
-                                −
-                              </button>
-                              <span
-                                style={{
-                                  fontFamily: "var(--font-display)",
-                                  fontWeight: 700,
-                                  fontSize: "0.9rem",
-                                  color:
-                                    bonus !== 0
-                                      ? "#C8922A"
-                                      : "rgba(255,255,255,0.2)",
-                                  minWidth: 14,
-                                  textAlign: "center",
-                                }}
-                              >
-                                {bonus}
-                              </span>
-                              <button
-                                onClick={() => onModificadorChange(key, +1)}
-                                style={{
-                                  width: 16,
-                                  height: 16,
-                                  borderRadius: 3,
-                                  border: "1px solid rgba(200,146,42,0.35)",
-                                  background: "transparent",
-                                  color: "#C8922A",
-                                  cursor: "pointer",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  fontSize: 13,
-                                  lineHeight: 1,
-                                  padding: 0,
-                                }}
-                              >
-                                +
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                        <div
+                        <p
                           style={{
-                            display: "flex",
-                            alignItems: "baseline",
-                            gap: 3,
+                            fontFamily: "var(--font-ui)",
+                            fontWeight: 600,
+                            fontSize: "0.78rem",
+                            color: arcanoColor,
+                            lineHeight: 1.2,
+                            borderBottom: "1px dotted rgba(112,217,255,0.4)",
+                            display: "inline-block",
                           }}
                         >
+                          {label}
+                        </p>
+                        <p
+                          style={{
+                            fontFamily: "var(--font-ui)",
+                            fontSize: "0.6rem",
+                            color: "rgba(200,210,230,0.5)",
+                          }}
+                        >
+                          {desc}
+                        </p>
+                      </div>
+                      {/* Clickable value — toggles bonus edit */}
+                      <div
+                        className="flex items-center gap-1.5"
+                        style={{
+                          cursor: onModifierChange ? "pointer" : "default",
+                          flexShrink: 0,
+                        }}
+                        onClick={
+                          onModifierChange
+                            ? () => setEditingSkill(isEditing ? null : key)
+                            : undefined
+                        }
+                        title={
+                          onModifierChange
+                            ? isEditing
+                              ? "Fechar"
+                              : "Clique para modificar"
+                            : undefined
+                        }
+                      >
+                        {mod !== 0 && (
                           <span
                             style={{
-                              fontFamily: "var(--font-display)",
+                              fontFamily: "var(--font-ui)",
+                              fontSize: "0.65rem",
                               fontWeight: 700,
-                              fontSize: "1.4rem",
-                              color:
-                                total > 0
-                                  ? bonus > 0
-                                    ? "#C8922A"
-                                    : arcanoColor
-                                  : "rgba(255,255,255,0.2)",
-                              lineHeight: 1,
+                              color: modColor,
                             }}
                           >
-                            {base + bonus}
+                            {mod > 0 ? `+${mod}` : mod}
                           </span>
-                        </div>
+                        )}
+                        <span
+                          style={{
+                            fontFamily: "var(--font-display)",
+                            fontWeight: 700,
+                            fontSize: "1.4rem",
+                            color:
+                              mod !== 0
+                                ? modColor
+                                : total > 0
+                                  ? arcanoColor
+                                  : "rgba(255,255,255,0.2)",
+                            opacity: isEditing ? 0.6 : 1,
+                          }}
+                        >
+                          {total}
+                        </span>
                       </div>
                     </div>
+
+                    {/* Expanded bonus controls */}
+                    {isEditing && onModifierChange && (
+                      <div
+                        className="flex items-center gap-1.5 mt-1.5"
+                        style={{ paddingLeft: 4 }}
+                      >
+                        <button
+                          style={smallBtn}
+                          onClick={() => onModifierChange(key, -1)}
+                        >
+                          −
+                        </button>
+                        <span
+                          style={{
+                            fontFamily: "var(--font-ui)",
+                            fontSize: "0.7rem",
+                            fontWeight: 700,
+                            minWidth: 26,
+                            textAlign: "center",
+                            color:
+                              mod > 0
+                                ? "#6EC840"
+                                : mod < 0
+                                  ? "#D04040"
+                                  : "rgba(255,255,255,0.3)",
+                          }}
+                        >
+                          {mod > 0 ? `+${mod}` : mod === 0 ? "·" : String(mod)}
+                        </span>
+                        <button
+                          style={smallBtn}
+                          onClick={() => onModifierChange(key, +1)}
+                        >
+                          +
+                        </button>
+                        <div style={{ flex: 1 }} />
+                        <button
+                          style={{ ...smallBtn, color: "rgba(255,100,100,0.8)" }}
+                          onClick={() => {
+                            onModifierReset?.(key);
+                            setEditingSkill(null);
+                          }}
+                          title="Remover modificador"
+                        >
+                          ×
+                        </button>
+                        <button
+                          style={{ ...smallBtn, color: "#6EC840" }}
+                          onClick={() => setEditingSkill(null)}
+                          title="Confirmar"
+                        >
+                          ✓
+                        </button>
+                      </div>
+                    )}
                   </div>
                 );
               })}
-              {/* Arcane roll button */}
-              <button
-                onClick={() => setArcaneTest(true)}
-                style={{
-                  background: accent.bg,
-                  border: `1px solid ${arcanoColor}44`,
-                  borderRadius: 4,
-                  padding: "0.5rem 1rem",
-                  fontFamily: "var(--font-ui)",
-                  fontSize: "0.85rem",
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: arcanoColor,
-                  cursor: "pointer",
-                  width: "100%",
-                }}
-              >
-                🎲 Rolar Arcano
-              </button>
             </div>
+            <p
+              style={{
+                fontFamily: "var(--font-ui)",
+                fontSize: "0.68rem",
+                fontWeight: 600,
+                letterSpacing: "0.02em",
+                color: "#C8922A",
+                background: "rgba(200,146,42,0.1)",
+                border: "1px solid rgba(200,146,42,0.25)",
+                borderRadius: 4,
+                marginTop: 10,
+                padding: "5px 8px",
+              }}
+            >
+              Cada conjuração custa {character.entropia + 1} de Sanidade.
+            </p>
           </div>
           <div>
             {/* Arcano attribute value */}
@@ -318,7 +360,7 @@ export function ArcanoSection({
               </div>
             </div>
             {/* Afinidade + Antítese */}
-            {character.afinidade === character.antitese ? (
+            {dupla ? (
               <div
                 style={{
                   padding: "1.2rem",
@@ -339,14 +381,16 @@ export function ArcanoSection({
                   </p>
                   <span
                     style={{
-                      fontFamily: "var(--font-display)",
+                      fontFamily: "var(--font-ui)",
                       fontWeight: 700,
-                      fontSize: "1.1rem",
+                      fontSize: "0.8rem",
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
                       color: accent.text,
                       lineHeight: 1,
                     }}
                   >
-                    +10
+                    Vantagem · 3D12
                   </span>
                 </div>
                 <p
@@ -413,6 +457,19 @@ export function ArcanoSection({
                   >
                     {ELEMENT_DATA[character.afinidade]?.essence ?? ""}
                   </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.6rem",
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase",
+                      color: accent.text,
+                      opacity: 0.75,
+                      marginTop: "0.4rem",
+                    }}
+                  >
+                    Normal · 2D12
+                  </p>
                 </div>
 
                 <div
@@ -433,17 +490,6 @@ export function ArcanoSection({
                     >
                       Antítese
                     </p>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-display)",
-                        fontWeight: 700,
-                        fontSize: "1.1rem",
-                        color: antAccent.text,
-                        lineHeight: 1,
-                      }}
-                    >
-                      −10
-                    </span>
                   </div>
                   <p
                     style={{
@@ -466,35 +512,37 @@ export function ArcanoSection({
                   >
                     {ELEMENT_DATA[character.antitese]?.essence ?? ""}
                   </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-ui)",
+                      fontSize: "0.6rem",
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase",
+                      color: antAccent.text,
+                      opacity: 0.75,
+                      marginTop: "0.4rem",
+                    }}
+                  >
+                    Desvantagem · 1D12
+                  </p>
                 </div>
               </div>
             )}
-            {/* Entropia + Marcas */}
-            <div
-              style={{
-                padding: "1.25rem",
-                background: `linear-gradient(135deg, ${arcanoColor}77 0%, rgba(4,10,20,0.9) 100%)`,
-              }}
-            >
-              <EntropiaDisplay
-                value={character.entropia}
-                marcas={character.marcas ?? []}
-                onEntropiaChange={onEntropiaChange}
-              />
-            </div>
           </div>
         </div>
       </div>
 
       {arcaneTest && (
         <ArcaneTestOverlay
+          initialPericia={arcaneTest}
+          periciaModifier={skillModifiers?.[arcaneTest] ?? 0}
           afinidade={character.afinidade}
           antitese={character.antitese}
           entropia={character.entropia}
           arcano={arcano}
-          modificadores={modWithBonuses}
+          modificadores={character.modificadores}
           exhaustionPenalty={exaustao > 0 ? -10 * exaustao : 0}
-          onClose={() => setArcaneTest(false)}
+          onClose={() => setArcaneTest(null)}
         />
       )}
     </section>

@@ -6,7 +6,6 @@ import type {
   CharacterSkills,
   CharacterAttributes,
   CharacterModificadores,
-  EntropiaMarca,
 } from "@/data/characterTypes";
 import {
   saveCustomCharacter,
@@ -35,7 +34,6 @@ import { Step6Historia } from "@/components/creator/Step6Historia";
 const EMPTY_MODS: CharacterModificadores = {
   potencia: 0,
   complexidade: 0,
-  forma: 0,
   controle: 0,
 };
 
@@ -224,7 +222,6 @@ export function CharacterCreatorPage() {
         antitese: antitese || "Anomalia",
         entropia,
         modificadores,
-        marcas: existing?.marcas ?? ([] as EntropiaMarca[]),
         traumas,
         antecedentes,
         historia: historia.trim() || undefined,

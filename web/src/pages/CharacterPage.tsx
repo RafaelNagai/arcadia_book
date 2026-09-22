@@ -563,24 +563,6 @@ export function CharacterPage() {
     });
   }
 
-  /* ── Arcano modifier bonuses (stored in skillModifiers with arcano_ prefix) ── */
-
-  function handleModificadorArcanoChange(key: string, delta: number) {
-    const bonusKey = `arcano_${key}`;
-    lastLocalStateTime.current = Date.now();
-    setSkillModifiers((prev) => {
-      const next = {
-        ...prev,
-        [bonusKey]: (prev[bonusKey] ?? 0) + delta,
-      };
-      if (id) {
-        if (isApiChar) void api.state.updateSkillModifiers(id, next);
-        else if (id) saveSkillModifiers(id, next);
-      }
-      return next;
-    });
-  }
-
   /* ── HP / Sanidade clicks ─────────────────────────────────────── */
 
   function handleHpClick(idx: number) {
@@ -1033,15 +1015,9 @@ export function CharacterPage() {
             antAccent={antAccent}
             onEdit={canEdit ? () => goEdit(4) : undefined}
             onEntropiaChange={canEdit ? handleEntropiaChange : undefined}
-            onModificadorChange={
-              canEdit ? handleModificadorArcanoChange : undefined
-            }
-            arcanoModifierBonuses={{
-              potencia: skillModifiers["arcano_potencia"] ?? 0,
-              complexidade: skillModifiers["arcano_complexidade"] ?? 0,
-              forma: skillModifiers["arcano_forma"] ?? 0,
-              controle: skillModifiers["arcano_controle"] ?? 0,
-            }}
+            skillModifiers={skillModifiers}
+            onModifierChange={canEdit ? handleModifierChange : undefined}
+            onModifierReset={canEdit ? handleModifierReset : undefined}
             arcanoPeChecks={peChecks["arcano"] ?? Array(5).fill(false)}
             onArcanoPeToggle={canEdit ? handleArcanoPeToggle : undefined}
             exaustao={exaustao}

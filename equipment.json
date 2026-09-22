@@ -859,7 +859,7 @@
     "maxDurability": 6,
     "effects": [
       "Para cada nível de Entropia, o escudo ganha +1 de DA, acumulável até no máximo 5.",
-      "Uma vez por turno, se defender todos os dados de ataque recebidos, o portador pode conjurar imediatamente usando apenas 1D12 na pool de dados (em vez de 2D12), sem gastar Ação."
+      "Uma vez por turno, se defender todos os dados de ataque recebidos, o portador pode conjurar imediatamente com Desvantagem (1D12 em vez de 2D12), sem gastar Ação."
     ],
     "description": "Não é feito de cristal, mas de pura energia arcana. O nome vem do brilho azul que emite ao aparar um golpe forte demais.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/6dc075f2-fcb8-4049-9483-82c2ff8b5a9c/segments/2:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_intan_1.jpg"
@@ -938,12 +938,12 @@
     "subcategory": "Cajado",
     "tier": "C",
     "damage": null,
-    "arcaneBonus": 4,
+    "arcaneBonus": 2,
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao conjurar com todos os modificadores exigidos com score ≤ 10, o portador adiciona 1D12 extra à pool de dados dessa conjuração."
+      "Ao conjurar usando uma perícia arcana com valor 10 ou menos, o portador ganha Vantagem nessa rolagem (mais um dado)."
     ],
     "description": "Todo arcanista começa com um. Poucos guardam o primeiro.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/ef53a010-8a10-41b2-a2b9-09ac267ea255/segments/1:1:1/Lucid_Origin_A_detailed_illustration_of_a_magical_staff_displa_0.jpg"
@@ -955,12 +955,12 @@
     "subcategory": "Cajado",
     "tier": "B",
     "damage": null,
-    "arcaneBonus": 8,
+    "arcaneBonus": 3,
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Uma vez por sessão, ao aumentar a Entropia voluntariamente, o portador ignora a rolagem de Marca — nenhuma Modificação é recebida nesse aumento."
+      "Uma vez por sessão, uma Falha Crítica do portador é tratada como se a Entropia estivesse em 0, não importa o nível real — a pior consequência simplesmente não acontece dessa vez."
     ],
     "description": "Magos que temem o desconhecido, temem perder a sanidade ao obter poder do conhecimento arcano, este cajado os guiava.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/ffb10008-622e-4580-b303-7d793f9785df/segments/3:4:1/Lucid_Origin_A_detailed_illustration_of_a_magical_staff_displa_2.jpg"
@@ -972,13 +972,13 @@
     "subcategory": "Cajado",
     "tier": "A",
     "damage": null,
-    "arcaneBonus": 12,
+    "arcaneBonus": 4,
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Para cada ponto de Entropia, o portador ganha +2 no resultado de todos os modificadores dessa conjuração.",
-      "Para cada D12 alocado no modificador de Potência, o portador ganha +1 em todos os dados de dano arcano."
+      "Para cada ponto de Entropia, o portador ganha +1 no resultado da conjuração.",
+      "Em conjurações de Potência, o portador ganha +1 em todos os dados de dano arcano."
     ],
     "description": "Talhado de um fragmento dimensional. Parte de sua madeira não pertence ao Plano Infinito.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/a0f4248d-b1cb-4a0c-a27b-4e2e7fd8149d/segments/4:4:1/Lucid_Origin_A_detailed_illustration_of_a_curved_magical_staff_3.jpg"
@@ -990,12 +990,12 @@
     "subcategory": "Cajado",
     "tier": "A",
     "damage": null,
-    "arcaneBonus": 10,
+    "arcaneBonus": 4,
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
-      "Enquanto possuir este cajado, intenções de teleporte e deslocamento arcano não exigem o modificador Forma — o Mestre trata esse aspecto como automaticamente atendido.",
+      "Enquanto possuir este cajado, intenções de teleporte e deslocamento com DT abaixo de 15, é feito automaticamente.",
       "Uma vez por combate, ao defender usando este cajado, o portador pode redirecionar o dano para outro alvo em combate — o alvo é randômico, definido por quem tirar o menor valor em 1D6."
     ],
     "description": "Este cajado não veio do plano infinito, pouco se sabe, mas a joia na ponta do cajado é uma mini-dimensão.",
@@ -1008,7 +1008,7 @@
     "subcategory": "Cajado",
     "tier": "B",
     "damage": null,
-    "arcaneBonus": 8,
+    "arcaneBonus": 3,
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 2,
@@ -1030,7 +1030,7 @@
     "isEquipment": true,
     "maxDurability": 30,
     "effects": [
-      "Ao conjurar com intenção de frio, gelo ou congelamento, o portador ganha +10 no resultado de todos os modificadores.",
+      "Ao conjurar com intenção de frio, gelo ou congelamento, o portador ganha +5 no resultado da conjuração.",
       "Uma vez por turno, o portador pode realizar uma conjuração de intenção glacial sem gastar Ação.",
       "Toda conjuração realizada enquanto usa a Soberania Gélida custa 1 ponto adicional de Sanidade (além do custo normal de 1). Em Falha Crítica, o portador perde 12 de Sanidade. Em Desastre, ganha um Trauma relacionado ao frio."
     ],
@@ -1350,7 +1350,7 @@
     "maxDurability": 3,
     "effects": [
       "Uma vez por cena, ao realizar uma conjuração, pode realizar um ataque extra corpo-a-corpo com esta arma sem gerar Exaustão.",
-      "Se o portador tiver ao menos 1 ponto em qualquer modificador arcano (Potência, Complexidade, Forma ou Controle), ganha +2 em todos os testes de Combate com esta lâmina."
+      "Se o portador tiver ao menos 2 ponto em qualquer perícia arcana (Potência, Complexidade ou Controle), ganha +2 em testes de Combate com esta lâmina."
     ],
     "description": "Forjada por um ferreiro que era também arcanista. Ele queria que as duas coisas conversassem. Funcionou.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/fffb7cbf-af5e-426f-94b7-8676690d0710/segments/3:4:1/Lucid_Origin_A_highly_detailed_illustration_of_a_magical_mache_2.jpg"
@@ -1366,7 +1366,7 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Ao conjurar com intenção aquática ou de água, o portador ganha +5 no resultado de todos os modificadores.",
+      "Ao conjurar com intenção aquática ou de água, o portador ganha +3 no resultado da conjuração.",
       "Uma vez por combate, cria uma onda que empurra 4m para trás todos os inimigos em um raio de 10m (Atletismo dif. 18 para resistir)."
     ],
     "description": "Recolhida do fundo de um naufrágio em frente a Union. A ilha afundou; a espada não.",
@@ -2643,8 +2643,8 @@
     "isEquipment": true,
     "maxDurability": 3,
     "effects": [
-      "Ganha +3 no resultado de qualquer modificador arcano testado.",
-      "Uma vez por sessão, ao rolar uma conjuração, pode rerolar todos os dados alocados em um modificador e manter o resultado mais favorável."
+      "Ganha +3 no resultado de qualquer conjuração.",
+      "Uma vez por sessão, ao rolar uma conjuração, pode rerolar os 2D12 dessa rolagem e manter o resultado mais favorável."
     ],
     "description": "Uma joia de eltys puro que ressoa com o fluxo arcano. Arcanistas sentem o poder antes mesmo de tocá-lo.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee7f-311c-6380-80ef-d3aef1c1bc89/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_A_Amuleto_E-0.jpg"
@@ -2713,7 +2713,7 @@
     "maxDurability": 3,
     "effects": [
       "Para cada ponto de Entropia, ganha +1 em todos os dados de dano arcano.",
-      "Ao aumentar a Entropia para nível 1 ou 2, a rolagem de Marca é ignorada — nenhuma Modificação é recebida.",
+      "Enquanto a Entropia estiver em 1 ou 2, uma Falha Crítica do portador não tem consequência alguma — a magia simplesmente falha.",
       "Se o amuleto for removido com Entropia maior que 2, o portador perde 5D12 de Sanidade instantaneamente."
     ],
     "description": "Um aventureiro criou este amuleto com materiais vindos de outra dimensão, ele não sabia as consequências de seus atos, mas ele criou um paradoxo vivo.",
@@ -2769,7 +2769,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao conjurar com intenção vegetal (controle de plantas, crescimento, venenos naturais), ganha +5 no resultado de todos os modificadores."
+      "Ao conjurar com intenção vegetal (controle de plantas, crescimento, venenos naturais), ganha +2 no resultado da conjuração."
     ],
     "description": "Um livro que contém o conhecimento sobre a grama e plantas, feito por um antigo arcanista vegano.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee8f-f491-6800-9d60-51dfaa7c1b3e/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_C_Livro_Gra-0.jpg"
@@ -2785,7 +2785,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao conjurar com intenção de fogo ou calor, ganha +5 no resultado de todos os modificadores."
+      "Ao conjurar com intenção de fogo ou calor, ganha +2 no resultado da conjuração."
     ],
     "description": "Um livro escrito por um dragão, é o que foi vendido na loja.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee92-3081-6840-8d84-a8d2ed853e89/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_C_Livro_Ard-0.jpg"
@@ -2801,7 +2801,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao conjurar com intenção de vento ou ar, ganha +5 no resultado de todos os modificadores."
+      "Ao conjurar com intenção de vento ou ar, ganha +2 no resultado da conjuração."
     ],
     "description": "Um livro caiu dos céus, é o que dizem os piratas que venderam ela.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee94-305a-63b0-bd80-01fa699c1d7b/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_C_Livro_Sop-0.jpg"
@@ -2817,7 +2817,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao conjurar com intenção de manipulação temporal (acelerar, retardar, pausar), ganha +5 no resultado de todos os modificadores."
+      "Ao conjurar com intenção de manipulação temporal (acelerar, retardar, pausar), ganha +2 no resultado da conjuração."
     ],
     "description": "Ao abrir o livro, consegue se ouvir o som do tic-tac.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee96-58b8-67b0-8ff0-1f69603580e3/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_B_Livro_Pas-0.jpg"
@@ -2833,7 +2833,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao conjurar com intenção de teleporte ou deslocamento espacial instantâneo, ganha +5 no resultado de todos os modificadores."
+      "Ao conjurar com intenção de teleporte ou deslocamento espacial instantâneo, ganha +2 no resultado da conjuração."
     ],
     "description": "O livro foi escrito em outra dimensão, permitindo carregar certas características do mago que lhe forjou.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f15ee98-76b6-67b0-80d9-7876612f265d/lucid-origin_A_highly_detailed_realistic_game_asset_illustration_of_a_single_Tier_B_Livro_log-0.jpg"
@@ -2849,7 +2849,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao conjurar com intenção de invisibilidade ou ocultamento, ganha +5 no resultado de todos os modificadores.",
+      "Ao conjurar com intenção de invisibilidade ou ocultamento, ganha +3 no resultado da conjuração.",
       "Enquanto estiver sob um efeito de invisibilidade ou ocultamento conjurado com este livro, o portador ganha +3 em testes de Furtividade."
     ],
     "description": "Um louco dizia ter escrito um livro invisível, até que no dia da sua morte este livro apareceu em suas mãos.",
@@ -2866,8 +2866,8 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao conjurar com intenção de barreira, proteção ou blindagem metálica, ganha +5 no resultado do modificador Controle.",
-      "Ao conjurar com o elemento de Antítese, ganha +2 no resultado de todos os modificadores.",
+      "Ao conjurar com intenção de barreira, proteção ou blindagem metálica usando Controle, ganha +5 no resultado.",
+      "Ao conjurar com o elemento de Antítese, ganha +2 no resultado.",
       "Se o portador tiver 3 ou mais livros no inventário, ganha +1 de DP."
     ],
     "description": "Um mago que tinha medo de morrer, colocou toda a sua sabedoria para se proteger de tudo e todos. Quando exércitos de Galahad tentaram invadir Camelot, este mago sobreviveu a uma chuva de 1000 flechas em sua direção.",
@@ -2884,8 +2884,8 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao conjurar com intenção de movimento arcano ou flutuação, ganha +5 no resultado de todos os modificadores.",
-      "Para cada livro que o portador tiver no inventário, ganha +3 no resultado de qualquer modificador arcano testado.",
+      "Ao conjurar com intenção de movimento arcano ou flutuação, ganha +5 no resultado da conjuração.",
+      "Para cada livro que o portador tiver no inventário, ganha +2 no resultado de qualquer conjuração.",
       "Não pode ser destruído por equipamentos materiais.",
       "Se um personagem tentar ler este livro, deve realizar um teste de Vontade dif. 35 — se falhar, ganha um Trauma."
     ],
@@ -2983,7 +2983,7 @@
     "subcategory": "Cajado",
     "tier": "D",
     "damage": null,
-    "arcaneBonus": 2,
+    "arcaneBonus": 1,
     "weight": "leve",
     "isEquipment": true,
     "maxDurability": 1,
@@ -3018,7 +3018,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Ao conjurar com intenção de gelo, frio ou congelamento, ganha +5 no resultado de todos os modificadores."
+      "Ao conjurar com intenção de gelo, frio ou congelamento, ganha +2 no resultado da conjuração."
     ],
     "description": "O monge que o escreveu nunca disse seu nome a ninguém que perguntasse — os moradores da vila mais próxima só o conheciam como 'aquele do topo da montanha que não fala.' Passou trinta anos catalogando o silêncio da neve antes de decidir que valia a pena anotar como reproduzi-lo. As páginas nunca aqueceram desde então, nem perto do fogo, nem debaixo do sol de Rubra. Dizem que, se lido em voz alta num quarto fechado, dá pra ouvir o vento que não está lá.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ace1b-c1db-6a80-a657-6e54c860668c/lucid-origin_A_highly_detailed_illustration_of_Glacial_Book_an_old_fantasy_spellbook_displaye-0.jpg"
@@ -3443,7 +3443,7 @@
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Reduz a penalidade de conjurar com o elemento de Antítese de −10 para 0."
+      "Ao conjurar com o elemento de Antítese, conjura normalmente (2D12), sem a Desvantagem."
     ],
     "description": "A Antítese não é escolhida e não é dócil — é um elemento que se instala à força em todo conjurador, puxando pro lado oposto sempre que ele tenta usá-la. A maioria dos arcanistas trata isso como um fardo pra suportar. O autor deste livro, um Sincronômante que passou a carreira tratando magos exauridos pela própria Antítese, discordava: escreveu que o problema nunca foi o elemento, mas a recusa em aceitá-lo. As páginas não ensinam nenhum feitiço novo — ensinam, com paciência quase irritante, a parar de lutar contra a própria natureza dividida.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ad92e-2429-61c0-bf04-909644c26c2b/lucid-origin_ighly_detailed_illustration_of_Book_of_Reconciliation_a_lightweight_fantasy_tome-0.jpg"
@@ -3659,12 +3659,12 @@
     "subcategory": "Cajado",
     "tier": "C",
     "damage": null,
-    "arcaneBonus": 8,
+    "arcaneBonus": 3,
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 1,
     "effects": [
-      "Antes de rolar uma conjuração, o portador pode girar a engrenagem do cajado: o resultado de um modificador escolhido é travado em 15 (independente de bônus e Entropia), sem precisar rolar dados para ele."
+      "Uma vez por cena, antes de rolar uma conjuração, o portador pode girar a engrenagem do cajado: em vez de rolar os 2D12, o resultado deles é travado em 15, sem somar nenhum bônus. Não há Crítico, Milagre, Falha Crítica nem Desastre nesse teste."
     ],
     "description": "A maioria dos arcanistas de Rubra olha pra cajados de madeira e vê tradição. Um relojoeiro aposentado olhou e viu um problema de engenharia mal resolvido: por que confiar no acaso quando um mecanismo bem calibrado entrega o mesmo resultado toda vez? O Cajado de Engrenagens não promete grandeza — promete consistência, o tipo de virtude que nenhum mago de verdade valoriza até precisar dela.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada45-e77b-6020-a68a-5a796a04b524/lucid-origin_highly_detailed_illustration_of_Gearshaft_Staff_a_medium-weight_fantasy_arcane_s-1.jpg"
@@ -3676,12 +3676,12 @@
     "subcategory": "Cajado",
     "tier": "B",
     "damage": null,
-    "arcaneBonus": 10,
+    "arcaneBonus": 3,
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 6,
     "effects": [
-      "Uma vez por cena, ao conjurar, pode liberar vapor pressurizado para adicionar +1D12 à pool de dados dessa conjuração — o cajado perde 1 de durabilidade ao fazer isso."
+      "Uma vez por cena, ao conjurar, pode liberar vapor pressurizado para ganhar Vantagem nessa rolagem (mais um dado) — o cajado perde 1 de durabilidade ao fazer isso."
     ],
     "description": "Nas oficinas de Rubra, arcanistas e engenheiros dividem bancada com mais frequência do que gostariam de admitir um pro outro. O Cajado a Vapor é fruto dessa convivência forçada: uma caldeira em miniatura embutida no cabo, que converte pressão acumulada em ímpeto arcano puro. Funciona bem. Também explode, ocasionalmente, o suficiente pra manter todo mundo com respeito saudável pela válvula de escape.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada4c-874d-6de0-bf3c-e84ffc2fbf45/lucid-origin_highly_detailed_illustration_of_Steam-Powered_Staff_a_medium-weight_fantasy_arca-0.jpg"
@@ -3693,14 +3693,14 @@
     "subcategory": "Cajado",
     "tier": "A",
     "damage": null,
-    "arcaneBonus": 10,
+    "arcaneBonus": 1,
     "weight": "medio",
     "isEquipment": true,
     "maxDurability": 2,
     "effects": [
       "O núcleo nunca esfria: para cada ponto no atributo Arcano do portador, aplica 1 de Queimadura em todos os individuos(incluindo o portador) em um raio de 3m do portador no início de cada Ato dele.",
       "Se o portador tiver 0 no atributo Arcano, o núcleo não queima, mas mantém-se quente.",
-      "Sempre que o portador conjurar uma magia, pode absorver a Queimadura de todos a 3m — cada stack absorvido adiciona +1 no modificador de Potência, até um máximo de +20."
+      "Sempre que o portador conjurar uma magia de Potência, pode absorver a Queimadura de todos a 3m — cada stack absorvido adiciona +1 no resultado dessa conjuração, até um máximo de +20."
     ],
     "description": "No centro exato de Rubra existe uma câmara que nenhum mapa oficial marca, onde um punhado de arcanistas obcecados passou uma geração tentando engarrafar magma vivo dentro de um cajado. A maioria morreu tentando. Os poucos cajados que sobreviveram ao processo carregam um núcleo que nunca esfria de verdade — ele só espera. Quem o empunha aprende rápido que pedir mais poder ao cajado é sempre possível. O problema nunca foi conseguir. Foi pagar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1ada50-c665-6c40-a99f-1b01ca5f4efe/lucid-origin_highly_detailed_illustration_of_Magma_Core_Staff_a_medium-weight_fantasy_arcane_-3.jpg"
@@ -3766,7 +3766,7 @@
     "effects": [
       "Uso único. É consumido após ser usado.",
       "Após ser ingerida, o alvo deve fazer um teste de Fortitude (dif. 24). Se falhar, sofre 7D10 de dano, que não pode ser defendido.",
-      "Se passar no teste de Fortitude, o alvo ganha +15 em todos os modificadores de magia."
+      "Se passar no teste de Fortitude, o alvo ganha +10 no resultado de conjurações."
     ],
     "description": "O mercado negro de Rubra vende isso com o mesmo tom de quem vende fruta — 'fresquinha, feita hoje, funciona garantido' — sem mencionar que o comprador é, tecnicamente, o próprio explosivo a partir do momento em que engole. A cápsula se aloja no corpo e espera um comando mental específico pra detonar, ou dez turnos de paciência pra ser digerida sem drama. Ninguém que vende sabe explicar por que engolir é mais confiável que carregar na mão. Todo mundo que compra prefere não perguntar.",
     "image": "https://cdn.leonardo.ai/users/5c4726a9-4ca6-4557-9fd0-2e78657144af/generations/1f1adfbb-344c-60a0-b985-e9c63f992b5a/lucid-origin_highly_detailed_illustration_of_Controlled_Detonation_Capsule_a_super-lightweigh-0.jpg"

@@ -1,117 +1,106 @@
 # Invocação
 
-Invocar é uma forma específica de conjuração — o conjurador usa o Arcano para **trazer uma criatura para o Plano Material**.
+> *Invocar não é criar algo do nada. É abrir uma porta e convidar algo a atravessar.*
 
-A entidade invocada pode ser **qualquer coisa que o elemento e a intenção justifiquem narrativamente**. O elemento arcano não limita o que pode ser invocado — ele define *de onde* ou *do quê* a criatura é feita:
+Invocar é uma magia como outra qualquer: uma intenção, um teste, um resultado. A diferença é o que ela produz, uma criatura, em vez de dano, cura ou uma estrutura. Este capítulo mostra como.
+
+---
+
+## A Invocação em Poucas Linhas
+
+- Invocar usa a perícia **Controle**, como qualquer magia que cria algo novo no mundo (veja [Conjuração](conjuracao)).
+- Você descreve a criatura que quer trazer; o Mestre define a **DT** pela ambição do pedido.
+- Você rola normalmente: **2D12 + Arcano + Controle**. Passou a DT, a criatura aparece.
+- O resultado (com o mesmo teto de 2 × DT de toda magia) vira **pontos de efeito**. Você pode gastar parte deles para deixar a criatura mais **inteligente**, e o resto lê a **Tabela de Invocação**, que diz o porte, a força e as características dela.
+
+Quanto maior a ambição do que você pede, maior a DT, e maior precisa ser o resultado para alcançá-la. Uma criatura pequena, para tarefas simples e para obedecer ordens, é barata. Uma entidade colossal e brilhante exige um resultado enorme.
+
+---
+
+## O Elemento Define a Origem
+
+O elemento arcano não limita o que pode ser invocado, ele define **de onde** ou **do quê** a criatura é feita. A magia usa o elemento da Afinidade ou da Antítese do conjurador, como qualquer outra (veja [Afinidade e Antítese](afinidades)).
 
 | Elemento | O que pode ser invocado |
 |---|---|
-| **Energia** | Construtos de matéria pura — golems de lava, elementais de fogo ou relâmpago, formas de luz solidificada |
-| **Anomalia** | Criaturas reais com características mutadas — um predador com membros extras, uma hondra ou um animal |
-| **Paradoxo** | Cópias distorcidas da realidade — clones do próprio conjurador, ecos temporais de seres, reflexos do que poderia ter existido |
-| **Astral** | Morto-vivo ou Zumbis, Espíritos dos planos, sombras do Reino das Almas, entidades da Rede dos Sonhos ou formas do Mundo das Tintas |
-| **Cognitivo** | Manifestações da mente — medos tomando forma, memórias com corpo, constructos feitos de percepção coletiva |
-
-O Mestre atribui o elemento na conjuração como em qualquer outra magia. A criatura invocada usa as estatísticas de uma entidade do Bestiário ou é criada pelo Mestre com base no que foi descrito.
+| **Energia** | Construtos de matéria pura: golems de lava, elementais de fogo ou relâmpago, formas de luz solidificada |
+| **Anomalia** | Criaturas reais com características mutadas: um predador com membros extras, uma hondra, um animal alterado |
+| **Paradoxo** | Cópias distorcidas da realidade: clones do próprio conjurador, ecos temporais de seres, reflexos do que poderia ter existido |
+| **Astral** | Mortos-vivos ou zumbis, espíritos dos planos, sombras do Reino das Almas, entidades da Rede dos Sonhos ou formas do Mundo das Tintas |
+| **Cognitivo** | Manifestações da mente: medos tomando forma, memórias com corpo, constructos feitos de percepção coletiva |
 
 ---
 
-## Os Modificadores da Invocação
+## A Dificuldade
 
-Invocar usa os modificadores do sistema arcano, mas cada um define uma dimensão específica da entidade trazida. Toda invocação exige no mínimo **2 modificadores**.
+A DT mede a ambição do que você pede, exatamente como em qualquer conjuração: quanto maior e mais capaz a criatura, mais alta.
 
-| Modificador | O que define na invocação |
+| Invocar... | DT |
 |---|---|
-| **Forma** | O porte físico e quantos dados a criatura vai usar em seus testes |
-| **Complexidade** | A sofisticação da entidade — quantas habilidades especiais pode usar |
-| **Controle** | A qualidade do vínculo — quão obediente e estável a entidade permanece |
-
-### Lendo o Resultado
-
-Cada modificador é um aspecto da invocação.
-
-**Forma** — Determina o tier físico da entidade invocada.
-Esta lista é uma referencia de como poderia ser conforme o teste do conjurador.
-
-| Resultado | Tier da entidade | Dado Base |
-|---|---|---|
-| 0 – 20 | Menor — animal de pequeno porte, construto frágil | D6
-| 21 – 30 | Padrão — criatura do tamanho de um humano adulto | D8
-| 31 – 40 | Elite — criatura grande, urso, elemental robusto | D12
-| 41+ | Chefe — entidade colossal, ancião de plano, construto monumental | D20
-
-**Complexidade** — Determina a sofisticação da invocação.
-
-| Resultado | Sofisticação | Quantidade de Dados
-|---|---|---|
-| 0 – 20 | Bruta — sem habilidades especiais | 2 |
-| 21 – 30 | Capaz — possui 1 habilidade especial | 3 |
-| 31+ | Refinada — possui 2 habilidades especiais | 4 |
-
-**Controle** — Determina se o conjurador consegue ou não comandar a invocação criada.
-| Resultado | Comandos | Exemplos
-|---|---|---|
-| 0 – 20 | Comandos basicos | atacar, defender, esquivar, etc. |
-| 21 – 30 | Comandos avançados | Explicar algo complexo para fazer, como proteger um aliado, pedir para pegar um item, etc. |
-| 31+ | Inteligente | Não precisa mandar um comando, a invocação pode fazer ações sem instruções pré-determinadas pelo invocador. |
-
-### Como calcular
-
-O conjurador vai executar os testes Forma, Complexidade e Controle.
-
-**Forma** ==> O resultado adquirido, vai definir o Dado base dessa invocação.
-
-**Complexidade** ==> O resultado adquirido, vai definir a quantidade de dados base a invocação vai jogar.
-
-**Controle** ==> O resultado define quais tipos de instruções a invocação é capaz de receber e executar.
+| Uma criatura pequena, para tarefas simples e obediência | 15 |
+| Uma criatura comum, capaz e obediente | 25 |
+| Uma fera de elite, com uma característica fora do comum | 35 |
+| Uma entidade poderosa, inteligente e imponente | 50 |
 
 ---
 
-### Vida da Invocação
+## A Inteligência da Criatura
 
-Toda invocação tem 1 de Vida Máxima. O invocador pode sacrificar 1 de sua própria Sanidade para aumentar a Vida da invocação em 1.
+Antes de ler a Tabela de Invocação, você decide **quanto do total de pontos de efeito quer gastar** para deixar a criatura mais inteligente. O que sobra define o porte dela.
+
+| Custo | Nível | O que ela entende |
+|---|---|---|
+| 0 | **Burra** | Não aceita comandos. Age sempre pelo **Instinto** (veja *Comandando a Criatura*, abaixo). |
+| 1 | **Racional** | Obedece comandos simples: atacar, defender, buscar, proteger. Sem comando, age pelo Instinto. |
+| 2 | **Inteligente** | Se comunica, obedece comandos complexos, e pode agir por conta própria, sem precisar de nenhum comando. |
+
+Uma criatura Burra não é inútil, só não escuta ordens: ela luta, existe e tem o porte que os pontos restantes permitirem. É a escolha certa quando você só quer poder bruto, sem se importar com quem ela ataca. Um espírito pequeno pedido só para tarefas simples também pode ficar Racional gastando 1 ponto, mesmo com poucos pontos de sobra.
 
 ---
 
-### DA e DP da Invocação
+## A Tabela de Invocação
 
-Toda invocação tem 0 de DA e DP base.
-Para cada 5 pontos na rolagem de **Complexidade** aumenta a DA em 1.
-A **DP** é a metade da DA, arredondando para baixo.
+Os pontos que sobraram depois da Inteligência leem esta tabela, que usa os mesmos portes e Dados Base de qualquer criatura do [Bestiário](bestiario):
 
----
+| Pontos | Porte | Dados Base | Características |
+|---|---|---|---|
+| 1 – 3 | **Menor** | 1D12 | 0 |
+| 4 – 6 | **Padrão** | 2D12 | 1 |
+| 7 – 9 | **Elite** | 3D12 | 2 |
+| 10+ | **Chefe** | 2D20 ou 3D20 | 3 |
 
-### Ações da Invocação
+> *Exemplo: Selene invoca um elemental de fogo (Energia). O Mestre pede DT 35, uma fera de elite. O resultado, já com o teto aplicado, dá 8 pontos de efeito. Ela pode gastar 0 e ficar com um elemental Elite e Burro (8 pontos), gastar 1 e ficar com um Elite Racional (restam 7, ainda Elite), ou gastar 2 para um Inteligente (restam 6, que já cai para Padrão). Quanto mais inteligência ela pede, menos sobra para o porte.*
 
-Toda invocação tem 2 ações e 1 reação, quando estiverem em batalha.
+**Vida e Defesa:** a criatura usa a Vida e a DA da tabela abaixo, mais baixas que as de uma criatura comum do Bestiário (veja [Criando uma Criatura](criando-criatura)) — uma invocação é temporária, e não precisa aguentar tanto quanto algo que já vive no mundo. O Mestre escolhe um valor dentro da faixa. A DP é sempre ⌊DA ÷ 2⌋.
+
+| Porte | Vida | DA |
+|---|---|---|
+| **Menor** | 1 – 10 | 1 – 2 |
+| **Padrão** | 10 – 30 | 2 – 4 |
+| **Elite** | 30 – 50 | 4 – 5 |
+| **Chefe** | 50+ | 5 – 7 |
+
+**Características:** voar, um braço a mais, escalar, camuflagem, respirar debaixo d'água, cuspir ácido, qualquer traço concreto que a intenção e o elemento justifiquem. Cada uma pode dar um bônus, um dano extra ou Vantagem em testes específicos. O Mestre as escolhe com base no elemento e na intenção descrita, como faria para qualquer criatura do Bestiário.
 
 ---
 
 ## Execução e Duração
 
-O tipo de Execução define por quanto tempo a criatura permanece no Plano Material.
+A invocação segue a mesma [Execução Arcana](conjuracao) de qualquer magia: Rápida, Concentrada ou Maldição. Duas particularidades:
 
-### Rápida
-A criatura aparece, realiza **uma ação imediata** definida no momento da invocação e some. Não pode receber comandos adicionais depois.
-
-### Concentrada
-A invocação é convocada como uma **ação rápida**, mas o invocador entra em estado de **concentração** — sustentando o vínculo arcano enquanto mantiver o foco.
-- Sempre que o invocador **sofrer dano** ou um evento que comprometa seu foco (a critério do Mestre), deve fazer um teste de **Vontade** para manter o vínculo ativo.
-- Cada invocação Concentrada adicional ativa simultaneamente aplica **−1D12** (Desvantagem) nesse teste de Vontade.
-- Se o teste falhar, a criatura desaparece imediatamente.
-
-### Maldição
-A criatura é vinculada permanentemente ao invocador — sem necessidade de concentração ou manutenção.
+- **Concentrada:** cada invocação Concentrada adicional, mantida ao mesmo tempo, aplica **Desvantagem** ao teste de Vontade que sustenta as outras. Manter várias criaturas ativas ao mesmo tempo é cada vez mais difícil.
+- **Maldição:** a criatura fica vinculada ao conjurador permanentemente, sem exigir concentração, com o custo de **+10 na DT** de toda magia com Maldição.
 
 ---
 
 ## Comandando a Criatura
 
-A criatura age no **turno dos jogadores**, junto aos aliados.
+A criatura funciona como qualquer participante de um Conflito: tem seu próprio Ato, executa Ações e acumula Exaustão como qualquer personagem quando é Protagonista (veja [Conflito](conflito)).
 
-- Para ordenar que a criatura realize uma **ação específica**, o invocador gasta **1 de suas próprias ações** para comandá-la. Com a ação específica criada, a invocação vai seguir esse comando pelo resto do combate até ser alterado.
-- Um único comando pode ser feito para multiplas invocações, por exemplo: mandar todos as invocações atacarem.
-- Sem receber um comando, a criatura age pelo **instinto dela** — o Mestre usa o campo **Instinto** da ficha da criatura como guia.
+- Para ordenar que a criatura realize uma **ação específica**, o invocador gasta **1 de suas próprias ações** para comandá-la, e isso só funciona se ela for ao menos **Racional**. Com o comando dado, a invocação segue essa ordem pelo resto do combate, até ser alterada.
+- Um único comando pode ser feito para múltiplas invocações ao mesmo tempo, por exemplo: mandar todas as invocações atacarem.
+- Uma criatura **Inteligente** não precisa de comando: ela decide por conta própria.
+- Uma criatura **Burra**, ou qualquer invocação sem comando no momento, age pelo **Instinto** dela, o Mestre usa o campo Instinto da ficha da criatura como guia.
 
 ### Instinto
 
@@ -122,9 +111,8 @@ A criatura age no **turno dos jogadores**, junto aos aliados.
 | **Predador** | A invocação ignora o alvo principal do invocador para focar e perseguir o inimigo com menos pontos de vida ou que pareça mais vulnerável. |
 | **Protetor** | A invocação prioriza a defesa do invocador ou de aliados feridos. Ela se moverá para interceptar ataques e ficará posicionada como um escudo vivo. |
 | **Fugaz** | A invocação evita o confronto direto. Ela prioriza ataques à distância, emboscadas ou recuar caso inimigos se aproximem demais. |
-| **Frenético** | Se a invocação sofrer dano, ela vai atacar esse alvo. Ela pode mudar de alvo, dependendo de quem foi o ultimo a causar dano na invocação. |
+| **Frenético** | Se a invocação sofrer dano, ela vai atacar esse alvo. Ela pode mudar de alvo, dependendo de quem foi o último a causar dano na invocação. |
 | **Oportunista** | A invocação prioriza atacar alvos que estejam incapacitados, caídos ou sofrendo com efeitos negativos (como tontura ou paralisia). |
-| **Errático** | A invocação é imprevisível. No início de cada turno, o mestre (ou um dado) define se ela vai atacar, defender ou simplesmente se distrair com o cenário. |
+| **Errático** | A invocação é imprevisível. No início de cada turno, o Mestre (ou um dado) define se ela vai atacar, defender ou simplesmente se distrair com o cenário. |
 
-> *Uma criatura com instinto "Hostil" sem comando vai atacar o inimigo mais próximo. Uma com instinto "Protetor" vai posicionar-se entre o invocador e os inimigos. O instinto não é inimigo — mas também não é aliado perfeitamente controlável.*
-
+> *Uma criatura com instinto "Hostil" sem comando vai atacar o inimigo mais próximo. Uma com instinto "Protetor" vai posicionar-se entre o invocador e os inimigos. O instinto não é inimigo, mas também não é aliado perfeitamente controlável.*
