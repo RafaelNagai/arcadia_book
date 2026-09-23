@@ -59,7 +59,7 @@ O personagem está à beira da morte — consciente apenas o suficiente para sen
 
 ### Valor Inicial de Sanidade
 
-Todo personagem começa com **15 de Sanidade Máxima**, acrescidos de um bônus baseado no maior entre **Intelecto** e **Influência**. Compare os dois Atributos e use o de maior valor como referência na tabela abaixo. O bônus é cumulativo: cada ponto no atributo soma o valor daquela faixa ao total.
+Todo personagem começa com **15 de Sanidade Máxima**, acrescidos de um bônus baseado no **Intelecto** do personagem. O bônus é cumulativo: cada ponto no atributo soma o valor daquela faixa ao total.
 
 | Valor do Atributo | Bônus por ponto | Sanidade Total |
 |---|---|---|
@@ -76,7 +76,7 @@ Todo personagem começa com **15 de Sanidade Máxima**, acrescidos de um bônus 
 | 10 | +2 | 41 |
 | 11+ | +2 | … |
 
-> *Exemplo: Mira tem Intelecto 2 e Influência 4. Influência é maior — ela usa esse valor como referência. Sanidade inicial: **29**.*
+> *Exemplo: Mira tem Intelecto 3. Sanidade inicial: **26**.*
 
 ### Morte Mental
 

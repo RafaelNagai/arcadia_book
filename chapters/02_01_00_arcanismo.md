@@ -43,7 +43,7 @@ O que separa um mago de quem apenas tentou é o quanto ele treinou, o quanto con
 
 ## O Atributo Arcano
 
-O **Arcano** é o quinto atributo do personagem, ao lado de Físico, Destreza, Intelecto e Influência. Ele mede o quanto você é familiarizado com a essência que move a magia e **soma em toda conjuração**.
+O **Arcano** é o quarto atributo do personagem, ao lado de Físico, Destreza e Intelecto. Ele mede o quanto você é familiarizado com a essência que move a magia e **soma em toda conjuração**.
 
 Como os outros atributos, ele não cresce com pontos distribuídos: cresce com a **experiência narrativa**, com os riscos que o personagem correu e com os preços que pagou.
 

@@ -188,61 +188,14 @@ Durante o jogo, o Mestre solicita testes de Conhecimento quando uma memória ou 
 
 ---
 
-## Influência
+## E as Conversas?
 
-A **Influência** mede carisma, presença, empatia e força de personalidade. É o atributo da comunicação, da liderança e do impacto emocional. Personagens com alta Influência podem inspirar, enganar ou dominar os outros apenas com palavras e atitude.
+Você deve ter notado que não existe um atributo pra "convencer alguém" ou "impor presença". Isso não é um esquecimento — em Arcádia, diálogos, negociações e confrontos verbais não se resolvem rolando uma perícia. Eles têm um capítulo próprio: [Diálogo](dialogo).
 
-> *Algumas batalhas terminam antes de começar. Não por falta de coragem — por excesso de presença.*
+O motivo de essa parte do jogo não usar perícia é explicado em [Por Que Não Existe Influência](por-que-sem-influencia).
 
----
+## Quarto Atributo
 
-### Empatia
-
-A **Empatia** é a arte de entender e transmitir sentimentos. Permite convencer, acalmar ou inspirar pessoas sem recorrer à força ou à lógica fria. Diplomatas e líderes a utilizam para resolver conflitos e construir alianças duradouras.
-
-**Exemplos de uso:**
-- Acalmar uma multidão enfurecida.
-- Negociar um acordo entre facções inimigas.
-- Mediar uma discussão sem tomar partido.
-- Reconfortar alguém em estado de choque.
-
----
-
-### Dominação
-
-A **Dominação** usa medo, poder ou presença para influenciar os outros. Não é apenas gritar — é a capacidade de impor sua vontade com palavras, postura e olhar. Aqueles que dominam não pedem: eles estabelecem.
-
-**Exemplos de uso:**
-- Fazer um inimigo hesitar antes de atacar.
-- Forçar alguém a obedecer ordens pela força da personalidade.
-- Desestabilizar psicologicamente um oponente.
-- Silenciar uma sala com presença.
-
----
-
-### Persuasão
-
-A **Persuasão** é a perícia da influência racional e emocional combinadas. Envolve retórica, charme e argumentação — usada para convencer alguém com lógica, apelo emocional ou carisma puro.
-
-**Exemplos de uso:**
-- Convencer um guarda a liberar uma passagem.
-- Influenciar opiniões em um debate público.
-- Fazer alguém acreditar em uma versão dos fatos.
-- Negociar preços, favores ou alianças.
-
----
-
-### Performance
-
-A **Performance** mede a expressão artística e a presença cênica. Músicos, atores e bardos a utilizam para comover, distrair ou inspirar. Em certos contextos — especialmente quando o Arcano está envolvido — pode ter poder que vai além do entretenimento.
-
-**Exemplos de uso:**
-- Cantar ou tocar para emocionar uma plateia.
-- Enganar inimigos com uma atuação convincente.
-- Distrair guardas com um espetáculo improvisado.
-
-## Quinto Atributo
-
-Existe um quinto atributo conhecido como **Arcano**, ele representa o seu conhecimento e experiência em impor sua vontade e desejo, para moldar esse arcano em algo Material.
+Existe um quarto atributo conhecido como **Arcano**, ele representa o seu conhecimento e experiência em impor sua vontade e desejo, para moldar esse arcano em algo Material.
 
 Saiba mais, consultando sobre [arcano](arcanismo)

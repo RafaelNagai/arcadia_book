@@ -5,6 +5,7 @@
 
 ## 2026-09-22
 
+- O livro ganhou um capítulo novo, "Diálogo", explicando como negociações, discussões e outras conversas importantes funcionam agora — sem precisar rolar dado no meio da cena, prestando atenção de verdade no que é dito. Um segundo capítulo, "Por Que Não Existe Influência", conta o raciocínio por trás dessa mudança pra quem tiver curiosidade. O atributo Influência e as perícias Empatia, Dominação, Persuasão e Performance saíram do livro; a ficha de personagem ainda não foi alterada — essa parte vem depois.
 - Os ícones e botões de Condição na ficha de personagem (o círculo da condição, os botões de editar e remover, e o botão de adicionar) ficaram um pouco maiores, facilitando o toque no celular.
 - Agora dá para editar uma Condição que já está na ficha (nome, ícone, descrição e efeitos), em vez de precisar apagar e criar de novo. Vale tanto para o dono da ficha quanto para o mestre da campanha, e para qualquer condição — não precisa ter sido quem a criou.
 - Agora o dono da ficha também pode adicionar e remover as próprias Condições (como Congelado, Fratura etc.) direto na ficha de personagem — antes só o mestre da campanha conseguia fazer isso.
