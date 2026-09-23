@@ -25,10 +25,10 @@ Se o Resultado Final for **igual ou maior** que a **Dificuldade (DT)** definida 
 > Lyra tem Físico 2 e Atletismo 3. Ela rola 2D12 e tira [10, 6].
 > Resultado Final: 10 + 6 + 2 + 3 = **21**. Sucesso.
 
-**Exemplo — Diplomacia:**
-> Vesper tenta convencer um comerciante desconfiado a aceitar um preço menor. O Mestre define DT 22.
-> Vesper tem Influência 3 e Persuasão 2. Ele rola 2D12 e tira [7, 9].
-> Resultado Final: 7 + 9 + 3 + 2 = **21**. Falha por um ponto — o comerciante não cede, mas não fecha a porta.
+**Exemplo — Investigação:**
+> Vesper tenta reconstruir a rota de um contrabandista a partir de pegadas na lama. O Mestre define DT 22.
+> Vesper tem Intelecto 3 e Investigação 2. Ele rola 2D12 e tira [7, 9].
+> Resultado Final: 7 + 9 + 3 + 2 = **21**. Falha por um ponto — a pista quase se perde, mas ainda dá pra seguir.
 
 ### Referência de Dificuldades
 
@@ -104,7 +104,7 @@ Algo dá errado além da simples falha. O Mestre introduz uma complicação ines
 
 > **Exemplo — Escalada:** Marcus rola [1, 8] tentando escalar um muro. Ele não apenas falha — uma pedra solta se desprende com barulho, alertando os guardas próximos.
 
-> **Exemplo — Negociação:** Yira rola [1, 6] tentando convencer um mercador. Ela não apenas falha — ele se ofende com a abordagem e recusa qualquer contato futuro por hoje.
+> **Exemplo — Percepção:** Yira rola [1, 6] tentando notar uma armadilha escondida no chão. Ela não apenas falha — pisa em cima dela antes mesmo de perceber o perigo.
 
 > **Exemplo — Conjuração:** Nessa tenta conjurar fogo e rola [1, 5]. A magia sai de controle e chamusca sua própria mão em vez do alvo.
 

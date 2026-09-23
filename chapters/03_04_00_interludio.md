@@ -116,7 +116,7 @@ O jogador escolhe uma **perícia alvo**. Durante o Intervalo, pode realizar **X 
 
 **Descrição:** Cuidar de laços emocionais, terapia, rituais sociais — qualquer ação que recupere sanidade ou reforce a coesão do grupo.
 
-Role **2D12 + Empatia + Influência**:
+Role **2D12 + Vontade**:
 
 | Resultado | Efeito |
 |---|---|
@@ -134,21 +134,32 @@ Role **2D12 + Empatia + Influência**:
 
 **Obter um Rumor**
 
-Role **2D12 + Influência + Empatia / Persuasão / Investigação** (a perícia que melhor se encaixa na abordagem):
+Escolha a abordagem: social ou investigativa.
 
-| Resultado | Efeito |
-|---|---|
-| 25+ | Ganho de contato + pista crucial |
-| ≥ 20 | Pista útil |
-| ≥ 10 | Informação vaga |
+- **Social** — use o **Diálogo Rápido** (1D20, +5 se tocar um Gatilho — ver [Diálogo](dialogo)):
+
+  | Resultado | Efeito |
+  |---|---|
+  | 20+ | Ganho de contato + pista crucial |
+  | 15-19 | Pista útil |
+  | 12-14 | Informação vaga |
+  | < 12 | Nada |
+
+- **Investigativa** — role **2D12 + Investigação**:
+
+  | Resultado | Efeito |
+  |---|---|
+  | 25+ | Ganho de contato + pista crucial |
+  | ≥ 20 | Pista útil |
+  | ≥ 10 | Informação vaga |
 
 **Negociar um Favor**
 
-Role contra uma DT definida pelo Mestre conforme o alvo (mais alta para nobres, guildas e inimigos). Sucesso = favor garantido. Fracasso = custo social, pago em reputação ou recurso concreto.
+Role o **Diálogo Rápido** (ver [Diálogo](dialogo)). Sucesso = favor garantido. Fracasso = custo social, pago em reputação ou recurso concreto.
 
 **Compra e Venda**
 
-Resolva o preço base da transação e, se o jogador desejar negociar condições melhores, role um teste de Persuasão ou Investigação.
+Resolva o preço base da transação e, se o jogador desejar negociar condições melhores, use o **Diálogo Rápido** (abordagem social) ou role **2D12 + Investigação** (avaliando o item ou o mercado).
 
 ---
 

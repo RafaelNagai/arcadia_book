@@ -11,20 +11,27 @@
 
 ### Em andamento
 
-### Sistema de Diálogo (substituição de Influência): capítulos do livro concluídos
+### Sistema de Diálogo (substituição de Influência): livro inteiro varrido e normalizado
 **Origem:** conversa de design com o autor. Playtest expôs que testes de Persuasão/Dominação permitiam que um resultado de dado alto forçasse a história a se adaptar ao jogador, mesmo sem justificativa narrativa (ex.: jogador cospe no vilão, alega "foi sem querer", rola Crítico em Persuasão, e pelas regras antigas o teste passava). Decisões de mecânica registradas em `dialogo_social_draft.md` (raiz do projeto). Ficha de personagem e SPEC.md ficam para depois — só os capítulos do livro foram preparados nesta rodada.
-**Adicionada:** 2026-09-22 · Validado por conferência manual de links entre capítulos e termos antigos (sem Validator automático).
+**Adicionada:** 2026-09-22 · Auditoria completa dos 43 arquivos de `chapters/` (agente dedicado, achados verificados por amostragem antes de aplicar) + correções aplicadas e confirmadas pelo autor.
 
-- [x] Criar capítulo `dialogo` (01_07_00): mecânica do Progresso da Conversa, valor oculto 0–20, Gatilhos, magnitude de ajustes — ensino em camadas (base condensada primeiro, detalhe depois, como o capítulo de Arcanismo)
-- [x] Criar capítulo `por-que-sem-influencia` (01_07_01): explicação de game design separada da mecânica, para quem quiser entender o raciocínio sem misturar com as regras de mesa
+- [x] Criar capítulo `dialogo` (01_07_00): mecânica do Progresso da Conversa, valor oculto 0–20, Gatilhos, magnitude de ajustes, Gerador Rápido de Gatilhos (1D12 Sentimento + 1D20 Foco), Diálogo Rápido (fora de cena) — ensino em camadas (base condensada primeiro, detalhe depois, como o capítulo de Arcanismo)
+- [x] Criar capítulo `por-que-sem-influencia` (01_07_01): explicação de game design separada da mecânica, com ênfase em que o objetivo foi incentivar o Role Play
 - [x] Remover seção de Influência (Empatia, Dominação, Persuasão, Performance) de `pericias.md`; Arcano passa a ser o "quarto atributo" em vez de "quinto" (aqui e em `arcanismo.md`)
-- [x] Atualizar `personagem.md`: "três forças" no lugar de "quatro", tabela-resumo sem a linha de Influência, Nível recalculado para 12 perícias, ponteiro novo para `dialogo`/`por-que-sem-influencia`
+- [x] Atualizar `personagem.md`: "três forças" no lugar de "quatro", tabela-resumo sem a linha de Influência, Nível recalculado para 15 perícias (12 comuns + 3 arcanas), ponteiro novo para `dialogo`/`por-que-sem-influencia`
 - [x] Atualizar `vida_e_sanidade.md`: fórmula de Sanidade usa só Intelecto (antes era `max(Intelecto, Influência)`)
+- [x] Auditoria completa de `chapters/` (43 arquivos) — achados classificados em load-bearing vs. cosmético
+- [x] **Navios Orgânicos** (`navios.md`, `combate_naval.md`): obediência da criatura agora tem três caminhos — Convencer (trata a criatura como NPC de Diálogo), Criar Vínculo (ao longo do tempo, critério do Mestre) ou Manipular com Magia (feitiço de Complexidade). Atributo base pro pool de D6 em combate vira Vontade (era Influência). Motor de Biolumes (era Dominação) e Motor de Ego (era Persuação, com erro de digitação) trocados para Vontade e Conhecimento. Tabela de Prisão remapeada de "bônus em Teste de Influência" para "bônus no ajuste de Progresso em interrogatório".
+- [x] **PE** (`esforco.md`): teto total cai de 25 para 20 (4 atributos × 5, em vez de 5 × 5)
+- [x] **Diálogo Rápido criado e aplicado**: Moral (`Discurso Inspirador`, exemplo "Espada do Ferreiro") e Interlúdio (`Ligações` → 2D12+Vontade, `Obter um Rumor` e `Compra e Venda` → trilha social via Diálogo Rápido + trilha investigativa mantida, `Negociar um Favor` → Diálogo Rápido)
+- [x] **Bestiário** (`bestiario.md`, `criando_criatura.md`): Influência removida sem substituto — criaturas voltam a ter 3 atributos (Físico, Destreza, Intelecto)
+- [x] Exemplos reescritos em `evolucao_e_testes.md` e `dificuldade_testes.md` (7 bullets que usavam Persuasão/Dominação como perícia de teste único)
+- [x] 2 links quebrados corrigidos, achados durante a auditoria (sem relação com Influência): `pericias` → `pericia` (slug correto no manifest) em `personagem.md` e `dialogo.md`; `[Testes](evolucao)` → `(testes)` em `combate.md`
 
 **Pendência separada, fora do escopo desta rodada:**
 - `SPEC.md` ainda lista Influência como atributo e a fórmula antiga de Sanidade — não atualizado de propósito, junto com a ficha.
-- Outros ~18 arquivos em `chapters/` (bestiário, regiões, navios, religiões, itens arcanos etc.) ainda citam Influência ou as perícias antigas em passagens pontuais — não varridos nesta rodada, escopo era só os capítulos centrais de atributos/perícias e os dois capítulos novos.
-- Ficha de personagem (site/implementação) e `chapterManifest.ts` (para os dois capítulos novos aparecerem no site) ficam para uma rodada futura, quando o autor decidir avançar para a implementação.
+- Ficha de personagem (site/implementação) e `chapterManifest.ts` (os capítulos `dialogo` e `por-que-sem-influencia` não existem no manifesto ainda, então os links pra eles 404 no site até alguém rodar `/sync-mechanics`) ficam pra quando o autor decidir avançar pra implementação — próximo pedido em andamento: adicionar Traços e Gatilhos do próprio personagem (simétrico aos de NPC) no início da criação de personagem, no site.
+- `cognitivo.md:43` tem uma magia chamada "Empatia Sugestiva" — mecanicamente não tem relação com a perícia removida, mas o nome pode confundir; troca de nome é opcional, a critério do autor.
 
 ---
 

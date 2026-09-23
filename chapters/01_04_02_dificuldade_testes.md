@@ -61,7 +61,7 @@ Tarefas que exigem algum cuidado ou prática básica. Uma pessoa despreparada po
 
 **Exemplos:**
 - Subir uma cerca de madeira molhada pela chuva.
-- Convencer um guarda distraído de que você tem permissão para passar.
+- Escutar uma conversa inteira através de uma porta fina.
 - Tratar um corte superficial com materiais básicos.
 - Reparar uma vela rasgada durante uma calmaria.
 - Seguir rastros óbvios na lama fresca.
@@ -76,7 +76,7 @@ O patamar padrão de desafio. Personagens treinados passam com consistência; pe
 
 **Exemplos:**
 - Escalar a muralha externa de um forte durante a chuva.
-- Negociar um preço justo com um comerciante experiente.
+- Decifrar um bilhete cifrado com uma lógica simples.
 - Falsificar um documento simples com materiais adequados.
 - Rastrear uma presa por terreno de pedra.
 - Realizar primeiros socorros em um ferimento sério.
@@ -93,7 +93,7 @@ Requer dedicação e experiência. A maioria das pessoas comuns falha aqui — n
 **Exemplos:**
 - Escalar o mastro de um navio em mar agitado.
 - Forjar uma arma funcional em condições improvisadas.
-- Convencer um nobre cético de que você é um emissário legítimo.
+- Pilotar um bote através de destroços flutuantes em alta velocidade.
 - Infiltrar um armazém fortemente vigiado à noite.
 - Desativar uma armadilha arcana simples sob pressão.
 - Realizar uma cirurgia de emergência com instrumentos básicos.
@@ -108,7 +108,7 @@ O teto do que é plausível sem auxílio externo. Alcançar essa faixa exige que
 
 **Exemplos:**
 - Correr sobre as cordas entre dois navios durante uma tempestade.
-- Persuadir um capitão inimigo a trair seu empregador no meio de um confronto.
+- Guiar um navio inteiro através de uma tempestade de Anomalia sem perder o rumo.
 - Disparar com precisão em um alvo em movimento a longa distância, com vento forte.
 - Resistir aos efeitos iniciais de um veneno potente apenas pela força de vontade.
 - Consertar o motor arcano de um navio voador com peças improvisadas.
@@ -126,7 +126,7 @@ Fora do alcance de qualquer personagem comum sem auxílio. Para chegar aqui é n
 - Resistir à compulsão de uma magia de controle mental de alto nível.
 - Forjar uma arma de Tier superior com materiais raros sem oficina adequada.
 - Rastrear um alvo que usou magia para apagar seus rastros.
-- Convencer um conselho inteiro de autoridades hostis a mudar de posição.
+- Reconstruir de memória um ritual arcano complexo visto uma única vez, anos atrás.
 
 ---
 

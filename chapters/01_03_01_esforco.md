@@ -3,7 +3,7 @@
 Os **Pontos de Esforço** representam a determinação do explorador em superar seus próprios limites — a reserva interna que permite ir além quando tudo indica que não é possível.
 
 ## Capacidade
-Cada um dos **cinco Atributos** armazena até **5 PE** independentemente. Um personagem pode ter até 25 PE no total, distribuídos entre Físico, Destreza, Intelecto, Influência e Arcano.
+Cada um dos **quatro Atributos** armazena até **5 PE** independentemente. Um personagem pode ter até 20 PE no total, distribuídos entre Físico, Destreza, Intelecto e Arcano.
 
 ## Como Usar PE
 O jogador pode gastar PE de duas formas, **após** rolar os dados:
@@ -28,4 +28,4 @@ Gaste **1 PE** para transformar o valor de **um** Dado Usado em 12. Útil para g
 | **Interpretação** | Recompensa por boas jogadas narrativas e decisões marcantes |
 | **Treinamento** | Durante descanso ou *downtime*, o personagem pode treinar um Atributo específico e ganhar PE fixos naquele Atributo |
 
-> **Distribuição:** PE ganhos por Treinamento ficam fixos no Atributo treinado. PE ganhos por outras fontes podem ser distribuídos livremente entre os cinco Atributos, respeitando o limite de 5 por Atributo.
+> **Distribuição:** PE ganhos por Treinamento ficam fixos no Atributo treinado. PE ganhos por outras fontes podem ser distribuídos livremente entre os quatro Atributos, respeitando o limite de 5 por Atributo.

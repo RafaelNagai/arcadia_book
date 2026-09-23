@@ -22,7 +22,7 @@ A menos que haja emboscada, os dois Capitães disputam quem age primeiro em um *
 
 ## 2. Rodada do Capitão
 
-No início do turno, o Capitão rola um número de **D6** igual ao seu **Atributo base** (Destreza para Materiais, Influência para Orgânicos). Em seguida, distribui os **resultados obtidos** entre os setores do navio.
+No início do turno, o Capitão rola um número de **D6** igual ao seu **Atributo base** (Destreza para Materiais, Vontade para Orgânicos). Em seguida, distribui os **resultados obtidos** entre os setores do navio.
 
 Cada dado distribuído pode ser somado a **um teste ou resultado** realizado pelo tripulante naquele setor durante o turno. Quando dois ou mais dados são distribuídos para o **mesmo setor**, cada um pode ser somado a um resultado diferente — ou todos somados a um único resultado, a critério da mesa.
 

@@ -301,6 +301,18 @@ Pra um NPC criado na hora, sem tempo de pensar num Gatilho do zero, role dois da
 
 ---
 
+## Diálogo Rápido (Fora de Cena)
+
+Nem toda interação social acontece como uma cena jogada, linha por linha. Durante um Intervalo de Capítulo, ou qualquer resumo de tempo que passa entre cenas, manter um Progresso vivo não faz sentido — não existe cena pra ele acompanhar. Pra esses casos, use a versão abreviada:
+
+1. Role **1D20**.
+2. Se a abordagem tocar um **Gatilho** do alvo, some **+5** ao resultado.
+3. **12 ou mais:** sucesso.
+
+O Diálogo Rápido não substitui o Diálogo de cena — ele existe só pra não travar o jogo em interações de fundo, como as do capítulo de [Intervalo de Capítulo](interludio).
+
+---
+
 ## Quando a Conversa Se Rompe
 
 Se o Progresso chega a 0, a conversa acaba ali. Isso não significa necessariamente um Conflito armado — o Mestre escolhe a consequência que fizer sentido pro NPC: ele pode expulsar o grupo, chamar a guarda, simplesmente virar as costas e nunca mais atender ninguém do grupo, ou, sim, partir pra briga. O importante é que a porta se fecha — ao menos por enquanto.
@@ -313,4 +325,5 @@ Se o Progresso chega a 0, a conversa acaba ali. Isso não significa necessariame
 |---|---|
 | Entender por que essa mecânica existe e o que ela substitui | [Por Que Não Existe Influência](por-que-sem-influencia) |
 | Saber o que acontece quando a conversa vira briga | [Conflito](conflito) |
-| Rever as perícias que ajudam a descobrir Gatilhos | [Perícias](pericias) |
+| Rever as perícias que ajudam a descobrir Gatilhos | [Perícias](pericia) |
+| Usar o Diálogo Rápido durante o tempo entre cenas | [Intervalo de Capítulo](interludio) |

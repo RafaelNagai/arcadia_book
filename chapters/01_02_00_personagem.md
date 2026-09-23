@@ -18,7 +18,7 @@ Cada Atributo governa quatro Perícias. Quando você investe numa Perícia, est�
 
 > **Valores iniciais:** Todo Atributo e toda Perícia começam em **0** por padrão. Os pontos distribuídos na criação do personagem definem o ponto de partida de cada um. Um valor 0 significa que o personagem não tem treino formal naquela área — ele pode tentar, mas conta apenas com o que os dados oferecem.
 
-Conheça cada Atributo e Perícia em detalhes no [capítulo de Perícias](pericias).
+Conheça cada Atributo e Perícia em detalhes no [capítulo de Perícias](pericia).
 
 ### Resumo sobre Atributos e Perícias
 

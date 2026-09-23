@@ -241,7 +241,7 @@ Defender-se dessa forma nunca gera Exaustão (veja *Intervir Cansa*, acima). As 
 
 ### Multiplicador de Dano Crítico
 
-O dano funciona por **sucessos individuais** (ver [Defesa](defesa)): cada dado de dano que atinja a DA ou DP do alvo causa 1 ponto de dano. Quando o teste de ataque resulta em **Crítico** ou **Milagre** (ver [Testes](evolucao)), esse valor é multiplicado — de forma centralizada, para **qualquer tipo de dano**: corpo a corpo, à distância ou arcano.
+O dano funciona por **sucessos individuais** (ver [Defesa](defesa)): cada dado de dano que atinja a DA ou DP do alvo causa 1 ponto de dano. Quando o teste de ataque resulta em **Crítico** ou **Milagre** (ver [Testes](testes)), esse valor é multiplicado — de forma centralizada, para **qualquer tipo de dano**: corpo a corpo, à distância ou arcano.
 
 | Resultado do teste de ataque | Multiplicador |
 |---|---|

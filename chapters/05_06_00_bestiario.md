@@ -27,14 +27,13 @@ As criaturas em Arcádia **não possuem perícias** — elas agem por instinto, 
 
 ### Atributos
 
-As criaturas possuem os mesmos quatro atributos dos personagens — mas seus valores refletem natureza, não treinamento.
+As criaturas possuem os mesmos três atributos centrais dos personagens — mas seus valores refletem natureza, não treinamento.
 
 | Atributo | O que representa na criatura |
 |---|---|
 | **Físico** | Força bruta, resistência corporal, capacidade de impacto |
 | **Destreza** | Velocidade, agilidade, precisão nos movimentos |
 | **Intelecto** | Instinto, percepção, capacidade de aprender comportamentos |
-| **Influência** | Presença intimidadora, liderança de bando, aura territorial |
 
 Quando a criatura fizer um teste relacionado a um atributo, role os **Dados Base** e some o atributo correspondente.
 

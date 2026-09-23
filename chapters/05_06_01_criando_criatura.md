@@ -9,7 +9,7 @@ Antes de qualquer número, responda:
 - **Como ela sobrevive?** O que ela caça, come ou protege?
 - **Como ela se comporta quando encontra os personagens?**
 
-O conceito define tudo que vem depois. Uma criatura que foge quando ameaçada precisa de alta Destreza. Uma que protege território precisa de Influência alta para intimidar.
+O conceito define tudo que vem depois. Uma criatura que foge quando ameaçada precisa de alta Destreza. Uma que protege território precisa de Físico alto para impor presença.
 
 ---
 
@@ -35,7 +35,7 @@ Use estas faixas como referência:
 | +3 a +5 | Destacado, superior |
 | +6 ou mais | Excepcional — reservado para criaturas de Chefe |
 
-A soma total dos quatro atributos deve ser proporcional ao nível da criatura. Uma criatura de Nível 4 não deveria ter +5 em todos os atributos.
+A soma total dos três atributos deve ser proporcional ao nível da criatura. Uma criatura de Nível 4 não deveria ter +5 em todos os atributos.
 
 ---
 
