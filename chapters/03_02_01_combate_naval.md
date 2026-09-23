@@ -6,15 +6,15 @@ O combate entre navios é um jogo de alocação de recursos. Cada decisão do Ca
 
 ## 1. Iniciativa
 
-A menos que haja emboscada, os dois Capitães disputam quem age primeiro em um **Melhor de 3**. Cada round usa uma perícia diferente:
+A menos que haja emboscada, os dois Capitães disputam quem age primeiro em uma **melhor de 3**. Cada rodada usa uma perícia diferente:
 
-| Round | Perícia | Contexto |
+| Rodada | Perícia | Contexto |
 |---|---|---|
 | 1 | **Precisão** | Cálculo de trajetória |
 | 2 | **Combate** | Instinto de batalha |
 | 3 | **Conhecimento** | Tática naval |
 
-> No Round 3, o Capitão precisa ter um **antecedente relacionado a navegação** para disputar. Sem ele, é **derrota automática** naquele round.
+> Na rodada 3, o Capitão precisa ter um **antecedente relacionado à navegação** para disputar. Sem ele, é **derrota automática** naquela rodada.
 
 **Vantagem de Iniciar:** Quem vence a iniciativa ataca a **DN natural** do adversário — antes de qualquer melhora por manobras de Velas. O defensor não tem tempo de reagir.
 
@@ -24,7 +24,7 @@ A menos que haja emboscada, os dois Capitães disputam quem age primeiro em um *
 
 No início do turno, o Capitão rola um número de **D6** igual ao seu **Atributo base** (Destreza para Materiais, Vontade para Orgânicos). Em seguida, distribui os **resultados obtidos** entre os setores do navio.
 
-Cada dado distribuído pode ser somado a **um teste ou resultado** realizado pelo tripulante naquele setor durante o turno. Quando dois ou mais dados são distribuídos para o **mesmo setor**, cada um pode ser somado a um resultado diferente — ou todos somados a um único resultado, a critério da mesa.
+Cada dado distribuído pode ser somado a **um teste ou resultado** realizado pelo tripulante naquele setor durante o turno. Quando dois ou mais dados vão para o **mesmo setor**, cada um pode ser somado a um resultado diferente — ou todos a um único resultado, a critério da mesa.
 
 > *Exemplo: O Capitão tem Destreza 4. Rola 4D6 e obtém [6, 5, 3, 2]. Distribui 6 e 5 no Armamento, 3 nas Velas, 2 no Radar. Os atiradores têm valores altos para somar ao dano, mas o piloto das Velas tem apenas 3 para sua manobra — tornando o navio um alvo mais fácil nesse turno.*
 
@@ -34,8 +34,9 @@ Cada dado distribuído pode ser somado a **um teste ou resultado** realizado pel
 
 Cada tripulante pode fazer **1 ação por turno**:
 
-- **Ação Livre:** Pode se alocar em algum setor ou fazer uma ação livre desde que convença usando perícias.
-> Ataques de longa-distancia ou magias feitas por tripulantes, que não sejam as ações dos setores, vão ter desvantagem nos testes.
+- **Ação Livre:** O tripulante pode se alocar em um setor ou fazer outra ação qualquer, desde que a justifique com uma perícia.
+
+> Ataques à distância ou magias feitos por tripulantes fora das ações dos setores têm **Desvantagem** nos testes.
 
 ---
 
@@ -55,7 +56,7 @@ Quando o poder de fogo não é suficiente — ou o objetivo é capturar a carga 
 
 ### O Processo
 
-O Capitão atacante e o Capitão defensor disputam em **6 rounds de Manobra (Velas)**. A cada round, ambos rolam Manobra; quem vencer o round marca **1 sucesso** para si. O atacante precisa de **3 ou mais sucessos** para emparelhar os navios e lançar os ganchos com sucesso.
+O Capitão atacante e o Capitão defensor disputam **6 rodadas de Manobra (Velas)**. A cada rodada, ambos rolam o teste do setor de Velas; quem vencer a rodada marca **1 sucesso** para si. O atacante precisa de **3 ou mais sucessos** para emparelhar os navios e lançar os ganchos com sucesso.
 
 > **Se ambos os Capitães quiserem atracar** — por negociação, aliança ou rendição — a abordagem é **automaticamente bem-sucedida**. Nenhum teste é necessário.
 
@@ -66,7 +67,7 @@ O campo de batalha se divide em dois cenários:
 - **Cenário A:** Navio Atacante
 - **Cenário B:** Navio Defensor
 
-Quando a conexão é feita, isso se torna um campo de batalha — usam-se as regras de [Conflito](conflito), com apenas estes adendos:
+Feita a conexão, usam-se as regras de [Conflito](conflito), com apenas estes adendos:
 
 | Situação | Regra |
 |---|---|

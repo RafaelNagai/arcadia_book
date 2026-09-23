@@ -8,13 +8,13 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Dano térmico contínuo causado por fogo ou calor extremo.
 
-**Mecânica:** Cada stack causa **1 de dano por turno** (no final do turno do afetado). Stacks se acumulam — o dano total é igual ao número de stacks (3 stacks = 3 de dano por turno). O dano de Queimado é descontado primeiro da **Durabilidade** dos itens equipados — apenas o excedente vai ao HP.
+**Mecânica:** Cada acúmulo causa **1 de dano por turno** (no final do turno do afetado). Os acúmulos se somam — o dano total é igual ao número de acúmulos (3 acúmulos = 3 de dano por turno). O dano de Queimadura é descontado primeiro da **Durabilidade** dos itens equipados — apenas o excedente vai para a Vida.
 
 **Resistência:** Não é possível resistir à aplicação.
 
 **Cura e redução:**
-- Água, cura mágica ou primeiros socorros, ações para apagar o fogo: −X stack por aplicação.
-- Passagem de tempo: −1 stack automaticamente ao final de cada turno.
+- Água, cura mágica, primeiros socorros ou ações para apagar o fogo: −X acúmulos por aplicação.
+- Passagem do tempo: −1 acúmulo automaticamente ao final de cada turno.
 
 ---
 
@@ -22,7 +22,7 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Toxinas que corroem o corpo. Escala com reinfecção.
 
-**Mecânica:** Na primeira vez que o personagem é envenenado, sofre **1 de dano/debuff por turno** dependendo do tipo de veneno. A cada vez que é envenenado novamente (com o mesmo veneno), a intensidade sobe em 1: 1 → 2 → 3 → 4 → 5 → 6. O dano/debuff de Envenenamento **ignora Durabilidade** ou efeitos — o dano de envenenamento vai diretamente ao HP.
+**Mecânica:** Na primeira vez que o personagem é envenenado, sofre **1 de dano ou penalidade por turno**, dependendo do tipo de veneno. A cada vez que é envenenado novamente (com o mesmo veneno), a intensidade sobe em 1: 1 → 2 → 3 → 4 → 5 → 6. O dano de Envenenamento **ignora Durabilidade** e outros efeitos de proteção — vai direto para a Vida.
 
 **Resistência:** Fortitude — teste bem-sucedido reduz a intensidade em 1.
 
@@ -36,14 +36,14 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Ferida aberta que causa perda de sangue ao ser reativada.
 
-**Mecânica:** O Sangramento **não causa dano por turno automaticamente**. Em vez disso, cada vez que novo Sangramento é aplicado ao personagem, ele sofre dano imediato igual ao seu **número atual de stacks** — e o stack sobe em 1. O dano **ignora Durabilidade** — vai diretamente ao HP.
+**Mecânica:** O Sangramento **não causa dano por turno automaticamente**. Em vez disso, cada vez que um novo Sangramento é aplicado ao personagem, ele sofre dano imediato igual ao seu **número atual de acúmulos** — e os acúmulos sobem em 1. O dano **ignora Durabilidade** — vai direto para a Vida.
 
-> *Exemplo: Ren tem 3 stacks de Sangramento. Um inimigo aplica outro — ele sofre 3 de dano imediato e o stack passa para 4.*
+> *Exemplo: Ren tem 3 acúmulos de Sangramento. Um inimigo aplica outro — ele sofre 3 de dano imediato e os acúmulos passam para 4.*
 
 **Resistência:** Fortitude ou Atletismo.
 
 **Cura e redução:**
-- Torniquete ou primeiros socorros: −2 stacks (se o teste for bem-sucedido).
+- Torniquete ou primeiros socorros: −2 acúmulos (se o teste for bem-sucedido).
 - Cura mágica: remove completamente.
 - **Não há redução natural por turno.** Sangramento persiste até ser tratado.
 
@@ -67,8 +67,9 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Choque, concussão ou confusão que impede ações eficientes.
 
-**Mecânica:** Por **1 turno completo**, o personagem **perde o direito de jogar 1 ato**. Pode vir em níveis de gravidade: Leve (1 turno), Grave (2 turnos), e assim por diante.
-**Todo golpe recebido com esta condição ativa é considerada critico.**.
+**Mecânica:** Durante **1 turno completo**, o personagem **perde o direito de realizar seu Ato**. A condição pode vir em níveis de gravidade: Leve (1 turno), Grave (2 turnos), e assim por diante.
+
+**Todo golpe recebido com esta condição ativa é considerado crítico.**
 
 **Resistência:** Atletismo ou Fortitude.
 
@@ -81,11 +82,11 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Frio extremo que reduz mobilidade e reflexos.
 
-**Mecânica:** Cada stack remove **-2** em testes de FISICO e DESTREZA do personagem naquele turno.
+**Mecânica:** Cada acúmulo aplica **−2** nos testes de **Físico** e **Destreza** do personagem naquele turno.
 
 **Resistência:** Fortitude.
 
-**Cura e redução:** Calor, fogo, bebida quente ou cura mágica removem stacks conforme a intensidade do tratamento.
+**Cura e redução:** Calor, fogo, bebida quente ou cura mágica removem acúmulos conforme a intensidade do tratamento.
 
 ---
 
@@ -93,7 +94,7 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Incapacidade total de movimento — mágica ou física.
 
-**Mecânica:** O personagem não pode se locomover enquanto permanecer com esta condição e **todo golpe recebido com esta condição ativa é considerada critico.**.
+**Mecânica:** O personagem não pode se locomover enquanto permanecer com esta condição, e **todo golpe recebido com esta condição ativa é considerado crítico.**
 
 **Resistência:** Atletismo.
 
@@ -107,13 +108,13 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Perda temporária da visão — por luz ofuscante, fumaça, poeira ou dano direto aos olhos.
 
-**Mecânica:** Puramente narrativa: enquanto durar, o personagem sofre **Desvantagem** em qualquer teste de perícia que dependa da visão (Percepção, Precisão, Reflexo, Combate, e outras a critério do Mestre). Não causa dano nem impede movimento.
+**Mecânica:** Puramente narrativa: enquanto durar, o personagem sofre **Desvantagem** em qualquer teste de perícia que dependa da visão (Percepção, Precisão, Reflexo, Combate e outras, a critério do Mestre). Não causa dano nem impede movimento.
 
 **Resistência:** Reflexo — teste bem-sucedido evita a aplicação.
 
 **Cura e redução:**
 - Passa automaticamente ao fim da duração indicada pela fonte do efeito.
-- Água, um pano limpo ou cura mágica removem antes do previsto, se a causa for irritante físico.
+- Água, um pano limpo ou cura mágica removem antes do previsto, se a causa for um irritante físico.
 
 ---
 
@@ -121,7 +122,7 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 **Descrição:** Perda temporária da audição — por explosão, trovão ou dano sônico.
 
-**Mecânica:** Puramente narrativa: enquanto durar, o personagem sofre **Desvantagem** em qualquer teste de perícia que dependa da audição (Percepção, Intuição, e outras a critério do Mestre) e não é alertado por sons ou gritos.
+**Mecânica:** Puramente narrativa: enquanto durar, o personagem sofre **Desvantagem** em qualquer teste de perícia que dependa da audição (Percepção, Intuição e outras, a critério do Mestre) e não é alertado por sons ou gritos.
 
 **Resistência:** Fortitude — teste bem-sucedido evita a aplicação.
 
@@ -131,19 +132,19 @@ As condições são efeitos físicos ou mágicos que persistem além do impacto 
 
 ---
 
-### Cura durante o Interlúdio
+### Cura durante o Intervalo de Capítulo
 
-No **Interlúdio**, personagens podem dedicar ações para tratar condições ativas. A tabela abaixo define o que é necessário para remover cada condição fora de um Conflito:
+No **[Intervalo de Capítulo](interludio)**, os personagens podem dedicar ações para tratar condições ativas. A tabela abaixo define o que é necessário para remover cada condição fora de um Conflito:
 
 | Condição | Ação necessária | Teste | Recurso |
 |---|---|---|---|
-| **Queimadura** | Ação Rápida | Nenhum | Água ou curativo básico (remove todos os stacks) |
+| **Queimadura** | Ação Rápida | Nenhum | Água ou curativo básico (remove todos os acúmulos) |
 | **Envenenamento** | Ação Longa | Conhecimento (DT = 10 + intensidade atual) | Antídoto adequado ao veneno |
-| **Sangramento** | Ação Rápida | Fortitude DT 12 | Atadura ou torniquete (remove todos os stacks) |
+| **Sangramento** | Ação Rápida | Fortitude DT 12 | Atadura ou torniquete (remove todos os acúmulos) |
 | **Fratura leve** | Ação Longa | Nenhum | Imobilização + descanso (remove 1 penalidade) |
 | **Fratura grave** | Ação Longa | Conhecimento DT 15 | Cirurgia ou cura mágica (remove completamente) |
 | **Atordoado** | — | — | Desaparece automaticamente ao fim do Conflito |
-| **Congelado** | Ação Rápida | Nenhum | Calor, fogo ou bebida quente (remove todos os stacks) |
+| **Congelado** | Ação Rápida | Nenhum | Calor, fogo ou bebida quente (remove todos os acúmulos) |
 | **Paralisado** | Ação Rápida | Atletismo DT 14 | — (falha: tenta de novo na próxima ação) |
 | **Cego** | — | — | Desaparece automaticamente ao fim da duração |
 | **Surdo** | — | — | Desaparece automaticamente ao fim da duração |

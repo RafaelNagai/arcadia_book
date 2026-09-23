@@ -4,20 +4,20 @@
 
 ## Natureza do Elemento
 
-O **Paradoxo** é manipular o conceito.
+O **Paradoxo** é a manipulação do conceito.
 
-Seus praticantes distorcem, dobram e moldam conceitos abstratos fundamentais da realidade — como o tempo, a probabilidade, a gravidade, o espaço e o trajeto. Tudo o que a maioria das pessoas aceita como uma verdade absoluta em Arcádia torna-se passível de ser moldado e questionado pelo Paradoxo.
+Seus praticantes distorcem, dobram e moldam conceitos abstratos fundamentais da realidade — como o tempo, a probabilidade, a gravidade, o espaço e o trajeto. Tudo o que a maioria das pessoas aceita como uma verdade absoluta em Arcádia pode ser moldado e questionado pelo Paradoxo.
 
-Ao utilizar uma magia deste elemento, o conjurador deve declarar qual conceito quer alterar e em que direção. Quanto mais oposto for o objetivo ao funcionamento natural da realidade, mais complexa será a execução do feitiço. Por sua própria natureza de subverter as engrenagens do mundo, magias de Paradoxo tendem a uma alta complexidade arcana.
+Ao usar uma magia deste elemento, o conjurador deve declarar qual conceito quer alterar e em que direção. Quanto mais oposto for o objetivo ao funcionamento natural da realidade, mais complexa será a execução do feitiço. Por sua própria natureza de subverter as engrenagens do mundo, magias de Paradoxo tendem a uma alta complexidade arcana.
 
 ---
 
 ## Aplicações Práticas
 
-A versatilidade do Paradoxo permite que os conjuradores controlem as leis físicas e lógicas que regem o combate e o ambiente. Abaixo estão listadas as principais progressões de feitiços divididas por propósito tático.
+A versatilidade do Paradoxo permite que os conjuradores controlem as leis físicas e lógicas que regem o combate e o ambiente. Abaixo estão as principais intenções, divididas por propósito tático.
 
 ### Ofensiva
-*Intenções focadas em subverter o conceito do conhecimento geral, como o trajeto e a gravidade para desestruturar inimigos, redirecionar ameaças e infligir impacto distorcido.*
+*Intenções focadas em subverter conceitos de conhecimento geral, como o trajeto e a gravidade, para desestruturar inimigos, redirecionar ameaças e infligir impacto distorcido.*
 
 | Intenções | Conceito | Descrição Arcana |
 | :--- | :--- | :--- |
@@ -30,18 +30,18 @@ A versatilidade do Paradoxo permite que os conjuradores controlem as leis físic
 | **Anular Movimento** | Andar | Zera instantaneamente o conceito de Andar de um inimigo que esteja correndo, fazendo-o parar abruptamente e perder o equilíbrio. |
 | **Fricção Absoluta** | Atrito | Maximiza o conceito de atrito ao redor de uma criatura, fazendo com que qualquer movimento simples cause dano por desgaste. |
 | **Retorno Forçado** | Tempo | Altera a linha temporal recente, puxando um inimigo de volta à posição exata onde ele estava há alguns segundos. |
-| **Anular Magias** | Arcano | Permite criar uma area onde as magias arcanas tem desvantagem para serem criadas, um ambiente de instabilidade arcana. |
+| **Anular Magias** | Arcano | Cria uma área onde as magias são conjuradas com Desvantagem — um ambiente de instabilidade arcana. |
 
 ### Utilidade
-*Intenções para manipular o conceito de saltos espaciais, manipulação de probabilidades, controle de peso e dobras na física do ambiente.*
+*Intenções para saltos espaciais, manipulação de probabilidades, controle de peso e dobras na física do ambiente.*
 
 | Intenções | Conceito | Descrição Arcana |
 | :--- | :--- | :--- |
 | **Negar Gravidade** | Peso | Altera o peso para si mesmo ou para um objeto, neutralizando a gravidade para permitir flutuar ou voar. |
-| **Dobrar Espaço** | Distância | Permitindo teletransportar a si mesmo ou a um alvo para um local visível e desimpedido. |
-| **Forçar Probabilidade** | Probabilidade | Garantindo que um evento binário imprevisível (como o cair de uma moeda) resulte sempre no mesmo lado. |
+| **Dobrar Espaço** | Distância | Permite teletransportar a si mesmo ou a um alvo para um local visível e desimpedido. |
+| **Forçar Probabilidade** | Probabilidade | Garante que um evento imprevisível de dois resultados (como a queda de uma moeda) resulte sempre no mesmo lado. |
 | **Leveza Conceitual** | Gravidade | Altera sutilmente a gravidade para o próprio corpo, permitindo cair de qualquer altura de forma leve e sem danos. |
-| **Dilação de Área** | Espaço | Expande o espaço interno de um recipiente, sala ou corredor, tornando-o consideravelmente maior por dentro do que por fora. |
+| **Dilatação de Área** | Espaço | Expande o espaço interno de um recipiente, sala ou corredor, tornando-o consideravelmente maior por dentro do que por fora. |
 | **Eco Temporal** | Tempo | Cria uma duplicata de si mesmo vinda de uma fração de segundo no passado para realizar uma tarefa manual simples e simultânea. |
 | **Pausa Mecânica** | Tempo | Congela temporariamente o tempo para um objeto inanimado, travando engrenagens, armadilhas ou reações físicas. |
 | **Encurtar Trajeto** | Espaço | Altera a métrica do espaço para o grupo, permitindo que uma caminhada longa seja concluída em uma fração do tempo natural. |
@@ -54,23 +54,23 @@ A versatilidade do Paradoxo permite que os conjuradores controlem as leis físic
 | Intenções | Conceito | Descrição Arcana |
 | :--- | :--- | :--- |
 | **Antecipar Ação** | Tempo | Altera a percepção do tempo de um aliado, permitindo que ele vislumbre frações de segundo do futuro para agir primeiro. |
-| **Imunidade Cinética** | Cinético | Altera a cinética ao redor de um projetil, fazendo com que projéteis percam toda a força antes de tocá-lo. |
+| **Imunidade Cinética** | Cinético | Altera a energia cinética ao redor de um aliado, fazendo com que projéteis percam toda a força antes de tocá-lo. |
 | **Redirecionar Peso** | Peso | Transfere o conceito de peso de um aliado sobrecarregado para um ponto morto do cenário, limpando suas penalidades de movimento. |
 | **Estase Protetora** | Tempo | Coloca um aliado em um breve isolamento temporal, tornando-o completamente invulnerável a qualquer dano, mas incapaz de agir. |
 | **Retrocesso de Dano** | Tempo | Altera a linha temporal biológica de um aliado, desfazendo o último ferimento grave recebido e restaurando seu estado anterior. |
-| **Desacelerar Ataques** | Tempo | Altera o tempo em uma area para desacelerar e dificultar os ataques dos inimigos. |
-| **Durabilidade Eterna** | Durabilidade | Estagna a durabilidade de um item, permitindo que ele não seja destruído. |
-| **Ricochetiar Projétil** | Direção | Manipula o projétil para acertar multiplos alvos durante o seu trajeto até o alvo. |
-| **Anular Veneno** | Veneno | Altera o veneno para se tornar benefico ao corpo do alvo, recuperando a vida do alvo. |
+| **Desacelerar Ataques** | Tempo | Altera o tempo em uma área para desacelerar e dificultar os ataques dos inimigos. |
+| **Durabilidade Eterna** | Durabilidade | Congela a Durabilidade de um item, impedindo que ele seja destruído. |
+| **Ricochetear Projétil** | Direção | Manipula o projétil para acertar múltiplos alvos durante o seu trajeto. |
+| **Anular Veneno** | Veneno | Altera o veneno para que se torne benéfico ao corpo do alvo, recuperando a Vida dele. |
 | **Mitigar Veneno** | Veneno | Minimiza o dano sofrido por veneno. |
 
 ---
 
 ## A Lei da Reação Conceitual
 
-> **Mecânica de Jogo:** Como o elemento Paradoxo modela o conceito do que existe relacionado ao conhecimento geral, o padrão das regras modificadas são normalmente aplicadas para todos. Se torna mais complexo realizar magias de paradoxo em alvos unicos e que mudem drasticamente o conceito original.
-> Modificar o conceito de Gravidade, para anular a gravidade completamente para voar é mais complexo do que apenas diminuir a intensidade da força da gravidade.
+> **Mecânica de Jogo:** Como o Paradoxo modela conceitos que fazem parte do conhecimento geral, uma regra modificada normalmente vale para todos na área. Fica mais complexo conjurar magias de Paradoxo que afetem um único alvo ou que mudem drasticamente o conceito original.
+> Anular a gravidade por completo para voar é mais complexo do que apenas diminuir a intensidade da gravidade.
 >
-> Independente da magia de paradoxo, a realidade tende sempre a exercer uma **força de retorno** para corrigir o que foi modificado para o seu conceito natural.
+> Seja qual for a magia de Paradoxo, a realidade sempre exerce uma **força de retorno** para devolver o que foi modificado ao seu conceito natural.
 >
-> * **Exemplo Prático:** Ao manter o feitiço *Negar Gravidade* para voar, caso o conjurador sofra um dano que quebre sua concentração, o conceito de gravidade não retorna de forma suave. Ele se restabelece instantaneamente com força total acumulada. Fazendo com que a gravidade puxe o alvo para o chão com o dobro do impacto natural da queda. O conceito ajustar o equilibrio da realidade.
+> * **Exemplo Prático:** Ao manter o feitiço *Negar Gravidade* para voar, se o conjurador sofrer um dano que quebre sua concentração, a gravidade não retorna de forma suave. Ela se restabelece instantaneamente, com toda a força acumulada, e puxa o alvo para o chão com o dobro do impacto natural da queda. O conceito reajusta o equilíbrio da realidade.

@@ -4,17 +4,17 @@
 
 ## Natureza do Elemento
 
-O **Cognitivo** é moldar a vontade.
+O **Cognitivo** é a moldagem da vontade.
 
 Enquanto elementos como a Energia e a Anomalia operam diretamente sobre o mundo tangível e a matéria física, os conjuradores do Cognitivo subvertem o invisível. Esta vertente está intrinsecamente relacionada à mente, aos sentimentos profundos, às memórias e aos canais sensoriais do indivíduo. 
 
-Praticantes do Cognitivo não atacam a integridade biológica ou a armadura do corpo; eles se infiltram através da percepção, do julgamento e do consciente do alvo. Sob o domínio deste elemento, o verdadeiro campo de batalha se torna perceber quais são suas verdadeiras vontades ou induções sugeridas.
+Praticantes do Cognitivo não atacam a integridade biológica ou a armadura do corpo; eles se infiltram pela percepção, pelo julgamento e pela consciência do alvo. Sob o domínio deste elemento, o verdadeiro campo de batalha passa a ser distinguir as próprias vontades daquelas que foram induzidas.
 
 ---
 
 ## Aplicações Práticas
 
-A versatilidade do Cognitivo permite que conjuradores manipulem os sentidos e a psique das criaturas. Abaixo estão listadas as principais progressões de feitiços divididas por propósito tático.
+A versatilidade do Cognitivo permite que conjuradores manipulem os sentidos e a psique das criaturas. Abaixo estão as principais intenções, divididas por propósito tático.
 
 ### Ofensiva
 *Intenções focadas em desorientar inimigos, forçar ações prejudiciais involuntárias ou desestruturar o foco de ameaças através do colapso mental.*
@@ -61,15 +61,14 @@ A versatilidade do Cognitivo permite que conjuradores manipulem os sentidos e a 
 | **Visão Compartilhada** | Transmite uma imagem clara do campo de batalha sob a perspectiva de todos os envolvidos para a mente de um aliado, otimizando seu posicionamento ou compartilhando informações. |
 | **Estímulo de Reflexo** | Acelera artificialmente as sinapses neurais de um combatente, aumentando sua capacidade de esquiva. |
 | **Ânimo Revigorante** | Projeta memórias de triunfo ou sentimentos de pura determinação na mente de um aliado, renovando sua força de vontade. |
-| **Meditação Acelerada** | Induz a mente a um estado de repouso ultra-profundo durante um curto período, otimizando a recuperação do corpo e mente. |
+| **Meditação Acelerada** | Induz a mente a um estado de repouso ultraprofundo durante um curto período, otimizando a recuperação do corpo e da mente. |
 | **Instinto Compartilhado** | Permite que o conjurador empreste temporariamente uma de suas próprias perícias mentais ou conhecimentos para um aliado. |
 
 ---
 
 ## A Lei do Canal Mental
 
-> **Mecânica de Jogo:** Como o elemento Cognitivo opera diretamente inserindo a vontade do arcano dentro da mente de outros indivíduos, o canal criado para acessar a mente e sentimentos de um individuo é mutuamente aberto por ambos.
-> Quando realizado uma magia de cognitivo, este canal pode ser sutilmente imperceptível porém se percebido, o alvo pode também acessar a mente e os sentimentos do conjurador.
-> Se tornando uma luta pela **imposição das vontades** de ambos conectados.
+> **Mecânica de Jogo:** Como o Cognitivo opera inserindo a vontade do conjurador diretamente na mente de outros indivíduos, o canal criado para acessar a mente e os sentimentos do alvo fica aberto **nos dois sentidos**.
+> Numa magia Cognitiva, esse canal pode passar despercebido. Mas, se o alvo o perceber, ele também pode acessar a mente e os sentimentos do conjurador — e a magia se torna uma disputa pela **imposição das vontades** dos dois lados conectados.
 >
-> * **Exemplo Prático:** Ao conjurar *Gatilho de Pânico* em um inimigo de mente poderosa, caso o alvo consiga resistir ao teste ou se o feitiço for quebrado abruptamente por um dano sofrido pelo conjurador, a ilusão colapsa. O pânico injetado ricocheteia através do canal mental aberto, fazendo com que o próprio conjurador sofra uma consequencia em falha critica, fique atordoado por uma fração de segundo devido ao vislumbre do próprio terror que tentou infligir. Em casos de falha por superação, o efeito ricochete é apenas narrativo e prejudicial a curto prazo. A mente é um espaço para ser sempre preenchida por uma vontade.
+> * **Exemplo Prático:** Ao conjurar *Gatilho de Pânico* em um inimigo de mente poderosa, se o alvo resistir ao teste ou se o feitiço for quebrado abruptamente por um dano sofrido pelo conjurador, a ilusão colapsa. O pânico injetado ricocheteia pelo canal mental aberto. Numa Falha Crítica, o próprio conjurador sofre a consequência: fica atordoado por uma fração de segundo ao vislumbrar o terror que tentou infligir. Quando o alvo apenas supera a magia, o ricochete é só narrativo e passageiro. A mente é um espaço que sempre será preenchido por alguma vontade.

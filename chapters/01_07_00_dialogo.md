@@ -6,7 +6,7 @@
 
 ## O Que É o Diálogo
 
-Nem todo conflito em Arcádia se resolve com aço ou magia. Um mercador desconfiado, um capitão inimigo disposto a negociar, um guarda que só precisa de um motivo pra olhar pro outro lado — tudo isso são batalhas de outro tipo, vencidas ou perdidas na conversa.
+Nem todo conflito em Arcádia se resolve com aço ou magia. Um mercador desconfiado, um capitão inimigo disposto a negociar, um guarda que só precisa de um motivo para olhar para o outro lado — tudo isso são batalhas de outro tipo, vencidas ou perdidas na conversa.
 
 Essas cenas não usam perícia nem rolagem de dado do jogador. Quem decide o rumo é o que você realmente diz e faz na mesa — não um número na ficha.
 
@@ -16,14 +16,14 @@ Essas cenas não usam perícia nem rolagem de dado do jogador. Quem decide o rum
 
 Toda cena de interação social em Arcádia funciona assim:
 
-1. **Você fala e age em personagem.** Sem anunciar perícia, sem pedir pra rolar — você só interpreta a abordagem que seu personagem realmente tentaria.
+1. **Você fala e age em personagem.** Sem anunciar perícia, sem pedir para rolar — você só interpreta a abordagem que seu personagem realmente tentaria.
 2. **O Mestre guarda um número oculto: o Progresso.** Vai de 0 a 20 e representa o quanto aquele NPC está disposto a ceder. Só o Mestre sabe o valor.
-3. **Cada fala ou atitude move o Progresso** — pra cima quando faz sentido pro NPC, pra baixo quando ofende ou soa falso. O número nunca aparece pra vocês; a única pista é como o Mestre interpreta a reação do NPC.
+3. **Cada fala ou atitude move o Progresso** — para cima quando faz sentido para o NPC, para baixo quando ofende ou soa falso. O número nunca aparece para vocês; a única pista é como o Mestre interpreta a reação do NPC.
 4. **Quando vocês pedirem algo concreto**, o Mestre compara o Progresso atual com o tamanho do pedido e decide, ali, se é suficiente.
 
 > *Exemplo: Kael tenta convencer um capitão de porto a liberar a atracação fora de hora. Ele não rola nada — ele explica, com um tom respeitoso, que a tripulação está ferida e precisa de um médico. O Mestre, vendo que o argumento é genuíno e bate com o que o capitão valoriza, sobe o Progresso em segredo. Quando Kael pede a liberação, o Mestre julga que já é suficiente — o capitão libera a doca, ainda que resmungando.*
 
-O resto deste capítulo só detalha essas quatro linhas.
+O resto deste capítulo apenas detalha esses quatro passos.
 
 ---
 
@@ -33,7 +33,7 @@ Cada conversa relevante tem seu próprio Progresso, criado no momento em que ela
 
 ### Valor Inicial
 
-Pra evitar que o Mestre precise rolar dado toda vez que um NPC qualquer abre a boca, o Progresso **começa num valor fixo**, de acordo com a disposição do NPC:
+Para evitar que o Mestre precise rolar dado toda vez que um NPC qualquer abre a boca, o Progresso **começa num valor fixo**, de acordo com a disposição do NPC:
 
 | Disposição do NPC | Progresso Inicial |
 |---|---|
@@ -41,7 +41,7 @@ Pra evitar que o Mestre precise rolar dado toda vez que um NPC qualquer abre a b
 | Comum / Neutro | 10 |
 | Hostil ou Desconhecido | 6 |
 
-Rolar **1D20** pra decidir o início é opcional — reservado a NPCs importantes ou imprevisíveis, quando o próprio Mestre quer se surpreender.
+Rolar **1D20** para decidir o início é opcional — reservado a NPCs importantes ou imprevisíveis, quando o próprio Mestre quer se surpreender.
 
 ### Teto e Piso
 
@@ -52,15 +52,15 @@ Rolar **1D20** pra decidir o início é opcional — reservado a NPCs importante
 
 ## Quanto um Pedido Pesa
 
-Não existe uma Dificuldade fixa pra "vencer" uma conversa. Cada pedido que o grupo faz é avaliado pelo Mestre ali, na hora, comparando o Progresso atual com o tamanho do que está sendo pedido. Um favor pequeno pode passar com pouco Progresso; um segredo importante exige muito mais — mesmo dentro da mesma conversa.
+Não existe uma Dificuldade fixa para "vencer" uma conversa. Cada pedido que o grupo faz é avaliado pelo Mestre ali, na hora, comparando o Progresso atual com o tamanho do que está sendo pedido. Um favor pequeno pode passar com pouco Progresso; um segredo importante exige muito mais — mesmo dentro da mesma conversa.
 
 Um pedido recusado não é definitivo. Se a conversa continuar e o Progresso subir, o mesmo pedido pode ser aceito mais tarde.
 
-> *Exemplo: O Progresso está em 8. Um jogador pede desconto numa compra — o Mestre julga insuficiente, e o vendedor recusa, mas segue conversando. Pouco depois, um comentário bem colocado eleva o Progresso pra 12. O jogador pede o desconto de novo — dessa vez o Mestre julga suficiente, e o vendedor cede.*
+> *Exemplo: O Progresso está em 8. Um jogador pede desconto numa compra — o Mestre julga insuficiente, e o vendedor recusa, mas segue conversando. Pouco depois, um comentário bem colocado eleva o Progresso para 12. O jogador pede o desconto de novo — dessa vez o Mestre julga suficiente, e o vendedor cede.*
 
 ### Magnitude dos Ajustes
 
-Como referência pro Mestre calibrar o quanto cada fala ou atitude pesa:
+Como referência para o Mestre calibrar o quanto cada fala ou atitude pesa:
 
 | Tipo de fala/atitude | Ajuste |
 |---|---|
@@ -77,7 +77,7 @@ Repetir o mesmo pedido sem trazer nenhum argumento, atitude ou informação nova
 
 ## Gatilhos
 
-Alguns NPCs têm um ou mais **Gatilhos**: algo que, se tocado na conversa, muda o Progresso muito mais do que o normal — pra cima ou pra baixo. Fica a critério do Mestre decidir se um NPC tem Gatilhos e quais são.
+Alguns NPCs têm um ou mais **Gatilhos**: algo que, se tocado na conversa, muda o Progresso muito mais do que o normal — para cima ou para baixo. Fica a critério do Mestre decidir se um NPC tem Gatilhos e quais são.
 
 > *Exemplo: Um mercador de ouro tem "ouro" como Gatilho. Oferecer ouro em troca de algo eleva o Progresso muito mais do que um argumento comum, porque ele valoriza ouro acima de quase tudo. Já insultar seu senso de honestidade — se ele se orgulha disso — pode derrubar o Progresso de uma vez.*
 
@@ -89,16 +89,16 @@ Achar o Gatilho de alguém antes ou durante a conversa é o que separa uma negoc
 - **Furtividade** — espionar uma conversa alheia, seguir o NPC até descobrir um hábito revelador.
 - **Combate ou Atletismo** — um desafio físico (uma aposta, um duelo amistoso, uma prova de resistência) que expõe algo sobre quem o NPC realmente é.
 
-Não existe um caminho único. O Mestre decide se a abordagem descrita faz sentido pra revelar algo, e pede o teste da perícia correspondente.
+Não existe um caminho único. O Mestre decide se a abordagem descrita faz sentido para revelar algo, e pede o teste da perícia correspondente.
 
 ### Gerador Rápido de Gatilhos
 
-Pra um NPC criado na hora, sem tempo de pensar num Gatilho do zero, role dois dados:
+Para um NPC criado na hora, sem tempo de pensar num Gatilho do zero, role dois dados:
 
 1. **1D12** define o **Sentimento** — a motivação por trás do Gatilho.
 2. **1D20** consulta a tabela daquele Sentimento e define o **foco** específico — o que exatamente mexe com o NPC.
 
-> *Exemplo: O Mestre precisa de um Gatilho pro capitão de porto que os jogadores acabaram de conhecer. Rola 1D12 e tira **1** (Medo). Rola 1D20 e tira **15** — na tabela de Medo, isso é "Ser exposto como fraude". Gatilho pronto: esse capitão nunca de fato comandou um navio em batalha, e vive com medo de que descubram isso. Ameaçar expor a farsa derruba o Progresso rápido; oferecer ajuda pra manter a fachada, o contrário.*
+> *Exemplo: O Mestre precisa de um Gatilho para o capitão de porto que os jogadores acabaram de conhecer. Rola 1D12 e tira **1** (Medo). Rola 1D20 e tira **15** — na tabela de Medo, isso é "Ser exposto como fraude". Gatilho pronto: esse capitão nunca de fato comandou um navio em batalha, e vive com medo de que descubram isso. Ameaçar expor a farsa derruba o Progresso rápido; oferecer ajuda para manter a fachada, o contrário.*
 
 #### Sentimento (1D12)
 
@@ -115,7 +115,7 @@ Pra um NPC criado na hora, sem tempo de pensar num Gatilho do zero, role dois da
 | 9 | Ambição | O que ele está determinado a conquistar ou se tornar |
 | 10 | Vergonha | Algo do passado que esconde a todo custo |
 | 11 | Fé | Uma crença ou princípio inegociável |
-| 12 | Tédio | O que ele faria de bom grado só pra fugir da rotina |
+| 12 | Tédio | O que ele faria de bom grado só para fugir da rotina |
 
 #### Foco (1D20 — consulte a tabela do Sentimento sorteado)
 
@@ -129,7 +129,7 @@ Pra um NPC criado na hora, sem tempo de pensar num Gatilho do zero, role dois da
 | 7-8 | Perder o controle da própria mente |
 | 9-10 | Uma pessoa ou criatura específica do passado |
 | 11-12 | Trair quem confia nele |
-| 13-14 | Perder tudo que construiu |
+| 13-14 | Perder tudo o que construiu |
 | 15-16 | Ser exposto como fraude |
 | 17-18 | Doença ou o próprio corpo falhando |
 | 19-20 | Repetir o erro de um antepassado ou mentor |
@@ -203,11 +203,11 @@ Pra um NPC criado na hora, sem tempo de pensar num Gatilho do zero, role dois da
 | 5-6 | Uma facção ou organização inteira |
 | 7-8 | Quem o humilhou publicamente |
 | 9-10 | Quem roubou algo insubstituível |
-| 11-12 | Quem o deixou pra morrer |
+| 11-12 | Quem o deixou para morrer |
 | 13-14 | Quem destruiu seu lar ou negócio |
 | 15-16 | Um rival que sempre esteve um passo à frente |
 | 17-18 | Quem quebrou uma promessa feita a ele |
-| 19-20 | Si mesmo — por algo que não consegue perdoar |
+| 19-20 | A si mesmo — por algo que não consegue perdoar |
 
 **7 — Lealdade**
 
@@ -245,7 +245,7 @@ Pra um NPC criado na hora, sem tempo de pensar num Gatilho do zero, role dois da
 |---|---|
 | 1-2 | Comandar seu próprio navio |
 | 3-4 | Ser reconhecido como o melhor no que faz |
-| 5-6 | Acumular riqueza suficiente pra nunca mais trabalhar |
+| 5-6 | Acumular riqueza suficiente para nunca mais trabalhar |
 | 7-8 | Descobrir ou explorar algo que ninguém mais viu |
 | 9-10 | Subir na hierarquia de uma organização |
 | 11-12 | Vingar ou superar a reputação da própria família |
@@ -295,7 +295,7 @@ Pra um NPC criado na hora, sem tempo de pensar num Gatilho do zero, role dois da
 | 9-10 | Um jogo de cartas, dados ou estratégia |
 | 11-12 | Fofocar sobre a vida alheia |
 | 13-14 | Provocar uma reação de alguém sério demais |
-| 15-16 | Uma boa música ou performance |
+| 15-16 | Uma boa música ou apresentação |
 | 17-18 | Notícias de lugares distantes |
 | 19-20 | A chance de ensinar algo a alguém |
 
@@ -303,19 +303,19 @@ Pra um NPC criado na hora, sem tempo de pensar num Gatilho do zero, role dois da
 
 ## Diálogo Rápido (Fora de Cena)
 
-Nem toda interação social acontece como uma cena jogada, linha por linha. Durante um Intervalo de Capítulo, ou qualquer resumo de tempo que passa entre cenas, manter um Progresso vivo não faz sentido — não existe cena pra ele acompanhar. Pra esses casos, use a versão abreviada:
+Nem toda interação social acontece como uma cena jogada, linha por linha. Durante um Intervalo de Capítulo, ou em qualquer resumo do tempo que passa entre cenas, manter um Progresso vivo não faz sentido — não existe cena para ele acompanhar. Para esses casos, use a versão abreviada:
 
 1. Role **1D20**.
 2. Se a abordagem tocar um **Gatilho** do alvo, some **+5** ao resultado.
 3. **12 ou mais:** sucesso.
 
-O Diálogo Rápido não substitui o Diálogo de cena — ele existe só pra não travar o jogo em interações de fundo, como as do capítulo de [Intervalo de Capítulo](interludio).
+O Diálogo Rápido não substitui o Diálogo de cena — ele existe só para não travar o jogo em interações de fundo, como as do capítulo de [Intervalo de Capítulo](interludio).
 
 ---
 
 ## Quando a Conversa Se Rompe
 
-Se o Progresso chega a 0, a conversa acaba ali. Isso não significa necessariamente um Conflito armado — o Mestre escolhe a consequência que fizer sentido pro NPC: ele pode expulsar o grupo, chamar a guarda, simplesmente virar as costas e nunca mais atender ninguém do grupo, ou, sim, partir pra briga. O importante é que a porta se fecha — ao menos por enquanto.
+Se o Progresso chega a 0, a conversa acaba ali. Isso não significa necessariamente um Conflito armado — o Mestre escolhe a consequência que fizer sentido para o NPC: ele pode expulsar o grupo, chamar a guarda, simplesmente virar as costas e nunca mais atender ninguém do grupo, ou, sim, partir para briga. O importante é que a porta se fecha — ao menos por enquanto.
 
 ---
 

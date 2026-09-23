@@ -4,7 +4,7 @@ Traumas são marcas permanentes que o passado deixa no personagem — psicológi
 
 > **TIPO do Trauma + ALVO do Trauma**
 
-O TIPO define *como* o trauma se manifesta mecanicamente. O ALVO define *sobre o quê*.
+O TIPO define *como* o Trauma se manifesta nas regras. O ALVO define *sobre o quê*.
 
 ## Determinando o Tipo
 
@@ -17,8 +17,8 @@ Role **1D20** e consulte a tabela:
 | 5–7 | **Paranoia** | Quando em contato com o Alvo, o Mestre pode forçar o personagem a substituir uma perícia por outra — sem aviso. O Mestre define qual perícia substitui qual, com base na narrativa. |
 | 8–10 | **Fobia** | O personagem perde **1 ação** sempre que estiver na presença do Alvo do trauma. |
 | 11–13 | **Medo** | O personagem tem **Desvantagem** em perícias quando age perante o Alvo do trauma. |
-| 14–16 | **Alergia** | O trauma se externaliza no corpo. Quando em presença ou contato com o Alvo, o Mestre aplica uma penalidade de **−3 a −10** em perícias específicas, conforme a situação narrativa. |
-| 17–19 | **Arrogância / Preconceito** | O personagem não soma bônus de atributo e pericia, e nem pode usar PE em ações contra o Alvo do trauma. |
+| 14–16 | **Alergia** | O trauma se externaliza no corpo. Quando está na presença ou em contato com o Alvo, o Mestre aplica uma penalidade de **−3 a −10** em perícias específicas, conforme a situação narrativa. |
+| 17–19 | **Arrogância / Preconceito** | O personagem não soma bônus de atributo nem de perícia, e não pode usar PE, em ações contra o Alvo do trauma. |
 | 20 | **Jogador decide** | — |
 
 ## Determinando o Alvo
@@ -48,7 +48,7 @@ Quando o Tipo sorteado for **Alergia**, role novamente nesta tabela:
 | 2 | Material | 12 | Radiação |
 | 3 | Bebida | 13 | Exercício Físico |
 | 4 | Criatura (pelo, dente, etc.) | 14 | Inseto |
-| 5 | Alimentação Vegetal | 15 | Planta |
+| 5 | Alimentação — Vegetal | 15 | Planta |
 | 6 | Alimentação — Carne | 16 | Gás |
 | 7 | Alimentação — Fruta | 17 | Luz |
 | 8 | Arcano | 18 | Grão |
@@ -59,9 +59,9 @@ Quando o Tipo sorteado for **Alergia**, role novamente nesta tabela:
 
 | Tipo + Alvo | Nome narrativo |
 |---|---|
-| Vício + Furto/Crime | Vicio em Roubar |
+| Vício + Furto/Crime | Vício em Roubar |
 | Vício + Jogos de Azar | Impulso em Cassinos |
 | Medo + Limpeza | Medo de Locais Limpos |
-| Arrogância + Raça | Preconceito a Elfos |
+| Arrogância + Raça | Preconceito contra Elfos |
 
 > Sinta-se à vontade para ser criativo com as combinações. O TIPO e o ALVO são pontos de partida — o Mestre e o jogador podem interpretar a combinação de formas inesperadas e profundas.

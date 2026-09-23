@@ -6,7 +6,7 @@
 
 ## O Que São Constelações
 
-As terras de Arcádia estão em constante deriva, levadas pelas correntes de vento e pelas marés de nuvens. Mapas de papel não existem nesse mundo — um destino que existia a leste ontem pode estar perdido numa tormenta a oeste amanhã.
+As terras de Arcádia estão em constante deriva, levadas pelas correntes de vento e pelas marés de nuvens. Mapas de papel são inúteis neste mundo — um destino que existia a leste ontem pode estar perdido numa tormenta a oeste amanhã.
 
 Para encontrar um destino, um Navegador precisa de uma **Constelação**.
 
@@ -14,15 +14,11 @@ Uma Constelação não é um desenho estelar. É a **Assinatura Mágica** única
 
 ### A Essência de Eltys
 
-A **Essência de Eltys** é uma pedra negra opaca — inerte enquanto mantida longe de qualquer ilha. *(Para a definição completa do Eltys como mineral arcano, ver capítulo de Regiões.)*
+A **Essência de Eltys** é uma pedra negra opaca — inerte enquanto mantida longe de qualquer ilha. *(Para a definição completa do Eltys como mineral arcano, veja o capítulo de [Regiões](regioes).)*
 
-Para criar uma Constelação, o explorador deve levar a pedra até a ilha de destino e expô-la ao Eltys que pulsa naquela terra. Cada ilha possui uma frequência arcana única — e ao entrar em contato com ela, a pedra reage: o negro se dissolve de dentro para fora, substituído por um azul profundo que pulsa como um universo em miniatura. Uma constelação singular forma-se no interior da pedra — o registro permanente da assinatura daquela ilha.
+Para criar uma Constelação, o explorador deve levar a pedra até a ilha de destino e expô-la ao Eltys que pulsa naquela terra. Cada ilha possui uma frequência arcana única — e ao entrar em contato com ela, a pedra reage: o negro se dissolve de dentro para fora, substituído por um azul profundo que pulsa como um universo em miniatura. Uma constelação singular se forma no interior da pedra — o registro permanente da assinatura daquela ilha.
 
 Nenhuma outra ilha produzirá a mesma constelação. A Essência não mente.
-
-Com a Essência ativada, o Navegador pode rastrear aquela ilha pelo Mar de Nuvens, não importa para onde os ventos a tenham levado.
-
-Cada ilha possui uma Essência única: duas ilhas nunca têm a mesma assinatura.
 
 ### A Economia das Constelações
 
@@ -42,7 +38,7 @@ O Mestre cria a Sequência de Constelação de cada ilha. Uma forma prática é 
 
 ### O Fluxo da Viagem
 
-A cada **turno de navegação** (que pode representar horas ou dias de viagem dependendo da escala da campanha), o Capitão ou quem estiver no leme rola **1D6** e compara com o próximo número da sequência:
+A cada **turno de navegação** (que pode representar horas ou dias de viagem, dependendo da escala da campanha), o Capitão ou quem estiver no leme rola **1D6** e compara com o próximo número da sequência:
 
 **Sincronia** — O valor rolado é **igual** ao número da sequência.
 > A rota é perfeita. O vento é favorável, o horizonte está limpo. A tripulação pode realizar um **Intervalo de Capítulo** durante esse trecho tranquilo.
@@ -52,7 +48,7 @@ A cada **turno de navegação** (que pode representar horas ou dias de viagem de
 >
 > **Diferença = |Valor Rolado − Valor da Sequência|**
 
-> Quem estiver no Leme, pode modificar o valor que saiu no dado. Por exemplo, se no dado(D6) saiu 1 mas quem estiver no Leme tem a sensação de ser 3, ele pode alterar.
+> Quem estiver no leme pode alterar o valor que saiu no dado, seguindo a própria intuição. Por exemplo: se o D6 mostrou 1, mas o timoneiro sente que o certo é 3, ele pode trocar o valor.
 
 ---
 
@@ -62,7 +58,7 @@ A cada **turno de navegação** (que pode representar horas ou dias de viagem de
 |---|---|---|
 | 0 | **Sincronia** | Rota perfeita. O navio desliza suavemente. |
 | 1 – 2 | **Ruim** | Chuvas fortes, ventos contrários ou neblina densa. |
-| 3 - 4 | **Péssima** | Tempestades de raios arcanos ou águas turbulentas. |
+| 3 – 4 | **Péssima** | Tempestades de raios arcanos ou águas turbulentas. |
 | 5 | **Caótica** | Tormentas violentas ou ataques de predadores das nuvens. |
 
 ### O Papel do Mestre nas Situações
@@ -79,9 +75,9 @@ Se a tripulação **falhar** nos testes definidos pelo Mestre para superar a sit
 
 | Situação | Penalidade no Pote de Moral |
 |---|---|
-| **Ruim** | −1 a -3 de valor em **um único dado** do PM |
-| **Péssima** | −1 a -3 de valor em **todos os dados** do PM |
-| **Caótica** | −3 a -5 de valor em **todos os dados** do PM |
+| **Ruim** | −1 a −3 no valor de **um único dado** do PM |
+| **Péssima** | −1 a −3 no valor de **todos os dados** do PM |
+| **Caótica** | −3 a −5 no valor de **todos os dados** do PM |
 
 > Os dados do PM nunca descem abaixo de 1.
 
@@ -127,7 +123,7 @@ O Pote de Moral atual da tripulação: **[8, 7, 10, 6, 9]** — Soma: 40 (Moral 
 
 Role **12D6** e registre os resultados em ordem — essa é a sequência da ilha. Você pode ajustar o comprimento conforme a narrativa: sequências curtas para destinos próximos e familiares, sequências longas para ilhas lendárias e distantes.
 
-A sequência é **segredo do Mestre**. Os jogadores nunca a veem diretamente — eles a sentem através das consequências da viagem.
+A sequência é **segredo do Mestre**. Os jogadores nunca a veem diretamente — eles a sentem pelas consequências da viagem.
 
 ### Constelações Como Recurso Narrativo
 
@@ -137,4 +133,4 @@ A sequência é **segredo do Mestre**. Os jogadores nunca a veem diretamente —
 
 ### Sincronia e Ritmo da Campanha
 
-Turnos de Sincronia não são "tempo desperdiçado" — são o momento para os jogadores respirarem, interagirem entre si e realizarem ações de Intervalo de Capítulo. Use-os para construir personagem entre os momentos de tensão.
+Turnos de Sincronia não são "tempo desperdiçado" — são o momento para os jogadores respirarem, interagirem entre si e realizarem ações de Intervalo de Capítulo. Use-os para desenvolver os personagens entre os momentos de tensão.

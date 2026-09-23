@@ -1,6 +1,6 @@
 # Conjuração
 
-> *O ato de moldar o arcano a sua vontade, para os ignorantes, uma magia.*
+> *O ato de moldar o Arcano à sua vontade — o que os leigos chamam de magia.*
 
 ---
 
@@ -71,7 +71,7 @@ A DT mede **o quão difícil é aquilo existir**, e não o quanto você quer que
 | Um meteoro | 50 | Grande |
 | Entrar na mente de todos de uma cidade | 50 | Grande |
 
-Repare nas duas magias de falar mentalmente: a mesma magia vale 20 ou 25 conforme exista ou não uma vontade no caminho. É sempre o mesmo dial. **Resistência do alvo, ambiente hostil, pressão e ambição sobem a DT.** É assim que o Mestre lida com quem resiste: não há teste extra do outro lado, só uma DT mais alta.
+Repare nas duas magias de falar mentalmente: a mesma magia vale 20 ou 25 conforme exista ou não uma vontade no caminho. O ajuste é sempre o mesmo. **Resistência do alvo, ambiente hostil, pressão e ambição sobem a DT.** É assim que o Mestre lida com quem resiste: não há teste extra do outro lado, só uma DT mais alta.
 
 ---
 
@@ -100,12 +100,12 @@ No exemplo de Lira, o resultado 27 dá 5 pontos. O que cada ponto vale depende d
 | Perícia | Cada ponto de efeito vale |
 |---|---|
 | **Potência** | +1D12 de dano, físico ou material (fogo, raio, pedra, impacto) |
-| **Complexidade** | +1 de Vida curada, ou +1 stack de condição |
+| **Complexidade** | +1 de Vida curada, ou +1 acúmulo de condição |
 | **Controle** | O resultado lê a Tabela de Grandeza, o tamanho do que foi criado ou movido. Proteções têm regra própria, mais abaixo |
 
-A bola de fogo de Lira, com 5 pontos, causa **5D12 de dano**. Os dados de dano arcano funcionam como qualquer outro dano: cada dado que iguala ou supera a DA do alvo causa 1 ponto de dano (veja [Defesa](defesa)). O multiplicador de Crítico e de Milagre segue a tabela do capítulo de [Conflito](conflito) e vale igualmente para dano, cura e stacks.
+A bola de fogo de Lira, com 5 pontos, causa **5D12 de dano**. Os dados de dano arcano funcionam como qualquer outro dano: cada dado que iguala ou supera a DA do alvo causa 1 ponto de dano (veja [Defesa](defesa)). O multiplicador de Crítico e de Milagre segue a tabela do capítulo de [Conflito](conflito) e vale igualmente para dano, cura e acúmulos.
 
-Em Complexidade, uma cura de 4 pontos devolve 4 de Vida, e uma condição de 3 pontos aplica 3 stacks (3 de Queimadura, por exemplo). A natureza do efeito vem da intenção descrita e é confirmada pelo Mestre.
+Em Complexidade, uma cura de 4 pontos devolve 4 de Vida, e uma condição de 3 pontos aplica 3 acúmulos (3 de Queimadura, por exemplo). A natureza do efeito vem da intenção descrita e é confirmada pelo Mestre.
 
 ### O teto: magia barata não vira arma
 
@@ -208,7 +208,7 @@ Os Dados Usados podem dar resultados que vão além de passar ou falhar, como em
 
 | Dados Usados | Nome | Efeito |
 |---|---|---|
-| Um **12** | **Crítico** | O efeito é dobrado (dano, cura ou stacks) |
+| Um **12** | **Crítico** | O efeito é dobrado (dano, cura ou acúmulos) |
 | Dois **12** | **Milagre** | O efeito é triplicado, e a perícia usada evolui +1 |
 | Um **1**, e a magia não alcança a DT | **Falha Crítica** | O Arcano e a perícia não somam, e o Caos cobra |
 | Dois **1** | **Desastre** | O estrago da Falha Crítica em dobro |
@@ -287,8 +287,8 @@ A magia é tecida na própria realidade e permanece até ser removida.
 
 ## Formas de Conjuração
 
-O arcano pode ser moldado de diversas formas, que representam estilos de magia. Segue uma lista de algumas ideias de formas:
+O Arcano pode ser moldado de diversas formas, que representam estilos de magia. Algumas delas têm capítulo próprio:
 
 | Forma | Descrição | Capítulo |
 | :--- | :--- | :--- |
-| Invocação | Utilizar de seres ou criaturas criadas ou moldadas do arcano. | [Veja em](invocacao) |
+| Invocação | Trazer seres ou criaturas criados ou moldados pelo Arcano. | [Invocação](invocacao) |

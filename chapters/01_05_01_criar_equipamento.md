@@ -1,25 +1,25 @@
 # Criando um Equipamento
 
-> **Atenção:** Esta seção é um guia para o Mestre criar e distribuir itens. Personagens que desejam **criar, refinar ou combinar** um item devem fazê-lo durante um **Interlúdio**, usando a mecânica de [Ofício](oficio).
+> **Atenção:** Esta seção é um guia para o Mestre criar e distribuir itens. Personagens que desejam **criar, refinar ou combinar** um item devem fazê-lo durante um **[Intervalo de Capítulo](interludio)**, usando a mecânica de [Ofício](oficio).
 
 Para criar um item, siga estas etapas:
 
-1. **Escolha o Tipo:** Corpo-a-Corpo, Longa-Distância, Munição ou Equipamento (armadura, artefato, utilitário).
-2. **Defina o Tier:** De E (improvisado) a SS (lendário). O Tier determina o poder base e os efeitos possíveis.
-3. **Aplique Efeitos Especiais:** Conforme a tabela abaixo. Podem ser buffs, debuffs ou qualquer propriedade que faça sentido narrativo.
+1. **Escolha o Tipo:** Corpo a Corpo, Longa Distância, Munição ou Equipamento (armadura, artefato, utilitário).
+2. **Defina o Grau:** De E (improvisado) a SS (lendário). O Grau determina o poder base e os efeitos possíveis.
+3. **Aplique Efeitos Especiais:** Conforme a tabela abaixo. Podem ser bônus, penalidades ou qualquer propriedade que faça sentido na narrativa.
 4. **Defina a Durabilidade:** Use as tabelas como referência — o Mestre pode ajustar conforme o contexto da recompensa.
-5. **Defina o Peso:** Use a tabela abaixo para consistência de inventário.
+5. **Defina o Peso:** Use a Tabela de Pesos do capítulo de [Item e Equipamento](equipamentos) para manter o inventário consistente.
 6. **Dê nome e descrição:** Um item com história é memorável. Um item com apenas números é descartável.
 
 ---
 
-## Tabelas de Dano por Tier
+## Tabelas de Dano por Grau
 
-> **Nota:** O dado D20 não aparece em armas individuais — está reservado para armamentos de grande escala instalados em navios (ver capítulo de Navios).
+> **Nota:** O dado D20 não aparece em armas individuais — está reservado para armamentos de grande escala instalados em navios (ver capítulo de [Navios](navios)).
 
-> **Como usar estas tabelas:** O Tier serve como **referência de criação e forja**. Cada arma no mundo possui seu próprio pool de dados definido na ficha do item — as tabelas abaixo indicam o que é esperado para cada Tier. Lembrando que esta tabela é apenas uma referência, podendo ser adaptada para cada equipamento que quiser criar.
+> **Como usar estas tabelas:** O Grau serve como **referência de criação e forja**. Cada arma no mundo tem seus próprios dados de dano, definidos na ficha do item — as tabelas abaixo indicam o que é esperado para cada Grau. São apenas uma referência e podem ser adaptadas a cada equipamento que você criar.
 
-**Armamentos Corpo-a-Corpo:**
+**Armamentos Corpo a Corpo:**
 
 | Arma | SS | S | A | B | C | D | E |
 |---|---|---|---|---|---|---|---|
@@ -28,9 +28,9 @@ Para criar um item, siga estas etapas:
 | Machado | 4D12 | 3D12 | 3D10 | 2D10 | 2D8 | 1D8 | 1D8 |
 | Lança | 4D12 | 3D12 | 3D10 | 2D10 | 2D8 | 1D8 | 1D8 |
 
-**Armamentos Longa-Distância:**
+**Armamentos de Longa Distância:**
 
-A arma define a **quantidade de dados**. O projétil define o **tipo de dado**. Consulte ambas as tabelas para montar o pool completo.
+A arma define a **quantidade de dados**. O projétil define o **tipo de dado**. Consulte as duas tabelas para montar o dano completo.
 
 | Arma (quantidade) | SS | S | A | B | C | D | E |
 |---|---|---|---|---|---|---|---|
@@ -52,7 +52,7 @@ A arma define a **quantidade de dados**. O projétil define o **tipo de dado**. 
 
 ---
 
-## Tabelas de DA e Durabilidade por Tier
+## Tabelas de DA e Durabilidade por Grau
 
 **Equipamentos Defensivos — DA:**
 
@@ -74,11 +74,11 @@ A arma define a **quantidade de dados**. O projétil define o **tipo de dado**. 
 
 ---
 
-## Efeitos Especiais por Tier
+## Efeitos Especiais por Grau
 
-Itens de Tier C em diante podem carregar **Efeitos Especiais** — propriedades únicas que os diferenciam de um item comum do mesmo tipo.
+Itens de Grau C em diante podem carregar **Efeitos Especiais** — propriedades únicas que os diferenciam de um item comum do mesmo tipo.
 
-| Tier | Nível do Efeito | Quantidade |
+| Grau | Nível do Efeito | Quantidade |
 |---|---|---|
 | E, D | — | Nenhum |
 | C | Pequeno | 1 efeito |
@@ -87,4 +87,4 @@ Itens de Tier C em diante podem carregar **Efeitos Especiais** — propriedades 
 | S | Altíssimo | 1 a 3 efeitos |
 | SS | Altíssimo | 2 a 4 efeitos |
 
-Os efeitos podem ser qualquer coisa narrativamente coerente: bônus situacionais em testes, resistências elementais, dano extra, penalidades ao inimigo. A imaginação é o limite — desde que o Tier suporte a magnitude do efeito.
+Os efeitos podem ser qualquer coisa narrativamente coerente: bônus situacionais em testes, resistências elementais, dano extra, penalidades ao inimigo. A imaginação é o limite — desde que o Grau suporte a magnitude do efeito.

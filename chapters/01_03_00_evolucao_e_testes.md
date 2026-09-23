@@ -8,13 +8,13 @@
 
 Toda vez que o resultado de uma ação é incerto e as consequências importam, o Mestre pode pedir um **teste de perícia**. A mecânica central de Arcádia é construída sobre dois dados de doze faces (2D12).
 
-> O Mestre só pede testes quando há risco real e o resultado importa para a história. Tarefas triviais não precisam de rolagem — apenas as situações onde o fracasso muda algo.
+> O Mestre só pede testes quando há risco real e o resultado importa para a história. Tarefas triviais não precisam de rolagem — apenas as situações em que o fracasso muda algo.
 
 ### O Teste Padrão
 
 Role **2D12** e some os dois resultados. Em seguida, adicione o seu **bônus**:
 
-> É considerado **bônus** todo acréscimo que você tem para aquele teste — nesse caso, **Atributo** e **Perícia**.
+> **Bônus** é todo acréscimo que você tem para aquele teste — no teste padrão, o **Atributo** e a **Perícia**.
 
 > **Resultado Final = 2D12 + Atributo + Perícia**
 
@@ -28,11 +28,11 @@ Se o Resultado Final for **igual ou maior** que a **Dificuldade (DT)** definida 
 **Exemplo — Investigação:**
 > Vesper tenta reconstruir a rota de um contrabandista a partir de pegadas na lama. O Mestre define DT 22.
 > Vesper tem Intelecto 3 e Investigação 2. Ele rola 2D12 e tira [7, 9].
-> Resultado Final: 7 + 9 + 3 + 2 = **21**. Falha por um ponto — a pista quase se perde, mas ainda dá pra seguir.
+> Resultado Final: 7 + 9 + 3 + 2 = **21**. Falha por um ponto — a pista quase se perde, mas ainda dá para seguir.
 
 ### Referência de Dificuldades
 
-O Mestre usa as faixas abaixo como guia ao definir DTs. Personagens comuns, sem buffs ou bênçãos, operam de forma plausível até DT 50. Acima disso começa o território dos excepcionais. A descrição completa de cada nível, com exemplos, está no capítulo de [Dificuldade dos Testes](dificuldade-testes).
+O Mestre usa as faixas abaixo como guia ao definir DTs. Personagens comuns, sem bônus mágicos ou bênçãos, alcançam de forma plausível até DT 50. Acima disso começa o território dos excepcionais. A descrição completa de cada nível, com exemplos, está no capítulo de [Dificuldade dos Testes](dificuldade-testes).
 
 | Faixa de DT | Nível |
 |---|---|
@@ -61,11 +61,11 @@ Isso concede controle sobre o resultado: o jogador pode descartar o pior dado, m
 > Kael tem Talento em Combate. Ele rola 3D12 e tira [3, 9, 12]. Ele descarta o 3 e usa o 9 e o 12 como seus Dados Usados. Resultado base: 21.
 
 **Exemplo — manobra deliberada:**
-> Selene tem Talento em Arcanismo e rola [1, 7, 11]. Ela descarta o 1 antes mesmo de calcular — mesmo que perdesse algum potencial, garante que nenhum dado problemático entre no resultado.
+> Selene tem Talento em Potência e rola [1, 7, 11]. Ela descarta o 1 antes mesmo de calcular: garante que nenhum dado problemático entre no resultado.
 
 ### Como Adquirir Talentos
 
-Normalmente na **criação do personagem**, o jogador distribui **1 Talento** livremente entre as perícias que desejar, mas fica ao critério do mestre. Talentos adicionais podem ser aprendidos durante o jogo, a critério do Mestre — como recompensa por feitos extraordinários, treinamento intenso ou momentos de revelação narrativa.
+Normalmente, na **criação do personagem**, o jogador escolhe **1 Talento** para a perícia que desejar — a critério do Mestre. Talentos adicionais podem ser aprendidos durante o jogo, a critério do Mestre — como recompensa por feitos extraordinários, treinamento intenso ou momentos de revelação narrativa.
 
 ---
 
@@ -76,7 +76,7 @@ O resultado bruto dos dados — antes de somar qualquer bônus — pode gerar ef
 ### Crítico
 **Condição:** Tirar **12 natural** em qualquer um dos Dados Usados.
 
-Um resultado amplificado. O sucesso vai além do esperado — o Mestre narra um efeito extraordinário além do simples êxito. Em um Conflito, o crítico ativa um multiplicador de dano (ver capítulo de [Conflito](conflito)).
+Um resultado amplificado: o sucesso vai além do esperado, e o Mestre narra um efeito extraordinário. Em um Conflito, o crítico ativa um multiplicador de dano (ver capítulo de [Conflito](conflito)).
 
 > Num Crítico ou Milagre, as **penalidades** (como a Exaustão) não se aplicam ao teste, e os bônus continuam somando.
 
@@ -84,14 +84,14 @@ Um resultado amplificado. O sucesso vai além do esperado — o Mestre narra um 
 
 > **Exemplo — Furtividade:** Ash se move com Dados Usados [12, 8]. Em vez de simplesmente passar despercebida, ela se reposiciona com tanta precisão que também identifica onde está o próximo guarda.
 
-> **Exemplo — Medicina:** Dara trata um ferimento com Dados Usados [12, 7]. Além de estabilizar o paciente, ela percebe sinais de um veneno secundário que teria passado despercebido.
+> **Exemplo — Tratar um ferimento:** Dara trata um ferimento com Dados Usados [12, 7]. Além de estabilizar o paciente, ela percebe sinais de um veneno secundário que teria passado despercebido.
 
 ### Milagre
 **Condição:** Tirar **12 natural nos dois** Dados Usados.
 
 Um feito lendário. O Mestre pode permitir que o personagem ignore quase qualquer barreira — física, narrativa ou mágica. É também a condição para a **Evolução** da perícia (ver capítulo de [Evolução](evolucao)).
 
-> **Exemplo:** Lyra rola [12, 12] tentando saltar entre dois navios em plena tempestade. O Mestre decide que ela não apenas chega ao outro lado — ela aterra de forma tão precisa que os marinheiros inimigos hesitam por um momento, surpresos.
+> **Exemplo:** Lyra rola [12, 12] tentando saltar entre dois navios em plena tempestade. O Mestre decide que ela não apenas chega ao outro lado — ela aterrissa de forma tão precisa que os marinheiros inimigos hesitam por um momento, surpresos.
 
 > **Exemplo:** Theron conjura um feitiço de barreira com [12, 12]. Em vez de bloquear um único ataque, a barreira se expande e protege todos ao redor — o Mestre descreve uma aurora de luz azul que deixa os inimigos recuando.
 
@@ -100,7 +100,7 @@ Um feito lendário. O Mestre pode permitir que o personagem ignore quase qualque
 
 Algo dá errado além da simples falha. O Mestre introduz uma complicação inesperada — não apenas o personagem não conseguiu, mas a situação piorou.
 
-> Quando **1 natural** é obtido nos Dados Usados, os bônus não são somados para efetuar os cálculos. As **penalidades** (como a Exaustão) continuam valendo.
+> Quando sai **1 natural** em um dos Dados Usados, os bônus não são somados ao resultado. As **penalidades** (como a Exaustão) continuam valendo.
 
 > **Exemplo — Escalada:** Marcus rola [1, 8] tentando escalar um muro. Ele não apenas falha — uma pedra solta se desprende com barulho, alertando os guardas próximos.
 
@@ -108,7 +108,7 @@ Algo dá errado além da simples falha. O Mestre introduz uma complicação ines
 
 > **Exemplo — Conjuração:** Nessa tenta conjurar fogo e rola [1, 5]. A magia sai de controle e chamusca sua própria mão em vez do alvo.
 
-> **Importante:** A Falha Crítica só ocorre quando **ambas** as condições se cumprem. Tirar um 1 natural em um teste que ainda assim passa na DT não é uma Falha Crítica — é apenas um sucesso difícil. Com **Talento** (3D12), apenas os dois dados escolhidos contam — o dado descartado não ativa este efeito.
+> **Importante:** A Falha Crítica só ocorre quando **ambas** as condições se cumprem. Tirar um 1 natural em um teste que ainda assim passa na DT não é uma Falha Crítica — é apenas um sucesso difícil. Com **Talento** (3D12), apenas os dois dados escolhidos contam — o dado descartado não ativa esse efeito.
 
 ### Desastre
 **Condição:** Tirar **1 natural nos dois** Dados Usados.
@@ -119,7 +119,7 @@ Uma catástrofe narrativa imediata. Independentemente da DT, algo vai muito, mui
 
 > **Exemplo — Combate:** Nara rola [1, 1] em um ataque. Ela não apenas erra — a arma escorrega e cai longe, e ela fica completamente exposta a um contra-ataque imediato.
 
-> **Exemplo — Furtividade:** Cass rola [1, 1] tentando se infiltrar. Ela tropeça, derruba algo, e acaba literalmente no centro da sala que tentava evitar.
+> **Exemplo — Furtividade:** Cass rola [1, 1] tentando se infiltrar. Ela tropeça, derruba algo e acaba literalmente no centro da sala que tentava evitar.
 
 ### Resumo dos Resultados
 
@@ -145,7 +145,7 @@ O personagem opera em condições adversas. Cada nível de Desvantagem **remove 
 | 3D12 (Talento) | 2D12 | 1D12 |
 | 2D12 (padrão) | 1D12 | — |
 
-Quando a Desvantagem reduz o pool a **zero dados**, o personagem não pode usar aquela perícia. As Desvantagens são **acumulativas**.
+Quando a Desvantagem reduz a rolagem a **zero dados**, o personagem não pode usar aquela perícia. As Desvantagens são **acumulativas**.
 
 **Exemplos de fontes de Desvantagem:**
 - Usar uma perícia física com um membro ferido ou imobilizado
@@ -156,7 +156,7 @@ Quando a Desvantagem reduz o pool a **zero dados**, o personagem não pode usar 
 
 ### Vantagem
 
-O personagem opera em condições favoráveis. Cada nível de Vantagem **adiciona um dado** à rolagem.
+O personagem opera em condições favoráveis. Cada nível de Vantagem **adiciona um dado** à rolagem — e, como no Talento, o jogador escolhe quais **2 dados** serão os Dados Usados.
 
 **Exemplos de fontes de Vantagem:**
 - Um aliado auxiliando ativamente na mesma tarefa

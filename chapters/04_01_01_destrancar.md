@@ -11,17 +11,17 @@ O Mestre prepara a tranca com uma sequência de valores ocultos. Cada valor repr
 ## Preparação
 
 1. O Mestre escolhe de **3 a 10 pinos** para representar a tranca.
-2. O Mestre escolhe o dado da tranca: `d4`, `d6` ou `d12`.
-3. Todos os pinos da tranca usam o mesmo tipo de dado. Uma tranca `d6`, por exemplo, possui apenas pinos `d6`.
+2. O Mestre escolhe o dado da tranca: `D4`, `D6` ou `D12`.
+3. Todos os pinos da tranca usam o mesmo tipo de dado. Uma tranca `D6`, por exemplo, possui apenas pinos `D6`.
 4. O Mestre rola um dado para cada pino, em segredo, e mantém os valores ocultos.
 5. O jogador sabe quantos pinos existem e qual dado a tranca utiliza, mas não sabe o valor correto de cada pino.
-6. O jogador recebe uma **Ganzua** com uma quantidade definida de pontos de durabilidade. Uma Ganzua comum possui **3 pontos**.
+6. O jogador recebe uma **Gazua** com uma quantidade definida de pontos de durabilidade. Uma Gazua comum possui **3 pontos**.
 
 Os pinos são numerados em uma ordem fixa. Isso permite que o jogador associe cada palpite ao pino correto, enquanto os valores permanecem ocultos.
 
 ## Tentativas
 
-Em cada tentativa, o jogador informa, em ordem, um palpite para cada pino ainda destravado. Ele deve declarar a sequência completa antes de receber qualquer feedback do Mestre. Como todos os pinos usam o mesmo dado, cada palpite deve estar entre 1 e o valor máximo desse dado.
+Em cada tentativa, o jogador informa, em ordem, um palpite para cada pino ainda destravado. Ele deve declarar a sequência completa antes de receber qualquer resposta do Mestre. Como todos os pinos usam o mesmo dado, cada palpite deve estar entre 1 e o valor máximo desse dado.
 
 O Mestre responde a cada palpite com uma das seguintes informações:
 
@@ -29,7 +29,7 @@ O Mestre responde a cada palpite com uma das seguintes informações:
 - **Menor:** o valor correto é menor que o palpite.
 - **Clique:** o palpite está correto e o pino é destravado.
 
-Depois que a sequência completa for declarada, o Mestre responde aos palpites na ordem dos pinos. A tentativa é considerada **errada** se pelo menos um dos palpites estiver incorreto. Uma tentativa errada consome **1 ponto de durabilidade** da Ganzua, independentemente da quantidade de pinos errados nela. Uma tentativa sem erros destrava todos os pinos acertados e não consome durabilidade.
+Depois que a sequência completa for declarada, o Mestre responde aos palpites na ordem dos pinos. A tentativa é considerada **errada** se pelo menos um dos palpites estiver incorreto. Uma tentativa errada consome **1 ponto de durabilidade** da Gazua, independentemente da quantidade de pinos errados nela. Uma tentativa sem erros destrava todos os pinos acertados e não consome durabilidade.
 
 Quando todos os pinos forem destravados, a fechadura é aberta.
 
@@ -56,11 +56,11 @@ O personagem só pode realizar o teste de Precisão se possuir um antecedente, t
 
 O Mestre pode limitar essas informações quando a fechadura tiver proteção especial, for arcana ou estiver em condições que impeçam uma leitura adequada.
 
-## Ganzua quebrada
+## Gazua quebrada
 
-Quando a durabilidade da Ganzua chega a 0, ela quebra. A tentativa termina imediatamente e a fechadura permanece trancada. O Mestre pode aplicar uma consequência adicional se a cena exigir, como fazer barulho, deixar marcas ou acionar uma proteção.
+Quando a durabilidade da Gazua chega a 0, ela quebra. A tentativa termina imediatamente e a fechadura permanece trancada. O Mestre pode aplicar uma consequência adicional se a cena exigir, como fazer barulho, deixar marcas ou acionar uma proteção.
 
-Uma nova tentativa exige outra Ganzua ou uma ferramenta adequada.
+Uma nova tentativa exige outra Gazua ou uma ferramenta adequada.
 
 ## Exemplo
 
@@ -69,8 +69,7 @@ A tranca possui três pinos ocultos: **[6] [4] [1]**.
 | Tentativa | 1º pino | 2º pino | 3º pino |
 | --- | --- | --- | --- |
 | 1ª | 5 (Maior) | 4 (Clique) | 5 (Menor) |
-| 2ª | 6 (Clique) | — | 4 (Menor) |
-| 3ª | — | — | 3 (Menor) |
-| 4ª | — | — | 1 (Clique) |
+| 2ª | 6 (Clique) | — | 2 (Menor) |
+| 3ª | — | — | 1 (Clique) |
 
-Todos os pinos foram alinhados e a fechadura é destrancada.
+As duas primeiras tentativas tiveram erros e consumiram 2 pontos da Gazua comum; a terceira acertou tudo e não consumiu nada. Todos os pinos foram alinhados, a fechadura é destrancada e a Gazua ainda tem 1 ponto.

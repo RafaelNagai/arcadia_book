@@ -2,7 +2,7 @@
 
 > *Invocar não é criar algo do nada. É abrir uma porta e convidar algo a atravessar.*
 
-Invocar é uma magia como outra qualquer: uma intenção, um teste, um resultado. A diferença é o que ela produz, uma criatura, em vez de dano, cura ou uma estrutura. Este capítulo mostra como.
+Invocar é uma magia como outra qualquer: uma intenção, um teste, um resultado. A diferença é o que ela produz: uma criatura, em vez de dano, cura ou uma estrutura. Este capítulo mostra como.
 
 ---
 
@@ -13,13 +13,13 @@ Invocar é uma magia como outra qualquer: uma intenção, um teste, um resultado
 - Você rola normalmente: **2D12 + Arcano + Controle**. Passou a DT, a criatura aparece.
 - O resultado (com o mesmo teto de 2 × DT de toda magia) vira **pontos de efeito**. Você pode gastar parte deles para deixar a criatura mais **inteligente**, e o resto lê a **Tabela de Invocação**, que diz o porte, a força e as características dela.
 
-Quanto maior a ambição do que você pede, maior a DT, e maior precisa ser o resultado para alcançá-la. Uma criatura pequena, para tarefas simples e para obedecer ordens, é barata. Uma entidade colossal e brilhante exige um resultado enorme.
+Quanto maior a ambição do que você pede, maior a DT, e maior precisa ser o resultado para alcançá-la. Uma criatura pequena, para tarefas simples e que só obedece a ordens, é barata. Uma entidade colossal e brilhante exige um resultado enorme.
 
 ---
 
 ## O Elemento Define a Origem
 
-O elemento arcano não limita o que pode ser invocado, ele define **de onde** ou **do quê** a criatura é feita. A magia usa o elemento da Afinidade ou da Antítese do conjurador, como qualquer outra (veja [Afinidade e Antítese](afinidades)).
+O elemento arcano não limita o que pode ser invocado: ele define **de onde** ou **do quê** a criatura é feita. A magia usa o elemento da Afinidade ou da Antítese do conjurador, como qualquer outra (veja [Afinidade e Antítese](afinidades)).
 
 | Elemento | O que pode ser invocado |
 |---|---|
@@ -27,7 +27,7 @@ O elemento arcano não limita o que pode ser invocado, ele define **de onde** ou
 | **Anomalia** | Criaturas reais com características mutadas: um predador com membros extras, uma hondra, um animal alterado |
 | **Paradoxo** | Cópias distorcidas da realidade: clones do próprio conjurador, ecos temporais de seres, reflexos do que poderia ter existido |
 | **Astral** | Mortos-vivos ou zumbis, espíritos dos planos, sombras do Reino das Almas, entidades da Rede dos Sonhos ou formas do Mundo das Tintas |
-| **Cognitivo** | Manifestações da mente: medos tomando forma, memórias com corpo, constructos feitos de percepção coletiva |
+| **Cognitivo** | Manifestações da mente: medos tomando forma, memórias com corpo, construtos feitos de percepção coletiva |
 
 ---
 
@@ -54,7 +54,7 @@ Antes de ler a Tabela de Invocação, você decide **quanto do total de pontos d
 | 1 | **Racional** | Obedece comandos simples: atacar, defender, buscar, proteger. Sem comando, age pelo Instinto. |
 | 2 | **Inteligente** | Se comunica, obedece comandos complexos, e pode agir por conta própria, sem precisar de nenhum comando. |
 
-Uma criatura Burra não é inútil, só não escuta ordens: ela luta, existe e tem o porte que os pontos restantes permitirem. É a escolha certa quando você só quer poder bruto, sem se importar com quem ela ataca. Um espírito pequeno pedido só para tarefas simples também pode ficar Racional gastando 1 ponto, mesmo com poucos pontos de sobra.
+Uma criatura Burra não é inútil, só não ouve ordens: ela luta, existe e tem o porte que os pontos restantes permitirem. É a escolha certa quando você só quer poder bruto, sem se importar com quem ela ataca. Um espírito pequeno pedido só para tarefas simples também pode ficar Racional gastando 1 ponto, mesmo com poucos pontos de sobra.
 
 ---
 
@@ -98,9 +98,9 @@ A invocação segue a mesma [Execução Arcana](conjuracao) de qualquer magia: R
 A criatura funciona como qualquer participante de um Conflito: tem seu próprio Ato, executa Ações e acumula Exaustão como qualquer personagem quando é Protagonista (veja [Conflito](conflito)).
 
 - Para ordenar que a criatura realize uma **ação específica**, o invocador gasta **1 de suas próprias ações** para comandá-la, e isso só funciona se ela for ao menos **Racional**. Com o comando dado, a invocação segue essa ordem pelo resto do combate, até ser alterada.
-- Um único comando pode ser feito para múltiplas invocações ao mesmo tempo, por exemplo: mandar todas as invocações atacarem.
+- Um único comando pode valer para várias invocações ao mesmo tempo — por exemplo, mandar todas atacarem.
 - Uma criatura **Inteligente** não precisa de comando: ela decide por conta própria.
-- Uma criatura **Burra**, ou qualquer invocação sem comando no momento, age pelo **Instinto** dela, o Mestre usa o campo Instinto da ficha da criatura como guia.
+- Uma criatura **Burra**, ou qualquer invocação sem comando no momento, age pelo **Instinto** dela: o Mestre usa o campo Instinto da ficha da criatura como guia.
 
 ### Instinto
 
@@ -112,7 +112,7 @@ A criatura funciona como qualquer participante de um Conflito: tem seu próprio 
 | **Protetor** | A invocação prioriza a defesa do invocador ou de aliados feridos. Ela se moverá para interceptar ataques e ficará posicionada como um escudo vivo. |
 | **Fugaz** | A invocação evita o confronto direto. Ela prioriza ataques à distância, emboscadas ou recuar caso inimigos se aproximem demais. |
 | **Frenético** | Se a invocação sofrer dano, ela vai atacar esse alvo. Ela pode mudar de alvo, dependendo de quem foi o último a causar dano na invocação. |
-| **Oportunista** | A invocação prioriza atacar alvos que estejam incapacitados, caídos ou sofrendo com efeitos negativos (como tontura ou paralisia). |
+| **Oportunista** | A invocação prioriza atacar alvos que estejam incapacitados, caídos ou sofrendo com efeitos negativos (como Atordoado ou Paralisado). |
 | **Errático** | A invocação é imprevisível. No início de cada turno, o Mestre (ou um dado) define se ela vai atacar, defender ou simplesmente se distrair com o cenário. |
 
-> *Uma criatura com instinto "Hostil" sem comando vai atacar o inimigo mais próximo. Uma com instinto "Protetor" vai posicionar-se entre o invocador e os inimigos. O instinto não é inimigo, mas também não é aliado perfeitamente controlável.*
+> *Uma criatura com instinto "Hostil" sem comando vai atacar o inimigo mais próximo. Uma com instinto "Protetor" vai se posicionar entre o invocador e os inimigos. Uma criatura guiada pelo instinto não é inimiga, mas também não é uma aliada que se controla com perfeição.*

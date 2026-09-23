@@ -24,16 +24,16 @@ Conheça cada Atributo e Perícia em detalhes no [capítulo de Perícias](perici
 
 | Atributo | Perícia | Uso Central |
 |---|---|---|
-| **Físico** | Fortitude | Resistir dano, veneno, exaustão |
-| | Vontade | Resistir magia, medo, pressão mental |
-| | Atletismo | Escalar, nadar, saltar, correr |
+| **Físico** | Fortitude | Resistir a dano, veneno e exaustão |
+| | Vontade | Resistir a magia, medo e pressão mental |
+| | Atletismo | Escalar, nadar, saltar e correr |
 | | Combate | Lutar corpo a corpo |
 | **Destreza** | Furtividade | Mover-se e agir sem ser notado |
 | | Precisão | Atacar à distância com acurácia |
 | | Acrobacia | Agilidade, equilíbrio, movimentos complexos |
 | | Reflexo | Reagir instantaneamente a ameaças |
 | **Intelecto** | Percepção | Notar detalhes, detectar ameaças ocultas |
-| | Intuição | Sentir intenções, mentiras, perigos |
+| | Intuição | Sentir intenções, mentiras e perigos |
 | | Investigação | Analisar evidências e deduzir conclusões |
 | | Conhecimento | Lembrar e aplicar aprendizados do passado |
 
@@ -41,7 +41,7 @@ Conheça cada Atributo e Perícia em detalhes no [capítulo de Perícias](perici
 
 ## Conversas Não Usam Perícia
 
-Você não vai encontrar um atributo de carisma nessa lista, e isso é proposital. Negociar, mentir, acalmar ou intimidar alguém em Arcádia não se resolve rolando dado — se resolve interpretando de verdade. O capítulo de [Diálogo](dialogo) explica como isso funciona na mesa, e [Por Que Não Existe Influência](por-que-sem-influencia) explica o raciocínio por trás dessa escolha, pra quem quiser entender o "porquê" além do "como".
+Você não vai encontrar um atributo de carisma nesta lista, e isso é proposital. Negociar, mentir, acalmar ou intimidar alguém em Arcádia não se resolve rolando dado — se resolve interpretando de verdade. O capítulo de [Diálogo](dialogo) explica como isso funciona na mesa, e [Por Que Não Existe Influência](por-que-sem-influencia) explica o raciocínio por trás dessa escolha, para quem quiser entender o "porquê" além do "como".
 
 ---
 
@@ -49,7 +49,7 @@ Você não vai encontrar um atributo de carisma nessa lista, e isso é proposita
 
 Além das características que representam um personagem, os itens e equipamentos definem suas ferramentas para se aventurar pelo mundo de Arcádia.
 
-Saiba mais sobre [Inventário](inventario)
+Saiba mais no capítulo de [Inventário](inventario).
 
 ---
 
@@ -59,6 +59,6 @@ O **nível** de um personagem em Arcádia não é um número atribuído manualme
 
 > **Nível = soma total de todos os pontos em todas as 15 perícias** — as 12 de Físico, Destreza e Intelecto, mais as 3 perícias arcanas (Potência, Complexidade e Controle, ver [Arcanismo](arcanismo)).
 
-Cada vez que uma perícia ganha +1 permanente, o nível do personagem sobe em 1 — vale tanto pras perícias comuns quanto pras arcanas. O nível **não concede bônus diretos em testes** — é uma referência de progressão que permite ao Mestre compreender o grau de desenvolvimento de cada personagem e calibrar desafios, recompensas e a dificuldade dos encontros de forma adequada.
+Cada vez que uma perícia ganha +1 permanente, o nível do personagem sobe em 1 — vale tanto para as perícias comuns quanto para as arcanas. O nível **não concede bônus diretos em testes** — é uma referência de progressão que permite ao Mestre compreender o grau de desenvolvimento de cada personagem e calibrar desafios, recompensas e a dificuldade dos encontros de forma adequada.
 
 ---

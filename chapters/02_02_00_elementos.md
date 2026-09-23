@@ -1,14 +1,14 @@
 # Elementos
 
-> *O conceito definido para as regras que regem o arcano.*
+> *Cinco regras, cada uma governando uma parte do Arcano.*
 
 ---
 
 ## Os Cinco Elementos
 
-Todo arcano nasce de um dos **Cinco Elementos** — categorias que definem não apenas o que a magia faz, mas como é o seu Conceito e Definição.
+Toda magia nasce de um dos **Cinco Elementos** — categorias que definem não apenas o que a magia faz, mas também a sua natureza.
 
-O Mestre usa os elementos para classificar cada intenção arcana e verificar a relação elemental do conjurador — sua afinidade e antítese é o que define quais elementos o personagem tem acesso.
+O Mestre usa os elementos para classificar cada intenção arcana e verificar a relação elemental do conjurador: a sua Afinidade e a sua Antítese definem a quais elementos o personagem tem acesso.
 
 ---
 
@@ -16,7 +16,7 @@ O Mestre usa os elementos para classificar cada intenção arcana e verificar a 
 
 > *Manipular a regra da criação.*
 
-A **Energia** é a manifestação. Representa a criação de qualquer material ou elemento físico — fogo, eletricidade, gelo, luz. É o mais inventivo e direto dos elementos: possibilitando criar qualquer coisa.
+A **Energia** é a manifestação. Representa a criação de qualquer material ou elemento físico — fogo, eletricidade, gelo, luz. É o mais inventivo e direto dos elementos: permite criar qualquer coisa.
 
 → [Ver Energia em detalhe](energia)
 
@@ -26,7 +26,7 @@ A **Energia** é a manifestação. Representa a criação de qualquer material o
 
 > *Manipular a regra da alteração.*
 
-A **Anomalia** é a transmutação. Conjuradores dessa vertente manipulam formas vivas, mutação e alteração física. Diferente da Energia, que cria do nada, a Anomalia molda o que já existe.
+A **Anomalia** é a transmutação. Conjuradores dessa vertente manipulam formas vivas, mutações e alterações físicas. Diferente da Energia, que cria do nada, a Anomalia molda o que já existe.
 
 → [Ver Anomalia em detalhe](anomalia)
 
@@ -36,7 +36,7 @@ A **Anomalia** é a transmutação. Conjuradores dessa vertente manipulam formas
 
 > *Manipular a regra do conceito.*
 
-O **Paradoxo** é manipular o conceito. Seus praticantes distorcem e moldam conceitos abstratos — tempo, probabilidade, gravidade, espaço, etc. Quanto mais oposto ao funcionamento natural do conceito, mais complexa será a magia.
+O **Paradoxo** é a manipulação do conceito. Seus praticantes distorcem e moldam conceitos abstratos — tempo, probabilidade, gravidade, espaço etc. Quanto mais oposto ao funcionamento natural do conceito, mais complexa será a magia.
 
 → [Ver Paradoxo em detalhe](paradoxo)
 
@@ -46,7 +46,7 @@ O **Paradoxo** é manipular o conceito. Seus praticantes distorcem e moldam conc
 
 > *Manipular a regra do indivíduo.*
 
-O **Cognitivo** é moldar a vontade. Está relacionado à mente, aos sentimentos e aos sentidos. Conjuradores cognitivos não atacam o corpo — entram pela mente, pelo julgamento, pela memória.
+O **Cognitivo** é a moldagem da vontade. Está relacionado à mente, aos sentimentos e aos sentidos. Conjuradores cognitivos não atacam o corpo — entram pela mente, pelo julgamento, pela memória.
 
 → [Ver Cognitivo em detalhe](cognitivo)
 
@@ -56,7 +56,7 @@ O **Cognitivo** é moldar a vontade. Está relacionado à mente, aos sentimentos
 
 > *Manipular a regra dos planos.*
 
-O **Astral** é manipular os outros planos para se manifestar ao seu desejo. Conjuradores astrais alcançam dimensões coexistentes ao Plano Material e extraem delas forças que não existem no mundo físico, através de três pilares: **Rede dos Sonhos**, **Mundo das Tintas** e **Reino das Almas**.
+O **Astral** é a manipulação dos outros planos, fazendo-os se manifestar conforme o seu desejo. Conjuradores astrais alcançam dimensões que coexistem com o Plano Material e extraem delas forças que não existem no mundo físico, por meio de três pilares: **Rede dos Sonhos**, **Mundo das Tintas** e **Reino das Almas**.
 
 → [Ver Astral em detalhe](astral)
 

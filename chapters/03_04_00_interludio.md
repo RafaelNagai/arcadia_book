@@ -19,13 +19,13 @@ Durante um Intervalo, cada personagem pode executar **uma ação longa** ou **du
 ## Como Usar
 
 1. O Mestre declara que o grupo entra em Intervalo de Capítulo — viagem, pausa na trama, cidade segura.
-2. Cada jogador declara sua ação principal (longa) e até duas ações rápidas.
+2. Cada jogador declara o que seu personagem fará: uma ação longa ou duas ações rápidas.
 3. O Mestre narra cada encontro, resolve testes, aplica custos (tempo, materiais, risco) e registra consequências — cura, ganhos, penalidades, novas conexões.
-4. Registrar efeitos que persistem além do Intervalo: bônus de forja, progressos de treino, favores ganhos.
+4. O grupo registra os efeitos que persistem além do Intervalo: bônus de forja, progresso de treino, favores ganhos.
 
 ---
 
-## Ações Longas
+## As Ações do Intervalo
 
 ### 1. Dormir
 
@@ -43,14 +43,14 @@ O descanso é definido pela combinação de duas escolhas: a **forma** e o **loc
 - **Luxuoso:** 5 dados de recuperação
 - **Refinado:** 3 dados de recuperação
 - **Normal:** 2 dados de recuperação
-- **Precário:** 1 dados de recuperação
-- **Miserável:** 1 dado de recuperação - 4.
+- **Precário:** 1 dado de recuperação
+- **Miserável:** 1 dado de recuperação, com −4 no total
 
-Role todos os dados e some o resultado. Esse valor é recuperado em **HP**.
+Role todos os dados e some o resultado. Esse valor é recuperado em **Vida**.
 
-> *Exemplos: uma Soneca em dormitório luxuoso recupera 4D4 HP. Um Dormir Profundo em local precário — acampamento improvisado após uma batalha — recupera 1D8 HP.*
+> *Exemplos: uma Soneca em dormitório luxuoso recupera 5D4 de Vida. Um Dormir Profundo em local precário — acampamento improvisado após uma batalha — recupera 1D8 de Vida.*
 
-> O **Dormitório** instalado no navio (ver capítulo de Navios) pode elevar a qualidade do local de descanso.
+> O **Dormitório** instalado no navio (veja o capítulo de [Navios](navios)) pode elevar a qualidade do local de descanso.
 
 ---
 
@@ -64,7 +64,7 @@ Escolha entre comer de forma simples ou dedicar-se a cozinhar.
 
 **Simples — Comida Crua, Caçada ou Enlatada**
 
-Recupera **1D4 de HP** e **1D4 de Sanidade**.
+Recupera **1D4 de Vida** e **1D4 de Sanidade**.
 
 Em seguida, role um teste de **Fortitude**. Se falhar, o personagem sofre **−1 em uma perícia física** (a critério do Mestre) pelo resto do dia — o alimento inadequado pesa no corpo quando mais importa.
 
@@ -74,8 +74,8 @@ Role **2D12 + Precisão**:
 
 | Resultado | Efeito |
 |---|---|
-| ≥ 20 | Recupera **1D12 de HP** e **1D12 de Sanidade** |
-| ≥ 10 | Recupera **1D6 de HP** e **1D6 de Sanidade** |
+| ≥ 20 | Recupera **1D12 de Vida** e **1D12 de Sanidade** |
+| ≥ 10 | Recupera **1D6 de Vida** e **1D6 de Sanidade** |
 | < 10 | Nada acontece |
 
 > O bônus da **Cozinha** instalada no navio soma ao resultado deste teste.
@@ -96,8 +96,7 @@ O capítulo de Ofício define como o item é construído, como ingredientes e ef
 
 **Tempo:** 2–48h (definido pelo jogador).
 
-**Recursos necessários:**
-- Reduz 1 a 2 de PM por teste realizado.
+**Custo:** 1 a 2 de PM por teste realizado.
 
 **Descrição:** Praticar uma perícia de forma repetida e deliberada para progredir.
 
@@ -105,7 +104,7 @@ O jogador escolhe uma **perícia alvo**. Durante o Intervalo, pode realizar **X 
 
 > **X = horas dedicadas ÷ 2** (mínimo 1)
 
-- **Mentor:** se o personagem tem acesso a um mestre ou especialista, ganha D6s adicionais em cada teste de treino, aumentando as chances de Evoluir.
+- **Mentor:** se o personagem tem acesso a um mestre ou especialista, soma D6 adicionais em cada teste de treino, aumentando as chances de Evoluir.
 - **Ponto de Esforço:** a cada **4 horas de treino**, o personagem ganha **+1 PE**.
 
 ---
@@ -114,7 +113,7 @@ O jogador escolhe uma **perícia alvo**. Durante o Intervalo, pode realizar **X 
 
 **Tempo:** 1–8h.
 
-**Descrição:** Cuidar de laços emocionais, terapia, rituais sociais — qualquer ação que recupere sanidade ou reforce a coesão do grupo.
+**Descrição:** Cuidar de laços emocionais, terapia, rituais sociais — qualquer ação que recupere Sanidade ou reforce a coesão do grupo.
 
 Role **2D12 + Vontade**:
 
@@ -163,7 +162,7 @@ Resolva o preço base da transação e, se o jogador desejar negociar condiçõe
 
 ---
 
-### 7. Trabalho & Economia
+### 7. Trabalho e Economia
 
 **Tempo:** 4–12h.
 
@@ -181,8 +180,9 @@ Role **2D12 + Perícia relevante** (Atletismo para trabalho braçal, Conheciment
 
 **Nenhum dado do PM pode receber um aumento maior que 11.**
 
-> Para as regras completas de como o PM funciona como moeda, ver **O Pote como Moeda** no capítulo de Moral.
-> Esta mecânica para ganhar pontos de PM é apenas figurativa e serve para ajudar os mestres a guiar seus tripulantes. Permita que os personagens façam suas ações livremente e, conforme o que fizerem, identifique qual ação de intervalo de capítulo faz sentido, realize o teste relacionado e aplique os resultados.
+> Para as regras completas de como o PM funciona como moeda, veja **O Pote como Moeda** no capítulo de [Moral](moral).
+>
+> Esta tabela é apenas uma referência para ajudar o Mestre a guiar a tripulação. Deixe os personagens agirem livremente e, conforme o que fizerem, identifique qual ação do Intervalo de Capítulo faz sentido, peça o teste correspondente e aplique o resultado.
 
 ---
 

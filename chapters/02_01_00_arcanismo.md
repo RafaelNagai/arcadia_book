@@ -25,7 +25,7 @@ Toda magia em Arcádia funciona do mesmo jeito, do truque mais simples ao feiti�
 3. **Você faz um teste**, igual a qualquer outro do livro: rola **2D12** e soma o seu **Arcano** e a sua **perícia arcana**. Se o resultado alcança a DT, a magia acontece.
 4. **Quanto mais alto o resultado, maior o efeito.**
 
-Existe também o preço: cada conjuração custa um pouco de **Sanidade** e cansa o corpo. Mas é só isso. O resto deste capítulo e do próximo apenas dá detalhe a essas linhas.
+Existe também o preço: cada conjuração custa um pouco de **Sanidade** e cansa o corpo. Mas é só isso. O resto deste capítulo e do próximo apenas detalha esses passos.
 
 > *Exemplo: Lira quer acender a lareira apagada da taverna sem sair do banco. Fazer fogo onde já havia lenha é fácil, e o Mestre define uma DT baixa: 10. Ela rola 2D12, soma o que tem e passa com folga. A lareira acende. Se quisesse incendiar a taverna inteira, a DT seria bem mais alta.*
 
@@ -43,7 +43,7 @@ O que separa um mago de quem apenas tentou é o quanto ele treinou, o quanto con
 
 ## O Atributo Arcano
 
-O **Arcano** é o quarto atributo do personagem, ao lado de Físico, Destreza e Intelecto. Ele mede o quanto você é familiarizado com a essência que move a magia e **soma em toda conjuração**.
+O **Arcano** é o quarto atributo do personagem, ao lado de Físico, Destreza e Intelecto. Ele mede o quanto você está familiarizado com a essência que move a magia e **soma em toda conjuração**.
 
 Como os outros atributos, ele não cresce com pontos distribuídos: cresce com a **experiência narrativa**, com os riscos que o personagem correu e com os preços que pagou.
 
@@ -83,7 +83,7 @@ Vantagem e Desvantagem são as mesmas regras de qualquer teste do livro (veja [T
 
 ### Entropia: abrir a comporta
 
-Com pouca exposição ao Caos, o Arcano passa por você como água de uma torneira: controlável, mas em pouca quantidade. Com muita, é uma represa aberta: o poder é imenso, e a contenção exige tudo que você tem.
+Com pouca exposição ao Caos, o Arcano passa por você como água de uma torneira: controlável, mas em pouca quantidade. Com muita, é uma represa aberta: o poder é imenso, e a contenção exige tudo o que você tem.
 
 Essa exposição é a **Entropia**, e vai de 0 a 4. Acima do nível 0 você soma **um dado extra** ao resultado da magia, e o nível define qual: quanto mais alto, maior o dado (de um D4 no nível 1 a um D20 no nível 4). Em troca, cada conjuração custa mais Sanidade, e uma Falha Crítica em nível alto tem consequências que marcam o personagem para sempre. A Entropia sobe por escolha, mas não desce por vontade. O capítulo de [Entropia](entropia) explica tudo.
 

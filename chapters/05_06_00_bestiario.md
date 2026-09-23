@@ -6,7 +6,7 @@
 
 ## Como Usar Este Capítulo
 
-Este capítulo contém fichas de criaturas prontas para uso e um guia para que o Mestre crie as suas próprias. As fichas seguem um formato padronizado que cobre tudo que o Mestre precisa saber durante um Conflito ou interação: o que a criatura faz, como ela age, e quais são seus limites.
+Este capítulo contém fichas de criaturas prontas para uso e um guia para que o Mestre crie as suas próprias. As fichas seguem um formato padronizado que cobre tudo o que o Mestre precisa saber durante um Conflito ou interação: o que a criatura faz, como ela age e quais são seus limites.
 
 As criaturas em Arcádia **não possuem perícias** — elas agem por instinto, não por treinamento. Quando um teste se fizer necessário (um Pedroso tentando agarrar um personagem, uma ave tentando rastrear uma presa pelo olfato), o Mestre usa os **Atributos** da criatura somados aos seus **Dados Base**.
 
@@ -21,13 +21,13 @@ As criaturas em Arcádia **não possuem perícias** — elas agem por instinto, 
 | **Nome** | Identificação da criatura |
 | **Nível Recomendado** | Faixa de nível dos personagens para quem o encontro é desafiador, mas não impossível |
 | **Estilo** | A postura padrão da criatura: *Passivo, Agressivo, Selvagem, Furtivo, Territorial* |
-| **Dados Base** | O pool de dados usado em todos os testes da criatura: 1D12, 2D12, 3D12, 2D20, etc. |
+| **Dados Base** | Os dados rolados em todos os testes da criatura: 1D12, 2D12, 3D12, 2D20 etc. |
 
 ---
 
 ### Atributos
 
-As criaturas possuem os mesmos três atributos centrais dos personagens — mas seus valores refletem natureza, não treinamento.
+As criaturas possuem os mesmos três atributos centrais dos personagens — mas seus valores refletem a natureza, não o treinamento.
 
 | Atributo | O que representa na criatura |
 |---|---|
@@ -45,7 +45,7 @@ Quando a criatura fizer um teste relacionado a um atributo, role os **Dados Base
 
 | Campo | Descrição |
 |---|---|
-| **Vida (HP)** | Total de pontos de vida. Quando chega a 0, a criatura entra no Estado Morrendo (ou morre diretamente, a critério do Mestre). |
+| **Vida** | Total de pontos de Vida. Quando chega a 0, a criatura entra no Estado Morrendo (ou morre diretamente, a critério do Mestre). |
 | **DA** | Defesa Ativa — valor mínimo que um dado de dano precisa tirar para causar 1 ponto de dano. |
 | **DP** | Defesa Passiva — ⌊DA ÷ 2⌋. Usada quando a criatura está Indefesa ou não tem Reações disponíveis. |
 | **Imune** | Condições, tipos de dano ou elementos que não afetam a criatura. |
@@ -85,7 +85,7 @@ O que a criatura pode fazer quando está recebendo dano. Assim como os personage
 | **Defender** | A criatura se contrai, endurece ou recua. Eleva a DA em +X por 1 turno. |
 | **Esquivar** | A criatura se move para fora do alcance. Teste de Destreza da criatura contra o teste de ataque. |
 | **Contra-Atacar** | A criatura responde ao golpe imediatamente com Desvantagem. |
-| **Efeito Especial** | Uma reação única descrita na ficha — pode ser uma descarga, uma explosão, liberação de substância, etc. |
+| **Efeito Especial** | Uma reação única descrita na ficha — pode ser uma descarga, uma explosão, a liberação de uma substância etc. |
 
 ---
 

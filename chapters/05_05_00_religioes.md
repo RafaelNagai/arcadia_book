@@ -6,27 +6,27 @@
 
 ## A Fé em Arcádia
 
-No universo de Arcádia, a fé molda culturas, conflitos e a própria forma como as pessoas enxergam sua existência. Três grandes religiões dominam o cenário espiritual: **Alfaismo**, **Betaismo** e **Gamaismo**. Cada uma representa uma visão distinta sobre a criação, a existência e o destino das criaturas — influenciando desde a moralidade individual até as estruturas de poder das nações.
+No universo de Arcádia, a fé molda culturas, conflitos e a própria forma como as pessoas enxergam sua existência. Três grandes religiões dominam o cenário espiritual: **Alfaísmo**, **Betaísmo** e **Gamaísmo**. Cada uma representa uma visão distinta sobre a criação, a existência e o destino das criaturas — influenciando desde a moralidade individual até as estruturas de poder das nações.
 
-É importante compreender que o que cada religião descreve sobre seus deuses e sobre a origem do mundo é **o que seus fiéis acreditam** — não necessariamente a verdade. As três religiões contradizem umas às outras em pontos fundamentais, cada uma com sua própria cosmologia e seus próprios mitos. A verdade sobre Alfa, Beta e Gama, se é que existe uma, permanece mistério.
+É importante compreender que o que cada religião descreve sobre seus deuses e sobre a origem do mundo é **o que seus fiéis acreditam** — não necessariamente a verdade. As três religiões contradizem umas às outras em pontos fundamentais, cada uma com sua própria cosmologia e seus próprios mitos. A verdade sobre Alfa, Beta e Gama, se é que existe uma, permanece um mistério.
 
 ---
 
 ## As Três Religiões
 
-### Alfaismo — A Luz que Guia
+### Alfaísmo — A Luz que Guia
 
 > *"A luz que nos ilumina, nós iremos iluminar!"*
 
 ![Alfa, Deusa da Luz](/assets/images/chapters/religions/religion_alfa.jpg)
 
-O **Alfaismo** é a religião mais antiga e reverenciada de Arcádia. Seus seguidores acreditam que **Alfa**, a Deusa da Luz, é a criadora de toda a vida e beleza do mundo. Alfa representa pureza, bondade e o ciclo da criação.
+O **Alfaísmo** é a religião mais antiga e reverenciada de Arcádia. Seus seguidores acreditam que **Alfa**, a Deusa da Luz, é a criadora de toda a vida e beleza do mundo. Alfa representa pureza, bondade e o ciclo da criação.
 
 Na cosmologia alfaísta, Alfa não criou o mundo sozinha em paz: seu irmão **Beta**, tomado pela inveja da perfeição de Alfa, passou a criar tudo o que pudesse corromper, destruir ou testar suas obras. Assim nasceu, segundo essa doutrina, o equilíbrio entre criação e destruição — não como harmonia desejada, mas como conflito eterno.
 
 **O que os alfaístas acreditam sobre a vida e a morte**
 
-A vida é, ao mesmo tempo, uma dádiva e uma prova. Ao espalhar a luz — através de feitos, arte e evidência de seu valor — o fiel torna-se digno de um lugar ao redor da Deusa após a morte. Cada alma brilha como um vagalume ao seu redor, e em vida o crente tenta, a cada ato, capturar segundos da atenção divina.
+A vida é, ao mesmo tempo, uma dádiva e uma prova. Ao espalhar a luz — por meio de feitos, de arte e de provas de seu valor — o fiel se torna digno de um lugar ao redor da Deusa após a morte. Cada alma brilha como um vagalume ao seu redor, e em vida o crente tenta, a cada ato, capturar segundos da atenção divina.
 
 Todos os atos de um alfaísta têm esse propósito: brilhar o suficiente para ser visto.
 
@@ -40,21 +40,21 @@ Todos os atos de um alfaísta têm esse propósito: brilhar o suficiente para se
 
 ---
 
-### Betaismo — O Equilíbrio do Julgamento
+### Betaísmo — O Equilíbrio do Julgamento
 
 > *"Somos filhos do passado, irmãos do presente e condenados pelo futuro."*
 
 ![Beta, o Deus Juiz](/assets/images/chapters/religions/religion_beta.jpg)
 
-O **Betaismo** vê o mundo como um sistema coletivo, onde todos os seres estão ligados por ações e consequências. Seus devotos acreditam que **Beta**, o deus juiz, observa e pesa constantemente os atos da humanidade em uma balança cósmica.
+O **Betaísmo** vê o mundo como um sistema coletivo, onde todos os seres estão ligados por ações e consequências. Seus devotos acreditam que **Beta**, o deus juiz, observa e pesa constantemente os atos da humanidade em uma balança cósmica.
 
 Na visão betaísta, a narrativa alfaísta está incompleta. Alfa criou os humanos com **falhas intencionais** — como forma de entretenimento e de gerar caos. Beta, vendo o desequilíbrio, tornou-se o guardião da ordem: o mantenedor da balança universal que impede que a criação se destrua a si mesma.
 
-O apocalipse, para os betaístas, não é punição — é restauração. Quando as ações coletivas da humanidade tornarem-se indignas o suficiente para fazer a balança pender além do ponto de retorno, Beta agirá. Não por maldade, mas por necessidade cósmica.
+O apocalipse, para os betaístas, não é punição — é restauração. Quando as ações coletivas da humanidade se tornarem indignas o suficiente para fazer a balança pender além do ponto de retorno, Beta agirá. Não por maldade, mas por necessidade cósmica.
 
 **O símbolo sagrado: 456**
 
-O número **456** é o símbolo mais sagrado do Betaismo, representando a ordem cosmológica em que os betaístas acreditam: **4 para Alfa** — a primeira, a criadora; **5 para Beta** — o segundo, o juiz; **6 para Gama** — a terceira, a herdeira. É a sequência do universo, gravada em templos, tribunais e anéis dos devotos.
+O número **456** é o símbolo mais sagrado do Betaísmo, representando a ordem cosmológica em que os betaístas acreditam: **4 para Alfa** — a primeira, a criadora; **5 para Beta** — o segundo, o juiz; **6 para Gama** — a terceira, a herdeira. É a sequência do universo, gravada em templos, tribunais e anéis dos devotos.
 
 | Campo | Detalhe |
 |---|---|
@@ -65,17 +65,17 @@ O número **456** é o símbolo mais sagrado do Betaismo, representando a ordem 
 
 ---
 
-### Gamaismo — A Herança da Evolução
+### Gamaísmo — A Herança da Evolução
 
 > *"A sua falha é a falha do seu criador. O seu sucesso é o mérito da sua prole."*
 
 ![Gama, a Evoluída](/assets/images/chapters/religions/religion_gama.jpg)
 
-O **Gamaismo** é a mais jovem e mais filosófica das três religiões. Seus seguidores acreditam no **aperfeiçoamento constante** como o mais alto propósito de qualquer ser. O fracasso não é vergonha — é evidência das limitações impostas pelos criadores. O sucesso é a superação dessas limitações.
+O **Gamaísmo** é a mais jovem e mais filosófica das três religiões. Seus seguidores acreditam no **aperfeiçoamento constante** como o mais alto propósito de qualquer ser. O fracasso não é vergonha — é evidência das limitações impostas pelos criadores. O sucesso é a superação dessas limitações.
 
 Segundo a doutrina gamaísta, **Gama** é filha de Alfa e Beta. Cansada da negligência e dos erros de seus pais — que criaram um mundo imperfeito e o abandonaram a conflitos sem solução — ela selou os deuses antigos e passou a moldar o universo conforme sua própria vontade. Gama acredita que a verdadeira divindade não está na criação original, mas na **evolução contínua** daquilo que já existe.
 
-O Gamaismo é, portanto, uma religião racional e ativa: cada ser deve desafiar seu destino, questionar o que foi herdado e melhorar a si mesmo e o mundo ao redor. Não há salvação passiva — apenas transformação conquistada.
+O Gamaísmo é, portanto, uma religião racional e ativa: cada ser deve desafiar seu destino, questionar o que foi herdado e melhorar a si mesmo e o mundo ao redor. Não há salvação passiva — apenas transformação conquistada.
 
 | Campo | Detalhe |
 |---|---|
@@ -88,7 +88,7 @@ O Gamaismo é, portanto, uma religião racional e ativa: cada ser deve desafiar 
 
 ## Tabela Comparativa
 
-| | Alfaismo | Betaismo | Gamaismo |
+| | Alfaísmo | Betaísmo | Gamaísmo |
 |---|---|---|---|
 | **Divindade central** | Alfa | Beta | Gama |
 | **Visão do mundo** | Criação em prova | Sistema de consequências | Evolução contínua |

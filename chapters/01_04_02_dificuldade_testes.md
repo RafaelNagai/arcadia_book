@@ -19,7 +19,7 @@ A DT não é revelada ao jogador — apenas a tensão do resultado.
 
 ## A Escala
 
-A escala de DT foi calibrada para que **personagens comuns, sem buffs ou bênçãos, consigam operar de forma plausível até DT 50**. Acima disso, começa o território dos excepcionais, dos abençoados e dos lendários. A DT 100 representa o limite do que é considerado possível dentro das leis de Arcádia.
+A escala de DT foi calibrada para que **personagens comuns, sem bônus mágicos ou bênçãos, consigam alcançar de forma plausível até DT 50**. Acima disso, começa o território dos excepcionais, dos abençoados e dos lendários. A DT 100 representa o limite do que é considerado possível dentro das leis de Arcádia.
 
 | Faixa | Nível | Quem pode alcançar |
 |---|---|---|
@@ -28,7 +28,7 @@ A escala de DT foi calibrada para que **personagens comuns, sem buffs ou bênç�
 | 21 – 30 | **Moderado** | Personagens treinados, com investimento na perícia |
 | 31 – 40 | **Considerável** | Personagens experientes com bônus sólidos |
 | 41 – 50 | **Grande** | O teto do que é plausível sem auxílio externo |
-| 51 – 60 | **Severo** | Excepcionais — requer buffs, bênçãos ou condições especiais |
+| 51 – 60 | **Severo** | Excepcionais — requer bônus mágicos, bênçãos ou condições especiais |
 | 61 – 70 | **Extremo** | Feitos que definem lendas locais |
 | 71 – 80 | **Colossal** | Façanhas que são contadas por gerações |
 | 81 – 90 | **Catastrófico** | Domínio próximo do mítico |
@@ -55,7 +55,7 @@ Tarefas que praticamente qualquer pessoa consegue realizar. O risco de falha exi
 
 ### Simples — DT 11 a 20
 
-Tarefas que exigem algum cuidado ou prática básica. Uma pessoa despreparada pode falhar; alguém com mínima aptidão passa com facilidade.
+Tarefas que exigem algum cuidado ou prática básica. Uma pessoa despreparada pode falhar; alguém com o mínimo de aptidão passa com facilidade.
 
 **Quem alcança:** Qualquer personagem com pequeno investimento em Atributo ou Perícia.
 
@@ -94,7 +94,7 @@ Requer dedicação e experiência. A maioria das pessoas comuns falha aqui — n
 - Escalar o mastro de um navio em mar agitado.
 - Forjar uma arma funcional em condições improvisadas.
 - Pilotar um bote através de destroços flutuantes em alta velocidade.
-- Infiltrar um armazém fortemente vigiado à noite.
+- Infiltrar-se em um armazém fortemente vigiado à noite.
 - Desativar uma armadilha arcana simples sob pressão.
 - Realizar uma cirurgia de emergência com instrumentos básicos.
 
@@ -104,7 +104,7 @@ Requer dedicação e experiência. A maioria das pessoas comuns falha aqui — n
 
 O teto do que é plausível sem auxílio externo. Alcançar essa faixa exige que tudo se alinhe — boa rolagem, bônus sólidos, nenhuma desvantagem. Representa feitos que arrancariam admiração de qualquer testemunha.
 
-**Quem alcança:** Personagens experientes com bônus totais de 9 a 12+. Com Talento, a consistência aumenta. Sem buffs, é o limite real.
+**Quem alcança:** Personagens experientes com bônus totais de 9 a 12+. Com Talento, a consistência aumenta. Sem auxílio externo, é o limite real.
 
 **Exemplos:**
 - Correr sobre as cordas entre dois navios durante uma tempestade.
@@ -117,14 +117,14 @@ O teto do que é plausível sem auxílio externo. Alcançar essa faixa exige que
 
 ### Severo — DT 51 a 60
 
-Fora do alcance de qualquer personagem comum sem auxílio. Para chegar aqui é necessária alguma combinação de buff ativo, bênção, equipamento especial ou condição narrativa excepcional.
+Fora do alcance de qualquer personagem comum sem auxílio. Para chegar aqui é necessária alguma combinação de bônus mágico ativo, bênção, equipamento especial ou condição narrativa excepcional.
 
-**Quem alcança:** Personagens com buffs, bênçãos ou PE aplicados.
+**Quem alcança:** Personagens com bônus mágicos, bênçãos ou PE aplicados.
 
 **Exemplos:**
 - Sobreviver a uma queda de grande altura sem equipamento, usando apenas instinto.
 - Resistir à compulsão de uma magia de controle mental de alto nível.
-- Forjar uma arma de Tier superior com materiais raros sem oficina adequada.
+- Forjar uma arma de Grau superior com materiais raros sem oficina adequada.
 - Rastrear um alvo que usou magia para apagar seus rastros.
 - Reconstruir de memória um ritual arcano complexo visto uma única vez, anos atrás.
 
@@ -134,10 +134,10 @@ Fora do alcance de qualquer personagem comum sem auxílio. Para chegar aqui é n
 
 O território dos campeões e veteranos. Feitos nessa faixa definem reputações — quem os consegue é lembrado por anos.
 
-**Quem alcança:** Personagens com buffs poderosos ou equipamento de alto Tier.
+**Quem alcança:** Personagens com bônus mágicos poderosos ou equipamento de Grau alto.
 
 **Exemplos:**
-- Esquivar de uma flecha disparada a queima-roupa por um arqueiro experiente.
+- Esquivar de uma flecha disparada à queima-roupa por um arqueiro experiente.
 - Segurar sozinho uma porta reforçada contra uma carga de criaturas.
 - Decifrar um código arcano antigo em poucos minutos.
 - Desaparecer completamente dentro de uma cidade em alerta máximo.
@@ -151,7 +151,7 @@ Façanhas que, quando acontecem, se tornam histórias. O limite do que mortais a
 **Exemplos:**
 - Manter a estrutura de um navio voador intacta durante uma tempestade arcana enquanto ele cai.
 - Sobreviver ao colapso de uma masmorra submersa usando apenas os recursos à mão.
-- Rastrear um espírito que atravessou o Plano das Sombras.
+- Rastrear um espírito que atravessou para o Reino das Almas.
 
 ---
 
@@ -173,7 +173,7 @@ O limite do que é possível dentro das leis de Arcádia. Feitos nessa faixa sã
 **Exemplos:**
 - Resistir ao poder de uma divindade plena pela força da própria vontade.
 - Realizar um feito que outros invocarão como referência por séculos.
-- Sobreviver a algo que deveria ser simplesmente impossível sobreviver — e depois contar a história.
+- Sobreviver a algo a que deveria ser simplesmente impossível sobreviver — e depois contar a história.
 
 ---
 
@@ -186,8 +186,8 @@ O limite do que é possível dentro das leis de Arcádia. Feitos nessa faixa sã
 | 21 – 30 | Moderado | Rastrear pegadas, falsificar documento simples |
 | 31 – 40 | Considerável | Escalar mastro em mar agitado, cirurgia improvisada |
 | 41 – 50 | Grande | Teto sem auxílio externo |
-| 51 – 60 | Severo | Requer buffs ou bênçãos |
+| 51 – 60 | Severo | Requer bônus mágicos ou bênçãos |
 | 61 – 70 | Extremo | Campeões com auxílio |
-| 71 – 80 | Colossal | Pico com múltiplos buffs |
+| 71 – 80 | Colossal | Auge, com múltiplos auxílios |
 | 81 – 90 | Catastrófico | Circunstâncias excepcionais |
 | 91 – 100 | Absoluto | Uma vez em uma geração |

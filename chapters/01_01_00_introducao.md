@@ -27,9 +27,9 @@ Uma ilha que hoje está ao norte pode, em um mês, estar perdida em uma tempesta
 
 Para sobreviver nesse mundo em deriva, a humanidade aprendeu a criar mapas chamados de **Constelações** — assinaturas mágicas únicas, extraídas da essência vital de cada ilha. Uma Constelação não é um desenho estelar: é a impressão digital de uma terra. Com ela, um Navegador habilidoso pode rastrear qualquer destino pelo Mar de Nuvens, não importa onde os ventos o tenham levado.
 
-As **constelações** se tornaram rotas seguras e privadas para mercados e exploradores extrair recursos dessas ilhas, como frutas, plantas e minérios como Eltys. Como as ilhas nunca se encontram no mesmo lugar, esses recursos são valiosos e vender **constelações** se tornou a principal renda de exploradores.
+As **Constelações** se tornaram rotas seguras e privadas para que mercadores e exploradores extraiam recursos dessas ilhas, como frutas, plantas e minérios como o Eltys. Como as ilhas nunca estão no mesmo lugar, esses recursos são valiosos — e vender **Constelações** se tornou a principal fonte de renda dos exploradores.
 
-> *Diz-se que o velho cartógrafo Fennick caiu no abismo dos mares, conseguiu retornar, e trouxe consigo o conhecimento para criar uma constelação.*
+> *Diz-se que o velho cartógrafo Fennick caiu no abismo dos mares, conseguiu retornar e trouxe consigo o conhecimento para criar uma Constelação.*
 
 ---
 
@@ -48,13 +48,13 @@ Não existe aventura sem uma embarcação. Não existe tripulação sem um lar q
 | **Embarcações Materiais** | Construídas com aço, madeira e engenharia. Movidas por propulsores de Eltys e velas solares. Representam o ápice tecnológico de civilizações como *Rubra* e *Union*. |
 | **Embarcações Orgânicas** | Feras colossais domesticadas, onde a tripulação constrói conveses e estruturas sobre cascos vivos. Imprevisíveis, perigosas e absolutamente magníficas. |
 
-Independente do tipo, todo navio é mais do que um meio de transporte. Ele possui **Setores** (áreas funcionais com papéis táticos), uma **Durabilidade** que se desgasta em batalha, e uma **Moral** coletiva que oscila conforme as ações da tripulação.
+Independentemente do tipo, todo navio é mais do que um meio de transporte. Ele possui **Setores** (áreas funcionais com papéis táticos), uma **Durabilidade** que se desgasta em batalha, e uma **Moral** coletiva que oscila conforme as ações da tripulação.
 
 ---
 
 ## A Filosofia do Sistema
 
-Arcádia é um sistema para evoluir o personagem com base em suas ações.
+Em Arcádia, o personagem evolui com base no que faz.
 
 A mecânica central reflete isso de forma direta: você não evolui apenas matando monstros. Você evolui **agindo**. Cada vez que desafia o destino com seus dados e alcança a perfeição natural — quando tudo se alinha e os dados mostram o máximo — suas habilidades crescem de forma permanente. O esforço deixa uma marca.
 
@@ -93,7 +93,7 @@ Onde as emoções pintam o céu e alteram a física. Neste plano, sentimentos t�
 > *Uma cor carrega mais do que você pode ver, carrega todo o sentimento de quem a pintou.*
 
 ### O Reino das Almas
-O eco daqueles que já partiram, flutuando no silêncio. Não é um paraíso nem um inferno — é um arquivo. As almas são uma replica do que já foi o seu corpo no Plano Material, que é desgastada conforme o tempo se passa.
+O eco daqueles que já partiram, flutuando no silêncio. Não é um paraíso nem um inferno — é um arquivo. Cada alma é uma réplica do que foi o seu corpo no Plano Material, e essa réplica se desgasta conforme o tempo passa.
 
 > *O reino das almas é a sombra do Plano Material.*
 
@@ -101,12 +101,14 @@ O eco daqueles que já partiram, flutuando no silêncio. Não é um paraíso nem
 
 ## Como Usar Este Livro
 
-Este livro está organizado em quatro partes, pensadas para serem lidas em ordem na primeira vez — mas consultadas em qualquer ordem depois.
+Este livro está organizado em cinco partes, pensadas para serem lidas em ordem na primeira vez — mas consultadas em qualquer ordem depois.
 
-**Parte I — Fundamentos:** Apresenta as regras centrais do sistema. Atributos, Perícias, como os dados funcionam, como os personagens evoluem e como o Conflito é resolvido. Comece aqui.
+**Parte I — Fundamentos:** Apresenta as regras centrais do sistema: Atributos, Perícias, como os dados funcionam, como os personagens evoluem, como o Conflito é resolvido, Condições, Traumas e Diálogo. Comece aqui.
 
-**Parte II — O Arcano:** Aprofunda o sistema de magia, os cinco Elementos, as Afinidades e os efeitos de status e trauma. Leia quando estiver pronto para entender o custo do poder.
+**Parte II — O Arcano:** Aprofunda o sistema de magia: os cinco Elementos, as Afinidades, a Conjuração, a Invocação e a Entropia. Leia quando estiver pronto para entender o custo do poder.
 
 **Parte III — O Navio e a Tripulação:** Explica as mecânicas coletivas — Moral, navegação por Constelações, os tipos de navio e o que acontece entre as sessões. Essencial para o Capitão e para o Mestre.
 
-**Parte IV — O Mundo:** O lore expandido de Arcádia. Raças, regiões, dimensões e religiões. Use como referência contínua para mestrar ou criar os personagens.
+**Parte IV — Mecânicas:** Desafios especiais para a mesa, como Destrancar e Ofício. Consulte quando a cena pedir.
+
+**Parte V — O Mundo:** A história e a ambientação de Arcádia: origem, raças, regiões, dimensões, religiões e o bestiário. Use como referência contínua para mestrar ou criar personagens.

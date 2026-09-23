@@ -6,7 +6,7 @@
 
 ## O que é Evolução
 
-Em Arcádia, as perícias não evoluem através de pontos de experiência distribuídos entre sessões. Elas evoluem **no momento em que são usadas com maestria absoluta** — quando os dados mostram o máximo e o personagem demonstra, na prática, que chegou a um novo patamar.
+Em Arcádia, as perícias não evoluem por meio de pontos de experiência distribuídos entre sessões. Elas evoluem **no momento em que são usadas com maestria absoluta** — quando os dados mostram o máximo e o personagem demonstra, na prática, que chegou a um novo patamar.
 
 Não há atalho narrativo. Não há treinamento fora de cena que conceda pontos. O crescimento orgânico de uma perícia exige que ela seja testada — e que o acaso, ou a determinação, sorria ao jogador.
 
@@ -30,7 +30,7 @@ Essa é a única forma de evolução orgânica de perícias. O +1 se soma direta
 
 ### O que não conta
 
-- Um 12 forçado por PE conta para a evolução, mas **não ativa Crítico** — o efeito amplificado exige resultado natural.
+- Um 12 forçado por PE **conta** para a evolução, mas **não ativa Crítico** — o efeito amplificado exige resultado natural.
 - O dado descartado pelo Talento nunca conta, mesmo que mostre 12.
 - Bônus de equipamento ou magia não alteram o valor dos dados — apenas o que aparece na face do dado importa para a evolução.
 
@@ -39,19 +39,19 @@ Essa é a única forma de evolução orgânica de perícias. O +1 se soma direta
 ## Exemplos
 
 **Evolução natural:**
-> Mira rola 3D12 com seu Talento em Furtividade e tira [12, 12, 4]. Ela descarta o 4 e usa os dois 12s. O teste resulta em Milagre — e ela ganha +1 permanente em Furtividade. Na próxima sessão, o bônus já está incorporado ao personagem.
+> Mira rola 3D12 com seu Talento em Furtividade e tira [12, 12, 4]. Ela descarta o 4 e usa os dois 12. O teste resulta em Milagre — e ela ganha +1 permanente em Furtividade, que já vale a partir do próximo teste.
 
 **Evolução forçada com PE:**
 > Kael rola 2D12 em Combate e tira [11, 12]. Ele está determinado a evoluir. Gasta 1 PE de Físico para transformar o 11 em 12. A evolução ocorre — mas como o 12 é forçado, o resultado não é tratado como Crítico; o multiplicador de dano não se aplica.
 
 **Evolução sem sucesso na DT:**
-> Vesper tenta escalar uma parede impossível (DT 45) e rola [12, 12]. Mesmo com os dois 12s, o Resultado Final não atinge a DT — ele falha na escalada. Mesmo assim, ganha +1 permanente em Atletismo. O corpo aprendeu, mesmo que a parede vença hoje.
+> Vesper tenta escalar uma parede impossível (DT 45) e rola [12, 12]. Mesmo com os dois 12, o Resultado Final não atinge a DT — ele falha na escalada. Mesmo assim, ganha +1 permanente em Atletismo. O corpo aprendeu, mesmo que a parede vença hoje.
 
 **Talento com três 12s:**
-> Selene tem Talento em Arcanismo e rola [12, 12, 12]. Ela pode escolher quaisquer dois dos três dados — o resultado é Milagre de qualquer forma, e a evolução é garantida.
+> Selene tem Talento em Controle e rola [12, 12, 12]. Ela pode escolher quaisquer dois dos três dados — o resultado é Milagre de qualquer forma, e a evolução é garantida.
 
 **Evolução negada pelo descarte:**
-> Oren tem Talento em Rastreamento e rola [12, 9, 1]. Ele descarta o 1 e usa o 12 e o 9. Apenas um dos Dados Usados é 12 — o resultado é Crítico, não Milagre. Sem evolução desta vez.
+> Oren tem Talento em Percepção e rola [12, 9, 1]. Ele descarta o 1 e usa o 12 e o 9. Apenas um dos Dados Usados é 12 — o resultado é Crítico, não Milagre. Sem evolução desta vez.
 
 ---
 

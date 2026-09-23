@@ -1,10 +1,10 @@
 # Entropia
 
-> *Expor-se ao caos em troca de poder.*
+> *Expor-se ao Caos em troca de poder.*
 
 ---
 
-A **Entropia** é o quanto você abriu o portão para o Caos. Quanto mais aberto, mais poder passa por você, e mais caro fica tudo que vem junto. Este capítulo mostra o que ela dá, o que ela cobra e como se controla.
+A **Entropia** é o quanto você abriu o portão para o Caos. Quanto mais aberto, mais poder passa por você, e mais caro fica tudo o que vem junto. Este capítulo mostra o que ela dá, o que ela cobra e como se controla.
 
 ## A Entropia em Poucas Linhas
 
@@ -14,7 +14,7 @@ A **Entropia** é o quanto você abriu o portão para o Caos. Quanto mais aberto
 - **Cobra nas falhas:** uma Falha Crítica em nível alto traz consequências graves, até permanentes.
 - **Não desce por vontade:** só com descanso longo ou, com muita dificuldade, com horas de meditação.
 
-Com pouca exposição, o Arcano passa por você como água de uma torneira: controlável, mas em pouca quantidade. Com muita, é uma represa aberta: o poder é imenso, e a contenção exige tudo que você tem.
+Com pouca exposição, o Arcano passa por você como água de uma torneira: controlável, mas em pouca quantidade. Com muita, é uma represa aberta: o poder é imenso, e a contenção exige tudo o que você tem.
 
 ---
 
@@ -48,7 +48,7 @@ Algumas regras sobre esse dado:
 
 Subir um nível é uma **Ação Simples**, e cada Ação Simples sobe um nível. Fora de um Conflito, subir é só uma decisão: a comporta se abre no tempo de uma respiração.
 
-Dentro de um Conflito, lembre que duas Ações Simples geram 1 ponto de Exaustão, que tira 10 do resultado (veja [Conflito](conflito)).
+Dentro de um Conflito, lembre-se de que duas Ações Simples geram 1 ponto de Exaustão, que tira 10 do resultado (veja [Conflito](conflito)).
 
 ### Descer
 
@@ -59,7 +59,7 @@ Descer **não é uma escolha**. Não basta querer: o Arcano já entrou, e sair l
 
 #### Meditar é lento, raro e difícil
 
-Meditar para expulsar o Arcano **leva longas horas** de silêncio. Não cabe entre uma luta e outra e nunca acontece durante um Conflito. Também é **extremamente difícil**: a mente precisa aquietar tudo que o Caos agitou.
+Meditar para expulsar o Arcano **leva longas horas** de silêncio. Não cabe entre uma luta e outra e nunca acontece durante um Conflito. Também é **extremamente difícil**: a mente precisa aquietar tudo o que o Caos agitou.
 
 Por isso, nem todo personagem consegue sequer tentar. O Mestre só concede o teste quando a **situação** e os **antecedentes** do personagem justificam:
 
@@ -134,7 +134,7 @@ Um **Desastre** acontece quando os **dois** Dados Usados mostram 1, e vale qualq
 
 Acompanhe Lira, uma maga, numa noite de luta. No começo, ela tem **29 de Sanidade** e **Entropia 0**: o portão para o Caos está fechado.
 
-**1. Antes da luta, ela abre o portão.** Lira sabe que a luta será difícil e decide subir a Entropia até o **nível 3**. Subir um nível é uma ação simples, então ela gasta três ações, uma por nível. A partir de agora, toda magia dela soma **um D12** ao resultado, além do que ela já soma.
+**1. Antes da luta, ela abre o portão.** Lira sabe que a luta será difícil e decide subir a Entropia até o **nível 3**. Subir um nível é uma Ação Simples, então ela gasta três Ações Simples, uma por nível. A partir de agora, toda magia dela soma **um D12** ao resultado, além do que ela já soma.
 
 **2. Durante a luta, cada magia custa mais.** No nível 3, cada magia custa **4 de Sanidade** (1 mais o nível). Lira lança três magias, e a Sanidade cai de 29 para 25, depois 21, depois 17. As duas primeiras funcionam.
 

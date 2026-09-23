@@ -1,10 +1,10 @@
 # Afinidade e Antítese
 
-> *É a harmonia das relações dos elementos com o indivíduo.*
+> *A harmonia entre os elementos e o indivíduo.*
 
 ---
 
-Toda alma em Arcádia carrega uma relação com o Arcano. Não como escolha, mas como natureza. Essa relação tem duas faces: um elemento que flui por você sem esforço e outro que você só alcança à força.
+Toda alma em Arcádia carrega uma relação com o Arcano — não por escolha, mas por natureza. Essa relação tem duas faces: um elemento que flui por você sem esforço e outro que você só alcança à força.
 
 ## Afinidade e Antítese em Poucas Linhas
 
@@ -72,7 +72,7 @@ Cada dado determina um elemento pelo resultado. O jogador então **escolhe qual 
 
 Se os dois dados caírem no **mesmo valor**, o personagem possui Afinidade e Antítese no mesmo elemento: uma **Dupla Conexão**, rara e intensa. Em vez da Desvantagem da Antítese, ele conjura aquele elemento com **Vantagem**.
 
-Se ambos os dados saírem **6**, o jogador escolhe livremente os dois elementos, podendo escolher o mesmo ou dois diferentes.
+A exceção é quando os dois dados saem **6**: aí o jogador escolhe livremente os dois elementos, podendo escolher o mesmo ou dois diferentes.
 
 > *Carregar o mesmo elemento como Afinidade e Antítese é como ter dois rios correndo em sentidos opostos dentro do mesmo canal. Poderoso. Perigoso. Inevitável.*
 

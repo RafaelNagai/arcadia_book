@@ -1,12 +1,12 @@
 # Regiões
 
-> *O lugar onde você nasce não decide quem você é. Mas decide o que você aprende a sobreviver.*
+> *O lugar onde você nasce não decide quem você é. Mas decide a que você aprende a sobreviver.*
 
 ---
 
 ## As Nações de Arcádia
 
-O mundo de Arcádia é composto por continentes flutuantes — massas de terra tão vastas que se movem mais lentamente do que as ilhas menores, quase como se houvessem decidido ficar. São grandes o suficiente para abrigar montanhas, florestas, desertos e civilizações inteiras, e cada uma carrega sua própria história, seus próprios valores e sua própria forma de sobreviver.
+O mundo de Arcádia é composto por continentes flutuantes — massas de terra tão vastas que se movem mais lentamente do que as ilhas menores, quase como se tivessem decidido ficar. São grandes o suficiente para abrigar montanhas, florestas, desertos e civilizações inteiras, e cada uma carrega sua própria história, seus próprios valores e sua própria forma de sobreviver.
 
 Essas nações não estão fixas num mapa permanente, mas suas posições relativas são estáveis o suficiente para que o comércio, a guerra e a diplomacia aconteçam entre elas. Navegadores experientes conhecem as Constelações de cada continente de cor.
 
@@ -22,7 +22,7 @@ O minério **Eltys** — combustível arcano que alimenta feitiços, move navios
 
 ![Union](/assets/images/chapters/regions/region_union.jpg)
 
-Uma terra de **pântanos e rios densos**, onde a névoa cobre as águas e as árvores se entrelaçam com vinhas parasitas. Mesmo em meio às adversidades do terreno instável, Union prosperou através da **engenhosidade agrícola**, adaptando-se como poucas nações conseguiram.
+Uma terra de **pântanos e rios densos**, onde a névoa cobre as águas e as árvores se entrelaçam com vinhas parasitas. Mesmo em meio às adversidades do terreno instável, Union prosperou graças à **engenhosidade agrícola**, adaptando-se como poucas nações conseguiram.
 
 Suas cidades se erguem sobre terrenos firmes e raros ou flutuam nas correntes dos rios, conectadas por pontes de madeira e estruturas improvisadas que cresceram ao longo de gerações.
 
@@ -32,7 +32,7 @@ Union é uma nação **aberta a todas as raças**, onde o valor de um indivíduo
 
 Em Union, o título é mais importante do que o próprio nome — pois é o título que dá significado à existência de alguém. Não importa se é algo positivo ou negativo: ter um título é motivo de orgulho. Esquecer de chamar alguém pelo título ao se dirigir a ele é considerado uma grande ofensa.
 
-> *Exemplos: Grim o Carrasco, Trog Dedos de Ouro, Tolkien do Livro.*
+> *Exemplos: Grim, o Carrasco; Trog Dedos de Ouro; Tolkien do Livro.*
 
 Union é também conhecida por seu **comércio intenso** — tanto legal quanto ilegal. Suas rotas de rio conectam portos que nunca dormem.
 
@@ -46,7 +46,7 @@ Union é também conhecida por seu **comércio intenso** — tanto legal quanto 
 
 Entre penhascos e montanhas cortadas por estradas estreitas, **Britannia é uma nação esculpida na pedra**. Seus vilarejos verticais se agarram às encostas, e os Anões — povo fundador da região — transformaram as montanhas em cidades subterrâneas e labirintos de túneis que apenas eles compreendem por completo.
 
-A economia de Britannia gira em torno da **extração de Eltys**, o minério raro e mágico que ocorre em grande abundância nas profundezas de seu subsolo. Quem controla o Eltys de Britannia controla um dos recursos mais cobiçados do Mar de Nuvens.
+A economia de Britannia gira em torno da **extração de Eltys**, o minério mágico que existe em grande abundância nas profundezas de seu subsolo. Quem controla o Eltys de Britannia controla um dos recursos mais cobiçados do Mar de Nuvens.
 
 **O Ritual dos Dutos**
 
@@ -62,26 +62,26 @@ Quando dois dutos se encontram, as famílias se unem. O casamento é celebrado p
 
 ![Camelot](/assets/images/chapters/regions/region_camelot.jpg)
 
-Cercada por **planícies férteis e amplos horizontes**, Camelot é uma nação que já foi o império mais poderoso de toda Arcádia. Hoje, mantém sua influência através de sua riqueza, **magia institucionalizada** e vastas fazendas que sustentam cidades inteiras.
+Cercada por **planícies férteis e amplos horizontes**, Camelot é uma nação que já foi o império mais poderoso de toda Arcádia. Hoje, mantém sua influência graças à riqueza, à **magia institucionalizada** e vastas fazendas que sustentam cidades inteiras.
 
 Predominantemente humana, Camelot é um símbolo de **grandeza e desigualdade** — onde a nobreza vive em torres douradas, enquanto os pobres sobrevivem entre becos e campos. A magia é comum e respeitada, usada nas cidades para iluminação, transporte e até na medicina.
 
 **Os Imperiais**
 
-A guarda nacional de Camelot é conhecida como os **Imperiais** — responsáveis por aplicar a vontade do imperador em forma de leis. Usam armaduras brancas com uma cruz vermelha no peito e são historicamente associados à religião Alfaista.
+A guarda nacional de Camelot é conhecida como os **Imperiais** — responsáveis por aplicar a vontade do imperador em forma de leis. Usam armaduras brancas com uma cruz vermelha no peito e são historicamente associados à religião alfaísta.
 
 A hierarquia interna é clara:
 
 | Posto | Posição |
 |---|---|
 | Recruta | Entrada na ordem |
-| Sub-Imperial | Agente de campo treinado |
+| Subimperial | Agente de campo treinado |
 | Imperial | Oficial com autonomia de mando |
 | Comandante | Liderança regional |
 
 Todos são considerados Imperiais — a hierarquia existe para organizar a cadeia de comando, não para criar castas.
 
-Existe ainda uma sub-seção especializada em investigar e analisar casos mágicos: a **GM — Guarda Mágica**. Onde os Imperiais mantêm a ordem física, a Guarda Mágica opera nas sombras do arcano.
+Existe ainda uma divisão especializada em investigar e analisar casos mágicos: a **GM — Guarda Mágica**. Onde os Imperiais mantêm a ordem física, a Guarda Mágica opera nas sombras do arcano.
 
 ---
 
@@ -97,15 +97,15 @@ A sociedade é predominantemente élfica e **profundamente hierárquica**, divid
 
 **Alto Escalão — os Altos**
 
-Os Altos usam anéis numerados. A regra é simples: **quanto menor o número, maior o poder**. O portador do anel Nº 1 comanda todos os demais. O Nº 2 comanda todos, exceto o Nº 1. O Nº 3 comanda todos acima de seu número, exceto o Nº 1 e o Nº 2 — e assim sucessivamente.
+Os Altos usam anéis numerados. A regra é simples: **quanto menor o número, maior o poder**. O portador do anel Nº 1 comanda todos os demais. O Nº 2 comanda todos, exceto o Nº 1. O Nº 3 comanda todos os números maiores que o seu — e assim sucessivamente.
 
-A desobediência às ordens de um número inferior é um **insulto severo**, punido com exílio ou morte.
+Desobedecer às ordens de um número menor (e, portanto, mais poderoso) é um **insulto severo**, punido com exílio ou morte.
 
 **Baixo Escalão — os Baixos**
 
 Os Baixos usam anéis marcados apenas com um símbolo de pureza ancestral — sem número, sem posição de mando. Embora vivam lado a lado com os Altos, são eles que executam os trabalhos perigosos ou considerados indignos.
 
-Galahad domina tanto a **agricultura** quanto a **extração de Eltys**, tornando-se uma nação autossuficiente — e invejada. Alcançaram o raro equilíbrio entre magia, invenção e natureza.
+Galahad domina tanto a **agricultura** quanto a **extração de Eltys**, tornando-se uma nação autossuficiente — e invejada. Seu povo alcançou o raro equilíbrio entre magia, invenção e natureza.
 
 ---
 
@@ -117,13 +117,13 @@ Galahad domina tanto a **agricultura** quanto a **extração de Eltys**, tornand
 
 Ao norte das florestas sagradas, o mundo não muda de direção — **muda de altitude**. Norte de Galahad é um continente menor que flutua acima de Galahad, em camadas mais altas do Mar de Nuvens. A altitude extrema transforma tudo: o ar é rarefeito, o vento é cortante e a neve não para de cair.
 
-Muitos acreditam que essa região ainda pertence a Galahad. Os próprios elfos a esqueceram há séculos.
+Muitos acreditam que essa região ainda pertence a Galahad, embora os próprios elfos a tenham esquecido há séculos.
 
 A sobrevivência aqui é dura — a caça é a principal fonte de alimento. Com o tempo, o **canibalismo ritualístico** tornou-se parte da cultura: não como barbárie, mas como ato de respeito e de sobrevivência. Comem apenas os mortos em batalha, os idosos que se oferecem voluntariamente, ou os invasores das terras geladas.
 
 Não há reinos nem governos no Norte. Apenas **tribos nômades** que se movem com o vento e carregam seus mortos como lição.
 
-Muitos de seus habitantes partem e se tornam andarilhos, assassinos ou mercenários — levando consigo o frio do norte como marca eterna. É daqui que vêm a maioria dos **Elfos Noturnos**.
+Muitos de seus habitantes partem e se tornam andarilhos, assassinos ou mercenários — levando consigo o frio do norte como marca eterna. É daqui que vem a maioria dos **Elfos Noturnos**.
 
 ---
 

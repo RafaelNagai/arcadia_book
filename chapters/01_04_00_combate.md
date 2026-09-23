@@ -26,7 +26,7 @@ Um Conflito se desenrola em **Rodadas**. Cada Rodada é dividida em dois momento
 
 ## O Ato
 
-O **Ato** é a unidade central do Conflito. Cada participante — jogador ou inimigo — terá seu momento como **Protagonista**: o instante em que declara uma intenção e tenta impô-la sobre a cena.
+O **Ato** é a unidade central do Conflito. Cada participante — jogador ou inimigo — tem seu momento como **Protagonista**: o instante em que declara uma intenção e tenta impô-la sobre a cena.
 
 Um Ato segue sempre a mesma estrutura:
 
@@ -41,7 +41,7 @@ O autor da intenção — quem quer impor sua vontade sobre a cena. Durante seu 
 
 ### Antagonista
 
-O ser ou alvo que vai receber a intenção do Protagonista. Pode ser um personagem, múltiplos personagens, um objeto, o ambiente ou o próprio mundo.
+O ser ou alvo que recebe a intenção do Protagonista. Pode ser um personagem, múltiplos personagens, um objeto, o ambiente ou o próprio mundo.
 
 O Antagonista não precisa ser ativo: uma parede não resiste voluntariamente, mas impõe uma DT. Um inimigo resiste ativamente e pode Intervir ou se Impor.
 
@@ -50,8 +50,8 @@ O Antagonista não precisa ser ativo: uma parede não resiste voluntariamente, m
 ### Coadjuvante
 
 Qualquer participante do Conflito que não seja o Protagonista nem o Antagonista de um Ato específico. Coadjuvantes podem **Intervir** ou se **Impor** no Ato, mas não são o foco da ação.
-Podem ser ativamente alguem querendo Intervir ou Impor suas intenções como um personagem, como podem ser um fenomeno natural como um furação ou terremoto, por exemplo, podendo Intervir positivamente ou negativamente no ato de um protagonista.
-Tudo que interaja com o protagonista e antagonista pode ser considerado um **coadjuvante**.
+
+Um Coadjuvante pode ser um personagem que quer ativamente Intervir ou Impor suas intenções, ou um fenômeno natural — um furacão ou um terremoto, por exemplo — que interfere, para o bem ou para o mal, no Ato de um Protagonista. Tudo o que interage com o Protagonista e o Antagonista pode ser considerado um **Coadjuvante**.
 
 ---
 
@@ -92,7 +92,7 @@ Atividades de alta complexidade ou que demandam esforço físico, mental ou mág
 
 ### Movimento
 
-Mover-se é sempre uma Ação — Simples ou Complexa dependendo do ambiente e das adversidades. O que torna o movimento complexo não é a velocidade, mas a resistência que o caminho oferece: física, mágica ou adversarial.
+Mover-se é sempre uma Ação — Simples ou Complexa dependendo do ambiente e das adversidades. O que torna o movimento complexo não é a velocidade, mas a resistência que o caminho oferece: física, mágica ou imposta por um adversário.
 
 | Situação | Tipo |
 |---|---|
@@ -113,25 +113,25 @@ A **Exaustão** representa o desgaste de agir muito sem fôlego. O Protagonista 
 - A Exaustão acumula da seguinte forma:
   - A cada **2 Ações Simples**: +1 Exaustão
   - A cada **1 Ação Complexa**: +1 Exaustão
-- Ela vale **dentro e fora do seu Ato**: toda Ação que você faz, seja no seu Ato ou não (como uma Intervenção), conta.
+- Ela vale **dentro e fora do seu Ato**: toda Ação que você faz conta, inclusive as que acontecem fora do seu Ato (como uma Intervenção).
 - A Exaustão **zera quando o seu próximo Ato começa**.
 
 Num **Crítico** ou **Milagre**, a Exaustão não se aplica àquele teste. Numa **Falha Crítica** ou **Desastre**, ela continua valendo, e os bônus não somam (veja [Testes](testes)).
 
 ### Rastreamento na Mesa
 
-Cada jogador mantém dois tipos de tokens à sua frente:
+Cada jogador mantém dois tipos de marcadores à sua frente:
 
-- **Token claro** — 1 Ação Simples realizada.
-- **Token escuro** — 1 ponto de Exaustão.
+- **Marcador claro** — 1 Ação Simples realizada.
+- **Marcador escuro** — 1 ponto de Exaustão.
 
-Ao acumular 2 tokens claros, troca-os por 1 escuro (+1 Exaustão). Cada Ação Complexa adiciona 1 escuro diretamente. O número de tokens escuros é a Exaustão atual — o resultado cai 10 por token. Quando o seu próximo Ato começa, todos os tokens são removidos.
+Ao juntar 2 marcadores claros, troque-os por 1 escuro (+1 Exaustão). Cada Ação Complexa adiciona 1 marcador escuro diretamente. O número de marcadores escuros é a sua Exaustão atual — o resultado cai 10 por marcador. Quando o seu próximo Ato começa, todos os marcadores são removidos.
 
 ### Ações que Ignoram Exaustão
 
 Alguns Talentos, magias ou equipamentos concedem uma Ação extra que **não gera Exaustão** — descrita no efeito como *"sem gerar Exaustão"* ou *"um ataque adicional que não conta para a Exaustão"*.
 
-Essa Ação continua existindo normalmente (ainda é uma Ação Simples ou Complexa, ainda precisa de um teste quando aplicável) — a única exceção é que ela **não adiciona token escuro** ao contador. Isso vale tanto no seu Ato quanto fora dele.
+Essa Ação continua existindo normalmente (ainda é uma Ação Simples ou Complexa, ainda precisa de um teste quando aplicável) — a única diferença é que ela **não adiciona marcador escuro** ao contador. Isso vale tanto no seu Ato quanto fora dele.
 
 > *Exemplo: A Lâmina Rúnica permite, uma vez por cena, um ataque extra corpo a corpo sem gerar Exaustão. Kael já fez 1 Ação Complexa nesse Ato (1 Exaustão) e usa o efeito da lâmina para atacar de novo — a Exaustão continua em 1, não sobe para 2.*
 
@@ -159,7 +159,7 @@ Tirou 1 natural em um dado usado e falhou na DT.
 Tirou 1 natural nos dois dados usados.
 
 - O Ato encerra com uma catástrofe narrativa imediata.
-- O Protagonista **perde seu próximo Ato** e o direito de Intervir até que esse Ato perdido tivesse ocorrido.
+- O Protagonista **perde seu próximo Ato** e o direito de Intervir até o momento em que esse Ato perdido aconteceria.
 - **Opcional:** o Mestre pode decidir que todo dano recebido pelo Protagonista é **triplicado** até lá.
 
 Nos três casos, perder o direito de Intervir também tira a possibilidade de se defender: sem poder aparar ou esquivar, qualquer ataque recebido nesse intervalo é resolvido contra a **DP** (veja *Dano*, mais abaixo).
@@ -188,7 +188,7 @@ Intervir é uma Ação, e conta para a Exaustão como qualquer outra — com uma
 
 As demais Intervenções seguem a tabela normal de Ações: esforço considerável (empurrar um aliado para fora da linha de fogo, lançar uma magia) é uma Ação **Complexa** e gera 1 ponto de Exaustão. Algo leve (gritar um aviso, apontar uma fraqueza) é **Simples**.
 
-Como a Exaustão só zera quando o seu Ato começa, tudo que você faz no seu Ato pesa nas suas reações até lá, e cada reação pesa na seguinte — exceto se defender, que continua sempre disponível.
+Como a Exaustão só zera quando o seu Ato começa, tudo o que você faz no seu Ato pesa nas suas reações até lá, e cada reação pesa na seguinte — exceto se defender, que continua sempre disponível.
 
 ### Falha na Intervenção
 
@@ -196,20 +196,20 @@ Se o teste de Intervenção falhar, **o efeito é invertido**: quem tentou ajuda
 
 Se for **Desastre**, o efeito é invertido e o participante **perde seu próximo Ato**.
 
-> *Exemplo:* Senna tenta intervir para ajudar Aldric, que está atacando o Capitão Garra. Ela faz um teste de Atletismo para travar o braço do Capitão e tira 12. Interferência de 2 pontos — o teste de Aldric ganha +2. Se Senna tivesse falhado, o Capitão receberia +2 na resistência em vez disso.
+> *Exemplo:* Senna tenta intervir para ajudar Aldric, que está atacando o Capitão Garra. Ela faz um teste de Atletismo para travar o braço do Capitão e obtém resultado 12. Interferência de 2 pontos — o teste de Aldric ganha +2. Se Senna tivesse falhado, o Capitão receberia +2 na resistência em vez disso.
 
 ---
 
 ## Imposição
 
-A **Imposição** ocorre quando um Coadjuvante quer intervir no papel de Protagonista ou Antagonista no meio de um Ato — uma mudança de posição na cena, não uma influência sobre ela.
+A **Imposição** ocorre quando um Coadjuvante quer assumir o papel de Protagonista ou de Antagonista no meio de um Ato — uma mudança de posição na cena, não uma influência sobre ela.
 
 ### Impor-se ao Antagonista
 
 Um Coadjuvante se coloca no lugar do Antagonista original, absorvendo a intenção do Protagonista no lugar de outro.
 
-- Se não houver resistencia, não tem teste.
-- Se houver resistencia, acontece algum teste que o mestre achar necessario.
+- Se ninguém resistir, não há teste.
+- Se houver resistência, o Mestre pede o teste que achar necessário.
 - O Coadjuvante passa a ser o novo Antagonista do Ato.
 
 > *Exemplo:* Um inimigo direciona seu Ato contra Lyra. Kael se impõe — passa a ser o Antagonista. É ele quem vai receber o impacto, não Lyra.
@@ -219,12 +219,12 @@ Um Coadjuvante se coloca no lugar do Antagonista original, absorvendo a intenç�
 Um Coadjuvante quer interromper a intenção do Protagonista e substituí-la pela sua própria — uma contestação direta de vontades.
 
 - Exige um **confronto de testes**: Coadjuvante e Protagonista original rolam suas perícias.
-- Quem obtiver o maior resultado **assume o Protagonismo** e continua o Ato com sua própria intenção.
-- Quem perde perde também o direito de Intervir até seu próximo Ato.
+- Quem obtiver o maior resultado **assume o Protagonismo** daquela intenção e a substitui pela sua.
+- Quem perder também perde o direito de Intervir até o seu próximo Ato.
 
-> *Exemplo:* Valdris decide destruir um objeto sagrado. Mira quer impedir — ela se impõe como Protagonista. Os dois fazem um confronto. Mira vence: é ela quem determina a intenção do Ato. Valdris perde o Protagonismo e o direito de Intervir.
+> *Exemplo:* Valdris decide destruir um objeto sagrado. Mira quer impedir — ela se impõe como Protagonista. Os dois fazem um confronto. Mira vence: é ela quem determina o que acontece com o objeto. Valdris perde o Protagonismo dessa intenção e o direito de Intervir.
 
-O Ato ainda continua sendo do protagonista original, permitindo realizar mais ações naquele ato, porém aquela intenção em especifico foi alterada pela imposição do coadjuvante.
+Mesmo assim, o Ato continua sendo do Protagonista original: ele ainda pode realizar outras Ações nele. Apenas aquela intenção específica foi substituída pela do Coadjuvante que se impôs.
 
 Lacaios também podem se Impor, seguindo as mesmas regras.
 
@@ -234,8 +234,8 @@ Lacaios também podem se Impor, seguindo as mesmas regras.
 
 Quando uma Ação de ataque tem sucesso, o atacante rola os dados de dano. O nível de exposição do Antagonista determina qual defesa se aplica:
 
-- **Antagonista que interveio com sucesso** (aparou, esquivou): dano calculado contra a **DA**.
-- **Antagonista exposto** (não interveio, Intervenção falhou, ou sofreu Desastre): dano calculado contra a **DP**.
+- **Antagonista que se defendeu com sucesso** (aparou ou esquivou): dano calculado contra a **DA**.
+- **Antagonista exposto** (não interveio, falhou na Intervenção ou sofreu Desastre): dano calculado contra a **DP**.
 
 Defender-se dessa forma nunca gera Exaustão (veja *Intervir Cansa*, acima). As regras completas de DA, DP, Durabilidade e absorção de equipamento estão no capítulo de [Defesa](defesa).
 
@@ -250,7 +250,7 @@ O dano funciona por **sucessos individuais** (ver [Defesa](defesa)): cada dado d
 
 > O multiplicador se aplica ao dano causado pelo ataque que gerou o Crítico ou Milagre — não a efeitos contínuos já ativos, como o dano por turno de Queimadura ou Envenenamento.
 
-Alguns equipamentos ou efeitos especiais aumentam esse multiplicador (ex: *"o multiplicador de crítico é aumentado em 1"* transforma um Crítico normal de x2 em x3). Esses bônus são cumulativos entre itens diferentes, salvo indicação contrária.
+Alguns equipamentos ou efeitos especiais aumentam esse multiplicador (por exemplo, *"o multiplicador de crítico é aumentado em 1"* transforma um Crítico normal de x2 em x3). Esses bônus são cumulativos entre itens diferentes, salvo indicação contrária.
 
 ### A Defesa Também Pode Aumentar o Multiplicador
 

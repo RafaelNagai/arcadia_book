@@ -12,7 +12,7 @@ Personagens com alto Físico são difíceis de derrubar. Continuam de pé após 
 
 ### Fortitude
 
-A **Fortitude** mede a saúde e a resistência do personagem. É usada para resistir à dor, veneno, exaustão, fome, frio e qualquer forma de desgaste que tente apagar o personagem de dentro para fora.
+A **Fortitude** mede a saúde e a resistência do personagem. É usada para resistir à dor, a venenos, à exaustão, à fome, ao frio e a qualquer forma de desgaste que tente apagar o personagem de dentro para fora.
 
 **Exemplos de uso:**
 - Resistir aos efeitos de um veneno ou ferimento grave.
@@ -79,7 +79,7 @@ A **Furtividade** é a arte de se mover e agir sem ser notado. Engloba esconder-
 **Exemplos de uso:**
 - Esconder-se em um ambiente escuro ou movimentado.
 - Seguir alguém sem ser percebido.
-- Se aproximar de um alvo sem alertá-lo.
+- Aproximar-se de um alvo sem alertá-lo.
 - Desarmar uma armadilha sem chamar atenção.
 
 ---
@@ -122,7 +122,7 @@ O **Reflexo** representa a capacidade de perceber e mover o corpo rapidamente, a
 
 ## Intelecto
 
-O **Intelecto** é a medida do raciocínio, percepção e domínio do conhecimento. Representa o poder da mente analítica e intuitiva — a capacidade de entender, criar e adaptar-se. É o atributo central para personagens voltados à investigação, estratégia e sobrevivência inteligente.
+O **Intelecto** é a medida do raciocínio, da percepção e do domínio do conhecimento. Representa o poder da mente analítica e intuitiva — a capacidade de entender, criar e adaptar-se. É o atributo central para personagens voltados à investigação, à estratégia e à sobrevivência inteligente.
 
 > *No Mar de Nuvens, saber o que você não sabe é tão valioso quanto saber o que você sabe.*
 
@@ -190,12 +190,14 @@ Durante o jogo, o Mestre solicita testes de Conhecimento quando uma memória ou 
 
 ## E as Conversas?
 
-Você deve ter notado que não existe um atributo pra "convencer alguém" ou "impor presença". Isso não é um esquecimento — em Arcádia, diálogos, negociações e confrontos verbais não se resolvem rolando uma perícia. Eles têm um capítulo próprio: [Diálogo](dialogo).
+Você deve ter notado que não existe um atributo para "convencer alguém" ou "impor presença". Isso não é um esquecimento — em Arcádia, diálogos, negociações e confrontos verbais não se resolvem rolando uma perícia. Eles têm um capítulo próprio: [Diálogo](dialogo).
 
 O motivo de essa parte do jogo não usar perícia é explicado em [Por Que Não Existe Influência](por-que-sem-influencia).
 
-## Quarto Atributo
+---
 
-Existe um quarto atributo conhecido como **Arcano**, ele representa o seu conhecimento e experiência em impor sua vontade e desejo, para moldar esse arcano em algo Material.
+## O Quarto Atributo
 
-Saiba mais, consultando sobre [arcano](arcanismo)
+Existe um quarto atributo, o **Arcano**. Ele representa o seu conhecimento e a sua experiência em impor a própria vontade sobre o Arcano, moldando essa energia em algo material.
+
+Saiba mais no capítulo de [Arcanismo](arcanismo).
