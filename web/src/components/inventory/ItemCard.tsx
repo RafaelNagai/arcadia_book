@@ -15,6 +15,7 @@ function ItemDescriptionBlock({
     !item.fromCatalog &&
     !item.description &&
     !item.damage &&
+    !item.arcaneBonus &&
     !(item.effects && item.effects.length > 0)
   ) {
     return null;
@@ -101,6 +102,29 @@ function ItemDescriptionBlock({
             }}
           >
             {item.da}
+          </span>
+        </p>
+      )}
+      {item.arcaneBonus != null && item.arcaneBonus !== "" && (
+        <p>
+          <span
+            style={{
+              color: "rgba(255,255,255,0.35)",
+              fontFamily: "var(--font-ui)",
+              fontSize: "0.65rem",
+              letterSpacing: "0.1em",
+            }}
+          >
+            Bônus Arcano:{" "}
+          </span>
+          <span
+            style={{
+              color: "var(--color-arcano-glow)",
+              fontFamily: "var(--font-display)",
+              fontWeight: 700,
+            }}
+          >
+            +{item.arcaneBonus}
           </span>
         </p>
       )}

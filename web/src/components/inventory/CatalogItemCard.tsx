@@ -15,6 +15,7 @@ export function CatalogItemCard({
   const image = resolveCatalogImage(entry.image)
   const hasDamage = Boolean(entry.damage)
   const hasDa = entry.da != null
+  const hasArcaneBonus = entry.arcaneBonus != null
   const hasEffects = entry.effects.length > 0
 
   return (
@@ -122,7 +123,7 @@ export function CatalogItemCard({
           {entry.isEquipment && entry.maxDurability != null ? ` · Dur. ${entry.maxDurability}` : ""}
         </p>
 
-        {(hasDamage || hasDa) && (
+        {(hasDamage || hasDa || hasArcaneBonus) && (
           <div style={{ display: "flex", gap: "0.7rem", flexWrap: "wrap" }}>
             {hasDamage && (
               <span style={{ fontFamily: "var(--font-ui)", fontSize: "0.62rem" }}>
@@ -145,6 +146,18 @@ export function CatalogItemCard({
                   style={{ color: "#50C8E8", fontFamily: "var(--font-display)", fontWeight: 700 }}
                 >
                   {entry.da}
+                </span>
+              </span>
+            )}
+            {hasArcaneBonus && (
+              <span style={{ fontFamily: "var(--font-ui)", fontSize: "0.62rem" }}>
+                <span style={{ color: "rgba(255,255,255,0.35)", letterSpacing: "0.08em" }}>
+                  Bônus Arc.{" "}
+                </span>
+                <span
+                  style={{ color: "var(--color-arcano-glow)", fontFamily: "var(--font-display)", fontWeight: 700 }}
+                >
+                  +{entry.arcaneBonus}
                 </span>
               </span>
             )}

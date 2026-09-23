@@ -11,6 +11,25 @@
 
 ### Em andamento
 
+### Bug: alinhamento de Entropia — aguardando print
+**Origem:** usuário reportou que "Entropia e os dados não estão alinhados centralizados" na ficha. Ainda não localizei a causa exata sem ver o print — `ArcanoSection.tsx` tem PE e Entropia num mesmo row `flex items-center justify-between`, cada grupo com seu próprio `items-center`, o que deveria centralizar; pode ser diferença de tamanho entre os ícones de PE (16px) e os dados de Entropia (22px, em `EntropiaDisplay.tsx`), ou outro componente (`ArcaneTestOverlay.tsx`/`ArcaneConfigPanel.tsx`) que eu ainda não conferi. Pedi print pro usuário antes de mexer, pra não arriscar um ajuste no chute.
+
+---
+
+### Bug: `arcaneBonus` (item de equipamento) não aparecia em lugar nenhum do inventário: corrigido
+**Origem:** usuário reportou que itens com bônus arcano (ex: cajados) não mostravam esse valor em nenhum lugar do sistema de inventário. Causa raiz: o campo `arcaneBonus` só existia no `equipment.json` (fonte de dados) e era lido apenas pelo widget de leitura do capítulo do livro (`EquipmentWidget.tsx`) — nunca foi levado para `CatalogEntry`, `InventoryItem`, nem pro banco. Um item pego do catálogo simplesmente perdia esse dado ao entrar no inventário.
+**Adicionada:** 2026-09-22 · Segue exatamente o padrão já existente do campo `da` em todas as camadas. `tsc -b` e `build` (web) limpos, coluna aplicada e confirmada no banco.
+
+- [x] `CatalogEntry.arcaneBonus` (`inventory/types.ts`) — opcional (`number | null`), pois nem todo item do catálogo tem a chave no JSON (tentar deixar obrigatório quebrou o cast `as CatalogEntry[]` do catálogo inteiro — a união gerada pelo import do JSON tem itens sem a chave)
+- [x] `ItemFormData.arcaneBonus` + `DEFAULT_FORM` (`inventory/types.ts`), campo "Bônus Arcano" em `CustomItemForm.tsx`
+- [x] Exibição no catálogo (`CatalogItemCard.tsx`, ao lado de Dano/DA) e no item do inventário (`ItemCard.tsx`, mesmo padrão de "DA:")
+- [x] `InventoryItem.arcaneBonus` (`characterTypes.ts`) e todo o fluxo em `InventoryPanel.tsx`: pegar do catálogo, criar customizado, editar, payloads de API (local e API sempre em sincronia)
+- [x] `apiAdapter.ts` (`ApiRawItem` + mapeamento), `inventory.schema.ts` (Zod `arcane_bonus`), `inventory.repository.ts` (create/update), `schema.prisma` (`arcaneBonus String? @map("arcane_bonus")`)
+- [x] Coluna `arcane_bonus` aplicada em `inventory_items` via `prisma db execute` (mesmo contorno do P4002 documentado na task anterior) e confirmada por query
+- [x] **Ajuste pós-teste do usuário:** itens do catálogo já salvos no inventário antes desta mudança não tinham `arcaneBonus` gravado (nem localStorage nem banco), então continuavam sem mostrar o bônus mesmo com o resto do fluxo corrigido. Adicionado `backfillArcaneBonus()` em `localCharacters.ts` (`loadInventory`/`loadBags`) e em `apiAdapter.ts` (`mapApiItemToInventoryItem`): pra item `fromCatalog` sem bônus salvo, casa pelo nome contra `CATALOG` e preenche na leitura — sem persistir o valor recuperado, então não sobrescreve se o jogador editar/limpar o campo depois
+
+---
+
 ### Traços e Gatilhos do personagem na ficha (Step 1 do criador): concluído
 **Origem:** conversa de design com o autor, sequência do Sistema de Diálogo. Dois campos livres, separados: Traços = guia de como interpretar o personagem (comportamento, reações); Gatilhos = pontos de pressão que outros podem explorar numa conversa, simétricos aos de NPC (ver `dialogo.md`, mas aqui como texto livre, não os pares Sentimento/Foco do gerador de NPC).
 **Adicionada:** 2026-09-22 · Código completo, typecheck e build (`web`) limpos, colunas aplicadas no banco de verdade e confirmadas por query.

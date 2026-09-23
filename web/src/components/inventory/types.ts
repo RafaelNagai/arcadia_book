@@ -12,6 +12,7 @@ export interface CatalogEntry {
   tier: string;
   damage: string | null;
   da: number | null;
+  arcaneBonus?: number | null;
   weight: WeightCategory;
   isEquipment: boolean;
   maxDurability: number | null;
@@ -91,6 +92,7 @@ export interface ItemFormData {
   image: string;
   damage: string;
   da: string;
+  arcaneBonus: string;
   effects: string[];
 }
 
@@ -103,5 +105,6 @@ export const DEFAULT_FORM: ItemFormData = {
   image: "",
   damage: "",
   da: "",
+  arcaneBonus: "",
   effects: [],
 };

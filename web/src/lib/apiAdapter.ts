@@ -1,4 +1,5 @@
 import type { Character, Condition, InventoryBag, InventoryItem, WeightCategory } from '@/data/characterTypes'
+import { CATALOG } from '@/components/inventory/types'
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -60,6 +61,7 @@ export interface ApiRawItem {
   catalogTier: string | null
   damage: string | null
   da: string | null
+  arcaneBonus: string | null
   effects: string[]
   sortOrder: number
 }
@@ -69,6 +71,18 @@ export interface ApiRawBag {
   name: string
   slots: number
   sortOrder: number
+}
+
+/**
+ * Itens vindos do catálogo e criados antes do campo `arcaneBonus` existir
+ * ficam com `null` no banco. Como o item não guarda o id do catálogo,
+ * recuperamos casando pelo nome — só quando ainda não há bônus salvo,
+ * então não sobrescreve um bônus que o jogador editou/limpou depois.
+ */
+function backfillArcaneBonus(fromCatalog: boolean, name: string, arcaneBonus: string | null): string | null {
+  if (!fromCatalog || arcaneBonus != null) return arcaneBonus
+  const entry = CATALOG.find(e => e.name === name)
+  return entry?.arcaneBonus != null ? String(entry.arcaneBonus) : null
 }
 
 export function mapApiItemToInventoryItem(raw: ApiRawItem): InventoryItem {
@@ -87,6 +101,7 @@ export function mapApiItemToInventoryItem(raw: ApiRawItem): InventoryItem {
     catalogTier: raw.catalogTier ?? undefined,
     damage: raw.damage ?? null,
     da: raw.da ?? null,
+    arcaneBonus: backfillArcaneBonus(raw.fromCatalog, raw.name, raw.arcaneBonus ?? null),
     effects: raw.effects,
   }
 }

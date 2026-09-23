@@ -6,6 +6,7 @@
  */
 
 import type { Character, Condition, DiaryData, InventoryBag, InventoryItem } from '@/data/characterTypes'
+import { CATALOG } from '@/components/inventory/types'
 
 const STORAGE_KEY = 'arcadia_custom_characters'
 
@@ -103,11 +104,26 @@ export function generateId(): string {
 
 const INVENTORY_KEY = 'arcadia_inventory'
 
+/**
+ * Itens vindos do catálogo e salvos antes do campo `arcaneBonus` existir
+ * não têm esse valor gravado (falta a chave no localStorage, ou fica
+ * `null` no banco). Como não guardamos o id do catálogo no item, o único
+ * jeito de recuperar é casar pelo nome — só afeta itens `fromCatalog`
+ * sem bônus já registrado, e roda de novo a cada load (sem persistir o
+ * resultado), então não sobrescreve um bônus que o jogador editou.
+ */
+function backfillArcaneBonus(item: InventoryItem): InventoryItem {
+  if (!item.fromCatalog || item.arcaneBonus != null) return item
+  const entry = CATALOG.find(e => e.name === item.name)
+  if (entry?.arcaneBonus == null) return item
+  return { ...item, arcaneBonus: String(entry.arcaneBonus) }
+}
+
 export function loadInventory(characterId: string): InventoryItem[] {
   try {
     const raw = localStorage.getItem(INVENTORY_KEY)
     const all = raw ? (JSON.parse(raw) as Record<string, InventoryItem[]>) : {}
-    return all[characterId] ?? []
+    return (all[characterId] ?? []).map(backfillArcaneBonus)
   } catch {
     return []
   }
@@ -153,7 +169,7 @@ export function loadBags(characterId: string): InventoryBag[] {
   try {
     const raw = localStorage.getItem(BAGS_KEY)
     const all = raw ? (JSON.parse(raw) as Record<string, InventoryBag[]>) : {}
-    return all[characterId] ?? []
+    return (all[characterId] ?? []).map(b => ({ ...b, items: b.items.map(backfillArcaneBonus) }))
   } catch {
     return []
   }

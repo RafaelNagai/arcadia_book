@@ -92,6 +92,18 @@ export function CustomItemForm({
         />
       </label>
 
+      {/* Arcane Bonus */}
+      <label style={{ display: "block", marginBottom: "0.875rem" }}>
+        <span style={labelStyle}>Bônus Arcano</span>
+        <input
+          type="text"
+          value={form.arcaneBonus}
+          onChange={(e) => onChange((f) => ({ ...f, arcaneBonus: e.target.value }))}
+          placeholder="Ex: 2, 3..."
+          style={{ ...inputStyle, width: 120 }}
+        />
+      </label>
+
       {/* Effects */}
       <div style={{ marginBottom: "0.875rem" }}>
         <span style={labelStyle}>Efeitos</span>

@@ -82,6 +82,7 @@ model InventoryItem {
   catalogTier        String?  @map("catalog_tier")
   damage             String?
   da                 String?
+  arcaneBonus        String?  @map("arcane_bonus")
   effects            String[]
   sortOrder          Int      @default(0) @map("sort_order")
   createdAt          DateTime @default(now()) @map("created_at")
