@@ -40,6 +40,8 @@ export const CHAPTERS: ChapterMeta[] = [
   { id: '01_05_00_equipamentos',            slug: 'equipamentos',            title: 'Item e Equipamento',       part: 'Fundamentos',            order: 50,  subtitle: 'Armas, armaduras e o catálogo do Mar de Nuvens' },
   { id: '01_05_01_criar_equipamento',       slug: 'criar-equipamento',       title: 'Criando um Equipamento',   part: 'Fundamentos',            order: 51,  subtitle: 'Como criar um equipamento', parentSlug: 'equipamentos' },
   { id: '01_06_00_condicoes',               slug: 'condicoes',               title: 'Condições',                part: 'Fundamentos',            order: 60,  subtitle: 'Efeitos que persistem no corpo e na mente' },
+  { id: '01_07_00_dialogo',                 slug: 'dialogo',                 title: 'Diálogo',                  part: 'Fundamentos',            order: 65,  subtitle: 'A cena decide, não o dado' },
+  { id: '01_07_01_por_que_sem_influencia',  slug: 'por-que-sem-influencia',  title: 'Por Que Não Existe Influência', part: 'Fundamentos',       order: 66,  subtitle: 'Bastidores de uma decisão de design', parentSlug: 'dialogo' },
   { id: '02_01_00_arcanismo',               slug: 'arcanismo',               title: 'Arcanismo',                part: 'O Arcano',               order: 70,  subtitle: 'O poder tem um preço' },
   { id: '02_02_00_elementos',               slug: 'elementos',               title: 'Elementos',                part: 'O Arcano',               order: 80,  subtitle: 'Cinco forças, um destino' },
   { id: '02_03_00_afinidades',              slug: 'afinidades',              title: 'Afinidade e Antítese',     part: 'O Arcano',               order: 81,  subtitle: 'A relação que o Arcano escolhe por você' },

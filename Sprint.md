@@ -11,6 +11,16 @@
 
 ### Em andamento
 
+### Bug: capítulos `dialogo`/`por-que-sem-influencia` não apareciam no site: corrigido
+**Origem:** usuário reportou que o capítulo de Diálogo (e o de game design) não aparecia no livro do site. Causa: rodei `/sync-mechanics` — os dois `.md` existiam em `chapters/` desde a task de remoção de Influência, mas nunca foram adicionados ao array `CHAPTERS` em `web/src/data/chapterManifest.ts`. Isso já estava anotado como pendência conhecida no Sprint.md desde aquela task.
+**Adicionada:** 2026-09-22 · Restante do manifest conferido contra os 43 arquivos de `chapters/` — sem outras divergências (a única entrada sem arquivo correspondente, `00_timeline`, é pré-existente e sem relação com esta mudança, não mexi). `tsc -b` e `build` (web) limpos.
+
+- [x] `01_07_00_dialogo` adicionado ao manifest — slug `dialogo`, part Fundamentos, order 65 (entre Condições e Arcanismo)
+- [x] `01_07_01_por_que_sem_influencia` adicionado — slug `por-que-sem-influencia`, order 66, `parentSlug: 'dialogo'`
+- [x] Conteúdo markdown não precisou de nenhuma cópia — `chapterLoader.ts` já lê `chapters/*.md` via glob do Vite, só faltava o metadado no manifest
+
+---
+
 ### Bug: alinhamento de Entropia — aguardando print
 **Origem:** usuário reportou que "Entropia e os dados não estão alinhados centralizados" na ficha. Ainda não localizei a causa exata sem ver o print — `ArcanoSection.tsx` tem PE e Entropia num mesmo row `flex items-center justify-between`, cada grupo com seu próprio `items-center`, o que deveria centralizar; pode ser diferença de tamanho entre os ícones de PE (16px) e os dados de Entropia (22px, em `EntropiaDisplay.tsx`), ou outro componente (`ArcaneTestOverlay.tsx`/`ArcaneConfigPanel.tsx`) que eu ainda não conferi. Pedi print pro usuário antes de mexer, pra não arriscar um ajuste no chute.
 
