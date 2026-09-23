@@ -1,12 +1,16 @@
 import { useState } from 'react'
 import { RACES, NATIONALITIES, RELIGIONS } from './types'
-import { Field, TextInput, ImageUpload } from './CreatorUI'
+import { Field, TextInput, ImageUpload, TagInput } from './CreatorUI'
 
-export function Step1Identity({ data, image, onImageChange, onChange }: {
+export function Step1Identity({ data, image, onImageChange, onChange, tracos, onTracosChange, gatilhos, onGatilhosChange }: {
   data: { name: string; race: string; nationality: string; religion: string; concept: string; quote: string }
   image: string | null
   onImageChange: (v: string | null) => void
   onChange: (k: string, v: string) => void
+  tracos: string[]
+  onTracosChange: (v: string[]) => void
+  gatilhos: string[]
+  onGatilhosChange: (v: string[]) => void
 }) {
   const isExistingCustomRace = !RACES.slice(0, -1).includes(data.race) && data.race !== ''
   const [customRace, setCustomRace] = useState(isExistingCustomRace ? data.race : '')
@@ -121,6 +125,14 @@ export function Step1Identity({ data, image, onImageChange, onChange }: {
 
       <Field label="Frase Marcante" hint="Uma citação curta que define o espírito do personagem">
         <TextInput value={data.quote} onChange={v => onChange('quote', v)} placeholder="Ex: Eu não fujo das tempestades. Eu as dirijo." />
+      </Field>
+
+      <Field label="Traços" hint="Como esse personagem age e reage — um guia rápido pra interpretar ele igual toda vez. Ex: Impulsivo, Fala pouco e age muito, Leal até a morte">
+        <TagInput tags={tracos} onChange={onTracosChange} placeholder="Ex: Impulsivo, Desconfia de estranhos…" />
+      </Field>
+
+      <Field label="Gatilhos" hint="O que mexe com esse personagem — medos, orgulho, culpas. Outros personagens e NPCs podem usar isso contra ele numa conversa. Ex: Medo de ser esquecido, Culpa por abandonar a antiga tripulação">
+        <TagInput tags={gatilhos} onChange={onGatilhosChange} placeholder="Ex: Medo de afogar, Orgulho ferido…" />
       </Field>
     </div>
   )

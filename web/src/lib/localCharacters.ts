@@ -12,7 +12,9 @@ const STORAGE_KEY = 'arcadia_custom_characters'
 export function loadCustomCharacters(): Character[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? (JSON.parse(raw) as Character[]) : []
+    const parsed = raw ? (JSON.parse(raw) as Character[]) : []
+    // Fichas salvas antes dos campos `tracos`/`gatilhos` existirem não têm essas chaves.
+    return parsed.map(c => ({ ...c, tracos: c.tracos ?? [], gatilhos: c.gatilhos ?? [] }))
   } catch {
     return []
   }
@@ -314,5 +316,7 @@ export function normalizeCharacter(c: Omit<Character, 'hp' | 'sanidade' | 'level
   const hp = c.hp ?? calcHP(c.attributes.fisico)
   const sanidade = c.sanidade ?? calcSanidade(c.attributes.intelecto, c.attributes.influencia)
   const level = calcLevel(c.skills)
-  return { ...c, hp, sanidade, level } as Character
+  const tracos = c.tracos ?? []
+  const gatilhos = c.gatilhos ?? []
+  return { ...c, hp, sanidade, level, tracos, gatilhos } as Character
 }

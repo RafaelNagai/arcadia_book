@@ -55,6 +55,8 @@ export const CreateCharacterSchema = z.object({
   modificadores: ModificadoresSchema.default({ potencia: 0, complexidade: 0, controle: 0 }),
   traumas: z.array(z.string()).default([]),
   antecedentes: z.array(z.string()).default([]),
+  tracos: z.array(z.string()).default([]),
+  gatilhos: z.array(z.string()).default([]),
   historia: z.string().nullable().optional(),
   is_public: z.boolean().default(false),
 })

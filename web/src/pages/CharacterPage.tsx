@@ -1051,7 +1051,7 @@ export function CharacterPage() {
             exaustao={exaustao}
           />
 
-          {/* Antecedentes + Traumas */}
+          {/* Antecedentes + Traços + Gatilhos + Traumas */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <section>
               <SectionLabel
@@ -1064,6 +1064,38 @@ export function CharacterPage() {
                 {character.antecedentes.map((ant) => (
                   <Tag key={ant} color="#80A8C8" bg="rgba(32,96,160,0.12)">
                     {ant}
+                  </Tag>
+                ))}
+              </div>
+            </section>
+
+            <section>
+              <SectionLabel
+                accent={accent.text}
+                onEdit={canEdit ? () => goEdit(1) : undefined}
+              >
+                Traços
+              </SectionLabel>
+              <div className="flex flex-wrap gap-2">
+                {(character.tracos ?? []).map((traco) => (
+                  <Tag key={traco} color="#8AC0A0" bg="rgba(42,140,100,0.14)">
+                    {traco}
+                  </Tag>
+                ))}
+              </div>
+            </section>
+
+            <section>
+              <SectionLabel
+                accent={accent.text}
+                onEdit={canEdit ? () => goEdit(1) : undefined}
+              >
+                Gatilhos
+              </SectionLabel>
+              <div className="flex flex-wrap gap-2">
+                {(character.gatilhos ?? []).map((gatilho) => (
+                  <Tag key={gatilho} color="#C89A50" bg="rgba(160,110,32,0.15)">
+                    {gatilho}
                   </Tag>
                 ))}
               </div>

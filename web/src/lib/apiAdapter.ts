@@ -34,6 +34,8 @@ export function mapApiToCharacter(raw: Record<string, unknown>): Character {
     modificadores: (raw.modificadores as Character['modificadores']) ?? { potencia: 0, complexidade: 0, controle: 0 },
     traumas: (raw.traumas as string[]) ?? [],
     antecedentes: (raw.antecedentes as string[]) ?? [],
+    tracos: (raw.tracos as string[]) ?? [],
+    gatilhos: (raw.gatilhos as string[]) ?? [],
     historia: (raw.historia as string | undefined) ?? undefined,
     campaign: (raw.campaign as Character['campaign']) ?? null,
     conditions: (raw.conditions as Condition[] | undefined) ?? undefined,
@@ -130,6 +132,8 @@ export function mapCharacterToApi(char: Character): Record<string, unknown> {
     modificadores: char.modificadores,
     traumas: char.traumas,
     antecedentes: char.antecedentes,
+    tracos: char.tracos,
+    gatilhos: char.gatilhos,
     historia: char.historia,
   }
 }

@@ -33,6 +33,8 @@ model Character {
   diary           Json?
   traumas         String[]
   antecedentes    String[]
+  tracos          String[]
+  gatilhos        String[]
   historia        String?
   isPublic        Boolean  @default(false) @map("is_public")
   createdAt       DateTime @default(now()) @map("created_at")

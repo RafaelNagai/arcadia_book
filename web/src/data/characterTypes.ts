@@ -181,6 +181,8 @@ export interface Character {
   modificadores: CharacterModificadores
   traumas: string[]
   antecedentes: string[]
+  tracos: string[]
+  gatilhos: string[]
   historia?: string
   campaign?: { id: string; title: string; role: 'player' | 'npc' } | null
   conditions?: Condition[]

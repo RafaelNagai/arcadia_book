@@ -11,6 +11,26 @@
 
 ### Em andamento
 
+### Traços e Gatilhos do personagem na ficha (Step 1 do criador): concluído
+**Origem:** conversa de design com o autor, sequência do Sistema de Diálogo. Dois campos livres, separados: Traços = guia de como interpretar o personagem (comportamento, reações); Gatilhos = pontos de pressão que outros podem explorar numa conversa, simétricos aos de NPC (ver `dialogo.md`, mas aqui como texto livre, não os pares Sentimento/Foco do gerador de NPC).
+**Adicionada:** 2026-09-22 · Código completo, typecheck e build (`web`) limpos, colunas aplicadas no banco de verdade e confirmadas por query.
+
+- [x] `tracos: string[]` e `gatilhos: string[]` em `Character` (`characterTypes.ts`)
+- [x] Campos na Step 1 do criador (`Step1Identity.tsx`), depois de "Frase Marcante" — TagInput igual ao de Antecedentes
+- [x] Wiring em `CharacterCreatorPage.tsx` (estado, load de personagem existente, objeto salvo)
+- [x] Exibição na ficha (`CharacterPage.tsx`): grid 2×2 (Antecedentes/Traços na primeira linha, Gatilhos/Traumas na segunda), editar de Traços e Gatilhos volta pra Step 1
+- [x] `apiAdapter.ts` (mapeamento nos dois sentidos), `character.schema.ts` (Zod), `characters.repository.ts` (create/duplicate), `schema.prisma` (`tracos String[]`, `gatilhos String[]`)
+- [x] `npm run db:generate` rodado (client Prisma local regenerado)
+- [x] Defensividade contra dado antigo sem os campos: `loadCustomCharacters()` e `normalizeCharacter()` (`localCharacters.ts`) preenchem `tracos: []`/`gatilhos: []` para fichas salvas antes dessa mudança e para os personagens preset de `characters.json` (nenhum tem os campos) — sem isso, abrir uma ficha antiga quebraria a página (`.map` em `undefined`)
+- [x] `npx tsc -b` (web) e `npm run build` (web) limpos
+- [x] Colunas `tracos` e `gatilhos` aplicadas no banco de verdade, confirmado por query em `information_schema.columns`: `TEXT[] NOT NULL DEFAULT '{}'`
+
+**Nota técnica pra próxima mudança de schema:** nem `prisma migrate dev` nem `prisma db push` funcionam neste projeto — os dois falham com `P4002` (`public.ships` tem FK pra `auth.users`, schema não declarado no datasource). Isso é anterior a esta task — não existe `prisma/migrations/`, então o projeto nunca usou migration versionada de verdade. Contornado com `prisma db execute --file <sql>` (roda SQL direto, sem introspecção). Resolver isso de verdade (declarar `schemas = ["public", "auth"]` no datasource) exigiria anotar `@@schema(...)` em **todos** os models existentes — mudança maior, fora do escopo daqui.
+
+**Observação, sem relação com esta task:** `npm run typecheck` na API já falhava antes desta mudança, em `state.controller.ts:72` (erro de tipo em `DiceLogEntry`) — confirmado via `git diff` que o arquivo não foi tocado nesta rodada nem em nenhuma anterior. Pré-existente, não é algo a corrigir aqui.
+
+---
+
 ### Sistema de Diálogo (substituição de Influência): livro inteiro varrido e normalizado
 **Origem:** conversa de design com o autor. Playtest expôs que testes de Persuasão/Dominação permitiam que um resultado de dado alto forçasse a história a se adaptar ao jogador, mesmo sem justificativa narrativa (ex.: jogador cospe no vilão, alega "foi sem querer", rola Crítico em Persuasão, e pelas regras antigas o teste passava). Decisões de mecânica registradas em `dialogo_social_draft.md` (raiz do projeto). Ficha de personagem e SPEC.md ficam para depois — só os capítulos do livro foram preparados nesta rodada.
 **Adicionada:** 2026-09-22 · Auditoria completa dos 43 arquivos de `chapters/` (agente dedicado, achados verificados por amostragem antes de aplicar) + correções aplicadas e confirmadas pelo autor.

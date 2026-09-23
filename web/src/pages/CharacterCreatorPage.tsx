@@ -88,6 +88,8 @@ export function CharacterCreatorPage() {
 
         setModificadores(char.modificadores ?? EMPTY_MODS);
         setAntecedentes(char.antecedentes);
+        setTracos(char.tracos ?? []);
+        setGatilhos(char.gatilhos ?? []);
         setTraumas(char.traumas);
         setHistoria(char.historia ?? "");
         setImage(char.image);
@@ -132,6 +134,8 @@ export function CharacterCreatorPage() {
   const [antecedentes, setAntecedentes] = useState<string[]>(
     existing?.antecedentes ?? [],
   );
+  const [tracos, setTracos] = useState<string[]>(existing?.tracos ?? []);
+  const [gatilhos, setGatilhos] = useState<string[]>(existing?.gatilhos ?? []);
   const [traumas, setTraumas] = useState<string[]>(existing?.traumas ?? []);
   const [historia, setHistoria] = useState(existing?.historia ?? "");
   const [image, setImage] = useState<string | null>(existing?.image ?? null);
@@ -224,6 +228,8 @@ export function CharacterCreatorPage() {
         modificadores,
         traumas,
         antecedentes,
+        tracos,
+        gatilhos,
         historia: historia.trim() || undefined,
       };
 
@@ -375,6 +381,10 @@ export function CharacterCreatorPage() {
                   else if (k === "concept") setConcept(v);
                   else if (k === "quote") setQuote(v);
                 }}
+                tracos={tracos}
+                onTracosChange={setTracos}
+                gatilhos={gatilhos}
+                onGatilhosChange={setGatilhos}
               />
             )}
             {step === 2 && (
