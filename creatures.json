@@ -711,7 +711,7 @@
     "da": 3,
     "dp": 2,
     "attributes": { "fisico": 4, "destreza": 4, "intelecto": 4, "influencia": 4 },
-    "immune": ["paradoxo"],
+    "immune": ["Cognitivo"],
     "vulnerable": [],
     "interactions": [
       { "name": "Vontade de Deus", "description": "Aqueles que NÃO acreditam em alguma fé, e presenciarem a Figura de Cognitivo a primeira vez devem fazer uma TD de VONTADE(dt. 25), se falhar seu corpo será controlado por 2 turnos." },
@@ -720,12 +720,12 @@
     ],
     "actions": [
       { "name": "Purgatório", "description": "Faz com que o alvo veja os seus piores medos, causando 1D4 na Vida do alvo, se o alvo não acreditar em alguma religião o dano é crítico. Para cada TRAUMA que o alvo tiver, deverá somar mais 1 no dano total. Dano Indefensavel." },
-      { "name": "Demencia", "description": "Permite causar uma condição DEMENCIA, onde todos os bonus do alvo(atributos, pericias, etc) não são mais somados em seus testes. O alvo pode rodar um TD de Vontade ou Conhecimento(dt. 15) toda rodada para anular esse efeito." },
+      { "name": "Demencia", "description": "Permite causar uma condição DEMENCIA, onde todos os bonus do alvo(atributos, pericias, etc) não são mais somados em seus testes. O alvo pode rodar um TD de Vontade ou Conhecimento(dt. 20) toda rodada para anular esse efeito." },
       { "name": "Oferenda", "description": "Todos os dados do Pote da Moral(PM) são diminuidos em 1. Para cada dado, que não puder diminuir mais do que 1, causa 1D20 de dano a todos os tripulantes." },
-      { "name": "Penitência", "description": "O alvo deve se auto inflingir dano com sua arma, caso não passe na TD de Vontade(dt. 15)." }
+      { "name": "Penitência", "description": "O alvo deve se auto inflingir dano com sua arma, caso não passe na TD de Vontade(dt. 20)." }
     ],
     "reactions": [
-      { "name": "Contra-Ataque", "description": "Permite defender com a DP, porém cria 3 ilusões dele. O alvo atacante pode resistir em um TD de INTUICAO(dt. 19), porém se falhar vai ser aplicado o efeito. Para cada ilusão o alvo terá -(5) em ataques contra a Figura de Razão. 1 ilusão some ao executar um ataque, independente se for com sucesso ou falha. Esta reação só pode ser aplicada quando a figura nao tem ilusoes." },
+      { "name": "Contra-Ataque", "description": "Permite defender com a DP, porém cria 3 ilusões dele. O alvo atacante pode resistir em um TD de INTUICAO(dt. 22), porém se falhar vai ser aplicado o efeito. Para CADA ilusão o alvo terá -(10) em ataques contra a Figura de Razão. 1 ilusão some ao executar um ataque, independente se for com sucesso ou falha. Esta reação só pode ser aplicada quando a figura nao tem ilusoes." },
       { "name": "Defender", "description": "Permite defender com a DA." }
     ],
     "variants": []
@@ -741,7 +741,7 @@
     "da": 3,
     "dp": 2,
     "attributes": { "fisico": 3, "destreza": 6, "intelecto": 6, "influencia": 3 },
-    "immune": ["Cortante", "Perfurante", "Bruto"],
+    "immune": ["Cortante", "Perfurante", "Bruto", "Astral"],
     "vulnerable": [],
     "interactions": [
       { "name": "Vislumbre Sombrio", "description": "Em batalha, todos que estiverem dormindo na presença da Figura de Astral, tem seu pior pesadelo e não pode ser acordado naturalmente. Enquanto estiverem dormindo, perdem 1 de SANIDADE, por turno." },

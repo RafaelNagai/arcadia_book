@@ -3,6 +3,10 @@
 > Registro de atualizações em linguagem simples, para quem acompanha o livro — não é um log técnico de commits.
 > Cada task concluída via `/task` adiciona um item aqui, sob a data do dia. Este arquivo alimenta o aviso automático no Discord.
 
+## 2026-09-25
+
+- A região de Rubra ganhou mais detalhes no capítulo de Regiões: a engenharia de Rubra agora mistura tecnologia com o arcano (muitas vezes o povo nem distingue uma runa de uma engrenagem); a Penumbra, uma tempestade de areia que cobre a ilha e transforma o dia em noite em poucos minutos; o jeito de saber as horas pelo vento, que sopra sempre para o norte, some ao meio-dia e fica mais forte à meia-noite, medido com um instrumento chamado "corta-vento"; e o costume de dormir enterrado na areia para escapar das rajadas da noite, com construções em forma de iglu para visitantes e para quem tem dinheiro para manter uma casa de pé.
+
 ## 2026-09-22
 
 - Revisão de português do livro inteiro: corrigimos acentos e erros de digitação, reescrevemos trechos confusos ou repetidos e trocamos os termos em inglês por português — "slots" viraram "espaços", "Tier" virou "Grau", "stacks" viraram "acúmulos", "HP" virou "Vida", "Mini Game" virou "Duelo", "round" virou "rodada" e "tokens" viraram "marcadores". Também acertamos alguns números de exemplos que não fechavam com as regras (a noite de luxo no capítulo de Moral, a Soneca no Intervalo de Capítulo e o exemplo da fechadura em Destrancar), e a Introdução agora descreve corretamente as cinco partes do livro.

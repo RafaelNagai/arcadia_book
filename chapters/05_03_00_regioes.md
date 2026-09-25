@@ -137,4 +137,11 @@ Entre dunas escaldantes e rochedos cravejados de gemas, **Rubra é um deserto de
 
 O povo de Rubra é **orgulhoso, acolhedor e resiliente**. Mesmo diante da aridez, cultivam alegria e hospitalidade, acreditando que a felicidade é um bem coletivo — durante suas festas, todos são convidados, inclusive estrangeiros.
 
-Ao contrário da maioria das nações de Arcádia, Rubra valoriza mais a **engenharia do que a magia**. Suas construções e invenções são fruto de engenhosidade prática — não de runas ou feitiços. É uma nação que resolve problemas com as mãos antes de recorrer ao arcano.
+Ao contrário da maioria das nações de Arcádia, Rubra valoriza mais a **engenharia do que a magia**. Suas construções e invenções são fruto de engenhosidade prática — muitas vezes confundindo runas magicas como uma engrenagem de sua engenharia. É uma nação que resolve problemas com tecnologia fundida com o arcano.
+
+Em Rubra, existe um evento climatico que acontece com frequência chamado Penumbra, onde uma nuvem gigantesca de areia faz toda Rubra ficar de noite, é questão de segundos ou minutos para que boa parte dessa ilha seja coberta. Por este motivo, eles estão acostumados a sempre andarem com tochas. E socialmente, são bem ativos em qualquer horario do dia. Não tendo um horario fixo para trabalharem.
+
+A população de Rubra se basea nos ventos, para entender qual o horario. Por causa da Penumbra eles nunca puderam confiar no sol, para identificar as horas. Os ventos em rubra sempre sopram para o mesmo lugar, sempre para o norte e com maior intensidade dependendo do horário. Meio dia é o horário sem vento, e meia noite é o periodo com ventos e rajadas que podem cortar folhas e destruir barracas. Os ventos em Rubra sempre aumentam e diminuem gradualmente durante o dia, aumentando do dia para a noite e diminuindo durante a noite para o dia.
+Até mesmo os mais experientes tem dificuldade em saber a hora exata, por este motivo, eles criaram um instrumento chamado de "corta-vento" que permite medir exatamente a intensidade do vento e definir a hora exata.
+
+Os moradores de Rubra, para evitar as rajadas e ventos fortes a noite, eles costumam dormir abaixo da areia, com sacos de dormir apropriado para se soterrar. Existem construções em formato de Iglus que foram feitas exatamente para os visitantes que não estão acostumados a dormirem assim, ou individuos com alto dinheiro para investir em fundação para manter uma casa de pé.
